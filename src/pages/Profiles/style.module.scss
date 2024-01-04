@@ -1,0 +1,54 @@
+.wrap {
+  .header {
+    background-image: url("../../assets/image/bgProfiles.png");
+    padding: 1vh;
+    .logo {
+      display: flex;
+      align-items: center;
+      
+      .logoImage {
+        width: 70%;
+        margin: 1vh 0 1vh 2vh;
+      }
+      .title {
+        color: #f6c404;
+        font-family: Inter;
+        font-size: 22px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: normal;
+        letter-spacing: 1px;
+       
+      }
+    }
+  }
+  .content {
+    padding: 6vh 20vh 0 20vh;
+    .title {
+      text-align: center;
+      font-size: 22px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: normal;
+      letter-spacing: 1px;
+      margin-bottom: 8vh;
+    }
+    .form{
+        //  background-color: aqua;
+    }
+    .uploadImg{
+       text-align: center;
+    }
+    .btn{
+        background-color: var(--primary);
+        color: white;
+        width: 100%;
+    }
+    .btn:hover{
+        background-color: var(--primary);
+        color: white;
+        width: 100%;
+        border: none;
+    }
+  }
+}
