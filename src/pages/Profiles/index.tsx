@@ -76,7 +76,7 @@ const Profiles = () => {
                       valuePropName="fileList"
                       getValueFromEvent={normFile}
                       rules={[
-                        { required: true, message: "Vui lòng điền họ tên" },
+                        { required: true, message: "Vui lòng tải ảnh" },
                       ]}
                     >
                       <Upload
