@@ -1,29 +1,77 @@
 .wrap {
   .header {
     background-image: url("../../assets/image/bgProfiles.png");
-    padding: 1vh;
+    padding: 1vh 0 1vh 39px;
+    display: flex;
+    justify-content: space-between;
     .logo {
       display: flex;
       align-items: center;
-      
-      .logoImage {
-        width: 70%;
-        margin: 1vh 0 1vh 2vh;
+      .logoImg {
+        width: 76px;
+        height: 76px;
       }
       .title {
+        margin-left: 24px;
         color: #f6c404;
-        font-family: Inter;
-        font-size: 22px;
+        font-size: 24px;
         font-style: normal;
         font-weight: 600;
         line-height: normal;
         letter-spacing: 1px;
-       
       }
+    }
+    .menu {
+      display: flex;
+      align-items: center;
+      .menuContent {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        list-style-type: none;
+        color: #f6c404;
+        font-size: 16px;
+      }
+      .account {
+        background-color: transparent;
+        color: #f6c404;
+        font-size: 16px;
+      }
+      .account:hover {
+        background-color: transparent;
+        color: #f6c404;
+        font-size: 16px;
+      }
+      .menuContent li {
+        margin: 0 2vh 0 3vh;
+        cursor: pointer;
+      }
+    }
+    .subMenu {
+      color: #f6c404;
+      background-color: transparent;
+      border: none !important; 
+      font-size: 16px;
+    }
+    
+    .item{
+      padding: 2vh;
+      margin: 0.7vh;
+      border-radius: 4px;
+    }
+    .item:hover{
+      background-color: var(--subPrimary);
+    }
+    ul{
+      margin: 0;
+    }
+    ul li {
+      list-style-type: none;
+      
     }
   }
   .content {
-    padding: 6vh 24vh 0 24vh;
+    padding: 6vh 36vh 0 36vh;
     .title {
       text-align: center;
       font-size: 22px;

@@ -4,22 +4,13 @@ import { PlusOutlined } from "@ant-design/icons";
 
 import {
   Button,
-  Cascader,
-  Checkbox,
-  ColorPicker,
   DatePicker,
   Form,
   Input,
-  InputNumber,
-  Radio,
   Select,
-  Slider,
-  Switch,
-  TreeSelect,
   Upload,
   Row,
   Col,
-  Space,
 } from "antd";
 import type { DatePickerProps } from "antd";
 const { RangePicker } = DatePicker;
@@ -43,19 +34,20 @@ const Profiles = () => {
   return (
     <>
       <div className={styles.wrap}>
-        <div className={styles.header}>
-          <div className={styles.logo}>
-            <div className={styles.logoImageDiv}>
-              <img
-                className={styles.logoImage}
-                src={require("../../assets/image/logo.png")}
-              />
-            </div>
-            <div className={styles.title}>
-              LIÊN ĐOÀN VÕ THUẬT CỔ TRUYỀN VIỆT NAM
-            </div>
+      <div className={styles.header}>
+        <div className={styles.logo}>
+          <div>
+            <img
+              className={styles.logoImg}
+              src={require("../../assets/image/logo.png")}
+            />
+          </div>
+          <div className={styles.title}>
+            LIÊN ĐOÀN VÕ THUẬT CỔ TRUYỀN VIỆT NAM
           </div>
         </div>
+      
+      </div>
         <div className={styles.content}>
           <div className={styles.title}>THÔNG TIN HỒ SƠ</div>
           <div className={styles.form}>
@@ -75,9 +67,7 @@ const Profiles = () => {
                       name="upload"
                       valuePropName="fileList"
                       getValueFromEvent={normFile}
-                      rules={[
-                        { required: true, message: "Vui lòng tải ảnh" },
-                      ]}
+                      rules={[{ required: true, message: "Vui lòng tải ảnh" }]}
                     >
                       <Upload
                         action="/upload.do"

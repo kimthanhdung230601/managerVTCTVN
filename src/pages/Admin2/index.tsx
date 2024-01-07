@@ -43,14 +43,7 @@ const rootSubmenuKeys = ["sub1"];
 const AdminTwo = () => {
   const [openKeys, setOpenKeys] = useState(["sub1"]);
 
-  const onOpenChange: MenuProps["onOpenChange"] = (keys) => {
-    const latestOpenKey = keys.find((key) => openKeys.indexOf(key) === -1);
-    if (latestOpenKey && rootSubmenuKeys.indexOf(latestOpenKey!) === -1) {
-      setOpenKeys(keys);
-    } else {
-      setOpenKeys(latestOpenKey ? [latestOpenKey] : []);
-    }
-  };
+  
   const items: MenuProps["items"] = [
     {
       label: admin,
