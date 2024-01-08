@@ -60,7 +60,7 @@ const Profiles = () => {
                 form={form}
               >
                 <Row gutter={16}>
-                  <Col span={8}>
+                  <Col span={8} xs={24} sm={12} md={8}>
                     {" "}
                     <Form.Item
                       label="Tải ảnh lên"
@@ -84,7 +84,7 @@ const Profiles = () => {
                       </Upload>
                     </Form.Item>{" "}
                   </Col>
-                  <Col span={8}>
+                  <Col span={8} xs={24} sm={12} md={8}>
                     <Form.Item
                       label="Họ tên"
                       name="name"
@@ -107,7 +107,7 @@ const Profiles = () => {
                       <Input />
                     </Form.Item>
                   </Col>
-                  <Col span={8}>
+                  <Col span={8} xs={24} sm={12} md={8}>
                     {" "}
                     <Form.Item
                       label="Quốc tịch"
@@ -146,7 +146,7 @@ const Profiles = () => {
                   </Col>
                 </Row>{" "}
                 <Row gutter={16}>
-                  <Col span={8}>
+                  <Col span={8} xs={24} sm={12} md={8}>
                     <Form.Item
                       label="Câu lạc bộ "
                       name="club"
@@ -157,7 +157,7 @@ const Profiles = () => {
                       <Input />
                     </Form.Item>
                   </Col>
-                  <Col span={8}>
+                  <Col span={8} xs={24} sm={12} md={8}>
                     <Form.Item
                       label="Cấp/đai đẳng hiện tại"
                       name="level"
@@ -166,24 +166,24 @@ const Profiles = () => {
                       <Input />
                     </Form.Item>
                   </Col>
-                  <Col span={8}>
+                  <Col span={8} xs={24} sm={12} md={8}>
                     <Form.Item label="Email">
                       <Input />
                     </Form.Item>
                   </Col>
                 </Row>
                 <Row gutter={16}>
-                  <Col span={8}>
+                  <Col span={8} xs={24} sm={12} md={8}>
                     <Form.Item label="Tỉnh/Thành ">
                       <Input />
                     </Form.Item>
                   </Col>
-                  <Col span={8}>
+                  <Col span={8} xs={24} sm={12} md={8}>
                     <Form.Item label="Quận/Huyện">
                       <Input />
                     </Form.Item>
                   </Col>
-                  <Col span={8}>
+                  <Col span={8} xs={24} sm={12} md={8}>
                     <Form.Item
                       label="Số CCCD "
                       name="CCCD"
@@ -196,7 +196,7 @@ const Profiles = () => {
                   </Col>
                 </Row>
                 <Row gutter={16}>
-                  <Col span={8}>
+                  <Col span={8} xs={24} sm={12} md={8}>
                     <Form.Item
                       label="Quê quán"
                       name="contry"
@@ -207,7 +207,7 @@ const Profiles = () => {
                       <Input />
                     </Form.Item>
                   </Col>
-                  <Col span={8}>
+                  <Col span={8} xs={24} sm={12} md={8}>
                     <Form.Item
                       label="Địa chỉ thường trú"
                       name="address"
@@ -221,7 +221,7 @@ const Profiles = () => {
                       <Input />
                     </Form.Item>
                   </Col>
-                  <Col span={8}>
+                  <Col span={8} xs={24} sm={12} md={8}>
                     <Form.Item
                       label="Số điện thoại"
                       name="phone"
