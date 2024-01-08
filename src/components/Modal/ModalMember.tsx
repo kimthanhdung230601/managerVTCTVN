@@ -51,7 +51,7 @@ const ModalMember = ({
       >
         <Form layout="vertical" form={form} onFinish={onFinish}>
           <Row gutter={16}>
-            <Col span={8}>
+            <Col span={8} xs={24} sm={12} md={8}>
               {" "}
               <Form.Item
                 label="Tải ảnh lên"
@@ -75,7 +75,7 @@ const ModalMember = ({
                 </Upload>
               </Form.Item>{" "}
             </Col>
-            <Col span={8}>
+            <Col span={8} xs={24} sm={12} md={8}>
               <Form.Item
                 label="Họ tên"
                 name="name"
@@ -96,7 +96,7 @@ const ModalMember = ({
                 <Input />
               </Form.Item>
             </Col>
-            <Col span={8}>
+            <Col span={8} xs={24} sm={12} md={8}>
               {" "}
               <Form.Item
                 label="Quốc tịch"
@@ -142,7 +142,7 @@ const ModalMember = ({
             </Col>
           </Row>{" "}
           <Row gutter={16}>
-            <Col span={8}>
+            <Col span={8} xs={24} sm={12} md={8}>
               <Form.Item
                 label="Câu lạc bộ "
                 name="club"
@@ -153,7 +153,7 @@ const ModalMember = ({
                 <Input />
               </Form.Item>
             </Col>
-            <Col span={8}>
+            <Col span={8} xs={24} sm={12} md={8}>
               <Form.Item
                 label="Cấp/đai đẳng hiện tại"
                 name="level"
@@ -162,7 +162,7 @@ const ModalMember = ({
                 <Input />
               </Form.Item>
             </Col>
-            <Col span={8}>
+            <Col span={8} xs={24} sm={12} md={8}>
               <Form.Item
                 label="Email"
                 name="email"
@@ -178,17 +178,17 @@ const ModalMember = ({
             </Col>
           </Row>
           <Row gutter={16}>
-            <Col span={8}>
+            <Col span={8} xs={24} sm={12} md={8}>
               <Form.Item label="Tỉnh/Thành ">
                 <Input />
               </Form.Item>
             </Col>
-            <Col span={8}>
+            <Col span={8} xs={24} sm={12} md={8}>
               <Form.Item label="Quận/Huyện">
                 <Input />
               </Form.Item>
             </Col>
-            <Col span={8}>
+            <Col span={8} xs={24} sm={12} md={8}>
               <Form.Item
                 label="Số CCCD "
                 name="CCCD"
@@ -199,7 +199,7 @@ const ModalMember = ({
             </Col>
           </Row>
           <Row gutter={16}>
-            <Col span={8}>
+            <Col span={8} xs={24} sm={12} md={8}>
               <Form.Item
                 label="Quê quán"
                 name="contry"
@@ -208,7 +208,7 @@ const ModalMember = ({
                 <Input />
               </Form.Item>
             </Col>
-            <Col span={8}>
+            <Col span={8} xs={24} sm={12} md={8}>
               <Form.Item
                 label="Địa chỉ thường trú"
                 name="address"
@@ -222,7 +222,7 @@ const ModalMember = ({
                 <Input />
               </Form.Item>
             </Col>
-            <Col span={8}>
+            <Col span={8} xs={24} sm={12} md={8}>
               <Form.Item
                 label="Số điện thoại"
                 name="phone"
