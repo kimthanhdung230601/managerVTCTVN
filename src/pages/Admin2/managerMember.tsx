@@ -12,6 +12,8 @@ import type { ColumnsType } from "antd/es/table";
 import type { FilterValue } from "antd/es/table/interface";
 
 import Search from "antd/es/input/Search";
+import ModalUpdateNote from "../../components/Modal/ModalUpdateNote";
+import ModalMember from "../../components/Modal/ModalMember";
 
 interface ManagerMemberProps {}
 interface DataType {
@@ -23,101 +25,7 @@ interface DataType {
   state: string;
   achie: string;
 }
-const columns: ColumnsType<DataType> = [
-  {
-    title: "STT",
-    dataIndex: "STT",
-  },
-  {
-    title: "Họ tên",
-    dataIndex: "name",
-  },
-  {
-    title: "Ngày sinh",
-    dataIndex: "Date",
-  },
-  {
-    title: "Số điện thoại",
-    dataIndex: "phoneNumber",
-  },
-  {
-    title: "Số định danh",
-    dataIndex: "id",
-  },
-  {
-    title: "Cấp độ",
-    dataIndex: "level",
-  },
 
-  {
-    title: "Ghi chú",
-    dataIndex: "note",
-    filters: [
-      {
-        text: "note content 1",
-        value: "note content 1",
-      },
-      {
-        text: "note content 2",
-        value: "note content 2",
-      },
-      {
-        text: "note content 3",
-        value: "note content 3",
-      },
-    ],
-    onFilter: (value: any, rec) => rec.note.indexOf(value) === 0,
-  },
-  {
-    title: "Chi tiết",
-    dataIndex: "detail",
-    filters: [
-      {
-        text: "JohnJohnyy",
-        value: "Nguyen Van A",
-      },
-      {
-        text: "Nguyễn Minh Châu",
-        value: "Nguyen Van B",
-      },
-      {
-        text: "Nguyen Van A",
-        value: "Nguyen Van C",
-      },
-    ],
-    onFilter: (value: any, rec) => rec.detail.indexOf(value) === 0,
-  },
-  {
-    title: "Tình trạng",
-    dataIndex: "state",
-    filters: [
-      {
-        text: "JohnJohnyy",
-        value: "Nguyen Van A",
-      },
-      {
-        text: "Nguyễn Minh Châu",
-        value: "Nguyen Van B",
-      },
-      {
-        text: "Nguyen Van A",
-        value: "Nguyen Van C",
-      },
-    ],
-    onFilter: (value: any, rec) => rec.state.indexOf(value) === 0,
-  },
-
-  {
-    // title: 'Action',
-    key: "action",
-    render: (_, record) => (
-      <span>
-        <button className={styles.btnTb}>Sửa</button>
-        <button className={styles.btnTbDanger}>Xóa</button>
-      </span>
-    ),
-  },
-];
 const data: DataType[] = [];
 for (let i = 0; i < 46; i++) {
   data.push({
@@ -132,21 +40,10 @@ for (let i = 0; i < 46; i++) {
 }
 const ManagerMemberTwo = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
-  const [loading, setLoading] = useState(false);
-  const start = () => {
-    setLoading(true);
-    // ajax request after empty completing
-    setTimeout(() => {
-      setSelectedRowKeys([]);
-      setLoading(false);
-    }, 1000);
-  };
-
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
     console.log("selectedRowKeys changed: ", newSelectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
   };
-
   const rowSelection = {
     selectedRowKeys,
     onChange: onSelectChange,
@@ -154,7 +51,129 @@ const ManagerMemberTwo = () => {
   const hasSelected = selectedRowKeys.length > 0;
   const onSearch: SearchProps["onSearch"] = (value, _e, info) =>
     console.log(info?.source, value);
+  //modal
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const showModalUpdateNote = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleOkUpdateNote = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleCancelUpdateNote = () => {
+    setIsModalOpen(false);
+  };
+  //modal quản lý thành viên 
+  const [isModalOpenMember, setIsModalOpenMember] = useState(false);
+
+  const showModalMember = () => {
+    setIsModalOpenMember(true);
+  };
+
+  const handleOkMember = () => {
+    setIsModalOpenMember(false);
+  };
+
+  const handleCancelMember = () => {
+    setIsModalOpenMember(false);
+  };
+  const columns: ColumnsType<DataType> = [
+    {
+      title: "STT",
+      dataIndex: "STT",
+    },
+    {
+      title: "Họ tên",
+      dataIndex: "name",
+    },
+    {
+      title: "Ngày sinh",
+      dataIndex: "Date",
+    },
+    {
+      title: "Số điện thoại",
+      dataIndex: "phoneNumber",
+    },
+    {
+      title: "Số định danh",
+      dataIndex: "id",
+    },
+    {
+      title: "Cấp độ",
+      dataIndex: "level",
+    },
+
+    {
+      title: "Ghi chú",
+      dataIndex: "note",
+      filters: [
+        {
+          text: "note content 1",
+          value: "note content 1",
+        },
+        {
+          text: "note content 2",
+          value: "note content 2",
+        },
+        {
+          text: "note content 3",
+          value: "note content 3",
+        },
+      ],
+      onFilter: (value: any, rec) => rec.note.indexOf(value) === 0,
+    },
+    {
+      title: "Chi tiết",
+      dataIndex: "detail",
+      filters: [
+        {
+          text: "JohnJohnyy",
+          value: "Nguyen Van A",
+        },
+        {
+          text: "Nguyễn Minh Châu",
+          value: "Nguyen Van B",
+        },
+        {
+          text: "Nguyen Van A",
+          value: "Nguyen Van C",
+        },
+      ],
+      onFilter: (value: any, rec) => rec.detail.indexOf(value) === 0,
+    },
+    {
+      title: "Tình trạng",
+      dataIndex: "state",
+      filters: [
+        {
+          text: "JohnJohnyy",
+          value: "Nguyen Van A",
+        },
+        {
+          text: "Nguyễn Minh Châu",
+          value: "Nguyen Van B",
+        },
+        {
+          text: "Nguyen Van A",
+          value: "Nguyen Van C",
+        },
+      ],
+      onFilter: (value: any, rec) => rec.state.indexOf(value) === 0,
+    },
+
+    {
+      // title: 'Action',
+      key: "action",
+      render: (_, record) => (
+        <span>
+          <button className={styles.btnTb} onClick={()=>showModalUpdateNote()}>Sửa </button>
+          <button className={styles.btnTbDanger}>Xóa</button>
+        </span>
+      ),
+    },
+  ];
   return (
     <>
       {" "}
@@ -168,7 +187,7 @@ const ManagerMemberTwo = () => {
               style={{ width: 320 }}
             />
           </div>
-          <div className={styles.btn}>
+          <div className={styles.btn }onClick={()=>showModalMember()}>
             <PlusOutlined className={styles.icon} />
             Thêm mới
           </div>
@@ -202,6 +221,8 @@ const ManagerMemberTwo = () => {
           }}
         />
       </div>
+      <ModalUpdateNote isModalOpen={isModalOpen} handleCancel={handleCancelUpdateNote} handleOk={handleOkUpdateNote} />
+      <ModalMember isModalOpen={isModalOpenMember} handleCancel={handleCancelMember} handleOk={handleOkMember} />
     </>
   );
 };

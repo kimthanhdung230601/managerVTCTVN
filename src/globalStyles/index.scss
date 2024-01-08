@@ -42,22 +42,20 @@ h3 {
   border-radius: 8px;
 }
 .btn {
-  background-color: var(--subPrimary);
+  background-color: var(--primary);
   color: #fff;
   border-radius: 4px;
   border: none;
-  padding: 3px 7px;
+  padding: 1vh 2vh;
   &:hover {
     cursor: pointer;
-    background-color: var(--subPrimary) !important;
+    background-color: var(--primary) !important;
     color: #fff !important;
     border-radius: 4px;
     border: none;
-    padding: 3px 7px;
+    padding: 1vh 2vh;
     opacity: 0.7;
-    // background-color: var(--secondary) !important;
-    // color: #ffff;
-    // border: none !important;
+
   }
 }
 .second-btn {
@@ -100,8 +98,8 @@ h3 {
   }
 }
 .btn-boder {
-  border: 1px solid var(--subPrimary);
-  color: var(--subPrimary);
+  border: 1px solid var(--primary);
+  color: var(--primary);
   border-radius: 4px;
   padding: 3px 7px;
   background-color: transparent;

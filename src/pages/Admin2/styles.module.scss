@@ -95,7 +95,7 @@
   }
 }
 .contentWrap {
-  margin: 0 2vh;
+  margin: 0 9vh;
   .buttonGroup {
     display: flex;
     justify-content: flex-end;
@@ -111,6 +111,7 @@
     }
 
     .btn {
+      cursor: pointer;
       margin-left: 2vh;
       background-color: var(--primary);
       color: white;
@@ -133,6 +134,7 @@
       font-weight: 400;
       line-height: 22px; /* 157.143% */
       padding: 0.3vh 1.6vh;
+      cursor: pointer;
     }
     .btnTbDanger {
       border-radius: 4px;
