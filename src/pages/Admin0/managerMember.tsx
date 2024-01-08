@@ -7,12 +7,13 @@ import {
 import type { SearchProps } from "antd/es/input";
 import { Input, Table, Button, TableProps } from "antd";
 import styles from "./styles.module.scss";
-import { level,managerf1 } from "../../until/until";
+import { level, managerf1 } from "../../until/until";
 
 import type { ColumnsType } from "antd/es/table";
 import type { FilterValue } from "antd/es/table/interface";
 
 import Search from "antd/es/input/Search";
+import ModalMember from "../../components/Modal/ModalMember";
 
 interface ManagerMemberProps {}
 interface DataType {
@@ -23,61 +24,59 @@ interface DataType {
   note: string;
   state: string;
   achie: string;
-  level:string
+  level: string;
 }
 const columns: ColumnsType<DataType> = [
   {
     title: "STT",
     dataIndex: "STT",
     fixed: "left",
-    width:100,
-    
-    
+    width: 100,
   },
   {
     title: "Họ tên",
     dataIndex: "name",
     fixed: "left",
-    width:200,
+    width: 200,
   },
   {
     title: "Ngày sinh",
     dataIndex: "Date",
-    width:130,
+    width: 130,
   },
   {
     title: "Số điện thoại",
     dataIndex: "phoneNumber",
-    width:170,
+    width: 170,
   },
   {
     title: "Số định danh",
     dataIndex: "id",
-    width:160,
+    width: 160,
   },
   {
     title: "Cấp độ",
     dataIndex: "level",
-    width:100,
-    filters: level.map((value:any) => ({ text: `${value}`, value })),
+    width: 100,
+    filters: level.map((value: any) => ({ text: `${value}`, value })),
     onFilter: (value: any, rec) => rec.level.indexOf(value) === 0,
   },
   {
     title: "Tỉnh",
     dataIndex: "city",
-    width:150,
+    width: 150,
   },
   {
     title: "Đơn vị quản lý F1",
     dataIndex: "f1",
-    width:300,
-    filters: managerf1.map((value:any)=>({text:`${value}`,value})),
+    width: 300,
+    filters: managerf1.map((value: any) => ({ text: `${value}`, value })),
     onFilter: (value: any, rec) => rec.f1.indexOf(value) === 0,
   },
   {
     title: "CLB trực thuộc F2",
     dataIndex: "f2",
-    width:300,
+    width: 300,
     filters: [
       {
         text: "JohnJohnyy",
@@ -97,7 +96,7 @@ const columns: ColumnsType<DataType> = [
   {
     title: "Ghi chú",
     dataIndex: "note",
-    width:130,
+    width: 130,
     filters: [
       {
         text: "note content 1",
@@ -117,7 +116,7 @@ const columns: ColumnsType<DataType> = [
   {
     title: "Tình trạng",
     dataIndex: "state",
-    width:130,
+    width: 130,
     filters: [
       {
         text: "JohnJohnyy",
@@ -137,7 +136,7 @@ const columns: ColumnsType<DataType> = [
   {
     title: "Thành tích",
     dataIndex: "achie",
-    width:130,
+    width: 130,
     filters: [
       {
         text: "JohnJohnyy",
@@ -158,7 +157,7 @@ const columns: ColumnsType<DataType> = [
     // title: 'Action',
     key: "action",
     fixed: "right",
-    width:160,
+    width: 160,
     render: (_, record) => (
       <span>
         <button className={styles.btnTb}>Sửa</button>
@@ -177,7 +176,7 @@ for (let i = 0; i < 46; i++) {
     state: `trạng thái`,
     note: `note content ${i}`,
     achie: `giải thưởng ${i}`,
-    level:`${i}`,
+    level: `${i}`,
   });
 }
 const ManagerMember = () => {
@@ -204,7 +203,21 @@ const ManagerMember = () => {
   const hasSelected = selectedRowKeys.length > 0;
   const onSearch: SearchProps["onSearch"] = (value, _e, info) =>
     console.log(info?.source, value);
+  //modal
+  //modal quản lý thành viên
+  const [isModalOpenMember, setIsModalOpenMember] = useState(false);
 
+  const showModalMember = () => {
+    setIsModalOpenMember(true);
+  };
+
+  const handleOkMember = () => {
+    setIsModalOpenMember(false);
+  };
+
+  const handleCancelMember = () => {
+    setIsModalOpenMember(false);
+  };
   return (
     <>
       {" "}
@@ -215,10 +228,10 @@ const ManagerMember = () => {
               placeholder="Tìm kiếm tại đây"
               allowClear
               onSearch={onSearch}
-              style={{ }}
+              style={{}}
             />
           </div>
-          <div className={styles.btn}>
+          <div className={styles.btn} onClick={() => showModalMember()}>
             <PlusOutlined className={styles.icon} />
             Thêm mới
           </div>
@@ -242,6 +255,11 @@ const ManagerMember = () => {
           style={{ overflowWrap: "initial" }}
         />
       </div>
+      <ModalMember
+        isModalOpen={isModalOpenMember}
+        handleCancel={handleCancelMember}
+        handleOk={handleOkMember}
+      />
     </>
   );
 };
