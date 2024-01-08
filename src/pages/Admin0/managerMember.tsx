@@ -6,8 +6,9 @@ import {
 } from "@ant-design/icons";
 import type { SearchProps } from "antd/es/input";
 import { Input, Table, Button, TableProps } from "antd";
-import { admin } from "../../until/until";
 import styles from "./styles.module.scss";
+import { level,managerf1 } from "../../until/until";
+
 import type { ColumnsType } from "antd/es/table";
 import type { FilterValue } from "antd/es/table/interface";
 
@@ -22,6 +23,7 @@ interface DataType {
   note: string;
   state: string;
   achie: string;
+  level:string
 }
 const columns: ColumnsType<DataType> = [
   {
@@ -57,6 +59,8 @@ const columns: ColumnsType<DataType> = [
     title: "Cấp độ",
     dataIndex: "level",
     width:100,
+    filters: level.map((value:any) => ({ text: `${value}`, value })),
+    onFilter: (value: any, rec) => rec.level.indexOf(value) === 0,
   },
   {
     title: "Tỉnh",
@@ -67,20 +71,7 @@ const columns: ColumnsType<DataType> = [
     title: "Đơn vị quản lý F1",
     dataIndex: "f1",
     width:300,
-    filters: [
-      {
-        text: "JohnJohnyy",
-        value: "Nguyen Van A",
-      },
-      {
-        text: "Nguyễn Minh Châu",
-        value: "Nguyen Van B",
-      },
-      {
-        text: "Nguyen Van A",
-        value: "Nguyen Van C",
-      },
-    ],
+    filters: managerf1.map((value:any)=>({text:`${value}`,value})),
     onFilter: (value: any, rec) => rec.f1.indexOf(value) === 0,
   },
   {
@@ -186,6 +177,7 @@ for (let i = 0; i < 46; i++) {
     state: `trạng thái`,
     note: `note content ${i}`,
     achie: `giải thưởng ${i}`,
+    level:`${i}`,
   });
 }
 const ManagerMember = () => {
