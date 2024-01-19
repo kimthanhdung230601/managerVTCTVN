@@ -1,0 +1,77 @@
+.loginWrap{
+    min-height: 100vh;
+    padding: 50px 20px;
+    background-image: url("../../assets/image/background.png");
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.logo{
+    text-align: center;
+}
+
+
+.logoImg{
+    width: 18% !important;
+}
+
+.login{
+    margin-top: 28px;
+    padding: 40px;
+    border-radius: 20px;
+    background-color: #fff;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.title{
+    font-size: 24px;
+    font-weight: 700;
+    text-align: center;
+}
+
+.form{
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.icon{
+    color: #5a5a5a;
+    padding-right: 8px;
+    margin-right: 8px;
+    border-right: 1px solid #c2c2c2;
+}
+
+.formItem{
+    margin-top: 8px;
+    text-align: center;
+
+}
+
+.captcha > div > div{
+    margin: 0 auto;
+}
+
+.formInput{
+    margin-top: 8px;
+    font-size: 18px;
+    padding: 12px 12px;
+}
+
+.button{
+    margin-top: 8px;
+    font-size: 16px;
+    height: 40px ;
+    background-color: var(--primary);
+    width: 100%;
+}
+
+.signup{
+    text-align: center;
+    font-size: 14px;
+}
+
+
+

@@ -1,0 +1,47 @@
+.wrap{
+    padding: 120px 20px;
+    background-image: url("../../assets/image/bg.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.imageWrap{
+    text-align: center;
+}
+
+.img{
+    width: 217px !important;
+}
+
+.title{
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.detailImg{
+    width: 100% !important;
+    max-width: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.DetailItem > div {
+    font-size: 18px ;
+    font-weight: 500;
+    margin-bottom: 18px;
+}
+
+.awardList{
+    list-style: none;
+}
+
+.award{
+    margin-bottom: 14px;
+}
+
+.NumberOrders{
+    margin-right: 8px;
+}
