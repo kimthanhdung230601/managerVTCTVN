@@ -3,6 +3,7 @@ import Home from "../pages/Home";
 import Profiles from "../pages/Profiles";
 import Admin from "../pages/Admin0";
 import AdminTwo from "../pages/Admin2";
+import UpdateMember from "../pages/Admin0/updateMember";
 const Wrapper = () => {
   return (
     <>
@@ -10,6 +11,7 @@ const Wrapper = () => {
         <Route path="/" element={<Home />}></Route>
         <Route path="/Profiles" element={<Profiles />}></Route>
         <Route path="/Admin0" element={<Admin />}></Route>
+        <Route path="/Admin0/UpdateMember" element={<UpdateMember/>}></Route>
         <Route path="/Admin2" element={<AdminTwo />}></Route>
       </Routes>
     </>

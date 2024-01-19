@@ -13,41 +13,57 @@ import {
   Col,
 } from "antd";
 import type { DatePickerProps } from "antd";
+import useImageCompression from "../../hook/imageCompression";
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
 interface ProfilesProps {}
 
 const Profiles = () => {
   const [form] = Form.useForm();
+  const [fileList, setFileList] = useState<any>([]);
+  const { compressImage } = useImageCompression();
+
   const normFile = (e: any) => {
     if (Array.isArray(e)) {
       return e;
     }
-    return e?.fileList;
+    return e && e.fileList;
   };
+
+  const beforeUpload = async (file: File) => {
+    const compressedFile = await compressImage(file);
+    setFileList([compressedFile]); // Chỉ giữ ảnh mới, xóa ảnh cũ nếu có
+    return false; // Trả về false để ngăn chặn hành vi mặc định của Upload
+  };
+
   const onChange: DatePickerProps["onChange"] = (date, dateString) => {
     console.log(date, dateString);
   };
   const onFinish = (values: any) => {
     console.log("values", values);
   };
+  //button
+  const [selectedButton, setSelectedButton] = useState("show");
+
+  const handleButtonClick = (buttonName: any) => {
+    setSelectedButton(buttonName);
+  };
   return (
     <>
       <div className={styles.wrap}>
-      <div className={styles.header}>
-        <div className={styles.logo}>
-          <div>
-            <img
-              className={styles.logoImg}
-              src={require("../../assets/image/logo.png")}
-            />
-          </div>
-          <div className={styles.title}>
-            LIÊN ĐOÀN VÕ THUẬT CỔ TRUYỀN VIỆT NAM
+        <div className={styles.header}>
+          <div className={styles.logo}>
+            <div>
+              <img
+                className={styles.logoImg}
+                src={require("../../assets/image/logo.png")}
+              />
+            </div>
+            <div className={styles.title}>
+              LIÊN ĐOÀN VÕ THUẬT CỔ TRUYỀN VIỆT NAM
+            </div>
           </div>
         </div>
-      
-      </div>
         <div className={styles.content}>
           <div className={styles.title}>THÔNG TIN HỒ SƠ</div>
           <div className={styles.form}>
@@ -70,19 +86,39 @@ const Profiles = () => {
                       rules={[{ required: true, message: "Vui lòng tải ảnh" }]}
                     >
                       <Upload
-                        action="/upload.do"
+                        beforeUpload={beforeUpload}
                         listType="picture-card"
-                        className={styles.uploadImg}
                       >
-                        <button
-                          style={{ border: 0, background: "none" }}
-                          type="button"
-                        >
+                        <div>
                           <PlusOutlined />
                           <div style={{ marginTop: 8 }}>Upload</div>
-                        </button>
+                        </div>
                       </Upload>
                     </Form.Item>{" "}
+                    <div className={styles.buttonGroup}>
+                      <span
+                        className={`${styles.showBtn} ${
+                          selectedButton === "show"
+                            ? styles.selectedBtn
+                            : styles.noneSelectedBtn
+                        }`}
+                        onClick={() => handleButtonClick("show")}
+                      >
+                        Hiển thị
+                      </span>
+                      <span
+                        className={`${styles.showBtn} ${
+                          selectedButton === "hide"
+                            ? styles.selectedBtn
+                            : styles.noneSelectedBtn
+                        }`}
+                        onClick={() => {
+                          handleButtonClick("hide");
+                        }}
+                      >
+                        Ẩn
+                      </span>
+                    </div>
                   </Col>
                   <Col span={8} xs={24} sm={12} md={8}>
                     <Form.Item
@@ -95,12 +131,16 @@ const Profiles = () => {
                       <Input />
                     </Form.Item>
                     <Form.Item
-                      label="Mã định danh"
-                      name="id"
+                      label="Số điện thoại"
+                      name="phoneNumber"
                       rules={[
                         {
                           required: true,
-                          message: "Vui lòng điền mã định danh",
+                          message: "Vui lòng điền số điện thoại",
+                        },
+                        {
+                          pattern: /^(\+\d{1,3}[- ]?)?\d{10}$/,
+                          message: "Vui lòng điền đúng định dạng số điện thoại",
                         },
                       ]}
                     >
@@ -134,7 +174,16 @@ const Profiles = () => {
                         </Form.Item>
                       </Col>
                       <Col span={12}>
-                        <Form.Item label="Giới tính">
+                        <Form.Item
+                          label="Giới tính"
+                          name="sex"
+                          rules={[
+                            {
+                              required: true,
+                              message: "Vui lòng điền số điện thoại",
+                            },
+                          ]}
+                        >
                           <Select>
                             <Select.Option value="male">Nam</Select.Option>
                             <Select.Option value="female">Nữ</Select.Option>
@@ -167,7 +216,17 @@ const Profiles = () => {
                     </Form.Item>
                   </Col>
                   <Col span={8} xs={24} sm={12} md={8}>
-                    <Form.Item label="Email">
+                    <Form.Item
+                      label="Email"
+                      name="email"
+                      rules={[
+                        { required: true, message: "Vui lòng điền email" },
+                        {
+                          type: "email",
+                          message: "Định dạng email không đúng",
+                        },
+                      ]}
+                    >
                       <Input />
                     </Form.Item>
                   </Col>
@@ -207,47 +266,23 @@ const Profiles = () => {
                       <Input />
                     </Form.Item>
                   </Col>
-                  <Col span={8} xs={24} sm={12} md={8}>
-                    <Form.Item
-                      label="Địa chỉ thường trú"
-                      name="address"
-                      rules={[
-                        {
-                          required: true,
-                          message: "Vui lòng điền địa chỉ thường trú",
-                        },
-                      ]}
-                    >
-                      <Input />
-                    </Form.Item>
-                  </Col>
-                  <Col span={8} xs={24} sm={12} md={8}>
-                    <Form.Item
-                      label="Số điện thoại"
-                      name="phone"
-                      rules={[
-                        {
-                          required: true,
-                          message: "Vui lòng điền số điện thoại",
-                        },
-                      ]}
-                    >
-                      <Input />
-                    </Form.Item>
-                  </Col>
                 </Row>
                 <Form.Item
                   name="Thành tích cá nhân"
                   label="Thành tích cá nhân"
                   style={{ width: "100%" }}
-                  rules={[{ required: true, message: "Please input Intro" }]}
+                  rules={[
+                    { required: true, message: "Vui lòng điền thông tin" },
+                  ]}
                 >
                   <Input.TextArea showCount maxLength={1000} />
                 </Form.Item>
                 <Form.Item
                   name="Ghi chú hiển thị với người dùng"
                   label="Ghi chú hiển thị với người dùng"
-                  rules={[{ required: true, message: "Please input Intro" }]}
+                  rules={[
+                    { required: true, message: "Vui lòng điền thông tin" },
+                  ]}
                   style={{ width: "100%" }}
                 >
                   <Input.TextArea showCount maxLength={1000} />

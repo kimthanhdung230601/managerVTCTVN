@@ -14,6 +14,7 @@ import type { FilterValue } from "antd/es/table/interface";
 import Search from "antd/es/input/Search";
 import ModalUpdateNote from "../../components/Modal/ModalUpdateNote";
 import ModalMember from "../../components/Modal/ModalMember";
+import { useNavigate } from "react-router-dom";
 
 interface ManagerMemberProps {}
 interface DataType {
@@ -27,15 +28,26 @@ interface DataType {
 }
 
 const data: DataType[] = [];
+
+const randomState = () => {
+  const randomNumber = Math.random();
+  if (randomNumber < 0.33) {
+    return "Hoạt động";
+  } else if (randomNumber < 0.66) {
+    return "Nghỉ";
+  } else {
+    return "Chưa duyệt HS";
+  }
+};
 for (let i = 0; i < 46; i++) {
   data.push({
     key: i,
     name: `Edward King ${i}`,
     detail: `detail ${i}`,
     f2: `câu lạc bộ ${i}`,
-    state: `trạng thái`,
+    state: randomState(),
     note: `note content ${i}`,
-    achie: `giải thưởng ${i}`,
+    achie: Math.random() < 0.5 ? "có" : "không",
   });
 }
 const ManagerMemberTwo = () => {
@@ -65,20 +77,22 @@ const ManagerMemberTwo = () => {
   const handleCancelUpdateNote = () => {
     setIsModalOpen(false);
   };
-  //modal quản lý thành viên 
-  const [isModalOpenMember, setIsModalOpenMember] = useState(false);
+  const navigate = useNavigate();
 
-  const showModalMember = () => {
-    setIsModalOpenMember(true);
-  };
+  //modal quản lý thành viên
+  // const [isModalOpenMember, setIsModalOpenMember] = useState(false);
 
-  const handleOkMember = () => {
-    setIsModalOpenMember(false);
-  };
+  // const showModalMember = () => {
+  //   setIsModalOpenMember(true);
+  // };
 
-  const handleCancelMember = () => {
-    setIsModalOpenMember(false);
-  };
+  // const handleOkMember = () => {
+  //   setIsModalOpenMember(false);
+  // };
+
+  // const handleCancelMember = () => {
+  //   setIsModalOpenMember(false);
+  // };
   const columns: ColumnsType<DataType> = [
     {
       title: "STT",
@@ -148,28 +162,36 @@ const ManagerMemberTwo = () => {
       dataIndex: "state",
       filters: [
         {
-          text: "JohnJohnyy",
-          value: "Nguyen Van A",
+          text: "Hoạt động",
+          value: "Hoạt động",
         },
         {
-          text: "Nguyễn Minh Châu",
-          value: "Nguyen Van B",
+          text: "Nghỉ",
+          value: "Nghỉ",
         },
         {
-          text: "Nguyen Van A",
-          value: "Nguyen Van C",
+          text: "Chưa duyệt HS",
+          value: "Chưa duyệt HS",
         },
       ],
       onFilter: (value: any, rec) => rec.state.indexOf(value) === 0,
     },
-
+    { title: "Thành tích", dataIndex: "achie" },
     {
       // title: 'Action',
       key: "action",
       render: (_, record) => (
         <span>
-          <button className={styles.btnTb} onClick={()=>showModalUpdateNote()}>Sửa </button>
-          <button className={styles.btnTbDanger}>Xóa</button>
+          <button
+            className={styles.btnTb}
+            onClick={() => showModalUpdateNote()}
+          >
+            Sửa{" "}
+          </button>
+          <button className={styles.btnHide}>Ẩn</button>
+          {record.state == "Chưa duyệt HS" && (
+            <button className={styles.btnTbDanger}>Xóa</button>
+          )}
         </span>
       ),
     },
@@ -187,9 +209,9 @@ const ManagerMemberTwo = () => {
               style={{ width: 320 }}
             />
           </div>
-          <div className={styles.btn }onClick={()=>showModalMember()}>
+          <div className={styles.btn} onClick={() => navigate("/Profiles")}>
             <PlusOutlined className={styles.icon} />
-            Thêm mới
+            Thêm hội viên
           </div>
         </div>
       </div>
@@ -221,8 +243,16 @@ const ManagerMemberTwo = () => {
           }}
         />
       </div>
-      <ModalUpdateNote isModalOpen={isModalOpen} handleCancel={handleCancelUpdateNote} handleOk={handleOkUpdateNote} />
-      <ModalMember isModalOpen={isModalOpenMember} handleCancel={handleCancelMember} handleOk={handleOkMember} />
+      <ModalUpdateNote
+        isModalOpen={isModalOpen}
+        handleCancel={handleCancelUpdateNote}
+        handleOk={handleOkUpdateNote}
+      />
+      {/* <ModalMember
+        isModalOpen={isModalOpenMember}
+        handleCancel={handleCancelMember}
+        handleOk={handleOkMember}
+      /> */}
     </>
   );
 };

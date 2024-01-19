@@ -20,8 +20,7 @@ const { Search } = Input;
 interface AdminProps {}
 
 const Admin = () => {
-  const [selectedMenuItem, setSelectedMenuItem] = useState("member"); // State to track selected menu item
-
+  const [selectedMenuItem, setSelectedMenuItem] = useState("member"); 
   const handleMenuItemClick = (menuItem: any) => {
     setSelectedMenuItem(menuItem);
   };
