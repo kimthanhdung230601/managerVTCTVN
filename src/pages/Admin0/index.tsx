@@ -20,7 +20,7 @@ const { Search } = Input;
 interface AdminProps {}
 
 const Admin = () => {
-  const [selectedMenuItem, setSelectedMenuItem] = useState("member"); 
+  const [selectedMenuItem, setSelectedMenuItem] = useState("member");
   const handleMenuItemClick = (menuItem: any) => {
     setSelectedMenuItem(menuItem);
   };
@@ -53,7 +53,6 @@ const Admin = () => {
   ];
   const onClick: MenuProps["onClick"] = (e) => {
     console.log("click ", e);
-   
   };
 
   return (
@@ -72,12 +71,6 @@ const Admin = () => {
         </div>
         <div className={styles.menu}>
           <ul className={styles.menuContent}>
-            <li onClick={() => handleMenuItemClick("member")}>
-              Quản lý hội viên
-            </li>
-            <li onClick={() => handleMenuItemClick("account")}>
-              Quản lý tài khoản
-            </li>
             <li>
               <div>
                 <Menu
@@ -86,7 +79,6 @@ const Admin = () => {
                   mode="horizontal"
                   items={items}
                 />
-
               </div>
             </li>
           </ul>
@@ -101,6 +93,25 @@ const Admin = () => {
               alt="Logo"
             />
           </div>
+          <div>
+            <span
+              onClick={() => handleMenuItemClick("member")}
+              className={`${styles.subnav} ${
+                selectedMenuItem === "member" ? styles.choosenBtn : ""
+              }`}
+            >
+              QUẢN LÝ HỘI VIÊN
+            </span>
+            <span
+              onClick={() => handleMenuItemClick("account")}
+              className={`${styles.subnav} ${
+                selectedMenuItem === "account" ? styles.choosenBtn : ""
+              }`}
+            >
+              QUẢN LÝ TÀI KHOẢN
+            </span>
+          </div>
+
           <div className={styles.titleText}>{titleText}</div>
         </div>
       </div>

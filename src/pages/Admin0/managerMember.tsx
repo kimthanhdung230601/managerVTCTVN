@@ -13,7 +13,8 @@ import type { ColumnsType } from "antd/es/table";
 import type { FilterValue } from "antd/es/table/interface";
 
 import Search from "antd/es/input/Search";
-import ModalMember from "../../components/Modal/ModalMember";
+// import ModalMember from "../../components/Modal/ModalAccount";
+import { useNavigate } from "react-router-dom";
 
 interface ManagerMemberProps {}
 interface DataType {
@@ -166,6 +167,7 @@ const columns: ColumnsType<DataType> = [
     ),
   },
 ];
+
 const data: DataType[] = [];
 for (let i = 0; i < 46; i++) {
   data.push({
@@ -180,6 +182,7 @@ for (let i = 0; i < 46; i++) {
   });
 }
 const ManagerMember = () => {
+  const navigate = useNavigate();
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [loading, setLoading] = useState(false);
   const start = () => {
@@ -231,9 +234,9 @@ const ManagerMember = () => {
               style={{}}
             />
           </div>
-          <div className={styles.btn} onClick={() => showModalMember()}>
+          <div className={styles.btn} onClick={() => navigate("/Profiles")}>
             <PlusOutlined className={styles.icon} />
-            Thêm mới
+            Thêm hội viên
           </div>
           <div className={styles.btn}>
             <DownloadOutlined className={styles.icon} />
@@ -255,11 +258,11 @@ const ManagerMember = () => {
           style={{ overflowWrap: "initial" }}
         />
       </div>
-      <ModalMember
+      {/* <ModalMember
         isModalOpen={isModalOpenMember}
         handleCancel={handleCancelMember}
         handleOk={handleOkMember}
-      />
+      /> */}
     </>
   );
 };

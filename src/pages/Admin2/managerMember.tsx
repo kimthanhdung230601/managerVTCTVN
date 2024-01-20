@@ -13,7 +13,7 @@ import type { FilterValue } from "antd/es/table/interface";
 
 import Search from "antd/es/input/Search";
 import ModalUpdateNote from "../../components/Modal/ModalUpdateNote";
-import ModalMember from "../../components/Modal/ModalMember";
+import ModalMember from "../../components/Modal/ModalAccount";
 import { useNavigate } from "react-router-dom";
 
 interface ManagerMemberProps {}

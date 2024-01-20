@@ -4,10 +4,12 @@ import {
   PlusOutlined,
   DownloadOutlined,
 } from "@ant-design/icons";
-import { Input, Table, Button, Form, Select } from "antd";
+import { Input, Table, Button, Form, Select, Col, Row } from "antd";
 import { admin } from "../../until/until";
 import styles from "./styles.module.scss";
 import type { ColumnsType } from "antd/es/table";
+import ModalAccount from "../../components/Modal/ModalAccount";
+
 interface ManagerAccountProps {}
 interface DataType {
   key: React.Key;
@@ -19,44 +21,6 @@ interface DataType {
 }
 const { Option } = Select;
 
-const columns: ColumnsType<DataType> = [
-  {
-    title: "Account",
-    dataIndex: "account",
-    width:350
-  },
-  {
-    title: "Mật khẩu",
-    dataIndex: "password",
-     width:350
-  },
-  {
-    title: "Người quản lý",
-    dataIndex: "manager",
-     width:350
-  },
-  {
-    title: "Số điện thoại",
-    dataIndex: "phoneNumber",
-     width:350
-  },
-  {
-    title: "Email",
-    dataIndex: "email",
-    width:250
-  },
-
-  {
-    // title: 'Action',
-    key: "action",
-    render: (_, record) => (
-      <span>
-        <button className={styles.btnTb}>Sửa</button>
-      
-      </span>
-    ),
-  },
-];
 const data: DataType[] = [];
 for (let i = 0; i < 46; i++) {
   data.push({
@@ -70,10 +34,62 @@ for (let i = 0; i < 46; i++) {
 }
 const ManagerAccount = () => {
   const [form] = Form.useForm();
-
   const onFinish = (values: any) => {
     console.log(values);
   };
+  //modal quản lý thành viên
+  const [isModalOpenMember, setIsModalOpenMember] = useState(false);
+
+  const showModalMember = () => {
+    setIsModalOpenMember(true);
+  };
+
+  const handleOkMember = () => {
+    setIsModalOpenMember(false);
+  };
+
+  const handleCancelMember = () => {
+    setIsModalOpenMember(false);
+  };
+  const columns: ColumnsType<DataType> = [
+    {
+      title: "Account",
+      dataIndex: "account",
+      width: 350,
+    },
+    {
+      title: "Mật khẩu",
+      dataIndex: "password",
+      width: 350,
+    },
+    {
+      title: "Người quản lý",
+      dataIndex: "manager",
+      width: 350,
+    },
+    {
+      title: "Số điện thoại",
+      dataIndex: "phoneNumber",
+      width: 350,
+    },
+    {
+      title: "Email",
+      dataIndex: "email",
+      width: 250,
+    },
+
+    {
+      // title: 'Action',
+      key: "action",
+      render: (_, record) => (
+        <span>
+          <button className={styles.btnTb} onClick={() => showModalMember()}>
+            Sửa
+          </button>
+        </span>
+      ),
+    },
+  ];
   return (
     <>
       <div className={styles.buttonGroup}>
@@ -82,31 +98,42 @@ const ManagerAccount = () => {
             form={form}
             name="control-hooks"
             onFinish={onFinish}
-            style={{ display:"flex" }}
-         
+            style={{ display: "flex" }}
           >
             {" "}
-            <Form.Item name="City" label="Tỉnh" style={{ width: 320, marginLeft:"2vh"}}>
-              <Select placeholder="Tỉnh" allowClear>
-                <Option value="male">male</Option>
-                <Option value="female">female</Option>
-                <Option value="other">other</Option>
-              </Select>
-            </Form.Item>
-            <Form.Item name="City" label="Liên đoàn" style={{ width: 320, marginLeft:"2vh" }}>
-              <Select placeholder="Liên đoàn,sở ngành" allowClear>
-                <Option value="male">male</Option>
-                <Option value="female">female</Option>
-                <Option value="other">other</Option>
-              </Select>
-            </Form.Item>
-            <Form.Item name="City" label="CLB" style={{ width: 320, marginLeft:"2vh" }}>
-              <Select placeholder="CLB" allowClear>
-                <Option value="male">male</Option>
-                <Option value="female">female</Option>
-                <Option value="other">other</Option>
-              </Select>
-            </Form.Item>
+            <Row gutter={16}>
+              <Col xs={24} sm={12} md={8} lg={8} xl={8}>
+                <Form.Item name="City" label="Tỉnh" style={{ width: "100%" }}>
+                  <Select placeholder="Tỉnh" allowClear>
+                    <Option value="male">male</Option>
+                    <Option value="female">female</Option>
+                    <Option value="other">other</Option>
+                  </Select>
+                </Form.Item>
+              </Col>
+              <Col xs={24} sm={12} md={8} lg={8} xl={8}>
+                <Form.Item
+                  name="City"
+                  label="Liên đoàn"
+                  style={{ width: "100%" }}
+                >
+                  <Select placeholder="Liên đoàn, sở ngành" allowClear>
+                    <Option value="male">male</Option>
+                    <Option value="female">female</Option>
+                    <Option value="other">other</Option>
+                  </Select>
+                </Form.Item>
+              </Col>
+              <Col xs={24} sm={12} md={8} lg={8} xl={8}>
+                <Form.Item name="City" label="CLB" style={{ width: "100%" }}>
+                  <Select placeholder="CLB" allowClear>
+                    <Option value="male">male</Option>
+                    <Option value="female">female</Option>
+                    <Option value="other">other</Option>
+                  </Select>
+                </Form.Item>
+              </Col>
+            </Row>
           </Form>
         </div>
       </div>
@@ -114,24 +141,14 @@ const ManagerAccount = () => {
         <Table
           columns={columns}
           dataSource={data}
-          pagination={{
-            // style: { backgroundColor: '#046C39', border: '1px solid #046C39' },
-            itemRender: (current, type, originalElement) => {
-              if (type === "page") {
-                return (
-                  <span
-                    className="custom-pagination-item"
-                    style={{ color: "#046C39", borderColor: "#046C39" }}
-                  >
-                    {originalElement}
-                  </span>
-                );
-              }
-              return originalElement;
-            },
-          }}
+          pagination={{}}
         />
       </div>
+      <ModalAccount
+        isModalOpen={isModalOpenMember}
+        handleCancel={handleCancelMember}
+        handleOk={handleOkMember}
+      />
     </>
   );
 };

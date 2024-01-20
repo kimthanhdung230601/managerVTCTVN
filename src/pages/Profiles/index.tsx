@@ -13,11 +13,13 @@ import {
   Col,
 } from "antd";
 import type { DatePickerProps } from "antd";
+import type { UploadFile, UploadProps } from "antd";
+import ImgCrop from "antd-img-crop";
+
 import useImageCompression from "../../hook/imageCompression";
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
 interface ProfilesProps {}
-
 const Profiles = () => {
   const [form] = Form.useForm();
   const [fileList, setFileList] = useState<any>([]);
@@ -35,7 +37,34 @@ const Profiles = () => {
     setFileList([compressedFile]); // Chỉ giữ ảnh mới, xóa ảnh cũ nếu có
     return false; // Trả về false để ngăn chặn hành vi mặc định của Upload
   };
+  const getSrcFromFile = (file: any) => {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file.originFileObj);
+      reader.onload = () => resolve(reader.result);
+    });
+  };
 
+  const onChangeImg = ({
+    fileList: newFileList,
+  }: {
+    fileList: UploadFile[];
+  }) => {
+    setFileList(newFileList);
+  };
+  const onPreview = async (file: any) => {
+    const src = file.url || (await getSrcFromFile(file));
+    const imgWindow = window.open(src);
+
+    if (imgWindow) {
+      const image = new Image();
+      image.src = src;
+      imgWindow.document.write(image.outerHTML);
+    } else {
+      window.location.href = src;
+    }
+  };
+  // date
   const onChange: DatePickerProps["onChange"] = (date, dateString) => {
     console.log(date, dateString);
   };
@@ -48,6 +77,7 @@ const Profiles = () => {
   const handleButtonClick = (buttonName: any) => {
     setSelectedButton(buttonName);
   };
+
   return (
     <>
       <div className={styles.wrap}>
@@ -85,15 +115,25 @@ const Profiles = () => {
                       getValueFromEvent={normFile}
                       rules={[{ required: true, message: "Vui lòng tải ảnh" }]}
                     >
-                      <Upload
-                        beforeUpload={beforeUpload}
-                        listType="picture-card"
-                      >
-                        <div>
-                          <PlusOutlined />
-                          <div style={{ marginTop: 8 }}>Upload</div>
-                        </div>
-                      </Upload>
+                      <ImgCrop showGrid showReset>
+                        <Upload
+                          action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                          listType="picture-card"
+                          fileList={fileList}
+                          onChange={onChangeImg}
+                          onPreview={onPreview}
+                        >
+                          {fileList.length >= 1 ? null : (
+                            <>
+                              {" "}
+                              <div>
+                                <PlusOutlined />
+                                <div style={{ marginTop: 8 }}>Upload</div>
+                              </div>
+                            </>
+                          )}
+                        </Upload>
+                      </ImgCrop>
                     </Form.Item>{" "}
                     <div className={styles.buttonGroup}>
                       <span

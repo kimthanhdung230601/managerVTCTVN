@@ -1,4 +1,14 @@
-import { Col, Form, Input, Menu, Row, Select, Space, Table } from "antd";
+import {
+  Col,
+  DatePicker,
+  Form,
+  Input,
+  Menu,
+  Row,
+  Select,
+  Space,
+  Table,
+} from "antd";
 import styles from "./styles.module.scss";
 import { useEffect, useState } from "react";
 import { CaretDownOutlined } from "@ant-design/icons";
@@ -165,7 +175,7 @@ const UpdateMember = () => {
       <div className={styles.contentWrap}>
         <Form layout="vertical">
           <Row gutter={16}>
-            <Col span={6}>
+            <Col span={6} xs={24} sm={12} md={6}>
               {" "}
               <Form.Item label="Số định danh">
                 <Input
@@ -177,7 +187,7 @@ const UpdateMember = () => {
                 />
               </Form.Item>
             </Col>
-            <Col span={6}>
+            <Col span={6} xs={24} sm={12} md={6}>
               <Form.Item label="Lựa chọn">
                 <Select
                   // placeholder="Lựa chọn"
@@ -192,7 +202,7 @@ const UpdateMember = () => {
               </Form.Item>
             </Col>
             {choosen === "level" && (
-              <Col span={6}>
+              <Col span={6} xs={24} sm={12} md={6}>
                 <Form.Item label="Cấp đai">
                   <Input
                     placeholder="Cấp đai"
@@ -204,7 +214,7 @@ const UpdateMember = () => {
               </Col>
             )}
             {choosen === "achie" && (
-              <Col span={6}>
+              <Col span={6} xs={24} sm={12} md={6}>
                 <Form.Item label="Thành tích">
                   <Input
                     placeholder="Thành tích"
@@ -216,7 +226,9 @@ const UpdateMember = () => {
                 <Form.Item label="Giải">
                   <Select
                     // placeholder="Lựa chọn"
-                    onChange={(value) => setSearchTerm({ ...searchTerm, prize: value })}
+                    onChange={(value) =>
+                      setSearchTerm({ ...searchTerm, prize: value })
+                    }
                     className={styles.input}
                     // value={choosen}
                     style={{ width: "100%" }}
@@ -224,7 +236,9 @@ const UpdateMember = () => {
                     <Option value="Giải trẻ">Giải trẻ</Option>
                     <Option value="Vô địch">Vô Địch</Option>
                     <Option value="Giải cúp">Giải cup</Option>
-                    <Option value="Đại hội TDTT toàn quốc">Đại Hội TDTT toàn quốc</Option>
+                    <Option value="Đại hội TDTT toàn quốc">
+                      Đại Hội TDTT toàn quốc
+                    </Option>
                   </Select>
                   {/* <Input
                     placeholder="prize"
@@ -235,22 +249,29 @@ const UpdateMember = () => {
                 </Form.Item>
               </Col>
             )}
-            <Col span={4}>
+            <Col span={6} xs={24} sm={12} md={6}>
               <Form.Item label="Thời gian">
-                <Input
-                  placeholder="Thời gian"
-                  // value={searchTerm}
-                  onChange={(e) =>
-                    setSearchTerm({ ...searchTerm, time: e.target.value })
+                <DatePicker
+                  style={{ width: "100%" }}
+                  onChange={(value) =>
+                    setSearchTerm({
+                      ...searchTerm,
+                      time: value?.format("DD/MM/YYYY"),
+                    })
                   }
                 />
+                {/* <Input
+                  placeholder="Thời gian"
+                  // value={searchTerm}
+                  
+                /> */}
               </Form.Item>
             </Col>
           </Row>
         </Form>
         <div>
           <Row gutter={16}>
-            <Col span={12}>
+            <Col span={12} sm={24} md={24}  >
               {displayDivA && (
                 <div>
                   xxxx|{debouncedSearchTerm.level}|{debouncedSearchTerm.time}
@@ -258,7 +279,7 @@ const UpdateMember = () => {
                 </div>
               )}
             </Col>
-            <Col span={12}>
+            <Col span={12}  sm={24} md={24} >
               {displayDivB && (
                 <div>
                   xxxx|{debouncedSearchTerm.achie}|{debouncedSearchTerm.time}
