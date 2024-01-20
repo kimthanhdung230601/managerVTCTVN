@@ -27,146 +27,6 @@ interface DataType {
   achie: string;
   level: string;
 }
-const columns: ColumnsType<DataType> = [
-  {
-    title: "STT",
-    dataIndex: "STT",
-    fixed: "left",
-    width: 100,
-  },
-  {
-    title: "Họ tên",
-    dataIndex: "name",
-    fixed: "left",
-    width: 200,
-  },
-  {
-    title: "Ngày sinh",
-    dataIndex: "Date",
-    width: 130,
-  },
-  {
-    title: "Số điện thoại",
-    dataIndex: "phoneNumber",
-    width: 170,
-  },
-  {
-    title: "Số định danh",
-    dataIndex: "id",
-    width: 160,
-  },
-  {
-    title: "Cấp độ",
-    dataIndex: "level",
-    width: 100,
-    filters: level.map((value: any) => ({ text: `${value}`, value })),
-    onFilter: (value: any, rec) => rec.level.indexOf(value) === 0,
-  },
-  {
-    title: "Tỉnh",
-    dataIndex: "city",
-    width: 150,
-  },
-  {
-    title: "Đơn vị quản lý F1",
-    dataIndex: "f1",
-    width: 300,
-    filters: managerf1.map((value: any) => ({ text: `${value}`, value })),
-    onFilter: (value: any, rec) => rec.f1.indexOf(value) === 0,
-  },
-  {
-    title: "CLB trực thuộc F2",
-    dataIndex: "f2",
-    width: 300,
-    filters: [
-      {
-        text: "JohnJohnyy",
-        value: "Nguyen Van A",
-      },
-      {
-        text: "Nguyễn Minh Châu",
-        value: "Nguyen Van B",
-      },
-      {
-        text: "Nguyen Van A",
-        value: "Nguyen Van C",
-      },
-    ],
-    onFilter: (value: any, rec) => rec.f2.indexOf(value) === 0,
-  },
-  {
-    title: "Ghi chú",
-    dataIndex: "note",
-    width: 130,
-    filters: [
-      {
-        text: "note content 1",
-        value: "note content 1",
-      },
-      {
-        text: "note content 2",
-        value: "note content 2",
-      },
-      {
-        text: "note content 3",
-        value: "note content 3",
-      },
-    ],
-    onFilter: (value: any, rec) => rec.note.indexOf(value) === 0,
-  },
-  {
-    title: "Tình trạng",
-    dataIndex: "state",
-    width: 130,
-    filters: [
-      {
-        text: "JohnJohnyy",
-        value: "Nguyen Van A",
-      },
-      {
-        text: "Nguyễn Minh Châu",
-        value: "Nguyen Van B",
-      },
-      {
-        text: "Nguyen Van A",
-        value: "Nguyen Van C",
-      },
-    ],
-    onFilter: (value: any, rec) => rec.state.indexOf(value) === 0,
-  },
-  {
-    title: "Thành tích",
-    dataIndex: "achie",
-    width: 130,
-    filters: [
-      {
-        text: "JohnJohnyy",
-        value: "Nguyen Van A",
-      },
-      {
-        text: "Nguyễn Minh Châu",
-        value: "Nguyen Van B",
-      },
-      {
-        text: "Nguyen Van A",
-        value: "Nguyen Van C",
-      },
-    ],
-    onFilter: (value: any, rec) => rec.achie.indexOf(value) === 0,
-  },
-  {
-    // title: 'Action',
-    key: "action",
-    fixed: "right",
-    width: 160,
-    render: (_, record) => (
-      <span>
-        <button className={styles.btnTb}>Sửa</button>
-        <button className={styles.btnTbDanger}>Xóa</button>
-      </span>
-    ),
-  },
-];
 
 const data: DataType[] = [];
 for (let i = 0; i < 46; i++) {
@@ -221,6 +81,151 @@ const ManagerMember = () => {
   const handleCancelMember = () => {
     setIsModalOpenMember(false);
   };
+  const columns: ColumnsType<DataType> = [
+    {
+      title: "STT",
+      dataIndex: "STT",
+      fixed: "left",
+      width: 100,
+    },
+    {
+      title: "Họ tên",
+      dataIndex: "name",
+      fixed: "left",
+      width: 200,
+    },
+    {
+      title: "Ngày sinh",
+      dataIndex: "Date",
+      width: 130,
+    },
+    {
+      title: "Số điện thoại",
+      dataIndex: "phoneNumber",
+      width: 170,
+    },
+    {
+      title: "Số định danh",
+      dataIndex: "id",
+      width: 160,
+    },
+    {
+      title: "Cấp độ",
+      dataIndex: "level",
+      width: 100,
+      filters: level.map((value: any) => ({ text: `${value}`, value })),
+      onFilter: (value: any, rec) => rec.level.indexOf(value) === 0,
+    },
+    {
+      title: "Tỉnh",
+      dataIndex: "city",
+      width: 150,
+    },
+    {
+      title: "Đơn vị quản lý F1",
+      dataIndex: "f1",
+      width: 300,
+      filters: managerf1.map((value: any) => ({ text: `${value}`, value })),
+      onFilter: (value: any, rec) => rec.f1.indexOf(value) === 0,
+    },
+    {
+      title: "CLB trực thuộc F2",
+      dataIndex: "f2",
+      width: 300,
+      filters: [
+        {
+          text: "JohnJohnyy",
+          value: "Nguyen Van A",
+        },
+        {
+          text: "Nguyễn Minh Châu",
+          value: "Nguyen Van B",
+        },
+        {
+          text: "Nguyen Van A",
+          value: "Nguyen Van C",
+        },
+      ],
+      onFilter: (value: any, rec) => rec.f2.indexOf(value) === 0,
+    },
+    {
+      title: "Ghi chú",
+      dataIndex: "note",
+      width: 130,
+      filters: [
+        {
+          text: "note content 1",
+          value: "note content 1",
+        },
+        {
+          text: "note content 2",
+          value: "note content 2",
+        },
+        {
+          text: "note content 3",
+          value: "note content 3",
+        },
+      ],
+      onFilter: (value: any, rec) => rec.note.indexOf(value) === 0,
+    },
+    {
+      title: "Tình trạng",
+      dataIndex: "state",
+      width: 130,
+      filters: [
+        {
+          text: "JohnJohnyy",
+          value: "Nguyen Van A",
+        },
+        {
+          text: "Nguyễn Minh Châu",
+          value: "Nguyen Van B",
+        },
+        {
+          text: "Nguyen Van A",
+          value: "Nguyen Van C",
+        },
+      ],
+      onFilter: (value: any, rec) => rec.state.indexOf(value) === 0,
+    },
+    {
+      title: "Thành tích",
+      dataIndex: "achie",
+      width: 130,
+      filters: [
+        {
+          text: "JohnJohnyy",
+          value: "Nguyen Van A",
+        },
+        {
+          text: "Nguyễn Minh Châu",
+          value: "Nguyen Van B",
+        },
+        {
+          text: "Nguyen Van A",
+          value: "Nguyen Van C",
+        },
+      ],
+      onFilter: (value: any, rec) => rec.achie.indexOf(value) === 0,
+    },
+    {
+      // title: 'Action',
+      key: "action",
+      fixed: "right",
+      width: 160,
+      render: (_, record) => (
+        <span>
+          <button
+            className={styles.btnTb}
+            onClick={() => navigate("./UpdateMember")}
+          >
+            Sửa
+          </button>
+          <button className={styles.btnTbDanger}>Xóa</button>
+        </span>
+      ),
+    },
+  ];
   return (
     <>
       {" "}

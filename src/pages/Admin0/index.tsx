@@ -112,7 +112,9 @@ const Admin = () => {
             </span>
           </div>
 
-          <div className={styles.titleText}>{titleText}</div>
+          <div className={styles.titleText}>
+            
+            {titleText}</div>
         </div>
       </div>
       <div className={styles.contentWrap}>

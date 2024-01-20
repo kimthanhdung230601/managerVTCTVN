@@ -88,15 +88,17 @@
   }
 
   .titleText {
-    margin: 2vh 0 0 8vh;
+    // margin: 2vh 0 0 8vh;
+    margin-top: 2vh;
     color: #000;
     font-size: 24px;
     font-style: normal;
     font-weight: 600;
     line-height: 22px; /* 91.667% */
+    text-align: center;
   }
   .subnav{
-    margin: 3px 5px;
+    margin: 3vh 2vh;
     cursor: pointer;
   }
   .choosenBtn{
