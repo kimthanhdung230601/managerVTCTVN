@@ -14,8 +14,8 @@ const Wrapper = () => {
     <>
       <Routes>
         <Route path="/" element={<Home />}></Route>
-        <Route path="/login" element={<Login />}></Route>
-        <Route path="/signup" element={<Signup />}></Route>
+        <Route path="/dang-nhap" element={<Login />}></Route>
+        <Route path="/dang-ky" element={<Signup />}></Route>
         <Route path="/admin1" element={<LevelOne />}></Route>
         <Route path="/thong-tin-ho-so" element={<Detail />}></Route>
         <Route path="/tra-cuu-hoi-vien" element={<Search />}></Route>

@@ -15,7 +15,34 @@
 
 .postWrap{
     border-top: 1px solid #e4e4e4;
-    margin: 50px 20%;
+    margin: 20px 20%;
+}
+
+.newPostWrap{
+    margin-top: 30px;
+    margin-right: 20%;
+    margin-left: 20%;
+    text-align: end;
+}
+
+.newPostBtn{
+    cursor: pointer;
+    padding: 0 10px;
+    border: none;
+    border-radius: 6px;
+    height: 40px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #fff;
+    background-color: var(--primary);
+}
+
+.newPostBtn:hover{
+    background-color: var(--subPrimary);
+}
+
+.newPost:hover{
+    background-color: var(--subPrimary);
 }
 
 .postLabel{
@@ -36,12 +63,26 @@
     border-bottom: 1px solid rgba(155, 155, 155, 0.3);
 }
 
+.imgWrap  > div{
+    overflow: hidden;
+    border-radius: 10px;
+}
+
 .postImg{
     cursor: pointer;
     width: 100% !important;
-    height: 200px !important;
+    height: 180px !important;
     object-fit: cover;
-    border-radius: 10px;
+    &:not(:hover){
+        transform: scale(100%);
+        transition: ease-in 0.2s;
+    }
+    
+}
+
+.postImg:hover{
+    transform: scale(110%);
+    transition: ease-in 0.2s;
 }
 
 .postTitle{
@@ -52,7 +93,7 @@
 }
 
 .postTitle:hover{
-    color: #65686d;
+    color: var(--primary);
 }
 
 .postContent{
@@ -69,7 +110,7 @@
     color: #374151;
 }
 
-@media only screen and (max-width: 992px) {
+@media only screen and (max-width: 1200px) {
     .postWrap{
         margin: 50px 10%;
     }

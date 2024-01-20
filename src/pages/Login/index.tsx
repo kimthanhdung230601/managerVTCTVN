@@ -54,7 +54,7 @@ export default function Login() {
                     className={styles.formItem}
                 >
                     <ReCAPTCHA
-                    sitekey="6LcFNkYpAAAAAMS1ubxwdymx7cmbup8R3bCU3NYq"  // Đặt khóa API của bạn ở đây
+                    sitekey="6LcFNkYpAAAAAMS1ubxwdymx7cmbup8R3bCU3NYq"  
                     // onChange={handleRecaptchaChange}
                     className={styles.captcha}
                     />

@@ -1,17 +1,79 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from "./Style.module.scss"
-import { Button, Form, Image, Input } from 'antd'
-import { LockOutlined, UserOutlined, PhoneOutlined } from '@ant-design/icons';
+import { Button, Form, Image, Input, Modal, Upload, UploadFile, UploadProps } from 'antd'
+import { LockOutlined, UserOutlined, PhoneOutlined, IdcardOutlined, PlusOutlined } from '@ant-design/icons';
 import ReCAPTCHA from "react-google-recaptcha";
+import { useDispatch, useSelector } from 'react-redux';
+
+const getBase64 = (file: any): Promise<string> =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = (error) => reject(error);
+});
+
 export default function Signup() {
-    // const handleRecaptchaChange = (value) => {
-    //     // Xử lý giá trị reCAPTCHA khi thay đổi
-    //     console.log("reCAPTCHA value:", value);
-    // };
+    const dispatch = useDispatch();
+    const reloadCount = useSelector((state:any) => state.reloadCount.reloadCount);
+    const [showCaptcha, setShowCaptcha] = useState(false);
+    const [previewOpen1, setPreviewOpen1] = useState(false);
+    const [previewImage1, setPreviewImage1] = useState('');
+    const [previewTitle1, setPreviewTitle1] = useState('');
+    const [fileList1, setFileList1] = useState<UploadFile[]>([]);
+    const [previewOpen2, setPreviewOpen2] = useState(false);
+    const [previewImage2, setPreviewImage2] = useState('');
+    const [previewTitle2, setPreviewTitle2] = useState('');
+    const [fileList2, setFileList2] = useState<UploadFile[]>([]);
+    const handleCancel1 = () => setPreviewOpen1(false);
+    const handleCancel2 = () => setPreviewOpen2(false);
+    const handlePreview1 = async (file: UploadFile) => {
+        if (!file.url && !file.preview) {
+        file.preview = await getBase64(file.originFileObj );
+        }
+        setPreviewImage1(file.url || (file.preview as string));
+        setPreviewOpen1(true);
+        setPreviewTitle1(file.name || file.url!.substring(file.url!.lastIndexOf('/') + 1));
+    };
+
+    const handleChange1: UploadProps['onChange'] = ({ fileList: newFileList }) => setFileList1(newFileList);
+    const handlePreview2 = async (file: UploadFile) => {
+        if (!file.url && !file.preview) {
+        file.preview = await getBase64(file.originFileObj );
+        }
+        setPreviewImage2(file.url || (file.preview as string));
+        setPreviewOpen2(true);
+        setPreviewTitle2(file.name || file.url!.substring(file.url!.lastIndexOf('/') + 1));
+    };
+
+    const handleChange2: UploadProps['onChange'] = ({ fileList: newFileList }) => setFileList2(newFileList);
+
+    const uploadButton = (
+        <button style={{ border: 0, background: 'none' }} type="button">
+        <PlusOutlined />
+        <div style={{ marginTop: 8 }}>Tải ảnh lên</div>
+        </button>
+    );
+    useEffect(() => {
+        const handleBeforeUnload = () => {
+            const reloadCountString = localStorage.getItem('reloadCount');
+            const reloadCount = reloadCountString ? parseInt(reloadCountString, 10) : 0;
+            localStorage.setItem('reloadCount', (reloadCount + 1).toString());
+            if(reloadCount >= 10){
+                setShowCaptcha(true)
+                localStorage.removeItem('reloadCount');
+            }
+        };
+        window.addEventListener('beforeunload', handleBeforeUnload);
+        return () => {
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+          };
+    }, []);
+    console.log(reloadCount)
   return (
     <div className={styles.loginWrap}>
         <div className={styles.logo}>
-            <Image src={require("../../assets/image/logo.png")} preview={false} width={"12%"}/>
+            <Image src={require("../../assets/image/logo.png")} preview={false} className={styles.logoImg}/>
         </div>
         <div className={styles.login}>
             <div className={styles.title}>Đăng ký</div>
@@ -28,7 +90,7 @@ export default function Signup() {
             >
                 <Form.Item
                 name="username"
-                rules={[{ required: true, message: 'Hãy nhập họ tên!' }]}
+                rules={[{ required: true, message: 'Vui lòng nhập họ tên!' }]}
                 wrapperCol={{ span: 24 }}
                 className={styles.formItem}
                 >
@@ -37,11 +99,20 @@ export default function Signup() {
                 </Form.Item>
                 <Form.Item
                 name="phone"
-                rules={[{ required: true, message: 'Hãy nhập số điện thoại!' }]}
+                rules={[{ required: true, message: 'Vui lòng nhập số điện thoại!' }]}
                 wrapperCol={{ span: 24 }}
                 className={styles.formItem}
                 >
                 <Input prefix={<PhoneOutlined className={styles.icon} />} placeholder="Số điện thoại" className={styles.formInput}/>
+               
+                </Form.Item>
+                <Form.Item
+                name="id"
+                rules={[{ required: true, message: 'Vui lòng nhập mã định danh!' }]}
+                wrapperCol={{ span: 24 }}
+                className={styles.formItem}
+                >
+                <Input prefix={<IdcardOutlined className={styles.icon} />} placeholder="Mã định danh" className={styles.formInput}/>
                
                 </Form.Item>
                 <Form.Item
@@ -53,7 +124,7 @@ export default function Signup() {
                     },
                     {
                         required: true,
-                        message: 'Hãy nhập mật khẩu',
+                        message: 'Vui lòng nhập mật khẩu!',
                     }]}
                 wrapperCol={{ span: 24 }}
                 className={styles.formItem}
@@ -73,7 +144,7 @@ export default function Signup() {
                     rules={[
                     {
                         required: true,
-                        message: 'Hãy nhập lại mật khẩu một lần nữa!',
+                        message: 'Vui lòng nhập lại mật khẩu một lần nữa!',
                     },
                     ({ getFieldValue }) => ({
                         validator(_, value) {
@@ -90,18 +161,70 @@ export default function Signup() {
                     placeholder="Nhập lại mật khẩu"
                     className={styles.formInput}/>
                 </Form.Item>
-                <Form.Item
-                    name="captcha"
-                    rules={[{ required: true, message: 'Captcha không hợp lệ' }]}
-                    wrapperCol={{ span: 24 }}
-                    className={styles.formItem}
-                >
-                    <ReCAPTCHA
-                    sitekey="6LcFNkYpAAAAAMS1ubxwdymx7cmbup8R3bCU3NYq"  // Đặt khóa API của bạn ở đây
-                    // onChange={handleRecaptchaChange}
-                    className={styles.captcha}
-                    />
-                </Form.Item>
+                <div className={styles.formImage}>
+                    <Form.Item
+                        name="image"
+                        rules={[{ required: true, message: 'Vui lòng tải ảnh lên' }]}
+                        wrapperCol={{ span: 24 }}
+                        className={`${styles.uploadForm} ${styles.formItem}`}
+                    >
+                        <div style={{textAlign: "center", marginBottom: "10px"}}>Tải ảnh văn bằng</div>
+                        <Upload
+                            action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
+                            listType="picture-card"
+                            fileList={fileList1}
+                            onPreview={handlePreview1}
+                            onChange={handleChange1}
+                            className={styles.uploadImg}
+                        >
+                            {fileList1.length >= 1 ? null : uploadButton}
+                        </Upload>
+                        
+                        <Modal open={previewOpen1} title={previewTitle1} footer={null} onCancel={handleCancel1}>
+                            <img alt="example" style={{ width: '100%' }} src={previewImage1} />
+                        </Modal>
+                    </Form.Item>
+                    <Form.Item
+                        name="image"
+                        rules={[{ required: true, message: 'Vui lòng tải ảnh lên' }]}
+                        wrapperCol={{ span: 24 }}
+                        className={`${styles.uploadForm} ${styles.formItem}`}
+                    >
+                        <div style={{textAlign: "center", marginBottom: "10px"}}>Tải giấy giới thiệu</div>
+                        <Upload
+                            action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
+                            listType="picture-card"
+                            fileList={fileList2}
+                            onPreview={handlePreview2}
+                            onChange={handleChange2}
+                            className={styles.uploadImg}
+                        >
+                            {fileList2.length >= 1 ? null : uploadButton}
+                        </Upload>
+                        
+                        <Modal open={previewOpen2} title={previewTitle2} footer={null} onCancel={handleCancel2}>
+                            <img alt="example" style={{ width: '100%' }} src={previewImage2} />
+                        </Modal>
+                    </Form.Item>
+                </div>
+                <div className={styles.note}>Lưu ý: Kích thước ảnh không vượt quá 25MB.</div>
+                {
+                    showCaptcha ? 
+                    <Form.Item
+                        name="captcha"
+                        rules={[{ required: true, message: 'Captcha không hợp lệ' }]}
+                        wrapperCol={{ span: 24 }}
+                        className={styles.formItem}
+                    >
+                        <ReCAPTCHA
+                        sitekey="6LcFNkYpAAAAAMS1ubxwdymx7cmbup8R3bCU3NYq"  
+                        // onChange={handleRecaptchaChange}
+                        className={styles.captcha}
+                        />
+                    </Form.Item>
+                    : null
+                }
+                
                 
                 <Form.Item  className={styles.formItem} wrapperCol={{ span: 24 }}>
                     <Button type="primary" htmlType="submit" className={styles.button}>

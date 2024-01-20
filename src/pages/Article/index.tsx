@@ -1,5 +1,6 @@
 import { Col, Image, Row } from 'antd'
 import React from 'react'
+import Footer from '../../components/Footer'
 import Header from '../../components/Header'
 import styles from "./Style.module.scss"
 export default function Article() {
@@ -7,14 +8,15 @@ export default function Article() {
     <div>
         <Header />
         <div className={styles.wrap}>
-            <Row gutter={60} justify={"center"} style={{width:"100%"}}>
-                <Col className='gutter-row' xxl={12} md={24} style={{borderRight: "1px solid #e4e4e4"}}>
+            <Row gutter={60} justify={"center"} className={styles.row}>
+                <Col className={`gutter-row ${styles.postCol}`} xxl={12} lg={16} md={24} xs={24} >
                     <div className={styles.typePost}>
                         BÀI VIẾT GẦN ĐÂY
                     </div>
                     <div className={styles.title}>
                         KHAI MẠC GIẢI VÔ ĐỊCH VÕ CỔ TRUYỀN QUỐC GIA LẦN THỨ 32
                     </div>
+                    <div className={styles.border}></div>
                     <div className={styles.time}>
                         ĐĂNG NGÀY 2/10/2023 BY ADMIN
                     </div>
@@ -35,9 +37,14 @@ export default function Article() {
                         Giải Vô địch Võ cổ truyền quốc gia lần thứ 32 dự kiến sẽ kết thúc vào ngày 29/10.
                         </div>
                     </div>
+                    <div className={styles.author}>
+                        <Image src={require("../../assets/image/user.jpg")} preview={false} className={styles.authorImg}/>
+                        <div className={styles.authorName}>ADMIN</div>
+                    </div>
                 </Col>
-                <Col className='gutter-row' xxl={5} md={24}>
+                <Col className='gutter-row' xxl={5} lg={8} md={24} xs={24}>
                     <div className={styles.orther}>Các bài viết khác</div>
+                    
                     <ul className={styles.articleList}>
                         <li className={styles.post}>Khai mạc Giải Vô địch Võ cổ truyền quốc gia lần thứ 32</li>
                         <li className={styles.post}>Khai mạc Giải Vô địch Võ cổ truyền quốc gia lần thứ 31</li>
@@ -46,6 +53,7 @@ export default function Article() {
                 </Col>
             </Row>
         </div>
+        <Footer />
     </div>
   )
 }

@@ -1,7 +1,9 @@
+import Search from "../Search";
+
 interface HomeProps {}
 
 const Home = () => {
-  return <>Xin chào</>;
+  return <><Search /></>;
 };
 
 export default Home;

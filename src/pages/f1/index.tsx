@@ -220,7 +220,7 @@ export default function LevelOne() {
           value: 'hcm',
         },
       ],
-     onFilter: (value: string, record) => record.club.indexOf(value) === 0,
+    //  onFilter: (value: string, record) => record.club.indexOf(value) === 0,
     },
     {
       title: 'Ghi chú',
@@ -298,7 +298,7 @@ export default function LevelOne() {
           value: 'hcm',
         },
       ],
-     onFilter: (value: string, record) => record.club.indexOf(value) === 0,
+    //  onFilter: (value: string, record) => record.club.indexOf(value) === 0,
     },
     {
       title: 'Số lượng hồ sơ',

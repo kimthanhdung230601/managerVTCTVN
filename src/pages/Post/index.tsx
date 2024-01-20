@@ -24,10 +24,7 @@ const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);
 };
 
-type FieldType = {
-    title?: string;
-    content?: string;
-};
+
 
 export default function Post() {
     const [previewOpen, setPreviewOpen] = useState(false);
@@ -63,56 +60,63 @@ export default function Post() {
             <div className={styles.title}>
                 ĐĂNG BÀI VIẾT MỚI
             </div>
-            <Row gutter={40} className={styles.formWrap} justify="space-between">
-                <Col className='gutter-row' xxl={1}>
-                    <Upload
-                        action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
-                        listType="picture-card"
-                        fileList={fileList}
-                        onPreview={handlePreview}
-                        onChange={handleChange}
-                    >
-                        {fileList.length >= 8 ? null : uploadButton}
-                    </Upload>
-                    <Modal open={previewOpen} title={previewTitle} footer={null} onCancel={handleCancel}>
-                        <img alt="example" style={{ width: '100%' }} src={previewImage} />
-                    </Modal>
-                </Col>
-                <Col className='gutter-row' xxl={14}>
-                    <Form
-                        name="basic"
-                        labelCol={{ span: 8 }}
-                        wrapperCol={{ span: 24 }}
-                        initialValues={{ remember: true }}
-                        onFinish={onFinish}
-                        onFinishFailed={onFinishFailed}
-                        autoComplete="off"
-                        className={styles.form}
-                    >
-                        <Form.Item<FieldType>
+            <Form
+                    name="basic"
+                    layout='vertical'
+                    labelCol={{ span: 8 }}
+                    wrapperCol={{ span: 24 }}
+                    initialValues={{ remember: true }}
+                    onFinish={onFinish}
+                    onFinishFailed={onFinishFailed}
+                    autoComplete="off"
+                    className={styles.form}
+                >
+                <Row gutter={40} className={styles.formWrap} justify="space-between">
+                    <Col className='gutter-row' xxl={6}>
+                        <Form.Item
+                        label="Tải ảnh"
+                        name="image"
+                        rules={[{ required: true, message: 'Vui lòng tải ảnh bài viết!' }]}
+                        >
+                            <Upload
+                                action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
+                                listType="picture-card"
+                                fileList={fileList}
+                                onPreview={handlePreview}
+                                onChange={handleChange}
+                                className={styles.upload}
+                            >
+                                    {fileList.length >= 8 ? null : uploadButton}
+                            </Upload>
+                            <Modal open={previewOpen} title={previewTitle} footer={null} onCancel={handleCancel}>
+                                <img alt="example" style={{ width: '100%' }} src={previewImage} />
+                            </Modal>
+                        </Form.Item>
+                    </Col>  
+                    <Col className='gutter-row' xxl={12}>
+                        <Form.Item
                         label="Tiêu đề"
                         name="title"
-                        rules={[{ required: true, message: 'Hãy nhập tiêu đề bài viết!' }]}
-                    
+                        rules={[{ required: true, message: 'Vui lòng nhập tiêu đề bài viết!' }]}
                         >
                             <Input style={{padding: "10px 12px"}} />
                         </Form.Item>
                         
-                        <Form.Item<FieldType>
+                        <Form.Item
                         label="Nội dung"
                         name="content"
-                        rules={[{ required: true, message: 'Hãy nhập nội dung bài viết!' }]}
+                        rules={[{ required: true, message: 'Vui lòng nhập nội dung bài viết!' }]}
                         >
                             <TextArea rows={10} placeholder="Nội dung bài viết..." />
                         </Form.Item>
-                        <Form.Item wrapperCol={{ offset: 15, span: 24 }}>
-                        <Button type="primary" htmlType="submit">
+                        <Form.Item wrapperCol={{ offset: 11, span: 24 }}>
+                        <Button  htmlType="submit" className={styles.btn}>
                             Đăng bài
                         </Button>
                         </Form.Item>
-                    </Form>
-                </Col>
-            </Row>
+                    </Col>
+                </Row>
+            </Form>
         </div>
     </div>
   )
