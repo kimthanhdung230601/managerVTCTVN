@@ -212,14 +212,14 @@ const ManagerMember = () => {
       // title: 'Action',
       key: "action",
       fixed: "right",
-      width: 160,
+      width: 210,
       render: (_, record) => (
         <span>
           <button
             className={styles.btnTb}
             onClick={() => navigate("./UpdateMember")}
           >
-            Sửa
+            Cập nhật DL
           </button>
           <button className={styles.btnTbDanger}>Xóa</button>
         </span>
@@ -263,11 +263,6 @@ const ManagerMember = () => {
           style={{ overflowWrap: "initial" }}
         />
       </div>
-      {/* <ModalMember
-        isModalOpen={isModalOpenMember}
-        handleCancel={handleCancelMember}
-        handleOk={handleOkMember}
-      /> */}
     </>
   );
 };
