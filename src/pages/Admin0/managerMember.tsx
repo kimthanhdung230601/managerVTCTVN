@@ -7,7 +7,7 @@ import {
 import type { SearchProps } from "antd/es/input";
 import { Input, Table, Button, TableProps } from "antd";
 import styles from "./styles.module.scss";
-import { level, managerf1 } from "../../until/until";
+import { level, managerf1, randomState, statess } from "../../until/until";
 
 import type { ColumnsType } from "antd/es/table";
 import type { FilterValue } from "antd/es/table/interface";
@@ -23,7 +23,7 @@ interface DataType {
   f1: string;
   f2: string;
   note: string;
-  state: string;
+  status: string;
   achie: string;
   level: string;
 }
@@ -35,7 +35,7 @@ for (let i = 0; i < 46; i++) {
     name: `Edward King ${i}`,
     f1: `f1 ${i}`,
     f2: `câu lạc bộ ${i}`,
-    state: `trạng thái`,
+    status: randomState(),
     note: `note content ${i}`,
     achie: `giải thưởng ${i}`,
     level: `${i}`,
@@ -170,8 +170,8 @@ const ManagerMember = () => {
     },
     {
       title: "Tình trạng",
-      dataIndex: "state",
-      width: 130,
+      dataIndex: "status",
+      width: 300,
       filters: [
         {
           text: "JohnJohnyy",
@@ -186,7 +186,15 @@ const ManagerMember = () => {
           value: "Nguyen Van C",
         },
       ],
-      onFilter: (value: any, rec) => rec.state.indexOf(value) === 0,
+      render: (value, record) => {
+        if (value === "Hoạt động")
+          return <span style={{ color: "#046C39" }}>{value}</span>;
+        if (value === "Nghỉ")
+          return <span style={{ color: "#8D8D8D" }}>{value}</span>;
+        if (value === "Chưa duyệt HS")
+          return <span style={{ color: "#F6C404" }}>{value}</span>;
+      },
+      onFilter: (value: any, rec) => rec.f2.indexOf(value) === 0,
     },
     {
       title: "Thành tích",
@@ -194,16 +202,12 @@ const ManagerMember = () => {
       width: 130,
       filters: [
         {
-          text: "JohnJohnyy",
-          value: "Nguyen Van A",
+          text: "Có",
+          value: "Có",
         },
         {
-          text: "Nguyễn Minh Châu",
-          value: "Nguyen Van B",
-        },
-        {
-          text: "Nguyen Van A",
-          value: "Nguyen Van C",
+          text: "Không",
+          value: "Không",
         },
       ],
       onFilter: (value: any, rec) => rec.achie.indexOf(value) === 0,
@@ -212,7 +216,7 @@ const ManagerMember = () => {
       // title: 'Action',
       key: "action",
       fixed: "right",
-      width: 210,
+      width: 200,
       render: (_, record) => (
         <span>
           <button

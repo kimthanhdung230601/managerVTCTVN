@@ -73,7 +73,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 3vh 0;
+  padding: 120px 20px;
   .title {
   }
 
@@ -107,7 +107,7 @@
   }
 }
 .contentWrap {
-  margin: 0 9vh;
+  margin: 0 9vh 6vh 9vh;
   .buttonGroup {
     display: flex;
     justify-content: flex-end;

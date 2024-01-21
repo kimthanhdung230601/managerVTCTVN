@@ -11,6 +11,8 @@ import { Menu, Input, Divider, Radio, Table, Button, Space } from "antd";
 import { admin } from "../../until/until";
 import styles from "./styles.module.scss";
 import type { ColumnsType } from "antd/es/table";
+import Header from "../../components/Header";
+import Footer from "../../components/Footer";
 
 type MenuItem = Required<MenuProps>["items"][number];
 
@@ -41,6 +43,7 @@ const items: MenuItem[] = [
 const rootSubmenuKeys = ["sub1"];
 
 const AdminTwo = () => {
+  document.title = "Đơn vị quản lý"
   const [openKeys, setOpenKeys] = useState(["sub1"]);
 
   
@@ -69,7 +72,7 @@ const AdminTwo = () => {
   };
   return (
     <>
-      <div className={styles.header}>
+      {/* <div className={styles.header}>
         <div className={styles.logo}>
           <div>
             <img
@@ -93,7 +96,8 @@ const AdminTwo = () => {
             </div>
           </ul>
         </div>
-      </div>
+      </div> */}
+      <Header/>
       <div className={styles.logoWrap}>
         <div className={styles.title}>
           <div className={styles.logoContainer}>
@@ -124,6 +128,7 @@ const AdminTwo = () => {
       <div className={styles.contentWrap}>
         <ManagerMemberTwo />
       </div>
+      <Footer/>
     </>
   );
 };

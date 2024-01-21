@@ -8,10 +8,12 @@ import {
 } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import type { SearchProps } from "antd/es/input";
-import { Menu, Input, Divider, Radio, Table, Button, Space } from "antd";
+import { Menu, Input, Divider, Radio, Table, Button, } from "antd";
 import { admin } from "../../until/until";
 import styles from "./styles.module.scss";
 import type { ColumnsType } from "antd/es/table";
+import Header from "../../components/Header";
+import Footer from "../../components/Footer";
 
 type MenuItem = Required<MenuProps>["items"][number];
 
@@ -20,6 +22,7 @@ type MenuItem = Required<MenuProps>["items"][number];
 interface AdminProps {}
 
 const Admin = () => {
+  document.title="Quản lý hội viên";
   const [selectedMenuItem, setSelectedMenuItem] = useState("member");
   const handleMenuItemClick = (menuItem: any) => {
     setSelectedMenuItem(menuItem);
@@ -57,33 +60,7 @@ const Admin = () => {
 
   return (
     <>
-      <div className={styles.header}>
-        <div className={styles.logo}>
-          <div>
-            <img
-              className={styles.logoImg}
-              src={require("../../assets/image/logo.png")}
-            />
-          </div>
-          <div className={styles.title}>
-            LIÊN ĐOÀN VÕ THUẬT CỔ TRUYỀN VIỆT NAM
-          </div>
-        </div>
-        <div className={styles.menu}>
-          <ul className={styles.menuContent}>
-            <li>
-              <div>
-                <Menu
-                  className={styles.subMenu}
-                  onClick={onClick}
-                  mode="horizontal"
-                  items={items}
-                />
-              </div>
-            </li>
-          </ul>
-        </div>
-      </div>
+      <Header/>
       <div className={styles.logoWrap}>
         <div className={styles.title}>
           <div className={styles.logoContainer}>
@@ -121,6 +98,7 @@ const Admin = () => {
         {selectedMenuItem === "member" && <ManagerMember />}
         {selectedMenuItem === "account" && <ManagerAccount />}
       </div>
+      <Footer/>
     </>
   );
 };

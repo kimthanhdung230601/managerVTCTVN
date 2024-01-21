@@ -21,6 +21,8 @@ import useDebounce from "../../hook/useDebounce";
 import Column from "antd/es/table/Column";
 import { useQuery } from "react-query";
 import { addNewData, getList } from "../../api/example";
+import Header from "../../components/Header";
+import Footer from "../../components/Footer";
 interface UpdateMemberProps {}
 interface DataType {
   id?: string;
@@ -158,7 +160,7 @@ const UpdateMember = () => {
 
   return (
     <>
-      <div className={styles.header}>
+      {/* <div className={styles.header}>
         <div className={styles.logo}>
           <div>
             <img
@@ -184,7 +186,8 @@ const UpdateMember = () => {
             </li>
           </ul>
         </div>
-      </div>
+      </div> */}
+      <Header/>
       <div className={styles.logoWrap}>
         <div className={styles.title}>
           <div className={styles.logoContainer}>
@@ -368,6 +371,7 @@ const UpdateMember = () => {
           </button>
         </div>
       </div>
+    
     </>
   );
 };

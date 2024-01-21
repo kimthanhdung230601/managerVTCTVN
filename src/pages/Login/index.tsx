@@ -3,9 +3,12 @@ import styles from "./Style.module.scss"
 import { Button, Form, Image, Input } from 'antd'
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import ReCAPTCHA from "react-google-recaptcha";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { useForm } from 'antd/es/form/Form';
+import { accountF0, accountF1, accountF2 } from '../../until/until';
 export default function Login() {
+    const navigate = useNavigate();
     document.title = "Đăng nhập";
     const dispatch = useDispatch();
     const reloadCount = useSelector((state:any) => state.reloadCount);
@@ -27,6 +30,21 @@ export default function Login() {
         if(isVerify) dispatch({ type: 'RESET_LOAD_COUNT' });
          
       }, [isVerify]);
+      //form
+      const [form] = useForm();
+      const onFinish = (value:any)=>{
+        console.log("value",value);
+        if (accountF0[0].password === value.password && accountF0[0].username === value.username) {
+            console.log("Mật khẩu đúng cho accountF0"); navigate("/Admin0")
+            
+          } else if (accountF1[0].password === value.password && accountF1[0].username === value.username) {
+            console.log("Mật khẩu đúng cho accountF1"); navigate("/Admin1")
+          } else if (accountF2[0].password=== value.password && accountF2[0].username === value.username) {
+            console.log("Mật khẩu đúng cho accountF2"); navigate("/Admin2")
+          } else {
+            alert("Nhập sai tài khoản hoặc mật khẩu");
+          }
+      }
   return (
     <div className={styles.loginWrap}>
         <div className={styles.logo}>
@@ -43,6 +61,8 @@ export default function Login() {
                 layout="vertical"
                 autoComplete="off"
                 className={styles.form}
+                form={form}
+                onFinish={onFinish}
             >
                  <Form.Item
                     name="username"
