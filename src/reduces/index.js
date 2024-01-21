@@ -2,6 +2,7 @@ import { combineReducers } from '@reduxjs/toolkit';
 import DentistReducer from './DentistReducer';
 import ClinicReducer from './ClientReducer';
 import localStorage from 'redux-persist/es/storage';
+import persistReducer from 'redux-persist/es/persistReducer';
 
 export const patientPersistConfig = {
   key: 'patient',
@@ -24,7 +25,7 @@ export const patientPersistConfig = {
 };
 
 const rootReducer = combineReducers({
-  dentist: DentistReducer,
+  dentist: persistReducer(patientPersistConfig, DentistReducer),
   client: ClinicReducer,
 });
 

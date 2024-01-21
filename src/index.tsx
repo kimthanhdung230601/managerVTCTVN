@@ -1,30 +1,46 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
+import React, { Suspense } from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ConfigProvider } from "antd";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
-import { store } from "./store";
+// import {store } from "./store";
+import { persistor, store } from "./store";
+import { PersistGate } from 'redux-persist/integration/react'
+import { ReactQueryDevtools } from "react-query/devtools";
+import configs from "./config";
+
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
-const queryClient = new QueryClient();
-
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      cacheTime: 24 * 3600 * 1000, // cache for 1 day
+      retry: false,
+    },
+  },
+});
 root.render(
-<Provider store={store}>
-    <React.StrictMode>
-      <QueryClientProvider client={queryClient}>
+  <React.StrictMode>
+    <Provider store={store}>
+      <PersistGate  persistor={persistor}>
         <ConfigProvider>
-          <BrowserRouter>
-            <App />
-          </BrowserRouter>
+          <QueryClientProvider client={queryClient}>
+            <BrowserRouter>
+              <Suspense fallback={null}>
+                <App />
+              </Suspense>
+            </BrowserRouter>
+          </QueryClientProvider>
         </ConfigProvider>
-      </QueryClientProvider>
-    </React.StrictMode>
-  </Provider>
+      </PersistGate>
+    </Provider>
+  </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

@@ -1,8 +1,7 @@
-@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap");
-
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 :root {
-  --primary: #1890ff;
-  --subPrimary: #2db7f5;
+  --primary: #046C39;
+  --subPrimary: #F6C404;
   --secondary: #ff0000;
   --line: #979797;
   --subLine: #f0f0f0;
@@ -15,7 +14,7 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family: "Quicksand" !important;
+  font-family: "Inter" !important;
 }
 
 a {
@@ -26,7 +25,7 @@ a {
 * {
   box-sizing: border-box;
   // font-family: Muli, sans-serif;
-  font-family: "Quicksand" !important;
+  font-family: "Inter" !important;
   // font-size: 16px;
 }
 p,
@@ -43,22 +42,20 @@ h3 {
   border-radius: 8px;
 }
 .btn {
-  background-color: var(--subPrimary);
+  background-color: var(--primary);
   color: #fff;
   border-radius: 4px;
   border: none;
-  padding: 3px 7px;
+  padding: 0.6vh 2vh 0vh 2vh;
   &:hover {
     cursor: pointer;
-    background-color: var(--subPrimary) !important;
+    background-color: var(--primary) !important;
     color: #fff !important;
     border-radius: 4px;
     border: none;
-    padding: 3px 7px;
+    padding: 1vh 2vh;
     opacity: 0.7;
-    // background-color: var(--secondary) !important;
-    // color: #ffff;
-    // border: none !important;
+
   }
 }
 .second-btn {
@@ -66,7 +63,7 @@ h3 {
   color: #fff;
   border-radius: 4px;
   border: none;
-  padding: 6px 4vh;
+  padding: 0.6vh 2vh 0vh 2vh;
   &:hover {
     cursor: pointer;
     background-color: var(--subPrimary) !important;
@@ -101,10 +98,10 @@ h3 {
   }
 }
 .btn-boder {
-  border: 1px solid var(--subPrimary);
-  color: var(--subPrimary);
+  border: 1px solid var(--primary);
+  color: var(--primary);
   border-radius: 4px;
-  padding: 3px 7px;
+  padding: 0.6vh 2vh 0vh 2vh;
   background-color: transparent;
   &:hover,
   &:focus {
