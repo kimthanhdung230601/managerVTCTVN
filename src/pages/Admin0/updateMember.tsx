@@ -49,7 +49,7 @@ const UpdateMember = () => {
   };
   const [choosen, setChoosen] = useState<string>("level");
   const [searchTerm, setSearchTerm] = useState<any>({});
-  const debouncedSearchTerm = useDebounce(searchTerm, 2000);
+  const debouncedSearchTerm = useDebounce(searchTerm, 1000);
   const [tableData, setTableData] = useState<any>();
   const handleSelectChange = (value: string) => {
     setChoosen(value);

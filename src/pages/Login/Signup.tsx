@@ -4,6 +4,7 @@ import { Button, Form, Image, Input, message, Modal, Upload, UploadFile, UploadP
 import { LockOutlined, UserOutlined, PhoneOutlined, IdcardOutlined, PlusOutlined } from '@ant-design/icons';
 import ReCAPTCHA from "react-google-recaptcha";
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 const getBase64 = (file: any): Promise<string> =>
   new Promise((resolve, reject) => {
@@ -259,7 +260,7 @@ export default function Signup() {
                     </Button>
                 </Form.Item>
             </Form>
-           
+            <div className={styles.signup}>Bạn đã có tài khoản ? Đăng nhập <Link to={"/dang-nhap"} style={{color: "#046C39", fontWeight: "600"}}>tại đây!</Link></div>
         </div>
     </div>
   )
