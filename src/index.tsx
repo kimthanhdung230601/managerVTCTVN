@@ -1,7 +1,7 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
+import React, { Suspense } from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ConfigProvider } from "antd";
@@ -12,17 +12,28 @@ import { PersistGate } from 'redux-persist/integration/react';
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
-const queryClient = new QueryClient();
-
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      cacheTime: 24 * 3600 * 1000, // cache for 1 day
+      retry: false,
+    },
+  },
+});
 root.render(
 <Provider store={store}>
   <PersistGate persistor={persistor}>
     <React.StrictMode>
       <QueryClientProvider client={queryClient}>
         <ConfigProvider>
-          <BrowserRouter>
-            <App />
-          </BrowserRouter>
+          <QueryClientProvider client={queryClient}>
+            <BrowserRouter>
+              <Suspense fallback={null}>
+                <App />
+              </Suspense>
+            </BrowserRouter>
+          </QueryClientProvider>
         </ConfigProvider>
       </QueryClientProvider>
     </React.StrictMode>

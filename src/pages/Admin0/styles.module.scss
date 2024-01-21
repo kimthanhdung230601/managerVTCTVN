@@ -1,0 +1,218 @@
+.header {
+  background-image: url("../../assets/image/bgProfiles.png");
+  padding: 1vh 0 1vh 39px;
+  height: 70px;
+  display: flex;
+  justify-content: space-between;
+  .logo {
+    display: flex;
+    align-items: center;
+    .logoImg {
+      width: 76px;
+      height: 76px;
+    }
+    .title {
+      margin-left: 24px;
+      color: #f6c404;
+      font-size: 24px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: normal;
+      letter-spacing: 1px;
+    }
+  }
+  .menu {
+    display: flex;
+    align-items: center;
+    .menuContent {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      list-style-type: none;
+      color: #f6c404;
+      font-size: 16px;
+    }
+    .account {
+      background-color: transparent;
+      color: #f6c404;
+      font-size: 16px;
+    }
+    .account:hover {
+      background-color: transparent;
+      color: #f6c404;
+      font-size: 16px;
+    }
+    .menuContent li {
+      margin: 0 2vh 0 3vh;
+      cursor: pointer;
+    }
+  }
+  .subMenu {
+    color: #f6c404;
+    background-color: transparent;
+    border: none !important;
+    font-size: 16px;
+  }
+
+  .item {
+    padding: 2vh;
+    margin: 0.7vh;
+    border-radius: 4px;
+  }
+  .item:hover {
+    background-color: var(--subPrimary);
+  }
+  ul {
+    margin: 0;
+  }
+  ul li {
+    list-style-type: none;
+  }
+}
+.logoWrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 3vh 0;
+  .title {
+  }
+
+  .logoContainer {
+    text-align: center;
+  }
+
+  .logoImg {
+    width: 177px;
+    height: 177px;
+    margin-bottom: 3vh;
+  }
+
+  .titleText {
+    // margin: 2vh 0 0 8vh;
+    margin-top: 2vh;
+    color: #000;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 22px; /* 91.667% */
+    text-align: center;
+  }
+  .subnav {
+    margin: 3vh 2vh;
+    cursor: pointer;
+  }
+  .choosenBtn {
+    color: var(--primary);
+    font-weight: bold;
+  }
+}
+.contentWrap {
+  margin: 0 9vh;
+  .buttonGroup {
+    display: flex;
+    justify-content: flex-end;
+    // margin-right: 3vh;
+    .rightContent {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
+
+    .search {
+      // margin-right: 3vh;
+    }
+
+    .btn {
+      cursor: pointer;
+      margin-left: 2vh;
+      background-color: var(--primary);
+      color: white;
+      padding: 6px 11px;
+      border-radius: 4px;
+      font-size: 16px;
+      .icon {
+        margin-right: 4px;
+      }
+    }
+  }
+  .table {
+    .btnTb {
+      border-radius: 4px;
+      cursor: pointer;
+      background: var(--primary, #046c39);
+      border: none;
+      color: white;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 22px; /* 157.143% */
+      padding: 0.5vh 1.6vh 0vh 1.6vh;
+    }
+    .btnTbDanger {
+      border-radius: 4px;
+      margin-left: 4px;
+      background: var(--secondary);
+      border: none;
+      color: white;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 22px; /* 157.143% */
+      padding: 0.5vh 1.6vh 0vh 1.6vh;
+    }
+  }
+}
+.buttonWrap {
+  float: right;
+  .button {
+    cursor: pointer;
+    border-radius: 4px;
+    background: var(--primary, #046c39);
+    border: none;
+    color: white;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 22px; /* 157.143% */
+    padding: 0.6vh 1.6vh 0.6vh 1.6vh;
+  }
+  .button {
+    background-color: var(
+      --primary,
+      #046c39
+    ); 
+    color: white;
+    cursor: pointer;
+    
+  }
+
+  .disabledButton {
+    background-color: var(--line); /* Màu nền khi nút bị disable */
+    color: #ccc; /* Màu chữ khi nút bị disable */
+    cursor: not-allowed; /* Con chuột chuyển thành biểu tượng "cấm" khi nút bị disable */
+  
+  }
+  .deleteBtn {
+    cursor: pointer;
+    margin-left: 3px;
+    border-radius: 4px;
+    border: solid 1px var(--primary, #046c39);
+    color: var(--primary, #046c39);
+    background-color: transparent;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 22px; /* 157.143% */
+    padding: 0.6vh 1.6vh 0.6vh 1.6vh;
+  }
+}
+//updateMember form
+.input {
+  border-radius: 0;
+  // border-top: none;
+  border-left: none;
+  border-right: none;
+}
+.ant-select-selector {
+  border: none;
+}
