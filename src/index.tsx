@@ -7,12 +7,8 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { ConfigProvider } from "antd";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
-// import {store } from "./store";
 import { persistor, store } from "./store";
-import { PersistGate } from 'redux-persist/integration/react'
-import { ReactQueryDevtools } from "react-query/devtools";
-import configs from "./config";
-
+import { PersistGate } from 'redux-persist/integration/react';
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
@@ -26,9 +22,10 @@ const queryClient = new QueryClient({
   },
 });
 root.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <PersistGate  persistor={persistor}>
+<Provider store={store}>
+  <PersistGate persistor={persistor}>
+    <React.StrictMode>
+      <QueryClientProvider client={queryClient}>
         <ConfigProvider>
           <QueryClientProvider client={queryClient}>
             <BrowserRouter>
@@ -38,9 +35,10 @@ root.render(
             </BrowserRouter>
           </QueryClientProvider>
         </ConfigProvider>
-      </PersistGate>
-    </Provider>
-  </React.StrictMode>
+      </QueryClientProvider>
+    </React.StrictMode>
+    </PersistGate>
+  </Provider>
 );
 
 // If you want to start measuring performance in your app, pass a function
