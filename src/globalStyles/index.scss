@@ -134,6 +134,10 @@ h3 {
   background-color: rgba(4, 108, 57, 0.2) !important;
 }
 
+.ant-pagination .ant-pagination-item-active a{
+  color: var(--primary);
+}
+
 .ant-pagination .ant-pagination-item-active:hover a{
   color: var(--primary);
 }
@@ -166,6 +170,10 @@ h3 {
 .ant-tabs .ant-tabs-tab{
   font-size: 16px;
   font-weight: 500;
+}
+
+.ant-tooltip{
+  display: none;
 }
 
 ::-webkit-scrollbar {

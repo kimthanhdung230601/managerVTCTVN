@@ -16,7 +16,7 @@ const queryClient = new QueryClient();
 
 root.render(
 <Provider store={store}>
-  {/* <PersistGate persistor={persistor}> */}
+  <PersistGate persistor={persistor}>
     <React.StrictMode>
       <QueryClientProvider client={queryClient}>
         <ConfigProvider>
@@ -26,7 +26,7 @@ root.render(
         </ConfigProvider>
       </QueryClientProvider>
     </React.StrictMode>
-    {/* </PersistGate> */}
+    </PersistGate>
   </Provider>
 );
 

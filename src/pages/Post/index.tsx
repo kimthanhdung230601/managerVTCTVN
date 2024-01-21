@@ -1,8 +1,9 @@
-import { Col, Modal, Row, Upload, UploadFile, UploadProps, Form, Input, Button } from 'antd'
+import { Col, Modal, Row, Upload, UploadFile, UploadProps, Form, Input, Button, message } from 'antd'
 import React, { useState } from 'react'
 import Header from '../../components/Header'
 import styles from "./Style.module.scss"
 import { PlusOutlined } from '@ant-design/icons';
+import Footer from '../../components/Footer';
 
 // type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 
@@ -27,6 +28,7 @@ const onFinishFailed = (errorInfo: any) => {
 
 
 export default function Post() {
+    document.title = "Đăng bài";
     const [previewOpen, setPreviewOpen] = useState(false);
     const [previewImage, setPreviewImage] = useState('');
     const [previewTitle, setPreviewTitle] = useState('');
@@ -53,6 +55,31 @@ export default function Post() {
         <div style={{ marginTop: 8 }}>Upload</div>
         </button>
     );
+    const isImage = (file:any) => {
+        const acceptedImageTypes = ['image/jpeg', 'image/png'];
+        return acceptedImageTypes.includes(file.type);
+      };
+    
+      const props = {
+        action: "https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188",
+        beforeUpload: (file:any) => {
+          if (!isImage(file)) {
+            message.error('Chỉ cho phép tải lên các file ảnh (JPEG, PNG).');
+            return false; 
+          }
+          return true; // Cho phép tải lên nếu là file ảnh
+        },
+        onChange(info:any) {
+          if (info.file.status !== 'uploading') {
+            console.log(info.file, info.fileList);
+          }
+          if (info.file.status === 'done') {
+            message.success(`${info.file.name} tải ảnh thành công`);
+          } else if (info.file.status === 'error') {
+            message.error(`${info.file.name} tải ảnh thất bại.`);
+          }
+        },
+      };
   return (
     <div>
         <Header />
@@ -72,14 +99,14 @@ export default function Post() {
                     className={styles.form}
                 >
                 <Row gutter={40} className={styles.formWrap} justify="space-between">
-                    <Col className='gutter-row' xxl={6}>
+                    <Col className='gutter-row' xxl={6} lg={8} md={24} xs={24}>
                         <Form.Item
                         label="Tải ảnh"
                         name="image"
                         rules={[{ required: true, message: 'Vui lòng tải ảnh bài viết!' }]}
                         >
                             <Upload
-                                action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
+                                {...props}
                                 listType="picture-card"
                                 fileList={fileList}
                                 onPreview={handlePreview}
@@ -93,7 +120,7 @@ export default function Post() {
                             </Modal>
                         </Form.Item>
                     </Col>  
-                    <Col className='gutter-row' xxl={12}>
+                    <Col className='gutter-row' xxl={12} lg={16} md={24} xs={24}>
                         <Form.Item
                         label="Tiêu đề"
                         name="title"
@@ -118,6 +145,7 @@ export default function Post() {
                 </Row>
             </Form>
         </div>
+        <Footer />
     </div>
   )
 }

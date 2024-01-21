@@ -1,8 +1,10 @@
 import { Image } from 'antd'
 import React from 'react'
+import { Link } from 'react-router-dom'
 import Header from '../../components/Header'
 import styles from "./Style.module.scss"
 export default function Search() {
+    document.title = "Tra cứu hội viên";
   return (
     <>
         <Header />
@@ -17,7 +19,12 @@ export default function Search() {
                     <br />
                     <input type={"text"} className={styles.input}/>
                     <br />
-                    <button className={styles.btn}>Tra cứu</button>
+                    <button className={styles.btn}>
+                        <Link to={"/thong-tin-ho-so"}>
+                            Tra cứu
+                        </Link>
+                        
+                    </button>
                 </div>
             </div>
         </div>

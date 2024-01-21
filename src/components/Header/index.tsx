@@ -33,12 +33,17 @@ export default function Header() {
                     <Image src={require("../../assets/image/logo.png")} preview={false} className={styles.img} />
                 </Col>
                 <Col className={styles.headerItem}>
+                    <Link to={"/"} className={styles.itemLink}>
+                        Trang chủ
+                    </Link>
+                </Col>
+                <Col className={styles.headerItem}>
                     <Link to={"/tra-cuu-hoi-vien"} className={styles.itemLink}>
                         Tra cứu hội viên
                     </Link>
                 </Col>
                 <Col className={styles.headerItem}>
-                    <Link to={"/tra-cuu-hoi-vien"} className={styles.itemLink}>
+                    <Link to={"/hoi-vien-du-tu-cach-giam-khao"} className={styles.itemLink}>
                         Hội viên đủ tư cách giám khảo
                     </Link>
                 </Col>
@@ -56,7 +61,9 @@ export default function Header() {
                 
             </Col>
             <Col className={ `${styles.headerItem} gutter-row`} >
-                Đăng xuất
+                <Link to={"/dang-nhap"} className={styles.itemLink}>
+                    Đăng nhập
+                </Link>
             </Col>
             <Col xs={12} md={12} lg={6} className={` ${styles.listResponsive}`} onClick={handleOpenMenu}>
                 {
@@ -68,26 +75,36 @@ export default function Header() {
         </Row>
         <div className={`animate__animated animate__slideInDown ${styles.menuResponsive}`} id="menuResponsive">
          <div className={styles.menu}>
-             <li className={styles.menuResponsiveItem}>
-                 <Link to={'/tra-cuu-hoi-vien'} className={styles.menuResponsiveLink} onClick={handleCloseMenu}>
-                     Tra cứu hội viên
-                 </Link>
-             </li>
-             <li className={styles.menuResponsiveItem}>
-                 <Link to={'/tra-cuu-hoi-vien'} className={styles.menuResponsiveLink} onClick={handleCloseMenu}>
-                    Hội viên đủ tư cách giám khảo
-                 </Link>
-             </li>
-             <li className={styles.menuResponsiveItem}>
-                 <Link to={'/tin-tuc'} className={styles.menuResponsiveLink} onClick={handleCloseMenu}>
-                    Tin tức
-                 </Link>
-             </li>
-             <li className={styles.menuResponsiveItem}>
-                 <Link to={'/huong-dan'} className={styles.menuResponsiveLink} onClick={handleCloseMenu}>
-                    Hướng dẫn
-                 </Link>
-             </li>
+            <li className={styles.menuResponsiveItem}>
+                <Link to={'/'} className={styles.menuResponsiveLink} onClick={handleCloseMenu}>
+                    Trang chủ
+                </Link>
+            </li>
+            <li className={styles.menuResponsiveItem}>
+                <Link to={'/tra-cuu-hoi-vien'} className={styles.menuResponsiveLink} onClick={handleCloseMenu}>
+                    Tra cứu hội viên
+                </Link>
+            </li>
+            <li className={styles.menuResponsiveItem}>
+                <Link to={'/tra-cuu-hoi-vien'} className={styles.menuResponsiveLink} onClick={handleCloseMenu}>
+                Hội viên đủ tư cách giám khảo
+                </Link>
+            </li>
+            <li className={styles.menuResponsiveItem}>
+                <Link to={'/tin-tuc'} className={styles.menuResponsiveLink} onClick={handleCloseMenu}>
+                Tin tức
+                </Link>
+            </li>
+            <li className={styles.menuResponsiveItem}>
+                <Link to={'/huong-dan'} className={styles.menuResponsiveLink} onClick={handleCloseMenu}>
+                Hướng dẫn
+                </Link>
+            </li>
+            <li className={styles.menuResponsiveItem}>
+                <Link to={'/dang-nhap'} className={styles.menuResponsiveLink} onClick={handleCloseMenu}>
+                    Đăng nhập
+                </Link>
+            </li>
          </div>
         </div>
     </>

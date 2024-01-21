@@ -6,6 +6,8 @@ import { Tabs } from 'antd';
 import type { TabsProps } from 'antd';
 import { Table } from 'antd';
 import type { ColumnsType, TableProps } from 'antd/es/table';
+import Header from '../../components/Header';
+import Footer from '../../components/Footer';
 
 interface DataType_CN {
   key: React.Key;
@@ -35,8 +37,6 @@ interface DataType_CLB {
 
 
 const onChange: TableProps<DataType_CN>['onChange'] = (pagination, filters, sorter, extra) => {
-  console.log(filters.club);
-  console.log(pagination)
 };
 const dataCN: DataType_CN[] = [
     {
@@ -58,7 +58,7 @@ const dataCN: DataType_CN[] = [
         phone: "0987838929",
         identity: "009387466534",
         level: "12",
-        club: "CLB Hà Nội",
+        club: "CLB Hải Phòng",
         note: "Thành viên tiềm năng",
         status: 'Hoạt động',
         awards: "1 giải vô địch quốc gia",
@@ -82,7 +82,7 @@ const dataCN: DataType_CN[] = [
       phone: "0987838929",
       identity: "009387466534",
       level: "12",
-      club: "CLB Hà Nội",
+      club: "CLB TP HCM",
       note: "Thành viên tiềm năng",
       status: 'Hoạt động',
       awards: "1 giải vô địch quốc gia",
@@ -106,7 +106,7 @@ const dataCN: DataType_CN[] = [
     phone: "0987838929",
     identity: "009387466534",
     level: "12",
-    club: "CLB Hà Nội",
+    club: "CLB Hải Phòng",
     note: "Thành viên tiềm năng",
     status: 'Hoạt động',
     awards: "1 giải vô địch quốc gia",
@@ -118,7 +118,7 @@ const dataCN: DataType_CN[] = [
     phone: "0987838929",
     identity: "009387466534",
     level: "12",
-    club: "CLB Hà Nội",
+    club: "CLB TP HCM",
     note: "Thành viên tiềm năng",
     status: 'Hoạt động',
     awards: "1 giải vô địch quốc gia",
@@ -138,18 +138,40 @@ const dataCLB: DataType_CLB[] = [
   },
   {
     key: "2",
-    name: "Nguyễn Văn A",
+    name: "Nguyễn Văn B",
     birth: "24/12/2001",
     phone: "0987838929",
     identity: "009387466534",
     level: "12",
-    club: "CLB Hà Nội",
+    club: "CLB Hải Phòng",
     quantity_records: "12",
     status: 'Hoạt động',
 },
 {
   key: "3",
-  name: "Nguyễn Văn A",
+  name: "Nguyễn Văn C",
+  birth: "24/12/2001",
+  phone: "0987838929",
+  identity: "009387466534",
+  level: "12",
+  club: "CLB TP HCM",
+  quantity_records: "12",
+  status: 'Hoạt động',
+},
+{
+  key: "4",
+  name: "Nguyễn Văn D",
+  birth: "24/12/2001",
+  phone: "0987838929",
+  identity: "009387466534",
+  level: "12",
+  club: "CLB Hải Phòng",
+  quantity_records: "12",
+  status: 'Hoạt động',
+},
+{
+  key: "5",
+  name: "Nguyễn Văn E",
   birth: "24/12/2001",
   phone: "0987838929",
   identity: "009387466534",
@@ -159,29 +181,41 @@ const dataCLB: DataType_CLB[] = [
   status: 'Hoạt động',
 },
 {
-  key: "4",
-  name: "Nguyễn Văn A",
+  key: "6",
+  name: "Nguyễn Văn G",
   birth: "24/12/2001",
   phone: "0987838929",
   identity: "009387466534",
   level: "12",
   club: "CLB Hà Nội",
+  quantity_records: "12",
+  status: 'Hoạt động',
+},
+{
+  key: "7",
+  name: "Nguyễn Văn H",
+  birth: "24/12/2001",
+  phone: "0987838929",
+  identity: "009387466534",
+  level: "12",
+  club: "CLB Hải Phòng",
   quantity_records: "12",
   status: 'Hoạt động',
 },
 ];
 
 export default function LevelOne() {
+  document.title = "Quản lý Liên đoàn, Sở, Ngành";
   const [selectedRowKeysCLB, setSelectedRowKeysCLB] = useState<React.Key[]>([]);
   const [selectedRowKeysCN, setSelectedRowKeysCN] = useState<React.Key[]>([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(5)
+  const [currentPage1, setCurrentPage1] = useState(1);
+  const [currentPage2, setCurrentPage2] = useState(1);
   const columns_CN: ColumnsType<DataType_CN> = [
     {
       title: 'STT',
       dataIndex: 'key',
       render: (_, __, index) =>
-            (currentPage - 1) * pageSize + index + 1,
+            (currentPage1 - 1) * 5 + index + 1,
     },
     {
       title: 'Họ tên',
@@ -202,6 +236,21 @@ export default function LevelOne() {
     {
       title: 'Cấp độ',
       dataIndex: 'level',
+      filters: [
+        {
+          text: '12',
+          value: '12',
+        },
+        {
+          text: '13',
+          value: '13',
+        },
+        {
+          text: '14',
+          value: '14',
+        },
+      ],
+    //  onFilter: (value: string, record) => record.level.indexOf(value) === 0,
     },
     {
       title: 'CLB trực thuộc',
@@ -216,7 +265,7 @@ export default function LevelOne() {
           value: 'haiphong',
         },
         {
-          text: 'CLB TP Hồ Chí Minh',
+          text: 'CLB TP HCM',
           value: 'hcm',
         },
       ],
@@ -225,24 +274,26 @@ export default function LevelOne() {
     {
       title: 'Ghi chú',
       dataIndex: 'note',
-      filters: [
-        {
-          text: 'Ghi chú 1',
-          value: 'note1',
-        },
-        {
-          text: 'Ghi chú 2',
-          value: 'note2',
-        },
-        {
-          text: 'Ghi chú 3',
-          value: 'note3',
-        },
-      ]
+      
     },
     {
       title: 'Tình trạng',
       dataIndex: 'status',
+      filters: [
+        {
+          text: 'Hoạt động',
+          value: 'active',
+        },
+        {
+          text: 'Nghỉ',
+          value: 'off',
+        },
+        {
+          text: 'Chưa duyệt hồ sơ',
+          value: 'notApproved',
+        },
+      ],
+      //  onFilter: (value: string, record) => record.status.indexOf(value) === 0,
       render: (value, record) => {
         if(value === "Hoạt động") return <span style={{color: "#046C39"}}>{value}</span>
         if(value === "Nghỉ") return <span style={{color: "#8D8D8D"}}>{value}</span>
@@ -259,7 +310,7 @@ export default function LevelOne() {
       title: 'STT',
       dataIndex: 'key',
       render: (_, __, index) =>
-            (currentPage - 1) * pageSize + index + 1,
+            (currentPage2 - 1) * 5 + index + 1,
     },
     {
       title: 'Họ tên',
@@ -280,6 +331,21 @@ export default function LevelOne() {
     {
       title: 'Cấp độ',
       dataIndex: 'level',
+      filters: [
+        {
+          text: '12',
+          value: '12',
+        },
+        {
+          text: '13',
+          value: '13',
+        },
+        {
+          text: '14',
+          value: '14',
+        },
+      ],
+    //  onFilter: (value: string, record) => record.level.indexOf(value) === 0,
     },
     {
       title: 'CLB trực thuộc',
@@ -294,7 +360,7 @@ export default function LevelOne() {
           value: 'haiphong',
         },
         {
-          text: 'CLB TP Hồ Chí Minh',
+          text: 'CLB TP HCM',
           value: 'hcm',
         },
       ],
@@ -303,24 +369,25 @@ export default function LevelOne() {
     {
       title: 'Số lượng hồ sơ',
       dataIndex: 'quantity_records',
-      filters: [
-        {
-          text: 'Ghi chú 1',
-          value: 'note1',
-        },
-        {
-          text: 'Ghi chú 2',
-          value: 'note2',
-        },
-        {
-          text: 'Ghi chú 3',
-          value: 'note3',
-        },
-      ]
     },
     {
       title: 'Tình trạng',
       dataIndex: 'status',
+      filters: [
+        {
+          text: 'Hoạt động',
+          value: 'active',
+        },
+        {
+          text: 'Nghỉ',
+          value: 'off',
+        },
+        {
+          text: 'Chưa duyệt hồ sơ',
+          value: 'notApproved',
+        },
+      ],
+      //  onFilter: (value: string, record) => record.status.indexOf(value) === 0,
       render: (value, record) => {
         if(value === "Hoạt động") return <span style={{color: "#046C39"}}>{value}</span>
         if(value === "Nghỉ") return <span style={{color: "#8D8D8D"}}>{value}</span>
@@ -339,11 +406,9 @@ export default function LevelOne() {
     },
   ];
   const onSelectChangeCN = (newSelectedRowKeysCN: React.Key[]) => {
-    console.log('selectedRowKeysCLB changed: ', newSelectedRowKeysCN);
     setSelectedRowKeysCLB(newSelectedRowKeysCN);
   };
   const onSelectChangeCLB = (newSelectedRowKeysCLB: React.Key[]) => {
-    console.log('selectedRowKeysCLB changed: ', newSelectedRowKeysCLB);
     setSelectedRowKeysCLB(newSelectedRowKeysCLB);
   };
   const rowSelectionCN = {
@@ -355,10 +420,12 @@ export default function LevelOne() {
     onChange: onSelectChangeCLB,
   };
   const hasSelected = selectedRowKeysCLB.length > 0;
-  const onPaginationChange = (page: number) => {
-    setCurrentPage(page);
+  const onPaginationChange1 = (page: number) => {
+    setCurrentPage1(page);
   };
-
+  const onPaginationChange2 = (page: number) => {
+    setCurrentPage2(page);
+  };
   const items: TabsProps['items'] = [
     {
       key: '1',
@@ -380,8 +447,8 @@ export default function LevelOne() {
       columns={columns_CLB}
       dataSource={dataCLB}
       pagination={{
-        current: currentPage,
-        onChange: onPaginationChange,
+        current: currentPage2,
+        onChange: onPaginationChange2,
         pageSize: 5,
         defaultCurrent: 1,
         total: 7,
@@ -408,8 +475,8 @@ export default function LevelOne() {
       columns={columns_CN}
       dataSource={dataCN}
       pagination={{
-        current: currentPage,
-        onChange: onPaginationChange,
+        current: currentPage1,
+        onChange: onPaginationChange1,
         pageSize: 5,
         defaultCurrent: 1,
         total: 7,
@@ -420,15 +487,20 @@ export default function LevelOne() {
   ];
   
   return (
+    <>
+    <Header />
     <div className={styles.wrap}>
         <div className={styles.imageWrap}>
             <Image src={require("../../assets/image/logo.png")} preview={false} className={styles.img}/>
-            <div className={styles.title}>Đơn vị quản lý: Liên đoàn, Sở, ngành</div>
+            <div className={styles.title}>Đơn vị quản lý: Liên đoàn, Sở, Ngành</div>
         </div>
         <div className={styles.tableWrap}>
             
             <Tabs defaultActiveKey="1" items={items} className={styles.tab}/>
         </div>
     </div>
+    <Footer />
+    </>
+    
   )
 }

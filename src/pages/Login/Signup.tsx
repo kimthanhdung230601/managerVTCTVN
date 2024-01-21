@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import styles from "./Style.module.scss"
-import { Button, Form, Image, Input, Modal, Upload, UploadFile, UploadProps } from 'antd'
+import { Button, Form, Image, Input, message, Modal, Upload, UploadFile, UploadProps } from 'antd'
 import { LockOutlined, UserOutlined, PhoneOutlined, IdcardOutlined, PlusOutlined } from '@ant-design/icons';
 import ReCAPTCHA from "react-google-recaptcha";
 import { useDispatch, useSelector } from 'react-redux';
@@ -14,9 +14,11 @@ const getBase64 = (file: any): Promise<string> =>
 });
 
 export default function Signup() {
+    document.title = "Đăng ký";
     const dispatch = useDispatch();
-    const reloadCount = useSelector((state:any) => state.reloadCount.reloadCount);
+    const reloadCount = useSelector((state:any) => state.reloadCount);
     const [showCaptcha, setShowCaptcha] = useState(false);
+    const [isVerify, setIsVerify] = useState(false);
     const [previewOpen1, setPreviewOpen1] = useState(false);
     const [previewImage1, setPreviewImage1] = useState('');
     const [previewTitle1, setPreviewTitle1] = useState('');
@@ -54,22 +56,47 @@ export default function Signup() {
         <div style={{ marginTop: 8 }}>Tải ảnh lên</div>
         </button>
     );
+    const handleRecaptchaChange = (value:any) => {
+        setIsVerify(true);
+    };
+    const isImage = (file:any) => {
+        const acceptedImageTypes = ['image/jpeg', 'image/png'];
+        return acceptedImageTypes.includes(file.type);
+      };
+    
+      const props = {
+        action: "https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188",
+        beforeUpload: (file:any) => {
+          if (!isImage(file)) {
+            message.error('Chỉ cho phép tải lên các file ảnh (JPEG, PNG).');
+            return false; 
+          }
+          return true; // Cho phép tải lên nếu là file ảnh
+        },
+        onChange(info:any) {
+          if (info.file.status !== 'uploading') {
+            console.log(info.file, info.fileList);
+          }
+          if (info.file.status === 'done') {
+            message.success(`${info.file.name} tải ảnh thành công`);
+          } else if (info.file.status === 'error') {
+            message.error(`${info.file.name} tải ảnh thất bại.`);
+          }
+        },
+      };
     useEffect(() => {
-        const handleBeforeUnload = () => {
-            const reloadCountString = localStorage.getItem('reloadCount');
-            const reloadCount = reloadCountString ? parseInt(reloadCountString, 10) : 0;
-            localStorage.setItem('reloadCount', (reloadCount + 1).toString());
-            if(reloadCount >= 10){
-                setShowCaptcha(true)
-                localStorage.removeItem('reloadCount');
-            }
-        };
-        window.addEventListener('beforeunload', handleBeforeUnload);
-        return () => {
-            window.removeEventListener('beforeunload', handleBeforeUnload);
-          };
-    }, []);
-    console.log(reloadCount)
+        dispatch({ type: 'INCREMENT_LOAD_COUNT' });
+        if (reloadCount.loadCount >= 18) {
+          setShowCaptcha(true)
+        }
+        if(reloadCount.loadCount < 18 && !showCaptcha){
+            setTimeout(() => {
+            dispatch({ type: 'RESET_LOAD_COUNT' });
+        }, 120000);
+        }
+        if(isVerify) dispatch({ type: 'RESET_LOAD_COUNT' });
+         
+      }, [isVerify]);
   return (
     <div className={styles.loginWrap}>
         <div className={styles.logo}>
@@ -170,7 +197,7 @@ export default function Signup() {
                     >
                         <div style={{textAlign: "center", marginBottom: "10px"}}>Tải ảnh văn bằng</div>
                         <Upload
-                            action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
+                            {...props}
                             listType="picture-card"
                             fileList={fileList1}
                             onPreview={handlePreview1}
@@ -192,7 +219,7 @@ export default function Signup() {
                     >
                         <div style={{textAlign: "center", marginBottom: "10px"}}>Tải giấy giới thiệu</div>
                         <Upload
-                            action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
+                            {...props}
                             listType="picture-card"
                             fileList={fileList2}
                             onPreview={handlePreview2}
@@ -218,7 +245,7 @@ export default function Signup() {
                     >
                         <ReCAPTCHA
                         sitekey="6LcFNkYpAAAAAMS1ubxwdymx7cmbup8R3bCU3NYq"  
-                        // onChange={handleRecaptchaChange}
+                        onChange={handleRecaptchaChange}
                         className={styles.captcha}
                         />
                     </Form.Item>

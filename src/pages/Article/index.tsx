@@ -4,6 +4,7 @@ import Footer from '../../components/Footer'
 import Header from '../../components/Header'
 import styles from "./Style.module.scss"
 export default function Article() {
+    document.title = "Khai mạc Giải vô địch Võ cổ truyền quốc gia lần thứ 32";
   return (
     <div>
         <Header />

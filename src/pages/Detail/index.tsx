@@ -4,6 +4,7 @@ import Header from '../../components/Header'
 import styles from "./Style.module.scss"
 
 export default function Detail() {
+    document.title = "Thông tin hồ sơ";
   return (
     <>
         <Header />
@@ -105,14 +106,7 @@ export default function Detail() {
                             008769888746
                         </Col>
                     </Row>
-                    <Row gutter={40} className={styles.DetailItem}>
-                        <Col className='gutter-row' xxl={12} lg={12} md={12} xs={12} >
-                            Quê quán
-                        </Col>
-                        <Col className='gutter-row' xxl={12} lg={12} md={12} xs={12}>
-                            Văn Miếu - Đống Đa - Hà Nội
-                        </Col>
-                    </Row>
+                    
                     <Row gutter={40} className={styles.DetailItem}>
                         <Col className='gutter-row' xxl={12} lg={12} md={12} xs={12} >
                             Địa chỉ thường trú
