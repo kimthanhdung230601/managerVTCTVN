@@ -342,7 +342,7 @@ const UpdateMember = () => {
                   {debouncedSearchTerm.timeAchie}
                   <Table
                     columns={columnsAchie}
-                    // loading={isLoading}
+                    loading={isLoading}
                     dataSource={[...members, ...newData]}
                   />
                 </div>
