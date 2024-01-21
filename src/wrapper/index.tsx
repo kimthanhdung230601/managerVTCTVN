@@ -29,10 +29,13 @@ const Wrapper = () => {
         <Route path="/huong-dan" element={<Guide />}></Route>
         <Route path="/dang-bai" element={<Post />}></Route>
         <Route path="/bai-viet" element={<Article />}></Route>
-        <Route path="/hoi-vien-du-tu-cach-giam-khao" element={<JuryMember />}></Route>
+        <Route
+          path="/hoi-vien-du-tu-cach-giam-khao"
+          element={<JuryMember />}
+        ></Route>
         <Route path="/Profiles" element={<Profiles />}></Route>
-        <Route path="/Admin0" element={<Admin />}></Route>
-        <Route path="/Admin0/UpdateMember" element={<UpdateMember/>}></Route>
+        <Route path={`Admin0/:key`} element={<Admin />}></Route>
+        <Route path="/Admin0/:key/UpdateMember" element={<UpdateMember />}></Route>
         <Route path="/Admin2" element={<AdminTwo />}></Route>
       </Routes>
     </>

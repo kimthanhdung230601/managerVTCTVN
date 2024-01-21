@@ -7,6 +7,7 @@
   .logo {
     display: flex;
     align-items: center;
+    
     .logoImg {
       width: 76px;
       height: 76px;
@@ -73,7 +74,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 120px 20px;
+  padding: 120px 20px 10px 20px;
   .title {
   }
 
@@ -82,14 +83,14 @@
   }
 
   .logoImg {
-    width: 177px;
-    height: 177px;
+    width: 195px !important;
+    min-width: 150px !important;
     margin-bottom: 3vh;
   }
 
   .titleText {
     // margin: 2vh 0 0 8vh;
-    margin-top: 2vh;
+    margin: 2vh 0 3vh 0;
     color: #000;
     font-size: 24px;
     font-style: normal;

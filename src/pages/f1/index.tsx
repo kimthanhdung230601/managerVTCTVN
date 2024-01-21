@@ -8,6 +8,8 @@ import { Table } from "antd";
 import type { ColumnsType, TableProps } from "antd/es/table";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
+import Search, { SearchProps } from "antd/es/input/Search";
+import { useNavigate } from "react-router";
 
 interface DataType_CN {
   key: React.Key;
@@ -207,6 +209,7 @@ const dataCLB: DataType_CLB[] = [
 ];
 
 export default function LevelOne() {
+  const navigate = useNavigate();
   document.title = "Quản lý Liên đoàn, Sở, Ngành";
   const [selectedRowKeysCLB, setSelectedRowKeysCLB] = useState<React.Key[]>([]);
   const [selectedRowKeysCN, setSelectedRowKeysCN] = useState<React.Key[]>([]);
@@ -402,7 +405,7 @@ export default function LevelOne() {
     {
       title: "Chi tiết",
       render: (value, record) => {
-        return <button className={styles.btn}>Xem</button>;
+        return <button className={styles.btn} onClick={()=>navigate("/Admin2")}>Xem</button>;
       },
     },
   ];
@@ -427,6 +430,8 @@ export default function LevelOne() {
   const onPaginationChange2 = (page: number) => {
     setCurrentPage2(page);
   };
+  const onSearch: SearchProps["onSearch"] = (value, _e, info) =>
+  console.log(info?.source, value);
   const items: TabsProps["items"] = [
     {
       key: "1",
@@ -440,8 +445,12 @@ export default function LevelOne() {
                 : "Tổng số 7 hồ sơ"}
             </div>
             <div className={styles.filter}>
-              <span>Tìm kiếm</span>
-              <input className={styles.searchInput} type="text" />
+            <Search
+              placeholder="Tìm kiếm tại đây"
+              allowClear
+              onSearch={onSearch}
+              style={{}}
+            />
             </div>
           </div>
           <Table
@@ -472,8 +481,14 @@ export default function LevelOne() {
                 : "Tổng số 7 hồ sơ"}
             </div>
             <div className={styles.filter}>
-              <span>Tìm kiếm</span>
-              <input className={styles.searchInput} type="text" />
+            <Search
+              placeholder="Tìm kiếm tại đây"
+              allowClear
+              onSearch={onSearch}
+              style={{}}
+            />
+              {/* <span>Tìm kiếm</span>
+              <input className={styles.searchInput} type="text" /> */}
             </div>
           </div>
           <Table

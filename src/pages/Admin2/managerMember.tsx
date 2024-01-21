@@ -179,7 +179,7 @@ const ManagerMemberTwo = () => {
       // title: 'Action',
       key: "action",
       render: (_, record) => (
-        <span>
+        <div  style={{textAlign:"start"}}>
           <button
             className={styles.btnTb}
             onClick={() => showModalUpdateNote()}
@@ -190,7 +190,7 @@ const ManagerMemberTwo = () => {
           {record.state == "Chưa duyệt HS" && (
             <button className={styles.btnTbDanger}>Xóa</button>
           )}
-        </span>
+        </div>
       ),
     },
   ];

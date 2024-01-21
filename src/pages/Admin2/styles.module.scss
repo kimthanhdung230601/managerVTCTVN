@@ -57,7 +57,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 120px 20px;
+  padding: 120px 20px 10px 20px;
   .title {
   }
 
@@ -66,8 +66,8 @@
   }
 
   .logoImg {
-    width: 177px;
-    height: 177px;
+    width: 195px !important;
+    min-width: 150px !important;
     margin-bottom: 3vh;
   }
   .titleContent{
@@ -91,9 +91,14 @@
     line-height: 22px; 
 
     .labelTitle{
-      line-height: 22px;
+      line-height: 25px;
     }
-  }
+   
+  } .title{
+      line-height: 35px;
+      font-weight: 500;
+     
+    }
 }
 .contentWrap {
   margin: 0 9vh;

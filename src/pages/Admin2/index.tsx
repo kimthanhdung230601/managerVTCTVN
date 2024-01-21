@@ -72,31 +72,6 @@ const AdminTwo = () => {
   };
   return (
     <>
-      {/* <div className={styles.header}>
-        <div className={styles.logo}>
-          <div>
-            <img
-              className={styles.logoImg}
-              src={require("../../assets/image/logo.png")}
-            />
-          </div>
-          <div className={styles.title}>
-            LIÊN ĐOÀN VÕ THUẬT CỔ TRUYỀN VIỆT NAM
-          </div>
-        </div>
-        <div className={styles.menu}>
-          <ul className={styles.menuContent}>
-            <div>
-              <Menu
-                className={styles.subMenu}
-                onClick={onClick}
-                mode="horizontal"
-                items={items}
-              />
-            </div>
-          </ul>
-        </div>
-      </div> */}
       <Header/>
       <div className={styles.logoWrap}>
         <div className={styles.title}>
@@ -109,7 +84,7 @@ const AdminTwo = () => {
           </div>
           <div className={styles.titleContent}>
             <div className={styles.titleText}>Đơn vị:</div>{" "}
-            <div className={styles.labelTitle}>Thông tin người quản lý</div>
+            <div className={(styles.labelTitle && styles.title)}>Thông tin người quản lý</div>
             <div className={styles.subTitleText}>
               <div className={styles.labelTitle}>Họ tên: </div>
               <div className={styles.titleName}>Nguyễn Văn A</div>

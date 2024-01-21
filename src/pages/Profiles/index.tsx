@@ -96,7 +96,7 @@ const Profiles = () => {
             </div>
           </div>
         </div> */}
-        <Header/>
+        <Header />
         <div className={styles.content}>
           <div className={styles.title}>THÔNG TIN HỒ SƠ</div>
           <div className={styles.form}>
@@ -276,12 +276,24 @@ const Profiles = () => {
                 </Row>
                 <Row gutter={16}>
                   <Col span={8} xs={24} sm={12} md={8}>
-                    <Form.Item label="Tỉnh/Thành ">
+                    <Form.Item
+                      label="Tỉnh/Thành "
+                      name="city"
+                      rules={[
+                        { required: true, message: "Vui lòng điền thông tin" },
+                      ]}
+                    >
                       <Input />
                     </Form.Item>
                   </Col>
                   <Col span={8} xs={24} sm={12} md={8}>
-                    <Form.Item label="Quận/Huyện">
+                    <Form.Item
+                      label="Quận/Huyện"
+                      name="district"
+                      rules={[
+                        { required: true, message: "Vui lòng điền thông tin" },
+                      ]}
+                    >
                       <Input />
                     </Form.Item>
                   </Col>
@@ -340,7 +352,7 @@ const Profiles = () => {
           </div>
         </div>
       </div>
-      <Footer/>
+      <Footer />
     </>
   );
 };
