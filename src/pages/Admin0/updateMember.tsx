@@ -52,7 +52,7 @@ const UpdateMember = () => {
   ];
 
   const onClick = (e: any) => {
-    console.log("click ", e);
+    // console.log("click ", e);
   };
   const [choosen, setChoosen] = useState<string>("level");
   const [searchTerm, setSearchTerm] = useState<any>({});
@@ -92,11 +92,11 @@ const UpdateMember = () => {
       timeAchie: debouncedSearchTerm.timeAchie || "",
       timeLevel: debouncedSearchTerm.timeLevel || "",
     });
-    console.log(newData1);
+    // console.log(newData1);
     setNewData(newData1);
     if (Object.keys(debouncedSearchTerm).length !== 0)
       setIsConfirmButtonEnabled(false);
-    console.log("setIsConfirmButtonEnabled: ", isConfirmButtonEnabled);
+    // console.log("setIsConfirmButtonEnabled: ", isConfirmButtonEnabled);
   };
   const deleteData = () => {
     newData1.pop();
@@ -105,8 +105,8 @@ const UpdateMember = () => {
   };
   const update = async () => {
     try {
-      console.log("newData:", newData);
-      console.log("setIsConfirmButtonEnabled: ", isConfirmButtonEnabled);
+      // console.log("newData:", newData);
+      // console.log("setIsConfirmButtonEnabled: ", isConfirmButtonEnabled);
       alert("Thêm thành công");
       // const res = addNewData(newData);
     } catch (error) {
