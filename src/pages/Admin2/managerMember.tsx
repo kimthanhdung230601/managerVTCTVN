@@ -68,21 +68,6 @@ const ManagerMemberTwo = () => {
     setIsModalOpen(false);
   };
   const navigate = useNavigate();
-
-  //modal quản lý thành viên
-  // const [isModalOpenMember, setIsModalOpenMember] = useState(false);
-
-  // const showModalMember = () => {
-  //   setIsModalOpenMember(true);
-  // };
-
-  // const handleOkMember = () => {
-  //   setIsModalOpenMember(false);
-  // };
-
-  // const handleCancelMember = () => {
-  //   setIsModalOpenMember(false);
-  // };
   const columns: ColumnsType<DataType> = [
     {
       title: "STT",
@@ -179,7 +164,7 @@ const ManagerMemberTwo = () => {
       // title: 'Action',
       key: "action",
       render: (_, record) => (
-        <div  style={{textAlign:"start"}}>
+        <div style={{ textAlign: "start" }}>
           <button
             className={styles.btnTb}
             onClick={() => showModalUpdateNote()}
@@ -223,22 +208,8 @@ const ManagerMemberTwo = () => {
           rowSelection={rowSelection}
           columns={columns}
           dataSource={data}
-          pagination={{
-            // style: { backgroundColor: '#046C39', border: '1px solid #046C39' },
-            itemRender: (current, type, originalElement) => {
-              if (type === "page") {
-                return (
-                  <span
-                    className="custom-pagination-item"
-                    style={{ color: "#046C39", borderColor: "#046C39" }}
-                  >
-                    {originalElement}
-                  </span>
-                );
-              }
-              return originalElement;
-            },
-          }}
+          scroll={{ x: 1300 }}
+          style={{ overflowX: "auto" }}
         />
       </div>
       <ModalUpdateNote

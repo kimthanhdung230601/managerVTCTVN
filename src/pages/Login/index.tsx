@@ -48,7 +48,7 @@ export default function Login() {
   return (
     <div className={styles.loginWrap}>
         <div className={styles.logo}>
-            <Image src={require("../../assets/image/logo.png")} preview={false} width={"12%"}/>
+            <Image src={require("../../assets/image/logo.png")} preview={false} className={styles.logoImg}/>
         </div>
         <div className={styles.login}>
             <div className={styles.title}>Đăng nhập</div>

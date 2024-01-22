@@ -142,6 +142,7 @@ const ManagerAccount = () => {
           columns={columns}
           dataSource={data}
           pagination={{}}
+          style={{ overflowX: "auto" }}
         />
       </div>
       <ModalAccount

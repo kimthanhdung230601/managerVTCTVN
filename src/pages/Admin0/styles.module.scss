@@ -1,80 +1,8 @@
-.header {
-  background-image: url("../../assets/image/bgProfiles.png");
-  padding: 1vh 0 1vh 39px;
-  height: 70px;
-  display: flex;
-  justify-content: space-between;
-  .logo {
-    display: flex;
-    align-items: center;
-    
-    .logoImg {
-      width: 76px;
-      height: 76px;
-    }
-    .title {
-      margin-left: 24px;
-      color: #f6c404;
-      font-size: 24px;
-      font-style: normal;
-      font-weight: 600;
-      line-height: normal;
-      letter-spacing: 1px;
-    }
-  }
-  .menu {
-    display: flex;
-    align-items: center;
-    .menuContent {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      list-style-type: none;
-      color: #f6c404;
-      font-size: 16px;
-    }
-    .account {
-      background-color: transparent;
-      color: #f6c404;
-      font-size: 16px;
-    }
-    .account:hover {
-      background-color: transparent;
-      color: #f6c404;
-      font-size: 16px;
-    }
-    .menuContent li {
-      margin: 0 2vh 0 3vh;
-      cursor: pointer;
-    }
-  }
-  .subMenu {
-    color: #f6c404;
-    background-color: transparent;
-    border: none !important;
-    font-size: 16px;
-  }
-
-  .item {
-    padding: 2vh;
-    margin: 0.7vh;
-    border-radius: 4px;
-  }
-  .item:hover {
-    background-color: var(--subPrimary);
-  }
-  ul {
-    margin: 0;
-  }
-  ul li {
-    list-style-type: none;
-  }
-}
 .logoWrap {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 120px 20px 10px 20px;
+  padding-top: 12vh;
   .title {
   }
 
@@ -108,24 +36,28 @@
   }
 }
 .contentWrap {
-  margin: 0 9vh 6vh 9vh;
+  margin: 0 0vh 6vh 0vh;
   .buttonGroup {
     display: flex;
+    margin: 0 9vh;
     justify-content: flex-end;
     // margin-right: 3vh;
     .rightContent {
       display: flex;
       flex-direction: row;
       align-items: center;
+      // margin-bottom: 3px;
     }
 
     .search {
       // margin-right: 3vh;
+      margin-bottom: 6px;
     }
 
     .btn {
       cursor: pointer;
       margin-left: 2vh;
+      margin-bottom: 6px;
       background-color: var(--primary);
       color: white;
       padding: 6px 11px;
@@ -137,9 +69,132 @@
     }
   }
   .table {
+    margin: 0 9vh;
     .btnTb {
       border-radius: 4px;
       cursor: pointer;
+
+      background: var(--primary, #046c39);
+      border: none;
+      color: white;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 22px; /* 157.143% */
+       padding: 2px 9px;
+    }
+    .btnTbDanger {
+      border-radius: 4px;
+      margin-left: 4px;
+      background: var(--secondary);
+      border: none;
+      color: white;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 22px; /* 157.143% */
+       padding: 2px 9px;
+    }
+  }
+}
+.buttonWrap {
+  float: right;
+  margin: 1vh 0;
+  .button {
+    cursor: pointer;
+    border-radius: 4px;
+    background: var(--primary, #046c39);
+    border: none;
+    color: white;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 22px; /* 157.143% */
+    padding: 3px 9px;
+  }
+  .button {
+    background-color: var(--primary, #046c39);
+    color: white;
+    cursor: pointer;
+  }
+
+  .disabledButton {
+    background-color: var(--line); /* Màu nền khi nút bị disable */
+    color: #ccc; /* Màu chữ khi nút bị disable */
+    cursor: not-allowed; /* Con chuột chuyển thành biểu tượng "cấm" khi nút bị disable */
+  }
+  .deleteBtn {
+    cursor: pointer;
+    margin-left: 3px;
+    border-radius: 4px;
+    border: solid 1px var(--primary, #046c39);
+    color: var(--primary, #046c39);
+    background-color: transparent;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 22px; /* 157.143% */
+    padding: 3px 9px;
+  }
+}
+//updateMember form
+.input {
+  border-radius: 0;
+  // border-top: none;
+  border-left: none;
+  border-right: none;
+}
+.ant-select-selector {
+  border: none;
+}
+.responsiveContent {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between; /* Adjust as needed */
+}
+
+@media (max-width: 900px) {
+  .buttonGroup {
+    // margin: 0 !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    // margin-right: 3vh;
+    .rightContent {
+      margin: 0;
+    }
+
+    .search {
+      // margin-right: 3vh;
+      // margin-bottom: 6px;
+      margin-bottom: 5px !important;
+      width: 100% !important;
+    }
+
+    .btn {
+      cursor: pointer;
+      // margin-left: 2vh;
+      margin: 5px 0 !important;
+      
+      background-color: var(--primary);
+      color: white;
+      width: 100% !important;
+      border-radius: 4px;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      .icon {
+        margin-right: 4px;
+      }
+    }
+  }
+  .table {
+    margin: 0 3vh !important;
+    .btnTb {
+      border-radius: 4px;
+      cursor: pointer;
+
       background: var(--primary, #046c39);
       border: none;
       color: white;
@@ -163,57 +218,8 @@
     }
   }
 }
-.buttonWrap {
-  float: right;
-  .button {
-    cursor: pointer;
-    border-radius: 4px;
-    background: var(--primary, #046c39);
-    border: none;
-    color: white;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 22px; /* 157.143% */
-    padding: 0.6vh 1.6vh 0.6vh 1.6vh;
+@media (max-width: 920px) {
+  .responsiveTable .ant-table-thead > tr > th {
+    position: static !important;
   }
-  .button {
-    background-color: var(
-      --primary,
-      #046c39
-    ); 
-    color: white;
-    cursor: pointer;
-    
-  }
-
-  .disabledButton {
-    background-color: var(--line); /* Màu nền khi nút bị disable */
-    color: #ccc; /* Màu chữ khi nút bị disable */
-    cursor: not-allowed; /* Con chuột chuyển thành biểu tượng "cấm" khi nút bị disable */
-  
-  }
-  .deleteBtn {
-    cursor: pointer;
-    margin-left: 3px;
-    border-radius: 4px;
-    border: solid 1px var(--primary, #046c39);
-    color: var(--primary, #046c39);
-    background-color: transparent;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 22px; /* 157.143% */
-    padding: 0.6vh 1.6vh 0.6vh 1.6vh;
-  }
-}
-//updateMember form
-.input {
-  border-radius: 0;
-  // border-top: none;
-  border-left: none;
-  border-right: none;
-}
-.ant-select-selector {
-  border: none;
 }

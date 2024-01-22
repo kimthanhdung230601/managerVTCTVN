@@ -8,7 +8,7 @@ import type { SearchProps } from "antd/es/input";
 import { Input, Table, Button, TableProps } from "antd";
 import styles from "./styles.module.scss";
 import { level, managerf1, randomState, statess } from "../../until/until";
-
+import { useMediaQuery } from "react-responsive";
 import type { ColumnsType } from "antd/es/table";
 import type { FilterValue } from "antd/es/table/interface";
 
@@ -45,6 +45,7 @@ const ManagerMember = () => {
   const navigate = useNavigate();
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [loading, setLoading] = useState(false);
+  const isMobile = useMediaQuery({ maxWidth: 768 });
   const start = () => {
     setLoading(true);
     // ajax request after empty completing
@@ -68,25 +69,12 @@ const ManagerMember = () => {
     console.log(info?.source, value);
   //modal
   //modal quản lý thành viên
-  const [isModalOpenMember, setIsModalOpenMember] = useState(false);
-
-  const showModalMember = () => {
-    setIsModalOpenMember(true);
-  };
-
-  const handleOkMember = () => {
-    setIsModalOpenMember(false);
-  };
-
-  const handleCancelMember = () => {
-    setIsModalOpenMember(false);
-  };
-  const columns: ColumnsType<DataType> = [
+  const columnsDesktop: ColumnsType<DataType> = [
     {
       title: "STT",
       dataIndex: "STT",
       fixed: "left",
-      width: 100,
+      width: 70,
     },
     {
       title: "Họ tên",
@@ -223,7 +211,155 @@ const ManagerMember = () => {
             className={styles.btnTb}
             onClick={() => navigate("./UpdateMember")}
           >
-            Cập nhật DL
+            Cập nhật
+          </button>
+          <button className={styles.btnTbDanger}>Xóa</button>
+        </span>
+      ),
+    },
+  ];
+  const columnsMobile: ColumnsType<DataType> = [
+    {
+      title: "STT",
+      dataIndex: "STT",
+
+      width: 70,
+    },
+    {
+      title: "Họ tên",
+      dataIndex: "name",
+
+      width: 200,
+    },
+    {
+      title: "Ngày sinh",
+      dataIndex: "Date",
+      width: 130,
+    },
+    {
+      title: "Số điện thoại",
+      dataIndex: "phoneNumber",
+      width: 170,
+    },
+    {
+      title: "Số định danh",
+      dataIndex: "id",
+      width: 160,
+    },
+    {
+      title: "Cấp độ",
+      dataIndex: "level",
+      width: 100,
+      filters: level.map((value: any) => ({ text: `${value}`, value })),
+      onFilter: (value: any, rec) => rec.level.indexOf(value) === 0,
+    },
+    {
+      title: "Tỉnh",
+      dataIndex: "city",
+      width: 150,
+    },
+    {
+      title: "Đơn vị quản lý F1",
+      dataIndex: "f1",
+      width: 300,
+      filters: managerf1.map((value: any) => ({ text: `${value}`, value })),
+      onFilter: (value: any, rec) => rec.f1.indexOf(value) === 0,
+    },
+    {
+      title: "CLB trực thuộc F2",
+      dataIndex: "f2",
+      width: 300,
+      filters: [
+        {
+          text: "JohnJohnyy",
+          value: "Nguyen Van A",
+        },
+        {
+          text: "Nguyễn Minh Châu",
+          value: "Nguyen Van B",
+        },
+        {
+          text: "Nguyen Van A",
+          value: "Nguyen Van C",
+        },
+      ],
+      onFilter: (value: any, rec) => rec.f2.indexOf(value) === 0,
+    },
+    {
+      title: "Ghi chú",
+      dataIndex: "note",
+      width: 130,
+      filters: [
+        {
+          text: "note content 1",
+          value: "note content 1",
+        },
+        {
+          text: "note content 2",
+          value: "note content 2",
+        },
+        {
+          text: "note content 3",
+          value: "note content 3",
+        },
+      ],
+      onFilter: (value: any, rec) => rec.note.indexOf(value) === 0,
+    },
+    {
+      title: "Tình trạng",
+      dataIndex: "status",
+      width: 300,
+      filters: [
+        {
+          text: "JohnJohnyy",
+          value: "Nguyen Van A",
+        },
+        {
+          text: "Nguyễn Minh Châu",
+          value: "Nguyen Van B",
+        },
+        {
+          text: "Nguyen Van A",
+          value: "Nguyen Van C",
+        },
+      ],
+      render: (value, record) => {
+        if (value === "Hoạt động")
+          return <span style={{ color: "#046C39" }}>{value}</span>;
+        if (value === "Nghỉ")
+          return <span style={{ color: "#8D8D8D" }}>{value}</span>;
+        if (value === "Chưa duyệt HS")
+          return <span style={{ color: "#F6C404" }}>{value}</span>;
+      },
+      onFilter: (value: any, rec) => rec.f2.indexOf(value) === 0,
+    },
+    {
+      title: "Thành tích",
+      dataIndex: "achie",
+      width: 130,
+      filters: [
+        {
+          text: "Có",
+          value: "Có",
+        },
+        {
+          text: "Không",
+          value: "Không",
+        },
+      ],
+      onFilter: (value: any, rec) => rec.achie.indexOf(value) === 0,
+    },
+    {
+      // title: 'Action',
+      key: "action",
+      width: 200,
+      render: (_, record) => (
+        <span>
+          <button
+            className={styles.btnTb}
+            onClick={() => navigate("./UpdateMember")}
+          >
+            Cập nhật
           </button>
           <button className={styles.btnTbDanger}>Xóa</button>
         </span>
@@ -234,7 +370,7 @@ const ManagerMember = () => {
     <>
       {" "}
       <div className={styles.buttonGroup}>
-        <div className={styles.rightContent}>
+        <div className={`${styles.rightContent} ${styles.responsiveContent}`}>
           <div className={styles.search}>
             <Search
               placeholder="Tìm kiếm tại đây"
@@ -261,10 +397,13 @@ const ManagerMember = () => {
         </div>
         <Table
           rowSelection={rowSelection}
-          columns={columns}
+          columns={isMobile ? columnsMobile : columnsDesktop}
           dataSource={data}
-          scroll={{ x: 1300 }}
-          style={{ overflowWrap: "initial" }}
+          scroll={{
+            x: "max-content",
+            y: "calc(100vh - 200px)",
+          }}
+          className={styles.responsiveTable}
         />
       </div>
     </>

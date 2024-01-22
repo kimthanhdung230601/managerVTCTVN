@@ -8,3 +8,18 @@
     font-weight: 600;
     padding: 0 30px;
 }
+
+.icon{
+    font-size: 22px;
+    font-weight: 600;
+    margin-right: 10px;
+}
+
+@media only screen and (max-width: 576px) {
+    .wrap{
+        font-size: 12px;
+    }
+    .icon{
+        font-size: 18px;
+    }
+}

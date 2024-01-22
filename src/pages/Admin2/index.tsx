@@ -47,26 +47,26 @@ const AdminTwo = () => {
   const [openKeys, setOpenKeys] = useState(["sub1"]);
 
   
-  const items: MenuProps["items"] = [
-    {
-      label: admin,
-      key: "SubMenu",
+  // const items: MenuProps["items"] = [
+  //   {
+  //     label: admin,
+  //     key: "SubMenu",
 
-      icon: <CaretDownOutlined />,
-      children: [
-        {
-          type: "group",
-          style: { cursor: "pointer" },
-          label: "Đăng xuất",
-        },
-        {
-          type: "group",
-          label: "Đổi mật khẩu",
-          style: { cursor: "pointer" },
-        },
-      ],
-    },
-  ];
+  //     icon: <CaretDownOutlined />,
+  //     children: [
+  //       {
+  //         type: "group",
+  //         style: { cursor: "pointer" },
+  //         label: "Đăng xuất",
+  //       },
+  //       {
+  //         type: "group",
+  //         label: "Đổi mật khẩu",
+  //         style: { cursor: "pointer" },
+  //       },
+  //     ],
+  //   },
+  // ];
   const onClick: MenuProps["onClick"] = (e) => {
     console.log("click ", e);
   };

@@ -189,7 +189,7 @@ const UpdateMember = () => {
           </div>
         </div>
       </div>
-      <div className={styles.contentWrap}>
+      <div className={styles.contentWrapMemner} style={{margin:"3vh"}}>
         <Form layout="vertical">
           <Row gutter={16}>
             <Col span={6} xs={24} sm={12} md={6}>
@@ -294,7 +294,7 @@ const UpdateMember = () => {
         </Form>
         <div>
           <Row gutter={16}>
-            <Col span={12} sm={24} md={12}>
+            <Col xs={24} sm={12} md={12} lg={12}>
               {/* <Table columns={columnsLevel} dataSource={tableData} /> */}
               {displayDivA && (
                 <div>
@@ -304,11 +304,12 @@ const UpdateMember = () => {
                     columns={columnsLevel}
                     // loading={isLoading}
                     dataSource={[...members, ...newData]}
+                    style={{overflowX:"auto"}}
                   />
                 </div>
               )}
             </Col>
-            <Col span={12} sm={24} md={12}>
+            <Col xs={24} sm={12} md={12} lg={12}>
               {/* <Table columns={columnsAchie} dataSource={members} /> */}
               {displayDivB && (
                 <div>
@@ -318,6 +319,7 @@ const UpdateMember = () => {
                     columns={columnsAchie}
                     loading={isLoading}
                     dataSource={[...members, ...newData]}
+                    style={{overflowX:"auto"}}
                   />
                 </div>
               )}
