@@ -77,7 +77,16 @@ const EditableCell: React.FC<EditableCellProps> = ({
       console.log("Save failed:", errInfo);
     }
   };
+  const saveB = async () => {
+    try {
+      const values = await form.validateFields();
 
+      toggleEdit();
+      handleSaveB({ ...record, ...values });
+    } catch (errInfo) {
+      console.log("Save failed:", errInfo);
+    }
+  };
   let childNode = children;
 
   if (editable) {
@@ -167,10 +176,12 @@ const UpdateMember: React.FC = () => {
       title: "Họ tên",
       dataIndex: "name",
       width: 170,
+      editable: true,
     },
     {
       title: "Mã định danh",
       dataIndex: "id",
+      editable: true,
     },
     {
       title: "Thành tích",
@@ -209,8 +220,8 @@ const UpdateMember: React.FC = () => {
     // Tạo dữ liệu mới với key và giá trị mặc định
     const newData: DataType = {
       key: newKey,
-      id: "32",
-      name: "Nguyễn Văn A",
+      id: "",
+      name: "",
       level: "",
       timeLevel: "",
     };
@@ -257,6 +268,7 @@ const UpdateMember: React.FC = () => {
 
   //update thành tích
   const [countB, setCountB] = useState(2);
+  
   const [dataSourceB, setDataSourceB] = useState<DataType[]>([
     {
       key: "0",
@@ -291,10 +303,12 @@ const UpdateMember: React.FC = () => {
       title: "Họ tên",
       dataIndex: "name",
       width: 170,
+      editable: true,
     },
     {
       title: "Mã định danh",
       dataIndex: "id",
+      editable: true,
     },
     {
       title: "Cấp đai",
@@ -333,8 +347,8 @@ const UpdateMember: React.FC = () => {
     // Tạo dữ liệu mới với key và giá trị mặc định
     const newDataB: DataType = {
       key: newKey,
-      id: "32",
-      name: "Nguyễn Văn A",
+      id: "",
+      name: "",
       level: "",
       achie: "",
       prize: "",
