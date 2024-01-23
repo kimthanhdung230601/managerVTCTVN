@@ -10,6 +10,7 @@ import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import Search, { SearchProps } from "antd/es/input/Search";
 import { useNavigate } from "react-router";
+import { PlusOutlined } from "@ant-design/icons";
 
 interface DataType_CN {
   key: React.Key;
@@ -451,6 +452,7 @@ export default function LevelOne() {
               onSearch={onSearch}
               style={{}}
             />
+            
             </div>
           </div>
           <Table
@@ -485,10 +487,12 @@ export default function LevelOne() {
               placeholder="Tìm kiếm tại đây"
               allowClear
               onSearch={onSearch}
-              style={{}}
+              style={{marginRight: "10px"}}
             />
-              {/* <span>Tìm kiếm</span>
-              <input className={styles.searchInput} type="text" /> */}
+              <button className={`ant-btn ${styles.addBtn}`} >
+                <PlusOutlined />
+                Thêm hội viên
+            </button>
             </div>
           </div>
           <Table

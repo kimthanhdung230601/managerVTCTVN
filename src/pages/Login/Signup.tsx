@@ -126,8 +126,26 @@ export default function Signup() {
                
                 </Form.Item>
                 <Form.Item
+                name="id"
+                rules={[{ required: true, message: 'Vui lòng nhập mã định danh!' }]}
+                wrapperCol={{ span: 24 }}
+                className={styles.formItem}
+                >
+                <Input prefix={<IdcardOutlined className={styles.icon} />} placeholder="Mã định danh" className={styles.formInput}/>
+               
+                </Form.Item>
+                <Form.Item
                 name="phone"
-                rules={[{ required: true, message: 'Vui lòng nhập số điện thoại!' }]}
+                rules={[
+                    {
+                      pattern: /^[0-9]{10}$/,
+                      message: 'Số điện thoại không đúng định dạng',
+                    },
+                    {
+                      required: true,
+                      message: 'Vui lòng nhập số điện thoại',
+                    },
+                  ]}
                 wrapperCol={{ span: 24 }}
                 className={styles.formItem}
                 >
@@ -135,12 +153,18 @@ export default function Signup() {
                
                 </Form.Item>
                 <Form.Item
-                name="id"
-                rules={[{ required: true, message: 'Vui lòng nhập mã định danh!' }]}
+                name="email"
+                rules={[
+                    {
+                        required: true,
+                        type: "email",
+                        message: "Email không đúng định dạng!",
+                    }
+                ]}
                 wrapperCol={{ span: 24 }}
                 className={styles.formItem}
                 >
-                <Input prefix={<IdcardOutlined className={styles.icon} />} placeholder="Mã định danh" className={styles.formInput}/>
+                <Input prefix={<PhoneOutlined className={styles.icon} />} placeholder="Số điện thoại" className={styles.formInput}/>
                
                 </Form.Item>
                 <Form.Item

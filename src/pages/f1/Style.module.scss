@@ -31,7 +31,13 @@
 }
 
 .filter{
+    display: flex;
+    justify-content: space-between;
     text-align: end;
+}
+
+.addBtn{
+    min-width: 160px;
 }
 
 .searchInput{
@@ -80,5 +86,8 @@
     }
     .img{
         width: 150px !important;
+    }
+    .addBtn{
+        min-width: 120px;
     }
 }
