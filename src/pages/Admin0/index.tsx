@@ -16,6 +16,7 @@ import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import { useParams } from "react-router";
 import UpdateMember from "./updateMember";
+import { setMaxListeners } from "stream";
 
 type MenuItem = Required<MenuProps>["items"][number];
 
@@ -24,22 +25,21 @@ interface AdminProps {}
 const Admin = (props: any) => {
   document.title = "Quản lý hội viên";
   const paramValue = useParams();
-  var check:any = paramValue.key;
-   console.log("paramValue", paramValue);
+  // var check:any = paramValue.key;
+  //  console.log("paramValue", paramValue);
   const [selectedMenuItem, setSelectedMenuItem] = useState<any>(paramValue.key||1);
-  // const handleMenuItemClick = (menuItem: any) => {
-  //   setSelectedMenuItem(menuItem);
-  // };
   let titleText = "";
 
   if (selectedMenuItem == 1) {
     titleText = "Quản lý hội viên";
   } else if (selectedMenuItem == 2) {
     titleText = "Quản lý tài khoản";
+  } else if(selectedMenuItem == 3){
+    titleText = "Cập nhật dữ liệu";
   }
-  const onClick: MenuProps["onClick"] = (e) => {
-    console.log("click ", e);
-  };
+  // const onClick: MenuProps["onClick"] = (e) => {
+  //   console.log("click ", e);
+  // };
   const items: TabsProps["items"] = [
     {
       key: "1",
