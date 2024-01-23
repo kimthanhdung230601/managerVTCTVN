@@ -13,6 +13,7 @@ import styles from "./styles.module.scss";
 import { useForm } from "antd/es/form/Form";
 import type { DatePickerProps } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
+import { Option } from "antd/es/mentions";
 
 interface ModalAccountProps {
   isModalOpen: any;
@@ -60,9 +61,18 @@ const ModalAccount = ({
                 <Input />
               </Form.Item>
               <Form.Item
+                label="Tỉnh"
+                name="city"
+                rules={[{ required: true, message: "Vui lòng chọn tỉnh" }]}
+              >
+                <Input />
+              </Form.Item>
+              <Form.Item
                 label="Người quản lý"
                 name="Manager"
-                rules={[{ required: true, message: "Vui lòng điền tên quản lý" }]}
+                rules={[
+                  { required: true, message: "Vui lòng điền tên quản lý" },
+                ]}
               >
                 <Input />
               </Form.Item>
@@ -80,6 +90,19 @@ const ModalAccount = ({
                 ]}
               >
                 <Input />
+              </Form.Item>{" "}
+              <Form.Item
+                label="Đơn vị "
+                name="type"
+                rules={[{ required: true, message: "Vui lòng chọn đơn vị " }]}
+              >
+                <Select>
+                  <Option value="Liên đoàn">Liên đoàn</Option>
+                  <Option value="Hội võ thuật">Hội võ thuật</Option>
+                  <Option value="Công An">Công An</Option>
+                  <Option value="Quân đội">Quân đội</Option>
+                  <Option value="Sở VHTT">Sở VHTT</Option>
+                </Select>
               </Form.Item>
               <Form.Item
                 label="Số điện thoại"

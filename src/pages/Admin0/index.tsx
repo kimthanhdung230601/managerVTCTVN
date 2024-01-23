@@ -15,6 +15,7 @@ import type { ColumnsType } from "antd/es/table";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import { useParams } from "react-router";
+import UpdateMember from "./updateMember";
 
 type MenuItem = Required<MenuProps>["items"][number];
 
@@ -55,6 +56,15 @@ const Admin = (props: any) => {
       children: (
         <>
           <ManagerAccount />
+        </>
+      ),
+    },
+    {
+      key: "3",
+      label: "Cập nhật dữ liệu",
+      children: (
+        <>
+          <UpdateMember />
         </>
       ),
     },

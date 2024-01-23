@@ -167,28 +167,7 @@ const UpdateMember = () => {
 
   return (
     <>
-      <Header />
-      <div className={styles.logoWrap}>
-        <div className={styles.title}>
-          <div className={styles.logoContainer}>
-            <img
-              className={styles.logoImg}
-              src={require("../../assets/image/logo.png")}
-              alt="Logo"
-            />
-          </div>
-          <div>
-            <div className={styles.titleText}>Cập nhật hội viên</div>
-            <Tabs
-              defaultActiveKey="1"
-              items={items}
-              className={styles.tab}
-              centered={true}
-              onTabClick={handleClick}
-            />
-          </div>
-        </div>
-      </div>
+
       <div className={styles.contentWrapMemner} style={{margin:"3vh"}}>
         <Form layout="vertical">
           <Row gutter={16}>

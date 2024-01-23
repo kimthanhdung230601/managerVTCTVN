@@ -209,9 +209,9 @@ const ManagerMember = () => {
         <span>
           <button
             className={styles.btnTb}
-            onClick={() => navigate("./UpdateMember")}
+            onClick={() => navigate("/Profiles")}
           >
-            Cập nhật
+            Chỉnh sửa
           </button>
           <button className={styles.btnTbDanger}>Xóa</button>
         </span>
