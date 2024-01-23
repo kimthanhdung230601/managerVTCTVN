@@ -13,6 +13,7 @@ import styles from "./styles.module.scss";
 import type { ColumnsType } from "antd/es/table";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
+import { useNavigate } from "react-router";
 
 type MenuItem = Required<MenuProps>["items"][number];
 
@@ -44,6 +45,7 @@ const rootSubmenuKeys = ["sub1"];
 
 const AdminTwo = () => {
   document.title = "Đơn vị quản lý"
+  const navigate = useNavigate()
   const [openKeys, setOpenKeys] = useState(["sub1"]);
 
   
@@ -97,6 +99,10 @@ const AdminTwo = () => {
               <div className={styles.labelTitle}>Email: </div>
               <div className={styles.titleName}>Nguyễn Văn A</div>
             </div>
+            
+            <button className={styles.btn} style={{marginTop: "8px"}} onClick={() => navigate("/thong-tin-tai-khoan")}>
+                Chi tiết
+            </button>
           </div>
         </div>
       </div>

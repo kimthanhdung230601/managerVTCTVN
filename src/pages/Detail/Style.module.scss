@@ -1,11 +1,15 @@
 .wrap{
+    height: auto;
+    min-height: 100vh;
     padding: 50px 20px;
     background-image: url("../../assets/image/bg.png");
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+    overflow: hidden;
 }
 .imageWrap{
+
     text-align: center;
 }
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import styles from "./Style.module.scss"
-import { Button, Form, Image, Input, message, Modal, Upload, UploadFile, UploadProps } from 'antd'
-import { LockOutlined, UserOutlined, PhoneOutlined, IdcardOutlined, PlusOutlined } from '@ant-design/icons';
+import { Button, Form, Image, Input, message, Modal, Select, Upload, UploadFile, UploadProps } from 'antd'
+import { LockOutlined, UserOutlined, PhoneOutlined, IdcardOutlined, PlusOutlined, MailOutlined, CheckOutlined, BankOutlined, HomeOutlined, EnvironmentOutlined, DeploymentUnitOutlined, SolutionOutlined, ProfileOutlined } from '@ant-design/icons';
 import ReCAPTCHA from "react-google-recaptcha";
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -13,7 +13,16 @@ const getBase64 = (file: any): Promise<string> =>
     reader.onload = () => resolve(reader.result as string);
     reader.onerror = (error) => reject(error);
 });
-
+const province = [
+    'Hà Giang', 'Cao Bằng', 'Lào Cai', 'Sơn La', 'Lai Châu', 'Bắc Kạn', 'Lạng Sơn', 'Tuyên Quang', 'Yên Bái',
+    'Thái Nguyên', 'Điện Biên', 'Phú Thọ', 'Vĩnh Phúc', 'Bắc Giang', 'Bắc Ninh', 'Hà Nội', 'Quảng Ninh', 'Hải Dương',
+    'Hải Phòng', 'Hòa Bình', 'Hưng Yên', 'Hà Nam', 'Thái Bình', 'Nam Định', 'Ninh Bình', 'Thanh Hóa', 'Nghệ An',
+    'Hà Tĩnh', 'Quảng Bình', 'Quảng Trị', 'Thừa Thiên Huế', 'Đà Nẵng', 'Quảng Nam', 'Quảng Ngãi', 'Kon Tum', 'Gia Lai',
+    'Bình Định', 'Phú Yên', 'Đắk Lắk', 'Khánh Hòa', 'Đắk Nông', 'Lâm Đồng', 'Ninh Thuận', 'Bình Phước', 'Tây Ninh',
+    'Bình Dương', 'Đồng Nai', 'Bình Thuận', 'Thành phố Hồ Chí Minh', 'Long An', 'Bà Rịa – Vũng Tàu', 'Đồng Tháp',
+    'An Giang', 'Tiền Giang', 'Vĩnh Long', 'Bến Tre', 'Cần Thơ', 'Kiên Giang', 'Trà Vinh', 'Hậu Giang', 'Sóc Trăng',
+    'Bạc Liêu', 'Cà Mau',
+  ];
 export default function Signup() {
     document.title = "Đăng ký";
     const dispatch = useDispatch();
@@ -38,7 +47,6 @@ export default function Signup() {
         setPreviewOpen1(true);
         setPreviewTitle1(file.name || file.url!.substring(file.url!.lastIndexOf('/') + 1));
     };
-
     const handleChange1: UploadProps['onChange'] = ({ fileList: newFileList }) => setFileList1(newFileList);
     const handlePreview2 = async (file: UploadFile) => {
         if (!file.url && !file.preview) {
@@ -48,9 +56,7 @@ export default function Signup() {
         setPreviewOpen2(true);
         setPreviewTitle2(file.name || file.url!.substring(file.url!.lastIndexOf('/') + 1));
     };
-
     const handleChange2: UploadProps['onChange'] = ({ fileList: newFileList }) => setFileList2(newFileList);
-
     const uploadButton = (
         <button style={{ border: 0, background: 'none' }} type="button">
         <PlusOutlined />
@@ -63,28 +69,37 @@ export default function Signup() {
     const isImage = (file:any) => {
         const acceptedImageTypes = ['image/jpeg', 'image/png'];
         return acceptedImageTypes.includes(file.type);
-      };
-    
-      const props = {
+    };
+    const onChange = (value: string) => {
+        console.log(`selected ${value}`);
+    };
+    const onSearch = (value: string) => {
+        console.log('search:', value);
+    };
+    const filterOption = (input: string, option?: { children: React.ReactNode }) => (option?.children as string).toLowerCase().includes(input.toLowerCase());
+    const onFinish = (value: any) => {
+        console.log(value)
+    }
+    const props = {
         action: "https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188",
         beforeUpload: (file:any) => {
-          if (!isImage(file)) {
+            if (!isImage(file)) {
             message.error('Chỉ cho phép tải lên các file ảnh (JPEG, PNG).');
             return false; 
-          }
-          return true; // Cho phép tải lên nếu là file ảnh
+            }
+            return true; // Cho phép tải lên nếu là file ảnh
         },
         onChange(info:any) {
-          if (info.file.status !== 'uploading') {
+            if (info.file.status !== 'uploading') {
             console.log(info.file, info.fileList);
-          }
-          if (info.file.status === 'done') {
+            }
+            if (info.file.status === 'done') {
             message.success(`${info.file.name} tải ảnh thành công`);
-          } else if (info.file.status === 'error') {
+            } else if (info.file.status === 'error') {
             message.error(`${info.file.name} tải ảnh thất bại.`);
-          }
+            }
         },
-      };
+    };
     useEffect(() => {
         dispatch({ type: 'INCREMENT_LOAD_COUNT' });
         if (reloadCount.loadCount >= 18) {
@@ -98,6 +113,7 @@ export default function Signup() {
         if(isVerify) dispatch({ type: 'RESET_LOAD_COUNT' });
          
       }, [isVerify]);
+      console.log(province.length)
   return (
     <div className={styles.loginWrap}>
         <div className={styles.logo}>
@@ -114,6 +130,7 @@ export default function Signup() {
                 initialValues={{ remember: true }}
                 layout="vertical"
                 autoComplete="off"
+                onFinish={onFinish}
                 className={styles.form}
             >
                 <Form.Item
@@ -164,8 +181,75 @@ export default function Signup() {
                 wrapperCol={{ span: 24 }}
                 className={styles.formItem}
                 >
-                <Input prefix={<PhoneOutlined className={styles.icon} />} placeholder="Số điện thoại" className={styles.formInput}/>
+                <Input prefix={<MailOutlined className={styles.icon} />} placeholder="Email" className={styles.formInput}/>
                
+                </Form.Item>
+                <EnvironmentOutlined  className={styles.iconSelect}/>
+                <Form.Item
+                name="province"
+                rules={[{ required: true, message: 'Vui lòng chọn tỉnh/ thành phố!' }]}
+                wrapperCol={{ span: 24 }}
+                className={styles.formSelect}
+                >
+                    <Select
+                       menuItemSelectedIcon={<CheckOutlined />}
+                       showSearch
+                       placeholder={"Tỉnh/ Thành phố"}
+                       optionFilterProp="children"
+                       onChange={onChange}
+                       onSearch={onSearch}
+                       filterOption={filterOption}
+                       className={styles.select}
+                    >
+                        {province.map((option) => (
+                            <Select.Option key={option} value={option}>
+                            {option}
+                            </Select.Option>))
+                        }
+                    </Select>
+                </Form.Item>
+                <DeploymentUnitOutlined  className={styles.iconSelect}/>
+                <Form.Item
+                name="unit"
+                rules={[{ required: true, message: 'Vui lòng chọn đơn vị quản lý!' }]}
+                wrapperCol={{ span: 24 }}
+                className={styles.formSelect}
+                >
+                    <Select
+                       menuItemSelectedIcon={<CheckOutlined />}
+                       showSearch
+                       placeholder={"Đơn vị quản lý"}
+                       optionFilterProp="children"
+                       onChange={onChange}
+                       onSearch={onSearch}
+                       filterOption={filterOption}
+                       className={styles.select}
+                    >
+                        <Select.Option value="lien_doan">Liên Đoàn</Select.Option>
+                        <Select.Option value="hoi_vo_thuat">Hội Võ Thuật</Select.Option>
+                        <Select.Option value="cong_an">Công An</Select.Option>
+                        <Select.Option value="quan_doi">Quân Đội</Select.Option>
+                        <Select.Option value="giao_duc">Giáo Dục</Select.Option>
+                        <Select.Option value="so_vhtt">Sở VHTT</Select.Option>
+                </Select>
+                </Form.Item>
+                <Form.Item
+                    name="club"
+                    rules={[{ required: true, message: 'Vui lòng nhập câu lạc bộ!' }]}
+                    wrapperCol={{ span: 24 }}
+                    className={styles.formItem}
+                    >
+                    <Input prefix={<SolutionOutlined  className={styles.icon} />} placeholder="CLB (Môn Phái, Võ Phái, Võ Đường, CLB,...)" className={styles.formInput}/>
+                
+                </Form.Item>
+                <Form.Item
+                    name="account"
+                    rules={[{ required: true, message: 'Vui lòng tài khoản đăng nhập!' }]}
+                    wrapperCol={{ span: 24 }}
+                    className={styles.formItem}
+                    >
+                    <Input prefix={<ProfileOutlined  className={styles.icon} />} placeholder="Tài khoản đăng nhập" className={styles.formInput}/>
+                
                 </Form.Item>
                 <Form.Item
                 name="password"
@@ -214,50 +298,57 @@ export default function Signup() {
                     className={styles.formInput}/>
                 </Form.Item>
                 <div className={styles.formImage}>
-                    <Form.Item
-                        name="image"
+                    <div style={{height: "100%"}}>
+                    <div style={{textAlign: "center", marginBottom: "10px"}}>Ảnh Bằng cấp hiện tại</div>
+                       <Form.Item
+                        name="image1"
                         rules={[{ required: true, message: 'Vui lòng tải ảnh lên' }]}
                         wrapperCol={{ span: 24 }}
                         className={`${styles.uploadForm} ${styles.formItem}`}
-                    >
-                        <div style={{textAlign: "center", marginBottom: "10px"}}>Tải ảnh văn bằng</div>
-                        <Upload
-                            {...props}
-                            listType="picture-card"
-                            fileList={fileList1}
-                            onPreview={handlePreview1}
-                            onChange={handleChange1}
-                            className={styles.uploadImg}
                         >
-                            {fileList1.length >= 1 ? null : uploadButton}
-                        </Upload>
-                        
+                            
+                            <Upload
+                                {...props}
+                                listType="picture-card"
+                                fileList={fileList1}
+                                onPreview={handlePreview1}
+                                onChange={handleChange1}
+                                className={styles.uploadImg}
+                            >
+                                {fileList1.length === 1 ? null : uploadButton}
+                            </Upload>
+                        </Form.Item>
                         <Modal open={previewOpen1} title={previewTitle1} footer={null} onCancel={handleCancel1}>
-                            <img alt="example" style={{ width: '100%' }} src={previewImage1} />
-                        </Modal>
-                    </Form.Item>
-                    <Form.Item
-                        name="image"
-                        rules={[{ required: true, message: 'Vui lòng tải ảnh lên' }]}
-                        wrapperCol={{ span: 24 }}
-                        className={`${styles.uploadForm} ${styles.formItem}`}
-                    >
-                        <div style={{textAlign: "center", marginBottom: "10px"}}>Tải giấy giới thiệu</div>
-                        <Upload
-                            {...props}
-                            listType="picture-card"
-                            fileList={fileList2}
-                            onPreview={handlePreview2}
-                            onChange={handleChange2}
-                            className={styles.uploadImg}
+                            <img alt="degree" style={{ width: '100%' }} src={previewImage1} />
+                        </Modal> 
+                    </div>
+                    
+                    <div style={{height: "100%"}}>
+                        <div style={{textAlign: "center", marginBottom: "10px"}}>Ảnh giấy giới thiệu</div>
+                        <Form.Item
+                            name="image2"
+                            rules={[{ required: true, message: 'Vui lòng tải ảnh lên' }]}
+                            wrapperCol={{ span: 24 }}
+                            className={`${styles.uploadForm} ${styles.formItem}`}
                         >
-                            {fileList2.length >= 1 ? null : uploadButton}
-                        </Upload>
-                        
+                            
+                            <Upload
+                                {...props}
+                                listType="picture-card"
+                                // fileList={fileList2}
+                                onPreview={handlePreview2}
+                                onChange={handleChange2}
+                                className={styles.uploadImg}
+                            >
+                                {fileList2.length === 1 ? null : uploadButton}
+                            </Upload>
+                        </Form.Item>
                         <Modal open={previewOpen2} title={previewTitle2} footer={null} onCancel={handleCancel2}>
-                            <img alt="example" style={{ width: '100%' }} src={previewImage2} />
+                            <img alt="referral" style={{ width: '100%' }} src={previewImage2} />
                         </Modal>
-                    </Form.Item>
+                    </div>
+                    
+                    
                 </div>
                 <div className={styles.note}>Lưu ý: Kích thước ảnh không vượt quá 25MB.</div>
                 {

@@ -8,7 +8,7 @@ import type { SearchProps } from "antd/es/input";
 import { Input, Table, Button, TableProps } from "antd";
 import styles from "./styles.module.scss";
 import { level, managerf1, randomState, statess } from "../../until/until";
-import { useMediaQuery } from "react-responsive";
+// import { useMediaQuery } from "react-responsive";
 import type { ColumnsType } from "antd/es/table";
 import type { FilterValue } from "antd/es/table/interface";
 
@@ -45,7 +45,7 @@ const ManagerMember = () => {
   const navigate = useNavigate();
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [loading, setLoading] = useState(false);
-  const isMobile = useMediaQuery({ maxWidth: 768 });
+  // const isMobile = useMediaQuery({ maxWidth: 768 });
   const start = () => {
     setLoading(true);
     // ajax request after empty completing
@@ -397,7 +397,7 @@ const ManagerMember = () => {
         </div>
         <Table
           rowSelection={rowSelection}
-          columns={isMobile ? columnsMobile : columnsDesktop}
+          // columns={isMobile ? columnsMobile : columnsDesktop}
           dataSource={data}
           scroll={{
             x: "max-content",

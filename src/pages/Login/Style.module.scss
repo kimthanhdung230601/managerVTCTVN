@@ -25,6 +25,7 @@
     max-width: 800px;
     margin-left: auto;
     margin-right: auto;
+    overflow: hidden;
 }
 
 .title{
@@ -46,6 +47,18 @@
     border-right: 1px solid #c2c2c2;
 }
 
+.iconSelect{
+    position: absolute;
+    color: #5a5a5a;
+    padding-right: 8px;
+    margin-top: 6px;
+    margin-bottom: 6px;
+    border-right: 1px solid #c2c2c2;
+    font-size: 18px;
+    transform: translate(12px, 12px) ;
+
+}
+
 .formItem{
     margin-top: 8px;
     text-align: center;
@@ -62,6 +75,40 @@
     padding: 12px 12px;
 }
 
+.formSelect{
+    position: relative;
+    margin-top: 8px;
+    text-align: center;
+    height: 100%;
+}
+
+
+.select{
+    display: flex;
+    align-items: center;
+    height: auto;
+}
+
+.select > input {
+    padding-left: 52px !important;
+}
+
+.select > div{
+    background-color: transparent !important;
+    text-align: start !important;
+    font-size: 18px !important;
+    padding: 12px 52px !important;
+    height: auto !important;
+}
+
+.select > div > span > input {
+    padding-left: 42px !important;
+}
+
+.select:focus-visible{
+    outline: none !important;
+}
+
 .button{
     margin-top: 8px;
     font-size: 16px;
@@ -76,16 +123,19 @@
 }
 
 .formImage{
+    margin-top: 8px;
     display: flex;
+    height: 265px;
     justify-content: space-around;
+    overflow: hidden;
 }
 
 .uploadForm {
     text-align: center;
     width: 180px;
-    height: 260px;
-    // overflow: hidden;
+    overflow: hidden;
 }
+
 
 .uploadImg > div > div{
     width: 180px !important;
@@ -109,6 +159,15 @@
     .formImage > div {
         margin: 0 auto;
     }
+    .formInput {
+        font-size: 14px;
+    }
+    .select > div{
+        font-size: 14px !important;
+    }
+    .iconSelect{
+        font-size: 14px ;
+    }
 }
 
 @media only screen and (max-width: 412px) {
@@ -116,6 +175,8 @@
         transform: scale(0.8); /* Điều chỉnh tỷ lệ kích thước */
         transform-origin: 0 0;
     }
+   
+
 }
 
 @media only screen and (max-width: 360px) {

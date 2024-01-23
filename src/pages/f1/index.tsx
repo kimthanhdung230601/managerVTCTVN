@@ -489,10 +489,10 @@ export default function LevelOne() {
               onSearch={onSearch}
               style={{marginRight: "10px"}}
             />
-              <button className={`ant-btn ${styles.addBtn}`} >
-                <PlusOutlined />
+              <div className={styles.addBtn} onClick={() => navigate("/Profiles")}>
+                <PlusOutlined className={styles.icon} />
                 Thêm hội viên
-            </button>
+              </div>
             </div>
           </div>
           <Table

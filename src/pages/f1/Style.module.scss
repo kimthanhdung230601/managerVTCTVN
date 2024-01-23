@@ -38,6 +38,16 @@
 
 .addBtn{
     min-width: 160px;
+    cursor: pointer;
+    margin-left: 2vh;
+    background-color: var(--primary);
+    color: white;
+    padding: 6px 11px;
+    border-radius: 4px;
+    font-size: 16px;
+    &:hover{
+        opacity: 0.7;
+    }
 }
 
 .searchInput{
@@ -88,6 +98,6 @@
         width: 150px !important;
     }
     .addBtn{
-        min-width: 120px;
+        min-width: 130px;
     }
 }

@@ -14,6 +14,8 @@ import Profiles from "../pages/Profiles";
 import Admin from "../pages/Admin0";
 import UpdateMember from "../pages/Admin0/updateMember";
 import AdminTwo from "../pages/Admin2";
+import Account from "../pages/Account";
+import ChangePassword from "../pages/ChangePassword";
 
 const Wrapper = () => {
   return (
@@ -32,6 +34,14 @@ const Wrapper = () => {
         <Route
           path="/hoi-vien-du-tu-cach-giam-khao"
           element={<JuryMember />}
+        ></Route>
+        <Route
+          path="/thong-tin-tai-khoan"
+          element={<Account />}
+        ></Route>
+        <Route
+          path="/doi-mat-khau"
+          element={<ChangePassword />}
         ></Route>
         <Route path="/Profiles" element={<Profiles />}></Route>
         <Route path={`Admin0/:key`} element={<Admin />}></Route>
