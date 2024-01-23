@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import styles from "./Style.module.scss"
 import 'animate.css';
-import {MenuOutlined, CloseOutlined } from "@ant-design/icons";
+import {MenuOutlined, CloseOutlined, UserOutlined } from "@ant-design/icons";
 export default function Header() {
     const [isOpen, setIsOpen] = useState(false)
     const handleOpenMenu = () => {
@@ -61,9 +61,27 @@ export default function Header() {
                 
             </Col>
             <Col className={ `${styles.headerItem} gutter-row`} >
-                <Link to={"/dang-nhap"} className={styles.itemLink}>
-                    Đăng nhập
-                </Link>
+            <div className={styles.user}>
+                <div className={styles.itemLink}>
+                    <UserOutlined className={styles.userIcon} id="user"/>
+                </div>
+                <div className={`animate__zoomIn ${styles.userMenu}`}>
+                    <li className={styles.menuItem}>
+                        <Link to={'/doi-mat-khau'} className={`${styles.menuItemLink}`}>
+                            Đổi mật khẩu
+                        </Link>
+                    </li>
+                    <li className={styles.menuItem}>
+                        <Link to={'/dang-nhap'} className={styles.menuItemLink}>
+                            Đăng nhập
+                        </Link>
+                    </li>
+                    
+                </div> 
+            </div>
+                {/* <Link to={"/dang-nhap"} className={styles.itemLink}>
+                        Đăng nhập
+                </Link> */}
             </Col>
             <Col xs={12} md={12} lg={6} className={` ${styles.listResponsive}`} onClick={handleOpenMenu}>
                 {
@@ -98,6 +116,11 @@ export default function Header() {
             <li className={styles.menuResponsiveItem}>
                 <Link to={'/huong-dan'} className={styles.menuResponsiveLink} onClick={handleCloseMenu}>
                 Hướng dẫn
+                </Link>
+            </li>
+            <li className={styles.menuResponsiveItem}>
+                <Link to={'/doi-mat-khau'} className={styles.menuResponsiveLink} onClick={handleCloseMenu}>
+                    Đổi mật khẩu
                 </Link>
             </li>
             <li className={styles.menuResponsiveItem}>

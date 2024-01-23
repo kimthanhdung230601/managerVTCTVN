@@ -11,6 +11,9 @@ import { Menu, Input, Divider, Radio, Table, Button, Space } from "antd";
 import { admin } from "../../until/until";
 import styles from "./styles.module.scss";
 import type { ColumnsType } from "antd/es/table";
+import Header from "../../components/Header";
+import Footer from "../../components/Footer";
+import { useNavigate } from "react-router";
 
 type MenuItem = Required<MenuProps>["items"][number];
 
@@ -41,59 +44,37 @@ const items: MenuItem[] = [
 const rootSubmenuKeys = ["sub1"];
 
 const AdminTwo = () => {
+  document.title = "Đơn vị quản lý"
+  const navigate = useNavigate()
   const [openKeys, setOpenKeys] = useState(["sub1"]);
 
   
-  const items: MenuProps["items"] = [
-    {
-      label: admin,
-      key: "SubMenu",
+  // const items: MenuProps["items"] = [
+  //   {
+  //     label: admin,
+  //     key: "SubMenu",
 
-      icon: <CaretDownOutlined />,
-      children: [
-        {
-          type: "group",
-          style: { cursor: "pointer" },
-          label: "Đăng xuất",
-        },
-        {
-          type: "group",
-          label: "Đổi mật khẩu",
-          style: { cursor: "pointer" },
-        },
-      ],
-    },
-  ];
+  //     icon: <CaretDownOutlined />,
+  //     children: [
+  //       {
+  //         type: "group",
+  //         style: { cursor: "pointer" },
+  //         label: "Đăng xuất",
+  //       },
+  //       {
+  //         type: "group",
+  //         label: "Đổi mật khẩu",
+  //         style: { cursor: "pointer" },
+  //       },
+  //     ],
+  //   },
+  // ];
   const onClick: MenuProps["onClick"] = (e) => {
     console.log("click ", e);
   };
   return (
     <>
-      <div className={styles.header}>
-        <div className={styles.logo}>
-          <div>
-            <img
-              className={styles.logoImg}
-              src={require("../../assets/image/logo.png")}
-            />
-          </div>
-          <div className={styles.title}>
-            LIÊN ĐOÀN VÕ THUẬT CỔ TRUYỀN VIỆT NAM
-          </div>
-        </div>
-        <div className={styles.menu}>
-          <ul className={styles.menuContent}>
-            <div>
-              <Menu
-                className={styles.subMenu}
-                onClick={onClick}
-                mode="horizontal"
-                items={items}
-              />
-            </div>
-          </ul>
-        </div>
-      </div>
+      <Header/>
       <div className={styles.logoWrap}>
         <div className={styles.title}>
           <div className={styles.logoContainer}>
@@ -105,7 +86,7 @@ const AdminTwo = () => {
           </div>
           <div className={styles.titleContent}>
             <div className={styles.titleText}>Đơn vị:</div>{" "}
-            <div className={styles.labelTitle}>Thông tin người quản lý</div>
+            <div className={(styles.labelTitle && styles.title)}>Thông tin người quản lý</div>
             <div className={styles.subTitleText}>
               <div className={styles.labelTitle}>Họ tên: </div>
               <div className={styles.titleName}>Nguyễn Văn A</div>
@@ -118,12 +99,17 @@ const AdminTwo = () => {
               <div className={styles.labelTitle}>Email: </div>
               <div className={styles.titleName}>Nguyễn Văn A</div>
             </div>
+            
+            <button className={styles.btn} style={{marginTop: "8px"}} onClick={() => navigate("/thong-tin-tai-khoan")}>
+                Chi tiết
+            </button>
           </div>
         </div>
       </div>
       <div className={styles.contentWrap}>
         <ManagerMemberTwo />
       </div>
+      <Footer/>
     </>
   );
 };

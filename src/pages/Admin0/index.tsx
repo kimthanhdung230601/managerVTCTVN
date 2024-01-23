@@ -6,84 +6,66 @@ import {
   SettingOutlined,
   CaretDownOutlined,
 } from "@ant-design/icons";
-import type { MenuProps } from "antd";
+import type { MenuProps, TabsProps } from "antd";
 import type { SearchProps } from "antd/es/input";
-import { Menu, Input, Divider, Radio, Table, Button, Space } from "antd";
+import { Menu, Input, Divider, Radio, Table, Button, Tabs } from "antd";
 import { admin } from "../../until/until";
 import styles from "./styles.module.scss";
 import type { ColumnsType } from "antd/es/table";
+import Header from "../../components/Header";
+import Footer from "../../components/Footer";
+import { useParams } from "react-router";
 
 type MenuItem = Required<MenuProps>["items"][number];
 
-const { Search } = Input;
-
 interface AdminProps {}
 
-const Admin = () => {
-  const [selectedMenuItem, setSelectedMenuItem] = useState("member");
-  const handleMenuItemClick = (menuItem: any) => {
-    setSelectedMenuItem(menuItem);
-  };
+const Admin = (props: any) => {
+  document.title = "Quản lý hội viên";
+  const paramValue = useParams();
+  var check:any = paramValue.key;
+   console.log("paramValue", paramValue);
+  const [selectedMenuItem, setSelectedMenuItem] = useState<any>(paramValue.key||1);
+  // const handleMenuItemClick = (menuItem: any) => {
+  //   setSelectedMenuItem(menuItem);
+  // };
   let titleText = "";
 
-  if (selectedMenuItem === "member") {
+  if (selectedMenuItem == 1) {
     titleText = "Quản lý hội viên";
-  } else if (selectedMenuItem === "account") {
+  } else if (selectedMenuItem == 2) {
     titleText = "Quản lý tài khoản";
   }
-  const items: MenuProps["items"] = [
-    {
-      label: admin,
-      key: "SubMenu",
-
-      icon: <CaretDownOutlined />,
-      children: [
-        {
-          type: "group",
-          style: { cursor: "pointer" },
-          label: "Đăng xuất",
-        },
-        {
-          type: "group",
-          label: "Đổi mật khẩu",
-          style: { cursor: "pointer" },
-        },
-      ],
-    },
-  ];
   const onClick: MenuProps["onClick"] = (e) => {
     console.log("click ", e);
   };
-
+  const items: TabsProps["items"] = [
+    {
+      key: "1",
+      label: "Quản lý hội viên",
+      children: (
+        <>
+          <ManagerMember />
+        </>
+      ),
+    },
+    {
+      key: "2",
+      label: "Quản lý tài khoản",
+      children: (
+        <>
+          <ManagerAccount />
+        </>
+      ),
+    },
+  ];
+  const handleClick = (key: string) => {
+    console.log(key);
+    setSelectedMenuItem(key);
+  };
   return (
     <>
-      <div className={styles.header}>
-        <div className={styles.logo}>
-          <div>
-            <img
-              className={styles.logoImg}
-              src={require("../../assets/image/logo.png")}
-            />
-          </div>
-          <div className={styles.title}>
-            LIÊN ĐOÀN VÕ THUẬT CỔ TRUYỀN VIỆT NAM
-          </div>
-        </div>
-        <div className={styles.menu}>
-          <ul className={styles.menuContent}>
-            <li>
-              <div>
-                <Menu
-                  className={styles.subMenu}
-                  onClick={onClick}
-                  mode="horizontal"
-                  items={items}
-                />
-              </div>
-            </li>
-          </ul>
-        </div>
-      </div>
+      <Header />
       <div className={styles.logoWrap}>
         <div className={styles.title}>
           <div className={styles.logoContainer}>
@@ -93,34 +75,19 @@ const Admin = () => {
               alt="Logo"
             />
           </div>
-          <div>
-            <span
-              onClick={() => handleMenuItemClick("member")}
-              className={`${styles.subnav} ${
-                selectedMenuItem === "member" ? styles.choosenBtn : ""
-              }`}
-            >
-              QUẢN LÝ HỘI VIÊN
-            </span>
-            <span
-              onClick={() => handleMenuItemClick("account")}
-              className={`${styles.subnav} ${
-                selectedMenuItem === "account" ? styles.choosenBtn : ""
-              }`}
-            >
-              QUẢN LÝ TÀI KHOẢN
-            </span>
-          </div>
-
-          <div className={styles.titleText}>
-            
-            {titleText}</div>
+          <div className={styles.titleText}>{titleText}</div>
         </div>
       </div>
       <div className={styles.contentWrap}>
-        {selectedMenuItem === "member" && <ManagerMember />}
-        {selectedMenuItem === "account" && <ManagerAccount />}
+        <Tabs
+          defaultActiveKey={paramValue.key}
+          items={items}
+          className={styles.tab}
+          centered={true}
+          onTabClick={handleClick}
+        />
       </div>
+      <Footer />
     </>
   );
 };

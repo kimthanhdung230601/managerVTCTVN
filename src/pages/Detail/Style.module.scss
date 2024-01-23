@@ -1,16 +1,21 @@
 .wrap{
-    padding: 120px 20px;
+    height: auto;
+    min-height: 100vh;
+    padding: 50px 20px;
     background-image: url("../../assets/image/bg.png");
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+    overflow: hidden;
 }
 .imageWrap{
+
     text-align: center;
 }
 
 .img{
-    width: 217px !important;
+    width: 195px !important;
+    min-width: 150px !important;
 }
 
 .title{

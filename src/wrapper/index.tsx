@@ -10,6 +10,12 @@ import Signup from "../pages/Login/Signup";
 import News from "../pages/News";
 import Post from "../pages/Post";
 import Search from "../pages/Search";
+import Profiles from "../pages/Profiles";
+import Admin from "../pages/Admin0";
+import UpdateMember from "../pages/Admin0/updateMember";
+import AdminTwo from "../pages/Admin2";
+import Account from "../pages/Account";
+import ChangePassword from "../pages/ChangePassword";
 
 const Wrapper = () => {
   return (
@@ -25,7 +31,22 @@ const Wrapper = () => {
         <Route path="/huong-dan" element={<Guide />}></Route>
         <Route path="/dang-bai" element={<Post />}></Route>
         <Route path="/bai-viet" element={<Article />}></Route>
-        <Route path="/hoi-vien-du-tu-cach-giam-khao" element={<JuryMember />}></Route>
+        <Route
+          path="/hoi-vien-du-tu-cach-giam-khao"
+          element={<JuryMember />}
+        ></Route>
+        <Route
+          path="/thong-tin-tai-khoan"
+          element={<Account />}
+        ></Route>
+        <Route
+          path="/doi-mat-khau"
+          element={<ChangePassword />}
+        ></Route>
+        <Route path="/Profiles" element={<Profiles />}></Route>
+        <Route path={`Admin0/:key`} element={<Admin />}></Route>
+        <Route path="/Admin0/:key/UpdateMember" element={<UpdateMember />}></Route>
+        <Route path="/Admin2" element={<AdminTwo />}></Route>
       </Routes>
     </>
   );

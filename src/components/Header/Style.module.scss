@@ -28,6 +28,64 @@
     color: #a88700 !important;
 }
 
+.user{
+    cursor: pointer;
+    position: relative;
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--subPrimary);
+    &:hover{
+        .userMenu{
+            display: block;
+        }
+    }
+    &::after{
+        content: "";
+        display: block;
+        position: absolute;
+        bottom: -30px;
+        right: -10px;
+        border-style: solid;
+        border-color: transparent;
+        border-width: 17px 50px;
+    }
+}
+
+.userIcon{
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--subPrimary);
+}
+
+.userMenu{
+    display: none;
+    margin-top: 30px;
+    width: 150px;
+    right: 0;
+    transform: translateX(10%);
+    position: absolute;
+    border-radius: 4px;
+    background-color: #f8f8f8;
+    overflow: hidden;
+    z-index: 1;
+    .menuItem{
+        list-style: none;
+        padding: 10px 20px;
+        color: var(--primary);
+        .menuItemLink{
+            font-size: 16px;
+            &:hover{
+               color: var(--subPrimary); 
+            }
+        }
+    }
+
+}
+
+.userMenu > li:first-child{
+    border-bottom: 1px solid #e9e9e9;
+}
+
 .img{
     width: 50px !important;
 }

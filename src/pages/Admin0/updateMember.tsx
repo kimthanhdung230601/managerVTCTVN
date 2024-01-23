@@ -8,11 +8,12 @@ import {
   Select,
   Space,
   Table,
+  Tabs,
 } from "antd";
 import styles from "./styles.module.scss";
 import { useEffect, useState } from "react";
 import { CaretDownOutlined } from "@ant-design/icons";
-import type { MenuProps, TableProps } from "antd";
+import type { MenuProps, TableProps, TabsProps } from "antd";
 import { admin } from "../../until/until";
 import { useNavigate } from "react-router-dom";
 import { ColumnsType } from "antd/es/table";
@@ -21,6 +22,11 @@ import useDebounce from "../../hook/useDebounce";
 import Column from "antd/es/table/Column";
 import { useQuery } from "react-query";
 import { addNewData, getList } from "../../api/example";
+import Header from "../../components/Header";
+import Footer from "../../components/Footer";
+import ManagerMember from "./managerMember";
+import ManagerAccount from "./managerAccount";
+import Cookies from "js-cookie";
 interface UpdateMemberProps {}
 interface DataType {
   id?: string;
@@ -34,32 +40,35 @@ interface DataType {
 const { Option } = Select;
 const UpdateMember = () => {
   const navigate = useNavigate();
-  const [selectedMenuItem, setSelectedMenuItem] = useState("member");
-  const handleMenuItemClick = (menuItem: any) => {
-    navigate("/Admin0");
-  };
-
-  const items = [
-    {
-      label: "admin",
-      key: "SubMenu",
-      icon: <CaretDownOutlined />,
-      children: [
-        { type: "group", style: { cursor: "pointer" }, label: "Đăng xuất" },
-        { type: "group", label: "Đổi mật khẩu", style: { cursor: "pointer" } },
-      ],
-    },
-  ];
+  // const handleMenuItemClick = (menuItem: any) => {
+  //   navigate("/Admin0");
+  // };
 
   const onClick = (e: any) => {
     // console.log("click ", e);
   };
   const [choosen, setChoosen] = useState<string>("level");
   const [searchTerm, setSearchTerm] = useState<any>({});
-  const debouncedSearchTerm = useDebounce(searchTerm, 2000);
+  const debouncedSearchTerm = useDebounce(searchTerm, 1000);
   const [tableData, setTableData] = useState<any>();
   const handleSelectChange = (value: string) => {
     setChoosen(value);
+  };
+  //tab
+  const items: TabsProps["items"] = [
+    {
+      key: "1",
+      label: "Quản lý hội viên",
+      children: <></>,
+    },
+    {
+      key: "2",
+      label: "Quản lý tài khoản",
+      children: <></>,
+    },
+  ];
+  const handleClick = (key: string) => {
+    navigate(`/Admin0/${key}`);
   };
   // const [table, setTable] = useState<boolean>(false);
   const [newData, setNewData] = useState<any>([]);
@@ -158,33 +167,7 @@ const UpdateMember = () => {
 
   return (
     <>
-      <div className={styles.header}>
-        <div className={styles.logo}>
-          <div>
-            <img
-              className={styles.logoImg}
-              src={require("../../assets/image/logo.png")}
-            />
-          </div>
-          <div className={styles.title}>
-            LIÊN ĐOÀN VÕ THUẬT CỔ TRUYỀN VIỆT NAM
-          </div>
-        </div>
-        <div className={styles.menu}>
-          <ul className={styles.menuContent}>
-            <li>
-              <div>
-                <Menu
-                  className={styles.subMenu}
-                  onClick={onClick}
-                  mode="horizontal"
-                  items={items}
-                />
-              </div>
-            </li>
-          </ul>
-        </div>
-      </div>
+      <Header />
       <div className={styles.logoWrap}>
         <div className={styles.title}>
           <div className={styles.logoContainer}>
@@ -195,27 +178,18 @@ const UpdateMember = () => {
             />
           </div>
           <div>
-            <span
-              onClick={() => handleMenuItemClick("member")}
-              className={`${styles.subnav} ${
-                selectedMenuItem === "member" ? styles.choosenBtn : ""
-              }`}
-            >
-              QUẢN LÝ HỘI VIÊN
-            </span>
-            <span
-              onClick={() => handleMenuItemClick("account")}
-              className={`${styles.subnav} ${
-                selectedMenuItem === "account" ? styles.choosenBtn : ""
-              }`}
-            >
-              QUẢN LÝ TÀI KHOẢN
-            </span>
+            <div className={styles.titleText}>Cập nhật hội viên</div>
+            <Tabs
+              defaultActiveKey="1"
+              items={items}
+              className={styles.tab}
+              centered={true}
+              onTabClick={handleClick}
+            />
           </div>
-          <div className={styles.titleText}>Cập nhật hội viên</div>
         </div>
       </div>
-      <div className={styles.contentWrap}>
+      <div className={styles.contentWrapMemner} style={{margin:"3vh"}}>
         <Form layout="vertical">
           <Row gutter={16}>
             <Col span={6} xs={24} sm={12} md={6}>
@@ -320,7 +294,7 @@ const UpdateMember = () => {
         </Form>
         <div>
           <Row gutter={16}>
-            <Col span={12} sm={24} md={12}>
+            <Col xs={24} sm={12} md={12} lg={12}>
               {/* <Table columns={columnsLevel} dataSource={tableData} /> */}
               {displayDivA && (
                 <div>
@@ -330,11 +304,12 @@ const UpdateMember = () => {
                     columns={columnsLevel}
                     // loading={isLoading}
                     dataSource={[...members, ...newData]}
+                    style={{overflowX:"auto"}}
                   />
                 </div>
               )}
             </Col>
-            <Col span={12} sm={24} md={12}>
+            <Col xs={24} sm={12} md={12} lg={12}>
               {/* <Table columns={columnsAchie} dataSource={members} /> */}
               {displayDivB && (
                 <div>
@@ -342,8 +317,9 @@ const UpdateMember = () => {
                   {debouncedSearchTerm.timeAchie}
                   <Table
                     columns={columnsAchie}
-                    // loading={isLoading}
+                    loading={isLoading}
                     dataSource={[...members, ...newData]}
+                    style={{overflowX:"auto"}}
                   />
                 </div>
               )}

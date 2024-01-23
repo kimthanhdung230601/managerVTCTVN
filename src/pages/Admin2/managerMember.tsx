@@ -6,7 +6,7 @@ import {
 } from "@ant-design/icons";
 import type { SearchProps } from "antd/es/input";
 import { Input, Table, Button, TableProps } from "antd";
-import { admin } from "../../until/until";
+import { admin, randomState } from "../../until/until";
 import styles from "./styles.module.scss";
 import type { ColumnsType } from "antd/es/table";
 import type { FilterValue } from "antd/es/table/interface";
@@ -29,16 +29,6 @@ interface DataType {
 
 const data: DataType[] = [];
 
-const randomState = () => {
-  const randomNumber = Math.random();
-  if (randomNumber < 0.33) {
-    return "Hoạt động";
-  } else if (randomNumber < 0.66) {
-    return "Nghỉ";
-  } else {
-    return "Chưa duyệt HS";
-  }
-};
 for (let i = 0; i < 46; i++) {
   data.push({
     key: i,
@@ -78,21 +68,6 @@ const ManagerMemberTwo = () => {
     setIsModalOpen(false);
   };
   const navigate = useNavigate();
-
-  //modal quản lý thành viên
-  // const [isModalOpenMember, setIsModalOpenMember] = useState(false);
-
-  // const showModalMember = () => {
-  //   setIsModalOpenMember(true);
-  // };
-
-  // const handleOkMember = () => {
-  //   setIsModalOpenMember(false);
-  // };
-
-  // const handleCancelMember = () => {
-  //   setIsModalOpenMember(false);
-  // };
   const columns: ColumnsType<DataType> = [
     {
       title: "STT",
@@ -174,6 +149,14 @@ const ManagerMemberTwo = () => {
           value: "Chưa duyệt HS",
         },
       ],
+      render: (value, record) => {
+        if (value === "Hoạt động")
+          return <span style={{ color: "#046C39" }}>{value}</span>;
+        if (value === "Nghỉ")
+          return <span style={{ color: "#8D8D8D" }}>{value}</span>;
+        if (value === "Chưa duyệt HS")
+          return <span style={{ color: "#F6C404" }}>{value}</span>;
+      },
       onFilter: (value: any, rec) => rec.state.indexOf(value) === 0,
     },
     { title: "Thành tích", dataIndex: "achie" },
@@ -181,7 +164,7 @@ const ManagerMemberTwo = () => {
       // title: 'Action',
       key: "action",
       render: (_, record) => (
-        <span>
+        <div style={{ textAlign: "start" }}>
           <button
             className={styles.btnTb}
             onClick={() => showModalUpdateNote()}
@@ -192,7 +175,7 @@ const ManagerMemberTwo = () => {
           {record.state == "Chưa duyệt HS" && (
             <button className={styles.btnTbDanger}>Xóa</button>
           )}
-        </span>
+        </div>
       ),
     },
   ];
@@ -225,22 +208,8 @@ const ManagerMemberTwo = () => {
           rowSelection={rowSelection}
           columns={columns}
           dataSource={data}
-          pagination={{
-            // style: { backgroundColor: '#046C39', border: '1px solid #046C39' },
-            itemRender: (current, type, originalElement) => {
-              if (type === "page") {
-                return (
-                  <span
-                    className="custom-pagination-item"
-                    style={{ color: "#046C39", borderColor: "#046C39" }}
-                  >
-                    {originalElement}
-                  </span>
-                );
-              }
-              return originalElement;
-            },
-          }}
+          scroll={{ x: 1300 }}
+          style={{ overflowX: "auto" }}
         />
       </div>
       <ModalUpdateNote

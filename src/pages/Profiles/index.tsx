@@ -17,6 +17,8 @@ import type { UploadFile, UploadProps } from "antd";
 import ImgCrop from "antd-img-crop";
 
 import useImageCompression from "../../hook/imageCompression";
+import Header from "../../components/Header";
+import Footer from "../../components/Footer";
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
 interface ProfilesProps {}
@@ -81,7 +83,7 @@ const Profiles = () => {
   return (
     <>
       <div className={styles.wrap}>
-        <div className={styles.header}>
+        {/* <div className={styles.header}>
           <div className={styles.logo}>
             <div>
               <img
@@ -93,7 +95,8 @@ const Profiles = () => {
               LIÊN ĐOÀN VÕ THUẬT CỔ TRUYỀN VIỆT NAM
             </div>
           </div>
-        </div>
+        </div> */}
+        <Header />
         <div className={styles.content}>
           <div className={styles.title}>THÔNG TIN HỒ SƠ</div>
           <div className={styles.form}>
@@ -273,12 +276,24 @@ const Profiles = () => {
                 </Row>
                 <Row gutter={16}>
                   <Col span={8} xs={24} sm={12} md={8}>
-                    <Form.Item label="Tỉnh/Thành ">
+                    <Form.Item
+                      label="Tỉnh/Thành "
+                      name="city"
+                      rules={[
+                        { required: true, message: "Vui lòng điền thông tin" },
+                      ]}
+                    >
                       <Input />
                     </Form.Item>
                   </Col>
                   <Col span={8} xs={24} sm={12} md={8}>
-                    <Form.Item label="Quận/Huyện">
+                    <Form.Item
+                      label="Quận/Huyện"
+                      name="district"
+                      rules={[
+                        { required: true, message: "Vui lòng điền thông tin" },
+                      ]}
+                    >
                       <Input />
                     </Form.Item>
                   </Col>
@@ -337,6 +352,7 @@ const Profiles = () => {
           </div>
         </div>
       </div>
+      <Footer />
     </>
   );
 };
