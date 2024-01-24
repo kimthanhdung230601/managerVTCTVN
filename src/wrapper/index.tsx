@@ -43,7 +43,7 @@ const Wrapper = () => {
           path="/doi-mat-khau"
           element={<ChangePassword />}
         ></Route>
-        <Route path="/Profiles" element={<Profiles />}></Route>
+        <Route path="/them-hoi-vien" element={<Profiles />}></Route>
         <Route path={`Admin0/:key`} element={<Admin />}></Route>
         <Route path="/Admin0/:key/UpdateMember" element={<UpdateMember />}></Route>
         <Route path="/Admin2" element={<AdminTwo />}></Route>

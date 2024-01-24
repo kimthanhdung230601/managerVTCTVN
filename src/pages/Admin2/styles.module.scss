@@ -65,9 +65,22 @@
   }
   .table {
     margin: 0 9vh;
+    .btnView{
+      border-radius: 4px;
+      background: var(--primary);
+      border: none;
+      color: white;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 22px; /* 157.143% */
+      padding: 2px 9px;
+      cursor: pointer;
+    }
     .btnTb {
       border-radius: 4px;
-      background: var(--primary, #046c39);
+      margin-left: 4px;
+      background: var(--subPrimary);
       border: none;
       color: white;
       font-size: 14px;

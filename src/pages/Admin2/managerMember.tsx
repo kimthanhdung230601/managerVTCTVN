@@ -28,7 +28,13 @@ interface DataType {
 }
 
 const data: DataType[] = [];
-
+const customLocale = {
+  filterConfirm: 'OK',  // Thay đổi nút xác nhận
+  filterReset: 'Xoá', // Thay đổi nút reset
+  filterEmptyText: 'No filters', // Thay đổi văn bản khi không có bộ lọc
+  selectAll: 'Chọn tất cả', // Thay đổi văn bản "Select All Items" ở đây
+  selectInvert: 'Đảo ngược', // Thay đổi văn bản khi chọn ngược
+};
 for (let i = 0; i < 46; i++) {
   data.push({
     key: i,
@@ -166,6 +172,12 @@ const ManagerMemberTwo = () => {
       render: (_, record) => (
         <div style={{ textAlign: "start" }}>
           <button
+            className={styles.btnView}
+            onClick={() => navigate("/thong-tin-ho-so")}
+          >
+            Xem{" "}
+          </button>
+          <button
             className={styles.btnTb}
             onClick={() => showModalUpdateNote()}
           >
@@ -192,7 +204,7 @@ const ManagerMemberTwo = () => {
               style={{ width: 320 }}
             />
           </div>
-          <div className={styles.btn} onClick={() => navigate("/Profiles")}>
+          <div className={styles.btn} onClick={() => navigate("/them-hoi-vien")}>
             <PlusOutlined className={styles.icon} />
             Thêm hội viên
           </div>
@@ -208,6 +220,7 @@ const ManagerMemberTwo = () => {
           rowSelection={rowSelection}
           columns={columns}
           dataSource={data}
+          locale={customLocale}
           scroll={{ x: 1300 }}
           style={{ overflowX: "auto" }}
         />

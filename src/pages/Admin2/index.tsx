@@ -43,6 +43,8 @@ const items: MenuItem[] = [
 // submenu keys of first level
 const rootSubmenuKeys = ["sub1"];
 
+
+
 const AdminTwo = () => {
   document.title = "Đơn vị quản lý"
   const navigate = useNavigate()
@@ -86,7 +88,14 @@ const AdminTwo = () => {
           </div>
           <div className={styles.titleContent}>
             <div className={styles.titleText}>Đơn vị:</div>{" "}
-            <div className={(styles.labelTitle && styles.title)}>Thông tin người quản lý</div>
+            <div className={styles.subTitleText}>
+              <div className={styles.labelTitle && styles.title}>Thông tin người quản lý</div>
+              <div className={styles.titleName}>
+                <button className={styles.btn} style={{marginTop: "8px"}} onClick={() => navigate("/thong-tin-tai-khoan")}>
+                    Chi tiết
+                </button>
+              </div>
+            </div>
             <div className={styles.subTitleText}>
               <div className={styles.labelTitle}>Họ tên: </div>
               <div className={styles.titleName}>Nguyễn Văn A</div>
@@ -100,9 +109,7 @@ const AdminTwo = () => {
               <div className={styles.titleName}>Nguyễn Văn A</div>
             </div>
             
-            <button className={styles.btn} style={{marginTop: "8px"}} onClick={() => navigate("/thong-tin-tai-khoan")}>
-                Chi tiết
-            </button>
+            
           </div>
         </div>
       </div>

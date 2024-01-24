@@ -6,6 +6,7 @@ import Header from '../../components/Header'
 import styles from "./Style.module.scss"
 
 export default function ChangePassword() {
+    document.title= "Đổi mật khẩu"
   return (
     <div className={styles.wrap}>
         <Header />
