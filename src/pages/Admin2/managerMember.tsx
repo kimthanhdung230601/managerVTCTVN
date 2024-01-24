@@ -27,7 +27,45 @@ interface DataType {
   achie: string;
 }
 
+interface DataType {
+  key: React.Key;
+  name: string;
+  STT:number;
+  date:string,
+  phoneNumber: string,
+  id:string,
+  level:string,
+  detail: string;
+  f2: string;
+  note: string;
+  state: string;
+  achie: string;
+}
 const data: DataType[] = [];
+for (let i = 0; i < 46; i++) {
+  var detail = ["detail 1", "detail 2", "detail 3"];
+  var randomDetail = detail[Math.floor(Math.random() * detail.length)];
+  var level2 = ["12", "13", "14", "15"];
+  var randomLevel = level2[Math.floor(Math.random() * level2.length)];
+  var note = ["note content 1", "note content 2", "note content 3"];
+  var randomNote = note[Math.floor(Math.random() * note.length)];
+  data.push({
+    key: i,
+    STT:i+1,
+    name: 'Nguyễn Văn A',
+    date:"20/11/1990",
+    phoneNumber:"0971056112",
+    id:"VCT00123",
+    level: randomLevel,
+    detail: randomDetail,
+    f2: `câu lạc bộ ${i}`,
+    state: randomState(),
+    note: randomNote,
+    achie: Math.random() < 0.5 ? "có" : "không",
+  });
+}
+
+
 const customLocale = {
   filterConfirm: 'OK',  // Thay đổi nút xác nhận
   filterReset: 'Xoá', // Thay đổi nút reset
@@ -35,17 +73,7 @@ const customLocale = {
   selectAll: 'Chọn tất cả', // Thay đổi văn bản "Select All Items" ở đây
   selectInvert: 'Đảo ngược', // Thay đổi văn bản khi chọn ngược
 };
-for (let i = 0; i < 46; i++) {
-  data.push({
-    key: i,
-    name: `Edward King ${i}`,
-    detail: `detail ${i}`,
-    f2: `câu lạc bộ ${i}`,
-    state: randomState(),
-    note: `note content ${i}`,
-    achie: Math.random() < 0.5 ? "có" : "không",
-  });
-}
+
 const ManagerMemberTwo = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
@@ -124,16 +152,16 @@ const ManagerMemberTwo = () => {
       dataIndex: "detail",
       filters: [
         {
-          text: "JohnJohnyy",
-          value: "Nguyen Van A",
+          text: "detail 1",
+          value: "detail 1",
         },
         {
-          text: "Nguyễn Minh Châu",
-          value: "Nguyen Van B",
+          text: "detail 2",
+          value: "detail 2",
         },
         {
-          text: "Nguyen Van A",
-          value: "Nguyen Van C",
+          text: "detail 3",
+          value: "detail 3",
         },
       ],
       onFilter: (value: any, rec) => rec.detail.indexOf(value) === 0,

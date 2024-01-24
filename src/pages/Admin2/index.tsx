@@ -8,7 +8,7 @@ import {
 import type { MenuProps } from "antd";
 import type { SearchProps } from "antd/es/input";
 import { Menu, Input, Divider, Radio, Table, Button, Space } from "antd";
-import { admin } from "../../until/until";
+import { admin, randomState } from "../../until/until";
 import styles from "./styles.module.scss";
 import type { ColumnsType } from "antd/es/table";
 import Header from "../../components/Header";
@@ -30,6 +30,7 @@ function getItem(
     type,
   } as MenuItem;
 }
+
 
 interface AdminProps {}
 

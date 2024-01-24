@@ -201,10 +201,15 @@
     padding: 0 20px;
     overflow: hidden;
   }
+
+  .wrapUpdate{
+    margin: 3vh 20px;
+  }
 }
 // -------------------------update member------------------
 .wrapUpdate {
-  margin: 1vh 9vh;
+  margin: 3vh 40px;
+  min-height: 100vh;
 }
 .btnTbDanger {
   border-radius: 4px;
