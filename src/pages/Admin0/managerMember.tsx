@@ -18,6 +18,11 @@ import { useNavigate } from "react-router-dom";
 
 interface ManagerMemberProps {}
 interface DataType {
+  stt:any;
+  dateOfBirth:any;
+  phoneNumber:string;
+  id:any;
+  city:string;
   key: React.Key;
   name: string;
   f1: string;
@@ -29,10 +34,15 @@ interface DataType {
 }
 
 const data: DataType[] = [];
-for (let i = 0; i < 46; i++) {
+for (let i = 1; i < 46; i++) {
   data.push({
     key: i,
-    name: `Edward King ${i}`,
+    stt:`${i}`,
+    dateOfBirth:"01/12/1991",
+    phoneNumber:"0971123123",
+    id:`${i}`,
+    city:"Hà Nội",
+    name: `Nguyễn Văn A`,
     f1: `f1 ${i}`,
     f2: `câu lạc bộ ${i}`,
     status: randomState(),
@@ -65,14 +75,14 @@ const ManagerMember = () => {
     onChange: onSelectChange,
   };
   const hasSelected = selectedRowKeys.length > 0;
-  const onSearch: SearchProps["onSearch"] = (value, _e, info) =>
+  const onSearch: SearchProps["onSearch"] = (value:any, _e:any, info:any) =>
     console.log(info?.source, value);
   //modal
   //modal quản lý thành viên
   const columnsDesktop: ColumnsType<DataType> = [
     {
       title: "STT",
-      dataIndex: "STT",
+      dataIndex: "stt",
       fixed: "left",
       width: 70,
     },
@@ -84,7 +94,7 @@ const ManagerMember = () => {
     },
     {
       title: "Ngày sinh",
-      dataIndex: "Date",
+      dataIndex: "dateOfBirth",
       width: 130,
     },
     {
@@ -162,16 +172,16 @@ const ManagerMember = () => {
       width: 300,
       filters: [
         {
-          text: "JohnJohnyy",
-          value: "Nguyen Van A",
+          text: "Hoạt động",
+          value: "Hoạt động",
         },
         {
-          text: "Nguyễn Minh Châu",
-          value: "Nguyen Van B",
+          text: "Chưa duyệt HS",
+          value: "Chưa duyệt HS",
         },
         {
-          text: "Nguyen Van A",
-          value: "Nguyen Van C",
+          text: "Nghỉ",
+          value: "Nghỉ",
         },
       ],
       render: (value, record) => {
@@ -182,7 +192,7 @@ const ManagerMember = () => {
         if (value === "Chưa duyệt HS")
           return <span style={{ color: "#F6C404" }}>{value}</span>;
       },
-      onFilter: (value: any, rec) => rec.f2.indexOf(value) === 0,
+      onFilter: (value: any, rec) => rec.status.indexOf(value) === 0,
     },
     {
       title: "Thành tích",
@@ -209,9 +219,9 @@ const ManagerMember = () => {
         <span>
           <button
             className={styles.btnTb}
-            onClick={() => navigate("./UpdateMember")}
+            onClick={() => navigate("/Profiles")}
           >
-            Cập nhật
+            Chỉnh sửa
           </button>
           <button className={styles.btnTbDanger}>Xóa</button>
         </span>
@@ -221,7 +231,7 @@ const ManagerMember = () => {
   const columnsMobile: ColumnsType<DataType> = [
     {
       title: "STT",
-      dataIndex: "STT",
+      dataIndex: "stt",
 
       width: 70,
     },
@@ -233,7 +243,7 @@ const ManagerMember = () => {
     },
     {
       title: "Ngày sinh",
-      dataIndex: "Date",
+      dataIndex: "dateOfBirth",
       width: 130,
     },
     {
@@ -311,16 +321,16 @@ const ManagerMember = () => {
       width: 300,
       filters: [
         {
-          text: "JohnJohnyy",
-          value: "Nguyen Van A",
+          text: "Hoạt động",
+          value: "Hoạt động",
         },
         {
-          text: "Nguyễn Minh Châu",
-          value: "Nguyen Van B",
+          text: "Chưa duyệt HS",
+          value: "Chưa duyệt HS",
         },
         {
-          text: "Nguyen Van A",
-          value: "Nguyen Van C",
+          text: "Nghỉ",
+          value: "Nghỉ",
         },
       ],
       render: (value, record) => {
@@ -331,7 +341,7 @@ const ManagerMember = () => {
         if (value === "Chưa duyệt HS")
           return <span style={{ color: "#F6C404" }}>{value}</span>;
       },
-      onFilter: (value: any, rec) => rec.f2.indexOf(value) === 0,
+      onFilter: (value: any, rec) => rec.status.indexOf(value) === 0,
     },
     {
       title: "Thành tích",

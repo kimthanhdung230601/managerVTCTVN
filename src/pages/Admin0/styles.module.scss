@@ -2,7 +2,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-top: 12vh;
+  padding-top: 120px;
   .title {
   }
 
@@ -48,7 +48,9 @@
       align-items: center;
       // margin-bottom: 3px;
     }
-
+    .form {
+      padding-top: 20px;
+    }
     .search {
       // margin-right: 3vh;
       margin-bottom: 6px;
@@ -57,10 +59,10 @@
     .btn {
       cursor: pointer;
       margin-left: 2vh;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
       background-color: var(--primary);
       color: white;
-      padding: 6px 11px;
+      padding: 3px 11px;
       border-radius: 4px;
       font-size: 16px;
       .icon {
@@ -73,7 +75,6 @@
     .btnTb {
       border-radius: 4px;
       cursor: pointer;
-
       background: var(--primary, #046c39);
       border: none;
       color: white;
@@ -81,7 +82,7 @@
       font-style: normal;
       font-weight: 400;
       line-height: 22px; /* 157.143% */
-       padding: 2px 9px;
+      padding: 3px 9px 1px 9px;
     }
     .btnTbDanger {
       border-radius: 4px;
@@ -93,7 +94,7 @@
       font-style: normal;
       font-weight: 400;
       line-height: 22px; /* 157.143% */
-       padding: 2px 9px;
+      padding: 2px 9px;
     }
   }
 }
@@ -152,7 +153,24 @@
   flex-wrap: wrap;
   justify-content: space-between; /* Adjust as needed */
 }
-
+.managerAccountAccept {
+  margin-top: 7vh;
+  // border-top: solid 1px var(--line);
+}
+.postLabel {
+  position: relative;
+  display: inline;
+  margin-left: 9vh;
+  width: 250px;
+  padding: 10px 14px;
+  border: 2px solid #e4e4e4;
+  color: var(--primary);
+  font-size: 20px;
+  font-weight: 600;
+  // transform: translateY(-50%);
+  background-color: #fff;
+  // width: 100%;
+}
 @media (max-width: 900px) {
   .buttonGroup {
     // margin: 0 !important;
@@ -175,7 +193,7 @@
       cursor: pointer;
       // margin-left: 2vh;
       margin: 5px 0 !important;
-      
+
       background-color: var(--primary);
       color: white;
       width: 100% !important;
@@ -202,7 +220,7 @@
       font-style: normal;
       font-weight: 400;
       line-height: 22px; /* 157.143% */
-      padding: 0.5vh 1.6vh 0vh 1.6vh;
+      padding: 2px 9px;
     }
     .btnTbDanger {
       border-radius: 4px;
@@ -214,12 +232,98 @@
       font-style: normal;
       font-weight: 400;
       line-height: 22px; /* 157.143% */
-      padding: 0.5vh 1.6vh 0vh 1.6vh;
+      padding: 2px 9px;
     }
   }
+
+  .postLabel {
+    position: relative;
+    margin-left: 3vh;
+    width: 250px;
+    padding: 10px 14px;
+    border: 2px solid #e4e4e4;
+    color: var(--primary);
+    font-size: 22px;
+    font-weight: 600;
+    transform: translateY(-50%);
+    background-color: #fff;
+  }
 }
+
 @media (max-width: 920px) {
   .responsiveTable .ant-table-thead > tr > th {
     position: static !important;
   }
+}
+// -------------------------update member------------------
+.wrapUpdate {
+  margin: 1vh 9vh;
+}
+.btnTbDanger {
+  border-radius: 4px;
+  margin-left: 4px;
+  background: var(--secondary);
+  border: none;
+  color: white;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 22px; /* 157.143% */
+  padding: 2px 9px;
+}
+// .Items{
+//   border: none;
+//   border-bottom: solid 1px (--primary);
+// }
+.block {
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  position: absolute;
+  margin-top: -10px;
+    // background-color: #046c39;
+}
+
+/* Khi nút có thuộc tính disabled */
+.buttonUpdate{
+  display: flex;
+
+  justify-content: flex-end;}
+.btnEccept {
+  border-radius: 4px;
+  cursor: pointer;
+  background: var(--primary, #046c39);
+  border: none;
+  color: white;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 22px; /* 157.143% */
+  padding: 5px 17px;
+}
+.btnEccept:disabled {
+  cursor: not-allowed; /* Đổi con trỏ khi rê chuột */
+  border-radius: 4px;
+  background: var(--primary, #046c39);
+  border: none;
+  color: white;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 22px; /* 157.143% */
+  opacity: 0.6; /* Làm mờ nút */
+  pointer-events: none; /* Ngăn chặn tất cả các sự kiện chuột */
+}
+.btnDeny{
+  margin-left: 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  background: transparent;
+  border: solid 1px var(--primary, #046c39);
+  color: var(--primary, #046c39);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 22px; /* 157.143% */
+  padding: 5px 17px;
 }
