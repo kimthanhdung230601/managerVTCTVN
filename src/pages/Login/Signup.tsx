@@ -306,7 +306,6 @@ export default function Signup() {
                         wrapperCol={{ span: 24 }}
                         className={`${styles.uploadForm} ${styles.formItem}`}
                         >
-                            
                             <Upload
                                 {...props}
                                 listType="picture-card"
@@ -315,7 +314,7 @@ export default function Signup() {
                                 onChange={handleChange1}
                                 className={styles.uploadImg}
                             >
-                                {fileList1.length === 1 ? null : uploadButton}
+                                {fileList1.length >= 1 ? null : uploadButton}
                             </Upload>
                         </Form.Item>
                         <Modal open={previewOpen1} title={previewTitle1} footer={null} onCancel={handleCancel1}>
@@ -340,7 +339,7 @@ export default function Signup() {
                                 onChange={handleChange2}
                                 className={styles.uploadImg}
                             >
-                                {fileList2.length === 1 ? null : uploadButton}
+                                {fileList2.length >= 1 ? null : uploadButton}
                             </Upload>
                         </Form.Item>
                         <Modal open={previewOpen2} title={previewTitle2} footer={null} onCancel={handleCancel2}>

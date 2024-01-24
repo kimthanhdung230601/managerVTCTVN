@@ -5,10 +5,10 @@ import {
   DownloadOutlined,
 } from "@ant-design/icons";
 import type { SearchProps } from "antd/es/input";
-import { Input, Table, Button, TableProps } from "antd";
+import { Input, Table, Button, TableProps, Row, Col } from "antd";
 import styles from "./styles.module.scss";
 import { level, managerf1, randomState, statess } from "../../until/until";
-// import { useMediaQuery } from "react-responsive";
+import { useMediaQuery } from "react-responsive";
 import type { ColumnsType } from "antd/es/table";
 import type { FilterValue } from "antd/es/table/interface";
 
@@ -32,9 +32,23 @@ interface DataType {
   achie: string;
   level: string;
 }
-
+const customLocale = {
+  filterConfirm: 'OK',  // Thay đổi nút xác nhận
+  filterReset: 'Xoá', // Thay đổi nút reset
+  filterEmptyText: 'No filters', // Thay đổi văn bản khi không có bộ lọc
+  selectAll: 'Chọn tất cả', // Thay đổi văn bản "Select All Items" ở đây
+  selectInvert: 'Đảo ngược', // Thay đổi văn bản khi chọn ngược
+};
 const data: DataType[] = [];
 for (let i = 1; i < 46; i++) {
+  var manager = ["Quân Đội", "Liên Đoàn", "Công An", "Giáo Dục", "Sở VHTT", "Hội Võ Thuật"];
+  var randomManager = manager[Math.floor(Math.random() * manager.length)];
+  var club = ["Câu lạc bộ B", "Câu lạc bộ A", "Câu lạc bộ C", "Câu lạc bộ D"];
+  var randomClub = club[Math.floor(Math.random() * club.length)];
+  var level2 = ["12", "13", "14", "15"];
+  var randomLevel = level2[Math.floor(Math.random() * level2.length)];
+  var note = ["note content 1", "note content 2", "note content 3"];
+  var randomNote = note[Math.floor(Math.random() * note.length)];
   data.push({
     key: i,
     stt:`${i}`,
@@ -43,19 +57,19 @@ for (let i = 1; i < 46; i++) {
     id:`${i}`,
     city:"Hà Nội",
     name: `Nguyễn Văn A`,
-    f1: `f1 ${i}`,
-    f2: `câu lạc bộ ${i}`,
+    f1: randomManager,
+    f2: randomClub,
     status: randomState(),
-    note: `note content ${i}`,
+    note: randomNote,
     achie: `giải thưởng ${i}`,
-    level: `${i}`,
+    level: randomLevel,
   });
 }
 const ManagerMember = () => {
   const navigate = useNavigate();
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [loading, setLoading] = useState(false);
-  // const isMobile = useMediaQuery({ maxWidth: 768 });
+  const isMobile = useMediaQuery({ maxWidth: 768 });
   const start = () => {
     setLoading(true);
     // ajax request after empty completing
@@ -111,7 +125,24 @@ const ManagerMember = () => {
       title: "Cấp độ",
       dataIndex: "level",
       width: 100,
-      filters: level.map((value: any) => ({ text: `${value}`, value })),
+      filters: [
+        {
+          text: '12',
+          value: '12',
+        },
+        {
+          text: '13',
+          value: '13',
+        },
+        {
+          text: '14',
+          value: '14',
+        },
+        {
+          text: '15',
+          value: '15',
+        },
+      ],
       onFilter: (value: any, rec) => rec.level.indexOf(value) === 0,
     },
     {
@@ -123,7 +154,33 @@ const ManagerMember = () => {
       title: "Đơn vị quản lý F1",
       dataIndex: "f1",
       width: 300,
-      filters: managerf1.map((value: any) => ({ text: `${value}`, value })),
+      filters: [
+        {
+          text: 'Công An',
+          value: 'Công An',
+        },
+        {
+          text: 'Hội Võ Thuật',
+          value: 'Hội Võ Thuật',
+        },
+        {
+          text: 'Giáo Dục',
+          value: 'Giáo Dục',
+        },
+        {
+          text: 'Liên Đoàn',
+          value: 'Liên Đoàn',
+        },
+        {
+          text: 'Sở VHTT',
+          value: 'Sở VHTT',
+        },
+        {
+          text: 'Quân Đội',
+          value: 'Quân Đội',
+        },
+        
+      ],
       onFilter: (value: any, rec) => rec.f1.indexOf(value) === 0,
     },
     {
@@ -132,16 +189,20 @@ const ManagerMember = () => {
       width: 300,
       filters: [
         {
-          text: "JohnJohnyy",
-          value: "Nguyen Van A",
+          text: 'Câu lạc bộ A',
+          value: 'Câu lạc bộ A',
         },
         {
-          text: "Nguyễn Minh Châu",
-          value: "Nguyen Van B",
+          text: 'Câu lạc bộ B',
+          value: 'Câu lạc bộ B',
         },
         {
-          text: "Nguyen Van A",
-          value: "Nguyen Van C",
+          text: 'Câu lạc bộ C',
+          value: 'Câu lạc bộ C',
+        },
+        {
+          text: 'Câu lạc bộ D',
+          value: 'Câu lạc bộ D',
         },
       ],
       onFilter: (value: any, rec) => rec.f2.indexOf(value) === 0,
@@ -218,10 +279,16 @@ const ManagerMember = () => {
       render: (_, record) => (
         <span>
           <button
-            className={styles.btnTb}
-            onClick={() => navigate("/Profiles")}
+            className={styles.btnView}
+            onClick={() => navigate("/thong-tin-ho-so")}
           >
-            Chỉnh sửa
+            Xem
+          </button>
+          <button
+            className={styles.btnTb}
+            onClick={() => navigate("/them-hoi-vien")}
+          >
+            Sửa
           </button>
           <button className={styles.btnTbDanger}>Xóa</button>
         </span>
@@ -260,7 +327,24 @@ const ManagerMember = () => {
       title: "Cấp độ",
       dataIndex: "level",
       width: 100,
-      filters: level.map((value: any) => ({ text: `${value}`, value })),
+      filters: [
+        {
+          text: '12',
+          value: '12',
+        },
+        {
+          text: '13',
+          value: '13',
+        },
+        {
+          text: '14',
+          value: '14',
+        },
+        {
+          text: '15',
+          value: '15',
+        },
+      ],
       onFilter: (value: any, rec) => rec.level.indexOf(value) === 0,
     },
     {
@@ -272,7 +356,33 @@ const ManagerMember = () => {
       title: "Đơn vị quản lý F1",
       dataIndex: "f1",
       width: 300,
-      filters: managerf1.map((value: any) => ({ text: `${value}`, value })),
+      filters: [
+        {
+          text: 'Công An',
+          value: 'Công An',
+        },
+        {
+          text: 'Hội Võ Thuật',
+          value: 'Hội Võ Thuật',
+        },
+        {
+          text: 'Giáo Dục',
+          value: 'Giáo Dục',
+        },
+        {
+          text: 'Liên Đoàn',
+          value: 'Liên Đoàn',
+        },
+        {
+          text: 'Sở VHTT',
+          value: 'Sở VHTT',
+        },
+        {
+          text: 'Quân Đội',
+          value: 'Quân Đội',
+        },
+        
+      ],
       onFilter: (value: any, rec) => rec.f1.indexOf(value) === 0,
     },
     {
@@ -281,16 +391,20 @@ const ManagerMember = () => {
       width: 300,
       filters: [
         {
-          text: "JohnJohnyy",
-          value: "Nguyen Van A",
+          text: 'Câu lạc bộ A',
+          value: 'Câu lạc bộ A',
         },
         {
-          text: "Nguyễn Minh Châu",
-          value: "Nguyen Van B",
+          text: 'Câu lạc bộ B',
+          value: 'Câu lạc bộ B',
         },
         {
-          text: "Nguyen Van A",
-          value: "Nguyen Van C",
+          text: 'Câu lạc bộ C',
+          value: 'Câu lạc bộ C',
+        },
+        {
+          text: 'Câu lạc bộ D',
+          value: 'Câu lạc bộ D',
         },
       ],
       onFilter: (value: any, rec) => rec.f2.indexOf(value) === 0,
@@ -366,10 +480,16 @@ const ManagerMember = () => {
       render: (_, record) => (
         <span>
           <button
-            className={styles.btnTb}
-            onClick={() => navigate("./UpdateMember")}
+            className={styles.btnView}
+            onClick={() => navigate("/thong-tin-ho-so")}
           >
-            Cập nhật
+            Xem
+          </button>
+          <button
+            className={styles.btnTb}
+            onClick={() => navigate("/UpdateMember")}
+          >
+            Sửa
           </button>
           <button className={styles.btnTbDanger}>Xóa</button>
         </span>
@@ -377,38 +497,47 @@ const ManagerMember = () => {
     },
   ];
   return (
-    <>
+    <div className={styles.wrap}>
       {" "}
-      <div className={styles.buttonGroup}>
-        <div className={`${styles.rightContent} ${styles.responsiveContent}`}>
-          <div className={styles.search}>
-            <Search
-              placeholder="Tìm kiếm tại đây"
-              allowClear
-              onSearch={onSearch}
-              style={{}}
-            />
-          </div>
-          <div className={styles.btn} onClick={() => navigate("/Profiles")}>
-            <PlusOutlined className={styles.icon} />
-            Thêm hội viên
-          </div>
-          <div className={styles.btn}>
-            <DownloadOutlined className={styles.icon} />
-            Xuất excel
-          </div>
-        </div>
-      </div>
+      
       <div className={styles.table}>
-        <div style={{ marginBottom: 16 }}>
-          <span style={{ marginLeft: 8 }}>
-            {hasSelected ? `Đã chọn ${selectedRowKeys.length} bản ghi` : ""}
-          </span>
-        </div>
+        <Row gutter={30} justify="space-between" style={{marginTop: "20px", alignItems: "center", marginBottom: "20px"}}>
+            <Col xxl={6}  className={styles.search} style={{marginBottom: "8px"}}>
+              <span style={{ marginLeft: 8 }}>
+                {hasSelected ? `Đã chọn ${selectedRowKeys.length} bản ghi` : "Tổng số 10 hồ sơ"}
+              </span>
+              
+            </Col>
+            <Col xxl={16}  style={{display: "flex", justifyContent: "end", alignItems: "center"}} >
+              <Row gutter={20}>
+                <Col xxl={12} lg={12} md={12} xs={24} className="gutter-row" style={{marginBottom: "8px"}}>
+                  <Search
+                    placeholder="Tìm kiếm tại đây"
+                    allowClear
+                    onSearch={onSearch}
+                    size="large"
+                    style={{maxWidth: "300px", marginBottom: "4px", marginRight: "8px"}}
+                  />
+                </Col>
+                <Col xxl={12} lg={12} md={12} xs={24} style={{display: "flex", alignItems: "center", marginBottom: "8px"}} className="gutter-row">
+                  <div className={styles.btn} onClick={() => navigate("/them-hoi-vien")} style={{marginRight: "8px", minWidth: "148px"}}>
+                    <PlusOutlined className={styles.icon} />
+                    Thêm hội viên
+                  </div>
+                  <div className={styles.btn} >
+                    <DownloadOutlined className={styles.icon} />
+                    Xuất excel
+                  </div>
+                </Col>
+              </Row>
+              
+            </Col>
+        </Row>
         <Table
           rowSelection={rowSelection}
-          // columns={isMobile ? columnsMobile : columnsDesktop}
+          columns={isMobile ? columnsMobile : columnsDesktop}
           dataSource={data}
+          locale={customLocale}
           scroll={{
             x: "max-content",
             y: "calc(100vh - 200px)",
@@ -416,7 +545,7 @@ const ManagerMember = () => {
           className={styles.responsiveTable}
         />
       </div>
-    </>
+    </div>
   );
 };
 
