@@ -1,3 +1,7 @@
+.wrap{
+  overflow: hidden;
+  padding: 0 40px;
+}
 
 .logoWrap {
   display: flex;
@@ -32,12 +36,14 @@
     display: flex;
     justify-content: space-between;
     margin: 0.5vh 0;
-    width: 120%;
     font-size: 16px;
     line-height: 22px;
 
     .labelTitle {
       line-height: 25px;
+    }
+    .titleName{
+      margin-left: 60px;
     }
   }
   .title {
@@ -48,15 +54,7 @@
 .contentWrap {
   margin: 0 0vh 3vh 0vh;
   .buttonGroup {
-    display: flex;
-    justify-content: flex-end;
-    margin: 0 9vh;
-    .rightContent {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-    }
-
+    text-align: end;
     .search {
       // margin-right: 3vh;
     }
@@ -64,19 +62,7 @@
     
   }
   .table {
-    margin: 0 9vh;
-    .btnView{
-      border-radius: 4px;
-      background: var(--primary);
-      border: none;
-      color: white;
-      font-size: 14px;
-      font-style: normal;
-      font-weight: 400;
-      line-height: 22px; /* 157.143% */
-      padding: 2px 9px;
-      cursor: pointer;
-    }
+   
     .btnTb {
       border-radius: 4px;
       margin-left: 4px;
@@ -116,10 +102,11 @@
     }
   }
 }
-.buttonGroup {
-  display: flex;
-  justify-content: flex-end; /* Adjust as needed */
-}
+// .buttonGroup {
+//   display: flex;
+//   justify-content: flex-end; /* Adjust as needed */
+//   align-items: center;
+// }
 
 .rightContent {
   display: flex;
@@ -135,30 +122,15 @@
   .responsiveContent {
     flex-direction: column;
   }
-  .table {
-    margin: 0 2vh;
-  }
-  .buttonGroup {
-    margin: 0;
-    display: flex;
-    // background-color: #f6c404;
-    align-items: center; /* Align items to the start in a column */
-    text-align: center; /* Center text in a column */
-    .search{
-      margin-left: -90px;
-      margin-right: -90px;
-    }
-  
-  }
+  // .table {
+  //   margin: 0 2vh;
+  // }
 }
 @media  (max-width: 900px) {
-  
- 
   .buttonGroup {
-  
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    // display: flex;
+    // align-items: center;
+    // justify-content: center;
     // margin-right: 3vh;
     .rightContent {
       margin: 0;
@@ -174,7 +146,6 @@
     .btn {
       cursor: pointer;
       // margin-left: 2vh;
-      margin: 5px 0 !important;
       background-color: var(--primary);
       color: white;
       width: 100% !important;
@@ -189,7 +160,6 @@
     }
   }
     .table {
-      margin: 0 3vh !important;
       .btnTb {
         border-radius: 4px;
         background: var(--primary, #046c39);
@@ -230,18 +200,48 @@
   
 }
 .btn {
+  height: 40px;
   cursor: pointer;
   border: none;
-  margin-left: 2vh;
+  max-width: 160px;
+  margin-bottom: 4px;
   background-color: var(--primary);
   color: white;
-  padding: 6px 11px;
+  padding: 8px 11px;
   border-radius: 4px;
   font-size: 16px;
-  &:hover{
-    opacity: 0.7;
-  }
   .icon {
-    margin-right: 4px;
+      margin-right: 4px;
+  }
+  &:hover{
+      opacity: 0.7;
+  }
+}
+
+.btnView{
+  border-radius: 4px;
+  background: var(--primary);
+  border: none;
+  color: white;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 22px; /* 157.143% */
+  padding: 2px 9px;
+  cursor: pointer;
+
+}
+
+@media (max-width: 920px) {
+  .wrap{
+    padding: 0 20px;
+    overflow: hidden;
+  }
+}
+
+@media only screen and (max-width: 576px) {
+  .btn{
+      font-size: 14px;
+      padding: 8px;
   }
 }

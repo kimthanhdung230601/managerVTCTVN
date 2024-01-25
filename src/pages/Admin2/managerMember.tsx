@@ -217,20 +217,22 @@ const ManagerMemberTwo = () => {
           )}
         </div>
       ),
+      width: 230
     },
   ];
   return (
-    <>
+    <div className={styles.wrap}>
       {" "}
       <div className={styles.buttonGroup}>
         <div className={styles.rightContent}>
           <div className={styles.search}>
-            <Search
-              placeholder="Tìm kiếm tại đây"
-              allowClear
-              onSearch={onSearch}
-              style={{ width: 320 }}
-            />
+          <Search
+            placeholder="Tìm kiếm tại đây"
+            allowClear
+            onSearch={onSearch}
+            size="large"
+            style={{maxWidth: "300px", marginBottom: "4px", marginRight: "8px"}}
+          />
           </div>
           <div className={styles.btn} onClick={() => navigate("/them-hoi-vien")}>
             <PlusOutlined className={styles.icon} />
@@ -263,7 +265,7 @@ const ManagerMemberTwo = () => {
         handleCancel={handleCancelMember}
         handleOk={handleOkMember}
       /> */}
-    </>
+    </div>
   );
 };
 

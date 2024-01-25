@@ -92,7 +92,7 @@ const AdminTwo = () => {
             <div className={styles.subTitleText}>
               <div className={styles.labelTitle && styles.title}>Thông tin người quản lý</div>
               <div className={styles.titleName}>
-                <button className={styles.btn} style={{marginTop: "8px"}} onClick={() => navigate("/thong-tin-tai-khoan")}>
+                <button className={styles.btnView} style={{marginTop: "8px"}} onClick={() => navigate("/thong-tin-tai-khoan")}>
                     Chi tiết
                 </button>
               </div>

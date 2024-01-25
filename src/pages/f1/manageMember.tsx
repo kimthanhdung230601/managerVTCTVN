@@ -263,7 +263,7 @@ export default function ManageMember() {
             size="large"
             style={{maxWidth: "300px", marginBottom: "4px", marginRight: "8px"}}
         />
-            <div className={styles.addBtn} onClick={() => navigate("/Profiles")}>
+            <div className={styles.addBtn} onClick={() => navigate("/them-hoi-vien")}>
             <PlusOutlined className={styles.icon} />
             Thêm hội viên
             </div>
