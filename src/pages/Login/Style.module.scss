@@ -125,13 +125,12 @@
 .formImage{
     margin-top: 8px;
     display: flex;
-    height: 265px;
     justify-content: space-around;
     overflow: hidden;
 }
 
 .uploadForm {
-    text-align: center;
+    margin: 0 auto;
     width: 180px;
     overflow: hidden;
 }
@@ -166,6 +165,7 @@
         font-size: 14px !important;
     }
     .iconSelect{
+        margin-top: 8px;
         font-size: 14px ;
     }
 }

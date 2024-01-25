@@ -298,7 +298,7 @@ export default function Signup() {
                     className={styles.formInput}/>
                 </Form.Item>
                 <div className={styles.formImage}>
-                    <div style={{height: "100%"}}>
+                    <div style={{height: "265px", overflow: "hidden"}}>
                     <div style={{textAlign: "center", marginBottom: "10px"}}>Ảnh Bằng cấp hiện tại</div>
                        <Form.Item
                         name="image1"
@@ -322,7 +322,7 @@ export default function Signup() {
                         </Modal> 
                     </div>
                     
-                    <div style={{height: "100%"}}>
+                    <div style={{height: "265px", overflow: "hidden"}}>
                         <div style={{textAlign: "center", marginBottom: "10px"}}>Ảnh giấy giới thiệu</div>
                         <Form.Item
                             name="image2"
@@ -345,9 +345,7 @@ export default function Signup() {
                         <Modal open={previewOpen2} title={previewTitle2} footer={null} onCancel={handleCancel2}>
                             <img alt="referral" style={{ width: '100%' }} src={previewImage2} />
                         </Modal>
-                    </div>
-                    
-                    
+                    </div>             
                 </div>
                 <div className={styles.note}>Lưu ý: Kích thước ảnh không vượt quá 25MB.</div>
                 {
