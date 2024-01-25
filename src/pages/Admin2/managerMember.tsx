@@ -113,7 +113,7 @@ const ManagerMemberTwo = () => {
     },
     {
       title: "Ngày sinh",
-      dataIndex: "Date",
+      dataIndex: "date",
     },
     {
       title: "Số điện thoại",
