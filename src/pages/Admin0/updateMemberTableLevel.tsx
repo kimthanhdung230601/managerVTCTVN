@@ -354,6 +354,10 @@ const UpdateMemberTableLevel = ({
           bordered
           dataSource={dataSource}
           columns={columns as ColumnTypes}
+          // scroll={{
+          //   x: window.innerWidth <768 ? "max-content" : "100%",
+          //   y: "calc(100vh - 10px)",
+          // }}
         />
       </div>
     </div>

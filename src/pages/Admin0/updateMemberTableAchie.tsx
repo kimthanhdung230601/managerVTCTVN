@@ -128,7 +128,7 @@ interface DataType {
 }
 interface updateMemberTableAchieProp {
   setIsDataChanged: Function;
-  setIsDisableBtn:Function;
+  setIsDisableBtn: Function;
   isDataChanged: boolean;
   setNewUpdate: any;
   newUpdate: any;
@@ -140,9 +140,9 @@ const UpdateMemberTableAchie = ({
   isDataChanged,
   setNewUpdate,
   newUpdate,
-  setIsDisableBtn
+  setIsDisableBtn,
 }: updateMemberTableAchieProp) => {
-
+  
   const [count, setCount] = useState(2);
   const [dataSource, setDataSource] = useState<DataType[]>([
     {
@@ -246,7 +246,6 @@ const UpdateMemberTableAchie = ({
     setIsDisableBtn(true);
 
     setDataSource([...dataSource, newData]);
-  
   };
   const handleSave = (row: DataType) => {
     const newData = [...dataSource];

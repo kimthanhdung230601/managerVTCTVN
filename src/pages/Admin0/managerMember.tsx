@@ -18,11 +18,11 @@ import { useNavigate } from "react-router-dom";
 
 interface ManagerMemberProps {}
 interface DataType {
-  stt:any;
-  dateOfBirth:any;
-  phoneNumber:string;
-  id:any;
-  city:string;
+  stt: any;
+  dateOfBirth: any;
+  phoneNumber: string;
+  id: any;
+  city: string;
   key: React.Key;
   name: string;
   f1: string;
@@ -33,15 +33,22 @@ interface DataType {
   level: string;
 }
 const customLocale = {
-  filterConfirm: 'OK',  // Thay đổi nút xác nhận
-  filterReset: 'Xoá', // Thay đổi nút reset
-  filterEmptyText: 'No filters', // Thay đổi văn bản khi không có bộ lọc
-  selectAll: 'Chọn tất cả', // Thay đổi văn bản "Select All Items" ở đây
-  selectInvert: 'Đảo ngược', // Thay đổi văn bản khi chọn ngược
+  filterConfirm: "OK", // Thay đổi nút xác nhận
+  filterReset: "Xoá", // Thay đổi nút reset
+  filterEmptyText: "No filters", // Thay đổi văn bản khi không có bộ lọc
+  selectAll: "Chọn tất cả", // Thay đổi văn bản "Select All Items" ở đây
+  selectInvert: "Đảo ngược", // Thay đổi văn bản khi chọn ngược
 };
 const data: DataType[] = [];
 for (let i = 1; i < 46; i++) {
-  var manager = ["Quân Đội", "Liên Đoàn", "Công An", "Giáo Dục", "Sở VHTT", "Hội Võ Thuật"];
+  var manager = [
+    "Quân Đội",
+    "Liên Đoàn",
+    "Công An",
+    "Giáo Dục",
+    "Sở VHTT",
+    "Hội Võ Thuật",
+  ];
   var randomManager = manager[Math.floor(Math.random() * manager.length)];
   var club = ["Câu lạc bộ B", "Câu lạc bộ A", "Câu lạc bộ C", "Câu lạc bộ D"];
   var randomClub = club[Math.floor(Math.random() * club.length)];
@@ -51,11 +58,11 @@ for (let i = 1; i < 46; i++) {
   var randomNote = note[Math.floor(Math.random() * note.length)];
   data.push({
     key: i,
-    stt:`${i}`,
-    dateOfBirth:"01/12/1991",
-    phoneNumber:"0971123123",
-    id:`${i}`,
-    city:"Hà Nội",
+    stt: `${i}`,
+    dateOfBirth: "01/12/1991",
+    phoneNumber: "0971123123",
+    id: `${i}`,
+    city: "Hà Nội",
     name: `Nguyễn Văn A`,
     f1: randomManager,
     f2: randomClub,
@@ -89,7 +96,7 @@ const ManagerMember = () => {
     onChange: onSelectChange,
   };
   const hasSelected = selectedRowKeys.length > 0;
-  const onSearch: SearchProps["onSearch"] = (value:any, _e:any, info:any) =>
+  const onSearch: SearchProps["onSearch"] = (value: any, _e: any, info: any) =>
     console.log(info?.source, value);
   //modal
   //modal quản lý thành viên
@@ -127,20 +134,20 @@ const ManagerMember = () => {
       width: 100,
       filters: [
         {
-          text: '12',
-          value: '12',
+          text: "12",
+          value: "12",
         },
         {
-          text: '13',
-          value: '13',
+          text: "13",
+          value: "13",
         },
         {
-          text: '14',
-          value: '14',
+          text: "14",
+          value: "14",
         },
         {
-          text: '15',
-          value: '15',
+          text: "15",
+          value: "15",
         },
       ],
       onFilter: (value: any, rec) => rec.level.indexOf(value) === 0,
@@ -156,30 +163,29 @@ const ManagerMember = () => {
       width: 300,
       filters: [
         {
-          text: 'Công An',
-          value: 'Công An',
+          text: "Công An",
+          value: "Công An",
         },
         {
-          text: 'Hội Võ Thuật',
-          value: 'Hội Võ Thuật',
+          text: "Hội Võ Thuật",
+          value: "Hội Võ Thuật",
         },
         {
-          text: 'Giáo Dục',
-          value: 'Giáo Dục',
+          text: "Giáo Dục",
+          value: "Giáo Dục",
         },
         {
-          text: 'Liên Đoàn',
-          value: 'Liên Đoàn',
+          text: "Liên Đoàn",
+          value: "Liên Đoàn",
         },
         {
-          text: 'Sở VHTT',
-          value: 'Sở VHTT',
+          text: "Sở VHTT",
+          value: "Sở VHTT",
         },
         {
-          text: 'Quân Đội',
-          value: 'Quân Đội',
+          text: "Quân Đội",
+          value: "Quân Đội",
         },
-        
       ],
       onFilter: (value: any, rec) => rec.f1.indexOf(value) === 0,
     },
@@ -189,20 +195,20 @@ const ManagerMember = () => {
       width: 300,
       filters: [
         {
-          text: 'Câu lạc bộ A',
-          value: 'Câu lạc bộ A',
+          text: "Câu lạc bộ A",
+          value: "Câu lạc bộ A",
         },
         {
-          text: 'Câu lạc bộ B',
-          value: 'Câu lạc bộ B',
+          text: "Câu lạc bộ B",
+          value: "Câu lạc bộ B",
         },
         {
-          text: 'Câu lạc bộ C',
-          value: 'Câu lạc bộ C',
+          text: "Câu lạc bộ C",
+          value: "Câu lạc bộ C",
         },
         {
-          text: 'Câu lạc bộ D',
-          value: 'Câu lạc bộ D',
+          text: "Câu lạc bộ D",
+          value: "Câu lạc bộ D",
         },
       ],
       onFilter: (value: any, rec) => rec.f2.indexOf(value) === 0,
@@ -329,20 +335,20 @@ const ManagerMember = () => {
       width: 100,
       filters: [
         {
-          text: '12',
-          value: '12',
+          text: "12",
+          value: "12",
         },
         {
-          text: '13',
-          value: '13',
+          text: "13",
+          value: "13",
         },
         {
-          text: '14',
-          value: '14',
+          text: "14",
+          value: "14",
         },
         {
-          text: '15',
-          value: '15',
+          text: "15",
+          value: "15",
         },
       ],
       onFilter: (value: any, rec) => rec.level.indexOf(value) === 0,
@@ -358,30 +364,29 @@ const ManagerMember = () => {
       width: 300,
       filters: [
         {
-          text: 'Công An',
-          value: 'Công An',
+          text: "Công An",
+          value: "Công An",
         },
         {
-          text: 'Hội Võ Thuật',
-          value: 'Hội Võ Thuật',
+          text: "Hội Võ Thuật",
+          value: "Hội Võ Thuật",
         },
         {
-          text: 'Giáo Dục',
-          value: 'Giáo Dục',
+          text: "Giáo Dục",
+          value: "Giáo Dục",
         },
         {
-          text: 'Liên Đoàn',
-          value: 'Liên Đoàn',
+          text: "Liên Đoàn",
+          value: "Liên Đoàn",
         },
         {
-          text: 'Sở VHTT',
-          value: 'Sở VHTT',
+          text: "Sở VHTT",
+          value: "Sở VHTT",
         },
         {
-          text: 'Quân Đội',
-          value: 'Quân Đội',
+          text: "Quân Đội",
+          value: "Quân Đội",
         },
-        
       ],
       onFilter: (value: any, rec) => rec.f1.indexOf(value) === 0,
     },
@@ -391,20 +396,20 @@ const ManagerMember = () => {
       width: 300,
       filters: [
         {
-          text: 'Câu lạc bộ A',
-          value: 'Câu lạc bộ A',
+          text: "Câu lạc bộ A",
+          value: "Câu lạc bộ A",
         },
         {
-          text: 'Câu lạc bộ B',
-          value: 'Câu lạc bộ B',
+          text: "Câu lạc bộ B",
+          value: "Câu lạc bộ B",
         },
         {
-          text: 'Câu lạc bộ C',
-          value: 'Câu lạc bộ C',
+          text: "Câu lạc bộ C",
+          value: "Câu lạc bộ C",
         },
         {
-          text: 'Câu lạc bộ D',
-          value: 'Câu lạc bộ D',
+          text: "Câu lạc bộ D",
+          value: "Câu lạc bộ D",
         },
       ],
       onFilter: (value: any, rec) => rec.f2.indexOf(value) === 0,
@@ -499,39 +504,81 @@ const ManagerMember = () => {
   return (
     <div className={styles.wrap}>
       {" "}
-      
       <div className={styles.table}>
-        <Row gutter={30} justify="space-between" style={{marginTop: "20px", alignItems: "center", marginBottom: "20px"}}>
-            <Col xxl={6}  className={styles.search} style={{marginBottom: "8px"}}>
-              <span style={{ marginLeft: 8 }}>
-                {hasSelected ? `Đã chọn ${selectedRowKeys.length} bản ghi` : "Tổng số 10 hồ sơ"}
-              </span>
-              
-            </Col>
-            <Col xxl={16}  style={{display: "flex", justifyContent: "end", alignItems: "center"}} >
-              <Row gutter={20}>
-                <Col xxl={12} lg={12} md={12} xs={24} className="gutter-row" style={{marginBottom: "8px"}}>
-                  <Search
-                    placeholder="Tìm kiếm tại đây"
-                    allowClear
-                    onSearch={onSearch}
-                    size="large"
-                    style={{maxWidth: "300px", marginBottom: "4px", marginRight: "8px"}}
-                  />
-                </Col>
-                <Col xxl={12} lg={12} md={12} xs={24} style={{display: "flex", alignItems: "center", marginBottom: "8px"}} className="gutter-row">
-                  <div className={styles.btn} onClick={() => navigate("/them-hoi-vien")} style={{marginRight: "8px", minWidth: "148px"}}>
-                    <PlusOutlined className={styles.icon} />
-                    Thêm hội viên
-                  </div>
-                  <div className={styles.btn} >
-                    <DownloadOutlined className={styles.icon} />
-                    Xuất excel
-                  </div>
-                </Col>
-              </Row>
-              
-            </Col>
+        <Row
+          gutter={16}
+          style={{
+            marginTop: "20px",
+            marginBottom: "20px",
+          }}
+        >
+          <Col span={6} xs={24} sm={24} md={12} className={styles.search}>
+            <span>
+              {hasSelected
+                ? `Đã chọn ${selectedRowKeys.length} bản ghi`
+                : "Tổng số 10 hồ sơ"}
+            </span>
+          </Col>
+          <Col
+            span={18}
+            xs={24}
+            sm={24}
+            md={12}
+            style={{
+              display: "flex",
+              justifyContent: "end",
+              alignItems: "center",
+            }}
+          >
+            <Row gutter={20}>
+              <Col
+                xxl={12}
+                lg={12}
+                md={12}
+                xs={24}
+                className="gutter-row"
+                style={{ marginBottom: "8px" }}
+              >
+                <Search
+                className={styles.btn}
+                  placeholder="Tìm kiếm tại đây"
+                  allowClear
+                  onSearch={onSearch}
+                  size="large"
+                  style={{
+                    maxWidth: "300px",
+                    marginBottom: "4px",
+                    marginRight: "8px",
+                  }}
+                />
+              </Col>
+              <Col
+                xxl={12}
+                lg={12}
+                md={12}
+                xs={24}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  marginBottom: "8px",
+                }}
+                className="gutter-row"
+              >
+                <Button
+                  className={styles.btn}
+                  onClick={() => navigate("/them-hoi-vien")}
+                  style={{ marginRight: "8px", minWidth: "148px" }}
+                >
+                  <PlusOutlined className={styles.icon} />
+                  Thêm hội viên
+                </Button>
+                <Button className={styles.btn}>
+                  <DownloadOutlined className={styles.icon} />
+                  Xuất excel
+                </Button>
+              </Col>
+            </Row>
+          </Col>
         </Row>
         <Table
           rowSelection={rowSelection}
