@@ -8,7 +8,8 @@ import { ConfigProvider } from "antd";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import { persistor, store } from "./store";
-import { PersistGate } from 'redux-persist/integration/react';
+import { PersistGate } from "redux-persist/integration/react";
+import vi_VN from "antd/es/locale/vi_VN";
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
@@ -22,21 +23,30 @@ const queryClient = new QueryClient({
   },
 });
 root.render(
-<Provider store={store}>
-  <PersistGate persistor={persistor}>
-    <React.StrictMode>
-      <QueryClientProvider client={queryClient}>
-        <ConfigProvider>
-          <QueryClientProvider client={queryClient}>
-            <BrowserRouter>
-              <Suspense fallback={null}>
-                <App />
-              </Suspense>
-            </BrowserRouter>
-          </QueryClientProvider>
-        </ConfigProvider>
-      </QueryClientProvider>
-    </React.StrictMode>
+  <Provider store={store}>
+    <PersistGate persistor={persistor}>
+      <React.StrictMode>
+        <QueryClientProvider client={queryClient}>
+          <ConfigProvider
+            locale={vi_VN}
+            theme={{
+              token: {
+                colorPrimary: "#046c39",
+                colorPrimaryBorder: "#046c39",
+                colorPrimaryHover: "#007c3f",
+              },
+            }}
+          >
+            <QueryClientProvider client={queryClient}>
+              <BrowserRouter>
+                <Suspense fallback={null}>
+                  <App />
+                </Suspense>
+              </BrowserRouter>
+            </QueryClientProvider>
+          </ConfigProvider>
+        </QueryClientProvider>
+      </React.StrictMode>
     </PersistGate>
   </Provider>
 );
