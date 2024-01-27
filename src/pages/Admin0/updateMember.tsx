@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { Button, Col, Form, Input, Popconfirm, Row, Table } from "antd";
+import { Button, Col, Form, Input, Popconfirm, Row, Spin, Table } from "antd";
 import type { GetRef } from "antd";
 import styles from "./styles.module.scss";
 import UpdateMemberTableAchie from "./updateMemberTableAchie";
@@ -71,19 +71,20 @@ const columnsAchie: TableProps<DataType>["columns"] = [
   },
 ];
 const UpdateMember: React.FC = () => {
-  const [isDataChanged, setIsDataChanged] = useState(false);
+  const [isDataChangedLevel, setIsDataChangedLevel] = useState(false);
+  const [isDataChangedAchie, setIsDataChangedAchie] = useState(false);
   const [isDisableBtn, setIsDisableBtn] = useState(false);
   const [newUpdateLevel, setNewUpdateLevel] = useState<DataType[]>([]);
   const [newUpdateAchie, setNewUpdateAchie] = useState<DataType[]>([]);
   const [newDataLevel, setNewDataLevel] = useState<DataType[]>([]);
   const [newDataAchie, setNewDataAchie] = useState<DataType[]>([]);
-  const handleConfirm = () => {
+  const handleConfirmLevel = () => {
     //--------level
     const newEntry = newUpdateLevel[newUpdateLevel.length - 1];
 
     // Kiểm tra xem khóa đã tồn tại trong newUpdateLevel chưa
     const existingIndex = newUpdateLevel.findIndex(
-      (entry) => entry.key == newEntry.key
+      (entry) => entry.id == newEntry.id
     );
     console.log("existingIndex", existingIndex);
 
@@ -98,12 +99,15 @@ const UpdateMember: React.FC = () => {
       // Nếu khóa không tồn tại, thêm bản ghi mới vào cuối mảng
       setNewDataLevel((prev) => [...prev, newEntry]);
     }
+    setIsDataChangedLevel(false);
+  };
+  const handleConfirmAchie = () => {
     //----------------------------achie
     const newEntryAchie = newUpdateAchie[newUpdateAchie.length - 1];
 
     // Kiểm tra xem khóa đã tồn tại trong newUpdateAchie chưa
     const existingIndexAchie = newUpdateAchie.findIndex(
-      (entry) => entry.key == newEntryAchie.key
+      (entry) => entry.id == newEntryAchie.id
     );
 
     if (existingIndexAchie !== -1) {
@@ -119,30 +123,40 @@ const UpdateMember: React.FC = () => {
     }
     console.log("newDataAchie", newDataAchie);
 
-    setIsDataChanged(false);
+    setIsDataChangedAchie(false);
   };
   const handUpdate = () => {
     console.log("update");
   };
   useEffect(() => {
-    if (isDataChanged) {
+    if (isDataChangedLevel) {
       const timerId = setTimeout(() => {
-        handleConfirm();
+        handleConfirmLevel();
       }, 1000);
 
       return () => {
         clearTimeout(timerId); // Clear the timeout if the component unmounts or isDataChanged becomes true
       };
     }
-  }, [isDataChanged]);
+    if (isDataChangedAchie) {
+      const timerId = setTimeout(() => {
+        handleConfirmAchie();
+      }, 1000);
+
+      return () => {
+        clearTimeout(timerId); // Clear the timeout if the component unmounts or isDataChanged becomes true
+      };
+    }
+  }, [isDataChangedLevel,isDataChangedAchie]);
   return (
     <div className={styles.wrapUpdate}>
+      {/* <Spin spinning={true} size="large" ><div style={{width:"200px", height:"200px", color:"#046c39"}}>456</div></Spin> */}
       <Row gutter={16}>
-        <Col span={11}>
+        <Col span={11}  xs={24} sm={24} md={24} lg={11} xl={11}>
           <UpdateMemberTableLevel
-            setIsDataChanged={setIsDataChanged}
+            setIsDataChanged={setIsDataChangedLevel}
             setIsDisableBtn={setIsDisableBtn}
-            isDataChanged={isDataChanged}
+            isDataChanged={isDataChangedLevel}
             setNewUpdate={setNewUpdateLevel}
             newUpdate={newUpdateLevel}
           />
@@ -151,11 +165,14 @@ const UpdateMember: React.FC = () => {
             <>
               xxxx|{newDataLevel[newDataLevel.length - 1]?.level}|
               {newDataLevel[newDataLevel.length - 1]?.timeLevel}
-              <Table columns={columnsLevel} dataSource={newDataLevel} />
+              <Spin spinning={isDataChangedLevel} >
+                {" "}
+                <Table columns={columnsLevel} dataSource={newDataLevel} />
+              </Spin>
               <div className={styles.buttonUpdate}>
                 <button
                   className={styles.btnEccept}
-                  onClick={handleConfirm}
+                  onClick={handleConfirmLevel}
                   disabled={!isDisableBtn}
                 >
                   Xác nhận
@@ -163,7 +180,7 @@ const UpdateMember: React.FC = () => {
                 <button
                   className={styles.btnDeny}
                   onClick={handUpdate}
-                  disabled={!isDataChanged}
+                  disabled={!isDataChangedLevel}
                 >
                   Hoàn tác
                 </button>
@@ -173,11 +190,11 @@ const UpdateMember: React.FC = () => {
             ""
           )}
         </Col>
-        <Col span={13}>
+        <Col span={13}  xs={24} sm={24} md={24} lg={13} xl={13}>
           <UpdateMemberTableAchie
-            setIsDataChanged={setIsDataChanged}
+            setIsDataChanged={setIsDataChangedAchie}
             setIsDisableBtn={setIsDisableBtn}
-            isDataChanged={isDataChanged}
+            isDataChanged={isDataChangedAchie}
             setNewUpdate={setNewUpdateAchie}
             newUpdate={newUpdateAchie}
           />
@@ -186,12 +203,14 @@ const UpdateMember: React.FC = () => {
             <>
               {" "}
               xxxx|{newDataAchie[newDataAchie.length - 1]?.prize}|
-              {newDataLevel[newDataLevel.length - 1]?.timeAchie}
-              <Table columns={columnsAchie} dataSource={newDataAchie} />
+              {newDataAchie[newDataAchie.length - 1]?.timeAchie}
+              <Spin spinning={isDataChangedAchie}>
+                <Table columns={columnsAchie} dataSource={newDataAchie} />
+              </Spin>
               <div className={styles.buttonUpdate}>
                 <button
                   className={styles.btnEccept}
-                  onClick={handleConfirm}
+                  onClick={handleConfirmAchie}
                   disabled={!isDisableBtn}
                 >
                   Xác nhận
@@ -199,7 +218,7 @@ const UpdateMember: React.FC = () => {
                 <button
                   className={styles.btnDeny}
                   onClick={handUpdate}
-                  disabled={!isDataChanged}
+                  disabled={!isDataChangedAchie}
                 >
                   Hoàn tác
                 </button>
