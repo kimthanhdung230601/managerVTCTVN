@@ -17,7 +17,7 @@ import ModalAccept from "../../components/Modal/ModalAccept";
 import { useNavigate } from "react-router";
 import { useMediaQuery } from "react-responsive";
 import { text } from "stream/consumers";
-
+import type { ColumnsType } from "antd/es/table";
 interface ManagerAccountProps {}
 interface DataType {
   key: React.Key;
@@ -48,8 +48,6 @@ const customLocale = {
 };
 const data: DataType[] = [];
 for (let i = 0; i < 46; i++) {
-  var locations = ["Hà Nội", "Hà Nam", "Kiên Giang"];
-  var randomLocation = locations[Math.floor(Math.random() * locations.length)];
   var manager = [
     "Quân Đội",
     "Liên Đoàn",
@@ -61,6 +59,7 @@ for (let i = 0; i < 46; i++) {
   var randomManager = manager[Math.floor(Math.random() * manager.length)];
   var club = ["Câu lạc bộ B", "Câu lạc bộ A", "Câu lạc bộ C", "Câu lạc bộ D"];
   var randomClub = club[Math.floor(Math.random() * club.length)];
+  var randomProvince = province[Math.floor(Math.random() * province.length)];
   data.push({
     key: ++i,
     account: `account ${i}`,
@@ -71,7 +70,7 @@ for (let i = 0; i < 46; i++) {
     name: "Nguyễn Văn A",
     club: randomClub,
     managerF1: randomManager,
-    city: randomLocation,
+    city: randomProvince,
     id: "VCT010203050066",
     phone: "0988674868",
   });
@@ -110,7 +109,7 @@ const ManagerAccount = () => {
   const handleCancelAccept = () => {
     setIsModalOpenAccept(false);
   };
-  const columnsDesktopAccount: TableColumnsType<DataType> = [
+  const columnsDesktopAccount: ColumnsType<DataType> = [
     {
       title: "STT",
       dataIndex: "key",
@@ -253,7 +252,7 @@ const ManagerAccount = () => {
       ),
     },
   ];
-  const columnsMobileAccount: TableColumnsType<DataType> = [
+  const columnsMobileAccount: ColumnsType<DataType> = [
     {
       title: "STT",
       dataIndex: "key",
@@ -395,7 +394,7 @@ const ManagerAccount = () => {
       ),
     },
   ];
-  const columnsDesktopAccept: TableColumnsType<DataType> = [
+  const columnsDesktopAccept: ColumnsType<DataType> = [
     {
       title: "STT",
       dataIndex: "key",
@@ -427,7 +426,6 @@ const ManagerAccount = () => {
       title: 'Tỉnh',
       dataIndex: 'city',
       filters: filterProivce,
-      filterMode: 'tree',
       onFilter: (value:any, record) => record.city.startsWith(value),
       filterSearch: true,
     
@@ -535,7 +533,7 @@ const ManagerAccount = () => {
       ),
     },
   ];
-  const columnsMobileAccept: TableColumnsType<DataType> = [
+  const columnsMobileAccept: ColumnsType<DataType> = [
     {
       title: "STT",
       dataIndex: "key",

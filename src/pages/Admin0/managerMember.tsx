@@ -56,13 +56,14 @@ for (let i = 1; i < 46; i++) {
   var randomLevel = level2[Math.floor(Math.random() * level2.length)];
   var note = ["note content 1", "note content 2", "note content 3"];
   var randomNote = note[Math.floor(Math.random() * note.length)];
+  var randomProvince = province[Math.floor(Math.random() * 62)];
   data.push({
     key: i,
     stt: `${i}`,
     dateOfBirth: "01/12/1991",
     phoneNumber: "0971123123",
     id: `${i}`,
-    city: "Hà Nội",
+    city: randomProvince,
     name: `Nguyễn Văn A`,
     f1: randomManager,
     f2: randomClub,
