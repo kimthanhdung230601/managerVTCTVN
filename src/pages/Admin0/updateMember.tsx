@@ -37,7 +37,7 @@ const columnsLevel: TableProps<DataType>["columns"] = [
     key: "level",
   },
   {
-    title: "Thời gian",
+    title: "Ngày cấp",
     dataIndex: "timeLevel",
     key: "timeLevel",
   },
@@ -147,12 +147,12 @@ const UpdateMember: React.FC = () => {
         clearTimeout(timerId); // Clear the timeout if the component unmounts or isDataChanged becomes true
       };
     }
-  }, [isDataChangedLevel,isDataChangedAchie]);
+  }, [isDataChangedLevel, isDataChangedAchie]);
   return (
     <div className={styles.wrapUpdate}>
       {/* <Spin spinning={true} size="large" ><div style={{width:"200px", height:"200px", color:"#046c39"}}>456</div></Spin> */}
       <Row gutter={16}>
-        <Col span={11}  xs={24} sm={24} md={24} lg={11} xl={11}>
+        <Col span={11} xs={24} sm={24} md={24} lg={11} xl={11}>
           <UpdateMemberTableLevel
             setIsDataChanged={setIsDataChangedLevel}
             setIsDisableBtn={setIsDisableBtn}
@@ -165,9 +165,17 @@ const UpdateMember: React.FC = () => {
             <>
               xxxx|{newDataLevel[newDataLevel.length - 1]?.level}|
               {newDataLevel[newDataLevel.length - 1]?.timeLevel}
-              <Spin spinning={isDataChangedLevel} >
+              <Spin spinning={isDataChangedLevel}>
                 {" "}
-                <Table columns={columnsLevel} dataSource={newDataLevel} />
+                <Table
+                  columns={columnsLevel}
+                  dataSource={newDataLevel}
+                  scroll={{
+                    x: "max-content",
+                    y: "calc(100vh - 200px)",
+                  }}
+                  style={{ overflowX: "auto" }}
+                />
               </Spin>
               <div className={styles.buttonUpdate}>
                 <button
@@ -190,7 +198,7 @@ const UpdateMember: React.FC = () => {
             ""
           )}
         </Col>
-        <Col span={13}  xs={24} sm={24} md={24} lg={13} xl={13}>
+        <Col span={13} xs={24} sm={24} md={24} lg={13} xl={13}>
           <UpdateMemberTableAchie
             setIsDataChanged={setIsDataChangedAchie}
             setIsDisableBtn={setIsDisableBtn}
@@ -204,8 +212,16 @@ const UpdateMember: React.FC = () => {
               {" "}
               xxxx|{newDataAchie[newDataAchie.length - 1]?.prize}|
               {newDataAchie[newDataAchie.length - 1]?.timeAchie}
-              <Spin spinning={isDataChangedAchie}>
-                <Table columns={columnsAchie} dataSource={newDataAchie} />
+              <Spin spinning={isDataChangedAchie} delay={500}>
+                <Table
+                  columns={columnsAchie}
+                  dataSource={newDataAchie}
+                  scroll={{
+                    x: "max-content",
+                    y: "calc(100vh - 200px)",
+                  }}
+                  style={{ overflowX: "auto" }}
+                />
               </Spin>
               <div className={styles.buttonUpdate}>
                 <button

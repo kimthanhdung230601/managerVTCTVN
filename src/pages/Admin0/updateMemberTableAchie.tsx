@@ -13,7 +13,7 @@ interface Item {
   key: string;
   id: string;
   name: string;
-  level: string;
+  prize: string;
   timeAchie: string;
 }
 
@@ -119,16 +119,16 @@ type EditableTableProps = Parameters<typeof Table>[0];
 interface DataType {
   key: string;
   id?: string;
-  level?: string;
+  prize?: string;
   name?: string;
   achie?: string;
   timeAchie?: string;
   // timeAchie?: string;
-  prize?: string;
+  // prize?: string;
 }
 interface updateMemberTableAchieProp {
   setIsDataChanged: Function;
-  setIsDisableBtn:Function;
+  setIsDisableBtn: Function;
   isDataChanged: boolean;
   setNewUpdate: any;
   newUpdate: any;
@@ -140,28 +140,28 @@ const UpdateMemberTableAchie = ({
   isDataChanged,
   setNewUpdate,
   newUpdate,
-  setIsDisableBtn
+  setIsDisableBtn,
 }: updateMemberTableAchieProp) => {
-
+  
   const [count, setCount] = useState(2);
   const [dataSource, setDataSource] = useState<DataType[]>([
     {
       key: "0",
-      name: "Nguyễn Văn A",
-      id: "VCT0011523",
-      level: "14",
-      prize: "vàng",
+      name: "Nguyễn Văn Anh",
+      id: "VCT00111",
+      prize: "bạc",
+      // prize: "vàng",
       achie: "Giải trẻ",
       timeAchie: "20/10/2023",
       // timeAchie: "20/10/2023",
     },
     {
       key: "1",
-      name: "Nguyễn Văn A",
-      id: "VCT0011523",
+      name: "Trịnh Hoàng Anh",
+      id: "VCT00122",
       prize: "vàng",
       achie: "Giải trẻ",
-      level: "17",
+      // prize: "17",
       timeAchie: "20/10/2023",
     },
   ]);
@@ -226,7 +226,7 @@ const UpdateMemberTableAchie = ({
       key: newKey,
       id: "",
       name: "",
-      level: "",
+      prize: "",
       timeAchie: "",
     };
     // Thêm dữ liệu mới vào dataSource
@@ -246,7 +246,6 @@ const UpdateMemberTableAchie = ({
     setIsDisableBtn(true);
 
     setDataSource([...dataSource, newData]);
-  
   };
   const handleSave = (row: DataType) => {
     const newData = [...dataSource];

@@ -33,7 +33,7 @@ root.render(
               token: {
                 colorPrimary: "#046c39",
                 colorPrimaryBorder: "#046c39",
-                colorPrimaryHover: "#007c3f",
+                colorPrimaryHover: "#b4ddc194",
               },
             }}
           >
