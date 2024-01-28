@@ -143,8 +143,8 @@ const UpdateMemberTableLevel = ({
   const [dataSource, setDataSource] = useState<DataType[]>([
     {
       key: "0",
-      name: "Nguyễn Văn A",
-      id: "VCT0011523",
+      name: "Nguyễn Minh Anh",
+      id: "VCT00124",
       level: "14",
       prize: "vàng",
       achie: "Giải trẻ",
@@ -152,8 +152,8 @@ const UpdateMemberTableLevel = ({
     },
     {
       key: "1",
-      name: "Nguyễn Văn A",
-      id: "VCT0011523",
+      name: "Nguyễn Hòa Bình",
+      id: "VCT00127",
       prize: "vàng",
       achie: "Giải trẻ",
       level: "17",

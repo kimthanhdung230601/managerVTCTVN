@@ -152,6 +152,22 @@ h3 {
 .ant-tabs-nav::before{
   border: none !important;
 }
+.ant-table-container{
+  border-inline-start: none !important;
+  border-top: none !important;
+}
+.ant-table-cell{
+  border-bottom: none !important;
+  border-inline-end:none !important;
+}
+.ant-table-row- :hover{
+  z-index: 1;
+  background-color: #b4ddc194 !important;
+}
+// .ant-table-row-selected {
+//   z-index: 1;
+//   background-color: rgba(4, 108, 57, 0.2) !important;
+// }
 ::-webkit-scrollbar {
   width: 10px;
 }

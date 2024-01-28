@@ -9,7 +9,9 @@ import {
 import { Input, Table, Button, Form, Select, Col, Row, Image } from "antd";
 import { admin, province } from "../../until/until";
 import styles from "./styles.module.scss";
-import type { ColumnsType } from "antd/es/table";
+// import type { TableColumnsType, TableProps } from "antd/es/table";
+import type { TableColumnsType, TableProps } from 'antd';
+
 import ModalAccount from "../../components/Modal/ModalAccount";
 import ModalAccept from "../../components/Modal/ModalAccept";
 import { useNavigate } from "react-router";
@@ -108,7 +110,7 @@ const ManagerAccount = () => {
   const handleCancelAccept = () => {
     setIsModalOpenAccept(false);
   };
-  const columnsDesktopAccount: ColumnsType<DataType> = [
+  const columnsDesktopAccount: TableColumnsType<DataType> = [
     {
       title: "STT",
       dataIndex: "key",
@@ -137,13 +139,12 @@ const ManagerAccount = () => {
       width: 300,
     },
     {
-      title: "Tỉnh",
-      dataIndex: "city",
-      width: 120,
+      title: 'Tỉnh',
+      dataIndex: 'city',
       filters: filterProivce,
-      filterMode: "tree",
+      onFilter: (value:any, record) => record.city.startsWith(value),
       filterSearch: true,
-      onFilter: (value: any, rec) => rec.city.startsWith(value),
+      width:120,
     },
     {
       title: "Đơn vị quản lý",
@@ -175,6 +176,7 @@ const ManagerAccount = () => {
         },
       ],
       onFilter: (value: any, rec) => rec.managerF1.indexOf(value) === 0,
+      filterMode: 'tree',
       width: 200,
     },
     {
@@ -199,6 +201,7 @@ const ManagerAccount = () => {
         },
       ],
       onFilter: (value: any, rec) => rec.club.indexOf(value) === 0,
+      filterMode: 'tree',
       width: 200,
     },
     {
@@ -250,7 +253,7 @@ const ManagerAccount = () => {
       ),
     },
   ];
-  const columnsMobileAccount: ColumnsType<DataType> = [
+  const columnsMobileAccount: TableColumnsType<DataType> = [
     {
       title: "STT",
       dataIndex: "key",
@@ -277,13 +280,13 @@ const ManagerAccount = () => {
       width: 300,
     },
     {
-      title: "Tỉnh",
-      dataIndex: "city",
-      width: 120,
+      title: 'Tỉnh',
+      dataIndex: 'city',
       filters: filterProivce,
-      filterMode: "tree",
+      onFilter: (value:any, record) => record.city.startsWith(value),
+      filterMode: 'tree',
       filterSearch: true,
-      onFilter: (value: any, rec) => rec.city.startsWith(value),
+      width:120,
     },
     {
       title: "Đơn vị quản lý",
@@ -314,8 +317,10 @@ const ManagerAccount = () => {
           value: "Quân Đội",
         },
       ],
+      filterMode: 'tree',
       onFilter: (value: any, rec) => rec.managerF1.indexOf(value) === 0,
       width: 200,
+      
     },
     {
       title: "Tên câu lạc bộ",
@@ -338,6 +343,7 @@ const ManagerAccount = () => {
           value: "Câu lạc bộ D",
         },
       ],
+      filterMode: 'tree',
       onFilter: (value: any, rec) => rec.club.indexOf(value) === 0,
       width: 200,
     },
@@ -389,7 +395,7 @@ const ManagerAccount = () => {
       ),
     },
   ];
-  const columnsDesktopAccept: ColumnsType<DataType> = [
+  const columnsDesktopAccept: TableColumnsType<DataType> = [
     {
       title: "STT",
       dataIndex: "key",
@@ -418,13 +424,14 @@ const ManagerAccount = () => {
       width: 300,
     },
     {
-      title: "Tỉnh",
-      dataIndex: "city",
-      width: 120,
+      title: 'Tỉnh',
+      dataIndex: 'city',
       filters: filterProivce,
-      filterMode: "tree",
+      filterMode: 'tree',
+      onFilter: (value:any, record) => record.city.startsWith(value),
       filterSearch: true,
-      onFilter: (value: any, rec) => rec.city.startsWith(value),
+    
+      width:120,
     },
     {
       title: "Đơn vị quản lý",
@@ -457,6 +464,7 @@ const ManagerAccount = () => {
         },
       ],
       onFilter: (value: any, rec) => rec.managerF1.indexOf(value) === 0,
+      filterMode: 'tree',
     },
     {
       title: "Tên câu lạc bộ",
@@ -481,6 +489,7 @@ const ManagerAccount = () => {
         },
       ],
       onFilter: (value: any, rec) => rec.club.indexOf(value) === 0,
+      filterMode: 'tree',
     },
     {
       title: "Tài khoản",
@@ -526,7 +535,7 @@ const ManagerAccount = () => {
       ),
     },
   ];
-  const columnsMobileAccept: ColumnsType<DataType> = [
+  const columnsMobileAccept: TableColumnsType<DataType> = [
     {
       title: "STT",
       dataIndex: "key",
@@ -555,13 +564,13 @@ const ManagerAccount = () => {
       width: 300,
     },
     {
-      title: "Tỉnh",
-      dataIndex: "city",
-      width: 120,
+      title: 'Tỉnh',
+      dataIndex: 'city',
       filters: filterProivce,
-      filterMode: "tree",
+      onFilter: (value:any, record) => record.city.startsWith(value),
       filterSearch: true,
-      onFilter: (value: any, rec) => rec.city.startsWith(value),
+      filterMode: 'tree',
+      width:120,
     },
     {
       title: "Đơn vị quản lý",
@@ -593,6 +602,7 @@ const ManagerAccount = () => {
         },
       ],
       onFilter: (value: any, rec) => rec.managerF1.indexOf(value) === 0,
+      filterMode: 'tree',
       width: 200,
     },
     {
@@ -618,6 +628,7 @@ const ManagerAccount = () => {
         },
       ],
       onFilter: (value: any, rec) => rec.club.indexOf(value) === 0,
+      filterMode: 'tree',
     },
     {
       title: "Tài khoản",
@@ -675,9 +686,15 @@ const ManagerAccount = () => {
     onChange: onSelectChange,
   };
   const hasSelected = selectedRowKeys.length > 0;
-  const onChange = (value: string) => {
-    console.log(`selected ${value}`);
+  const onChange: TableProps<DataType>["onChange"] = (
+    pagination,
+    filters,
+    sorter,
+    extra
+  ) => {
+    console.log("params", pagination, filters, sorter, extra);
   };
+
   const onSearch = (value: string) => {
     console.log("search:", value);
   };
@@ -763,6 +780,7 @@ const ManagerAccount = () => {
             locale={customLocale}
             columns={isMobile ? columnsMobileAccept : columnsDesktopAccept}
             dataSource={data}
+            onChange={onChange}
             pagination={{}}
             scroll={{
               x: "max-content",

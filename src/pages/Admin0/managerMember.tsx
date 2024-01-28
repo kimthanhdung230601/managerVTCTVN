@@ -7,7 +7,7 @@ import {
 import type { SearchProps } from "antd/es/input";
 import { Input, Table, Button, TableProps, Row, Col } from "antd";
 import styles from "./styles.module.scss";
-import { level, managerf1, randomState, statess } from "../../until/until";
+import { level, managerf1, province, randomState, statess } from "../../until/until";
 import { useMediaQuery } from "react-responsive";
 import type { ColumnsType } from "antd/es/table";
 import type { FilterValue } from "antd/es/table/interface";
@@ -90,7 +90,10 @@ const ManagerMember = () => {
     console.log("selectedRowKeys changed: ", newSelectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
   };
-
+  const filterProivce = province.map((province) => ({
+    text: province,
+    value: province,
+  }));
   const rowSelection = {
     selectedRowKeys,
     onChange: onSelectChange,
@@ -150,12 +153,16 @@ const ManagerMember = () => {
           value: "15",
         },
       ],
+      filterMode: 'tree',
       onFilter: (value: any, rec) => rec.level.indexOf(value) === 0,
     },
     {
-      title: "Tỉnh",
-      dataIndex: "city",
-      width: 150,
+      title: 'Tỉnh',
+      dataIndex: 'city',
+      filters: filterProivce,
+      onFilter: (value:any, record) => record.city.startsWith(value),
+      filterSearch: true,
+      width:120,
     },
     {
       title: "Đơn vị quản lý F1",
@@ -187,6 +194,7 @@ const ManagerMember = () => {
           value: "Quân Đội",
         },
       ],
+      filterMode: 'tree',
       onFilter: (value: any, rec) => rec.f1.indexOf(value) === 0,
     },
     {
@@ -211,6 +219,7 @@ const ManagerMember = () => {
           value: "Câu lạc bộ D",
         },
       ],
+      filterMode: 'tree',
       onFilter: (value: any, rec) => rec.f2.indexOf(value) === 0,
     },
     {
@@ -232,6 +241,7 @@ const ManagerMember = () => {
         },
       ],
       onFilter: (value: any, rec) => rec.note.indexOf(value) === 0,
+      filterMode: 'tree',
     },
     {
       title: "Tình trạng",
@@ -259,6 +269,7 @@ const ManagerMember = () => {
         if (value === "Chưa duyệt HS")
           return <span style={{ color: "#F6C404" }}>{value}</span>;
       },
+      filterMode: 'tree',
       onFilter: (value: any, rec) => rec.status.indexOf(value) === 0,
     },
     {
@@ -275,6 +286,7 @@ const ManagerMember = () => {
           value: "Không",
         },
       ],
+      filterMode: 'tree',
       onFilter: (value: any, rec) => rec.achie.indexOf(value) === 0,
     },
     {
@@ -351,12 +363,16 @@ const ManagerMember = () => {
           value: "15",
         },
       ],
+      filterMode: 'tree',
       onFilter: (value: any, rec) => rec.level.indexOf(value) === 0,
     },
     {
-      title: "Tỉnh",
-      dataIndex: "city",
-      width: 150,
+      title: 'Tỉnh',
+      dataIndex: 'city',
+      filters: filterProivce,
+      onFilter: (value:any, record) => record.city.startsWith(value),
+      filterSearch: true,
+      width:120,
     },
     {
       title: "Đơn vị quản lý F1",
@@ -388,6 +404,7 @@ const ManagerMember = () => {
           value: "Quân Đội",
         },
       ],
+      filterMode: 'tree',
       onFilter: (value: any, rec) => rec.f1.indexOf(value) === 0,
     },
     {
@@ -412,6 +429,7 @@ const ManagerMember = () => {
           value: "Câu lạc bộ D",
         },
       ],
+      filterMode: 'tree',
       onFilter: (value: any, rec) => rec.f2.indexOf(value) === 0,
     },
     {
@@ -432,6 +450,7 @@ const ManagerMember = () => {
           value: "note content 3",
         },
       ],
+      filterMode: 'tree',
       onFilter: (value: any, rec) => rec.note.indexOf(value) === 0,
     },
     {
@@ -460,6 +479,7 @@ const ManagerMember = () => {
         if (value === "Chưa duyệt HS")
           return <span style={{ color: "#F6C404" }}>{value}</span>;
       },
+      filterMode: 'tree',
       onFilter: (value: any, rec) => rec.status.indexOf(value) === 0,
     },
     {
@@ -476,6 +496,7 @@ const ManagerMember = () => {
           value: "Không",
         },
       ],
+      filterMode: 'tree',
       onFilter: (value: any, rec) => rec.achie.indexOf(value) === 0,
     },
     {

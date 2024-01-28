@@ -37,7 +37,7 @@ const columnsLevel: TableProps<DataType>["columns"] = [
     key: "level",
   },
   {
-    title: "Thời gian",
+    title: "Ngày cấp",
     dataIndex: "timeLevel",
     key: "timeLevel",
   },
@@ -212,7 +212,7 @@ const UpdateMember: React.FC = () => {
               {" "}
               xxxx|{newDataAchie[newDataAchie.length - 1]?.prize}|
               {newDataAchie[newDataAchie.length - 1]?.timeAchie}
-              <Spin spinning={isDataChangedAchie}>
+              <Spin spinning={isDataChangedAchie} delay={500}>
                 <Table
                   columns={columnsAchie}
                   dataSource={newDataAchie}
