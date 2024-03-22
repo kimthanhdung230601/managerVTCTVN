@@ -35,7 +35,7 @@ export default function Login() {
       const onFinish = (value:any)=>{
         console.log("value",value);
         if (accountF0[0].password === value.password && accountF0[0].username === value.username) {
-            console.log("Mật khẩu đúng cho accountF0"); navigate("/Admin0/1")
+            console.log("Mật khẩu đúng cho accountF0"); navigate("/Admin0/quan-ly-hoi-vien")
             
           } else if (accountF1[0].password === value.password && accountF1[0].username === value.username) {
             console.log("Mật khẩu đúng cho accountF1"); navigate("/Admin1")

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styles from "./style.module.scss";
-import { PlusOutlined } from "@ant-design/icons";
+import { PlusOutlined, MinusCircleOutlined } from "@ant-design/icons";
 
 import {
   Button,
@@ -11,6 +11,8 @@ import {
   Upload,
   Row,
   Col,
+  Tooltip,
+  Space,
 } from "antd";
 import type { DatePickerProps } from "antd";
 import type { UploadFile, UploadProps } from "antd";
@@ -27,17 +29,12 @@ const Profiles = () => {
   const [fileList, setFileList] = useState<any>([]);
   const { compressImage } = useImageCompression();
 
+  //image avatar
   const normFile = (e: any) => {
     if (Array.isArray(e)) {
       return e;
     }
     return e && e.fileList;
-  };
-
-  const beforeUpload = async (file: File) => {
-    const compressedFile = await compressImage(file);
-    setFileList([compressedFile]); // Chỉ giữ ảnh mới, xóa ảnh cũ nếu có
-    return false; // Trả về false để ngăn chặn hành vi mặc định của Upload
   };
   const getSrcFromFile = (file: any) => {
     return new Promise((resolve) => {
@@ -66,6 +63,41 @@ const Profiles = () => {
       window.location.href = src;
     }
   };
+  //image CN đẳng cấp
+  const [fileListLevel, setFileListLevel] = useState<any>([]);
+  const normFileLevel = (e: any) => {
+    if (Array.isArray(e)) {
+      return e;
+    }
+    return e && e.fileListLevel;
+  };
+  const getSrcFromFileLevel = (file: any) => {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file.originFileObj);
+      reader.onload = () => resolve(reader.result);
+    });
+  };
+
+  const onChangeImgLevel = ({
+    fileList: newFileList,
+  }: {
+    fileList: UploadFile[];
+  }) => {
+    setFileListLevel(newFileList);
+  };
+  const onPreviewLevel = async (file: any) => {
+    const src = file.url || (await getSrcFromFile(file));
+    const imgWindow = window.open(src);
+
+    if (imgWindow) {
+      const image = new Image();
+      image.src = src;
+      imgWindow.document.write(image.outerHTML);
+    } else {
+      window.location.href = src;
+    }
+  };
   // date
   const onChange: DatePickerProps["onChange"] = (date, dateString) => {
     console.log(date, dateString);
@@ -83,19 +115,6 @@ const Profiles = () => {
   return (
     <>
       <div className={styles.wrap}>
-        {/* <div className={styles.header}>
-          <div className={styles.logo}>
-            <div>
-              <img
-                className={styles.logoImg}
-                src={require("../../assets/image/logo.png")}
-              />
-            </div>
-            <div className={styles.title}>
-              LIÊN ĐOÀN VÕ THUẬT CỔ TRUYỀN VIỆT NAM
-            </div>
-          </div>
-        </div> */}
         <Header />
         <div className={styles.content}>
           <div className={styles.title}>THÔNG TIN HỒ SƠ</div>
@@ -110,34 +129,72 @@ const Profiles = () => {
               >
                 <Row gutter={16}>
                   <Col span={8} xs={24} sm={12} md={8}>
-                    {" "}
-                    <Form.Item
-                      label="Tải ảnh lên"
-                      name="upload"
-                      valuePropName="fileList"
-                      getValueFromEvent={normFile}
-                      rules={[{ required: true, message: "Vui lòng tải ảnh" }]}
-                    >
-                      <ImgCrop showGrid showReset>
-                        <Upload
-                          action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                          listType="picture-card"
-                          fileList={fileList}
-                          onChange={onChangeImg}
-                          onPreview={onPreview}
+                    <Row>
+                      <Col span={12}>
+                        {" "}
+                        <Form.Item
+                          label="Tải ảnh lên"
+                          name="upload"
+                          valuePropName="fileList"
+                          getValueFromEvent={normFile}
+                          rules={[
+                            { required: true, message: "Vui lòng tải ảnh" },
+                          ]}
                         >
-                          {fileList.length >= 1 ? null : (
-                            <>
-                              {" "}
-                              <div>
-                                <PlusOutlined />
-                                <div style={{ marginTop: 8 }}>Upload</div>
-                              </div>
-                            </>
-                          )}
-                        </Upload>
-                      </ImgCrop>
-                    </Form.Item>{" "}
+                          <ImgCrop showGrid showReset>
+                            <Upload
+                              listType="picture-card"
+                              fileList={fileList}
+                              onChange={onChangeImg}
+                              onPreview={onPreview}
+                            >
+                              {fileList.length >= 1 ? null : (
+                                <>
+                                  {" "}
+                                  <div>
+                                    <PlusOutlined />
+                                    <div style={{ marginTop: 8 }}>Tải ảnh</div>
+                                  </div>
+                                </>
+                              )}
+                            </Upload>
+                          </ImgCrop>
+                        </Form.Item>
+                      </Col>
+                      <Col span={12}>
+                        {" "}
+                        <Form.Item
+                          label="Tải ảnh lên"
+                          name="upload"
+                          valuePropName="fileListLevel"
+                          getValueFromEvent={normFile}
+                          rules={[
+                            { required: true, message: "Vui lòng tải ảnh" },
+                          ]}
+                        >
+                          <ImgCrop showGrid showReset>
+                            <Upload
+                              listType="picture-card"
+                              fileList={fileListLevel}
+                              onChange={onChangeImgLevel}
+                              onPreview={onPreviewLevel}
+                            >
+                              {fileListLevel.length >= 1 ? null : (
+                                <>
+                                  {" "}
+                                  <div>
+                                    <PlusOutlined />
+                                    <div style={{ marginTop: 8 }}>
+                                      Tải giấy CN đẳng cấp
+                                    </div>
+                                  </div>
+                                </>
+                              )}
+                            </Upload>
+                          </ImgCrop>
+                        </Form.Item>
+                      </Col>
+                    </Row>{" "}
                     <div className={styles.buttonGroup}>
                       <span
                         className={`${styles.showBtn} ${
@@ -322,16 +379,73 @@ const Profiles = () => {
                     </Form.Item>
                   </Col>
                 </Row>
-                <Form.Item
-                  name="Thành tích cá nhân"
-                  label="Thành tích cá nhân"
-                  style={{ width: "100%" }}
-                  rules={[
-                    { required: true, message: "Vui lòng điền thông tin" },
-                  ]}
-                >
-                  <Input.TextArea showCount maxLength={1000} />
-                </Form.Item>
+                <Form.List name="users">
+                  {(fields, { add, remove }) => (
+                    <>
+                      {" "}
+                      <Form.Item>
+                        <Button
+                          type="dashed"
+                          onClick={() => add()}
+                          style={{ float: "left" }}
+                          icon={<PlusOutlined />}
+                        >
+                          Thành tích cá nhân
+                        </Button>
+                      </Form.Item>
+                      {fields.map(({ key, name, ...restField }) => (
+                        <div style={{ display: "flex", justifyContent:"space-between"}}>
+                          <Space
+                            key={key}
+                            style={{ display: "flex", width:"97%"}}
+                            // align="baseline"
+                          >
+                            <Form.Item
+                              {...restField}
+                              label={"Thành tích"}
+                              name={[name, "achie"]}
+                              rules={[
+                                {
+                                  required: true,
+                                  message: "Vui lòng điền thành tích",
+                                },
+                              ]}
+                            >
+                              <Input style={{ width: "100%" }} />
+                            </Form.Item>
+                            <Form.Item
+                              {...restField}
+                              name={[name, "prize"]}
+                              label={"Giải"}
+                              rules={[
+                                {
+                                  required: true,
+                                  message: "Vui lòng điền giải",
+                                },
+                              ]}
+                            >
+                              <Input placeholder="Giải" />
+                            </Form.Item>
+                            <Form.Item
+                              {...restField}
+                              name={[name, "last"]}
+                              label={"Thời gian"}
+                              rules={[
+                                {
+                                  required: true,
+                                  message: "Vui lòng thời gian",
+                                },
+                              ]}
+                            >
+                              <DatePicker style={{ width: "100%" }} />
+                            </Form.Item>
+                          </Space>{" "}
+                          <MinusCircleOutlined onClick={() => remove(name)} />
+                        </div>
+                      ))}
+                    </>
+                  )}
+                </Form.List>
                 <Form.Item
                   name="Ghi chú hiển thị với người dùng"
                   label="Ghi chú hiển thị với người dùng"
