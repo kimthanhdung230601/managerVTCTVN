@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import styles from "./Style.module.scss"
 import { Button, Form, Image, Input, message, Modal, Select, Upload, UploadFile, UploadProps } from 'antd'
-import { LockOutlined, UserOutlined, PhoneOutlined, IdcardOutlined, PlusOutlined, MailOutlined, CheckOutlined, BankOutlined, HomeOutlined, EnvironmentOutlined, DeploymentUnitOutlined, SolutionOutlined, ProfileOutlined } from '@ant-design/icons';
+import { LockOutlined, UserOutlined, PhoneOutlined, IdcardOutlined, PlusOutlined, MailOutlined, CheckOutlined, BankOutlined, HomeOutlined, EnvironmentOutlined, DeploymentUnitOutlined, SolutionOutlined, ProfileOutlined, CalendarOutlined, AimOutlined } from '@ant-design/icons';
 import ReCAPTCHA from "react-google-recaptcha";
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -14,14 +14,14 @@ const getBase64 = (file: any): Promise<string> =>
     reader.onerror = (error) => reject(error);
 });
 const province = [
-    'Hà Giang', 'Cao Bằng', 'Lào Cai', 'Sơn La', 'Lai Châu', 'Bắc Kạn', 'Lạng Sơn', 'Tuyên Quang', 'Yên Bái',
+    'Công An', 'Quân Đội', 'Giáo Dục','Hà Giang', 'Cao Bằng', 'Lào Cai', 'Sơn La', 'Lai Châu', 'Bắc Kạn', 'Lạng Sơn', 'Tuyên Quang', 'Yên Bái',
     'Thái Nguyên', 'Điện Biên', 'Phú Thọ', 'Vĩnh Phúc', 'Bắc Giang', 'Bắc Ninh', 'Hà Nội', 'Quảng Ninh', 'Hải Dương',
     'Hải Phòng', 'Hòa Bình', 'Hưng Yên', 'Hà Nam', 'Thái Bình', 'Nam Định', 'Ninh Bình', 'Thanh Hóa', 'Nghệ An',
     'Hà Tĩnh', 'Quảng Bình', 'Quảng Trị', 'Thừa Thiên Huế', 'Đà Nẵng', 'Quảng Nam', 'Quảng Ngãi', 'Kon Tum', 'Gia Lai',
     'Bình Định', 'Phú Yên', 'Đắk Lắk', 'Khánh Hòa', 'Đắk Nông', 'Lâm Đồng', 'Ninh Thuận', 'Bình Phước', 'Tây Ninh',
     'Bình Dương', 'Đồng Nai', 'Bình Thuận', 'Thành phố Hồ Chí Minh', 'Long An', 'Bà Rịa – Vũng Tàu', 'Đồng Tháp',
     'An Giang', 'Tiền Giang', 'Vĩnh Long', 'Bến Tre', 'Cần Thơ', 'Kiên Giang', 'Trà Vinh', 'Hậu Giang', 'Sóc Trăng',
-    'Bạc Liêu', 'Cà Mau',
+    'Bạc Liêu', 'Cà Mau', 
   ];
 export default function Signup() {
     document.title = "Đăng ký";
@@ -134,13 +134,21 @@ export default function Signup() {
                 className={styles.form}
             >
                 <Form.Item
+                    name="club"
+                    rules={[{ required: true, message: 'Vui lòng nhập câu lạc bộ!' }]}
+                    wrapperCol={{ span: 24 }}
+                    className={styles.formItem}
+                    >
+                    <Input prefix={<SolutionOutlined  className={styles.icon} />} placeholder="CLB (Môn Phái, Võ Phái, Võ Đường, CLB,...)" className={styles.formInput}/>
+                
+                </Form.Item>
+                <Form.Item
                 name="username"
                 rules={[{ required: true, message: 'Vui lòng nhập họ tên!' }]}
                 wrapperCol={{ span: 24 }}
                 className={styles.formItem}
                 >
-                <Input prefix={<UserOutlined className={styles.icon} />} placeholder="Họ tên" className={styles.formInput}/>
-               
+                    <Input prefix={<UserOutlined className={styles.icon} />} placeholder="Họ tên" className={styles.formInput}/>
                 </Form.Item>
                 <Form.Item
                 name="id"
@@ -151,23 +159,42 @@ export default function Signup() {
                 <Input prefix={<IdcardOutlined className={styles.icon} />} placeholder="Mã định danh" className={styles.formInput}/>
                
                 </Form.Item>
+                <div style={{display: "flex", width: "100%"}}>
+                    <Form.Item
+                        name="id_date"
+                        rules={[{ required: true, message: 'Vui lòng nhập ngày cấp!' }]}
+                        wrapperCol={{ span: 24 }}
+                        className={styles.formItem}
+                        style={{marginRight: "10px"}}
+                    >
+                        <Input prefix={<CalendarOutlined className={styles.icon} />} placeholder="Ngày cấp" type='date' className={styles.formInput}/>
+                    </Form.Item>
+                    <Form.Item
+                        name="id_issue"
+                        rules={[{ required: true, message: 'Vui lòng nhập nơi cấp!' }]}
+                        wrapperCol={{ span: 24 }}
+                        className={styles.formItem}
+                        style={{marginLeft: "10px", width: "100%"}}
+                    >
+                        <Input prefix={<AimOutlined  className={styles.icon} />} placeholder="Nơi cấp" className={styles.formInput}/>
+                    </Form.Item>
+                </div>
                 <Form.Item
-                name="phone"
-                rules={[
-                    {
-                      pattern: /^[0-9]{10}$/,
-                      message: 'Số điện thoại không đúng định dạng',
-                    },
-                    {
-                      required: true,
-                      message: 'Vui lòng nhập số điện thoại',
-                    },
-                  ]}
-                wrapperCol={{ span: 24 }}
-                className={styles.formItem}
+                    name="phone"
+                    rules={[
+                        {
+                        pattern: /^[0-9]{10}$/,
+                        message: 'Số điện thoại không đúng định dạng',
+                        },
+                        {
+                        required: true,
+                        message: 'Vui lòng nhập số điện thoại',
+                        },
+                    ]}
+                    wrapperCol={{ span: 24 }}
+                    className={styles.formItem}
                 >
                 <Input prefix={<PhoneOutlined className={styles.icon} />} placeholder="Số điện thoại" className={styles.formInput}/>
-               
                 </Form.Item>
                 <Form.Item
                 name="email"
@@ -187,14 +214,14 @@ export default function Signup() {
                 <EnvironmentOutlined  className={styles.iconSelect}/>
                 <Form.Item
                 name="province"
-                rules={[{ required: true, message: 'Vui lòng chọn tỉnh/ thành phố!' }]}
+                rules={[{ required: true, message: 'Vui lòng chọn tỉnh/thành/ngành!' }]}
                 wrapperCol={{ span: 24 }}
                 className={styles.formSelect}
                 >
                     <Select
                        menuItemSelectedIcon={<CheckOutlined />}
                        showSearch
-                       placeholder={"Tỉnh/ Thành phố"}
+                       placeholder={"Tỉnh/Thành/Ngành"}
                        optionFilterProp="children"
                        onChange={onChange}
                        onSearch={onSearch}
@@ -233,15 +260,7 @@ export default function Signup() {
                         <Select.Option value="so_vhtt">Sở VHTT</Select.Option>
                 </Select>
                 </Form.Item>
-                <Form.Item
-                    name="club"
-                    rules={[{ required: true, message: 'Vui lòng nhập câu lạc bộ!' }]}
-                    wrapperCol={{ span: 24 }}
-                    className={styles.formItem}
-                    >
-                    <Input prefix={<SolutionOutlined  className={styles.icon} />} placeholder="CLB (Môn Phái, Võ Phái, Võ Đường, CLB,...)" className={styles.formInput}/>
                 
-                </Form.Item>
                 <Form.Item
                     name="account"
                     rules={[{ required: true, message: 'Vui lòng tài khoản đăng nhập!' }]}
