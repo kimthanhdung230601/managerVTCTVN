@@ -296,7 +296,14 @@
     margin-right: 4px;
   }
 }
-
+.btnUpdate{
+  float: right;
+}
+.note{
+  font-style: italic;
+font-size: 14px;
+color: var(--secondary);
+}
 .imageWrap {
   display: flex;
 }
