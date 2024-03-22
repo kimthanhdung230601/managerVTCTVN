@@ -4,6 +4,7 @@ import { Table } from "antd";
 import React, { useState } from 'react'
 import styles from "./Style.module.scss";
 import { useNavigate } from 'react-router';
+import { levelFilters } from '../../until/until';
 interface DataType_CLB {
     key: React.Key;
     name: string;
@@ -31,7 +32,7 @@ const dataCLB: DataType_CLB[] = [
       birth: "24/12/2001",
       phone: "0987838929",
       identity: "009387466534",
-      level: "12",
+      level: "HLV 4 đẳng",
       club: "CLB Hà Nội",
       quantity_records: "12",
       status: "Hoạt động",
@@ -42,7 +43,7 @@ const dataCLB: DataType_CLB[] = [
       birth: "24/12/2001",
       phone: "0987838929",
       identity: "009387466534",
-      level: "12",
+      level: "HLV 4 đẳng",
       club: "CLB Hải Phòng",
       quantity_records: "12",
       status: "Hoạt động",
@@ -53,7 +54,7 @@ const dataCLB: DataType_CLB[] = [
       birth: "24/12/2001",
       phone: "0987838929",
       identity: "009387466534",
-      level: "14",
+      level: "Võ sinh cấp 12",
       club: "CLB TP HCM",
       quantity_records: "12",
       status: "Hoạt động",
@@ -64,7 +65,7 @@ const dataCLB: DataType_CLB[] = [
       birth: "24/12/2001",
       phone: "0987838929",
       identity: "009387466534",
-      level: "17",
+      level: "Võ sinh cấp 4",
       club: "CLB Hải Phòng",
       quantity_records: "12",
       status: "Hoạt động",
@@ -75,7 +76,7 @@ const dataCLB: DataType_CLB[] = [
       birth: "24/12/2001",
       phone: "0987838929",
       identity: "009387466534",
-      level: "65",
+      level: "Võ sinh cấp 8",
       club: "CLB Hà Nội",
       quantity_records: "12",
       status: "Hoạt động",
@@ -86,7 +87,7 @@ const dataCLB: DataType_CLB[] = [
       birth: "24/12/2001",
       phone: "0987838929",
       identity: "009387466534",
-      level: "23",
+      level: "Võ sinh cấp 7",
       club: "CLB Hà Nội",
       quantity_records: "12",
       status: "Hoạt động",
@@ -97,7 +98,7 @@ const dataCLB: DataType_CLB[] = [
       birth: "24/12/2001",
       phone: "0987838929",
       identity: "009387466534",
-      level: "12",
+      level: "HLV 2 đẳng",
       club: "CLB Hải Phòng",
       quantity_records: "12",
       status: "Hoạt động",
@@ -146,22 +147,10 @@ export default function ManageClub() {
           dataIndex: "identity",
         },
         {
-          title: "Cấp độ",
+          title: "Đẳng cấp",
           dataIndex: "level",
-          filters: [
-            {
-              text: "12",
-              value: "12",
-            },
-            {
-              text: "13",
-              value: "13",
-            },
-            {
-              text: "14",
-              value: "14",
-            },
-          ],
+          filters: levelFilters,
+          filterMode: 'tree',
           onFilter: (value: any, record) => record.level.indexOf(value) === 0,
         },
         {

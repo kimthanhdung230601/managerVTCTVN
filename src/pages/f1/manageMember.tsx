@@ -5,6 +5,7 @@ import { PlusOutlined } from "@ant-design/icons";
 import { Table } from 'antd';
 import { ColumnsType, TableProps } from 'antd/es/table';
 import { useNavigate } from 'react-router';
+import { levelFilters } from '../../until/until';
 
 const customLocale = {
     filterConfirm: 'OK',  // Thay đổi nút xác nhận
@@ -34,7 +35,7 @@ const dataCN: DataType_CN[] = [
       birth: "24/12/2001",
       phone: "0987838929",
       identity: "009387466534",
-      level: "12",
+      level: "Võ sinh cấp 8",
       club: "CLB Hà Nội",
       note: "Thành viên tiềm năng",
       status: "Hoạt động",
@@ -46,7 +47,7 @@ const dataCN: DataType_CN[] = [
       birth: "24/12/2001",
       phone: "0987838929",
       identity: "009387466534",
-      level: "11",
+      level: "Võ sinh cấp 11",
       club: "CLB Hải Phòng",
       note: "Thành viên tiềm năng",
       status: "Hoạt động",
@@ -58,8 +59,8 @@ const dataCN: DataType_CN[] = [
       birth: "24/12/2001",
       phone: "0987838929",
       identity: "009387466534",
-      level: "45",
-      club: "CLB Hà Nội",
+      level: "Võ sinh cấp 12",
+      club: "HLV 1 đẳng",
       note: "Thành viên tiềm năng",
       status: "Hoạt động",
       awards: "1 giải vô địch quốc gia",
@@ -70,7 +71,7 @@ const dataCN: DataType_CN[] = [
       birth: "24/12/2001",
       phone: "0987838929",
       identity: "009387466534",
-      level: "67",
+      level: "HLV 3 đẳng",
       club: "CLB TP HCM",
       note: "Thành viên tiềm năng",
       status: "Hoạt động",
@@ -82,7 +83,7 @@ const dataCN: DataType_CN[] = [
       birth: "24/12/2001",
       phone: "0987838929",
       identity: "009387466534",
-      level: "45",
+      level: "Võ sinh cấp 10",
       club: "CLB Hà Nội",
       note: "Thành viên tiềm năng",
       status: "Hoạt động",
@@ -94,7 +95,7 @@ const dataCN: DataType_CN[] = [
       birth: "24/12/2001",
       phone: "0987838929",
       identity: "009387466534",
-      level: "24",
+      level: "Võ sinh cấp 1",
       club: "CLB Hải Phòng",
       note: "Thành viên tiềm năng",
       status: "Hoạt động",
@@ -106,7 +107,7 @@ const dataCN: DataType_CN[] = [
       birth: "24/12/2001",
       phone: "0987838929",
       identity: "009387466534",
-      level: "12",
+      level: "Võ sinh cấp 12",
       club: "CLB TP HCM",
       note: "Thành viên tiềm năng",
       status: "Hoạt động",
@@ -168,22 +169,10 @@ export default function ManageMember() {
           dataIndex: "identity",
         },
         {
-          title: "Cấp độ",
+          title: "Đẳng cấp",
           dataIndex: "level",
-          filters: [
-            {
-              text: "12",
-              value: "12",
-            },
-            {
-              text: "13",
-              value: "13",
-            },
-            {
-              text: "14",
-              value: "14",
-            },
-          ],
+          filterMode: 'tree',
+          filters: levelFilters,
           onFilter: (value: any, record) => record.level.indexOf(value) === 0,
         },
         {

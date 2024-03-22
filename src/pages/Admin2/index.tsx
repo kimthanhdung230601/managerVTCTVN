@@ -52,26 +52,6 @@ const AdminTwo = () => {
   const [openKeys, setOpenKeys] = useState(["sub1"]);
 
   
-  // const items: MenuProps["items"] = [
-  //   {
-  //     label: admin,
-  //     key: "SubMenu",
-
-  //     icon: <CaretDownOutlined />,
-  //     children: [
-  //       {
-  //         type: "group",
-  //         style: { cursor: "pointer" },
-  //         label: "Đăng xuất",
-  //       },
-  //       {
-  //         type: "group",
-  //         label: "Đổi mật khẩu",
-  //         style: { cursor: "pointer" },
-  //       },
-  //     ],
-  //   },
-  // ];
   const onClick: MenuProps["onClick"] = (e) => {
     console.log("click ", e);
   };
@@ -91,11 +71,11 @@ const AdminTwo = () => {
             <div className={styles.titleText}>Đơn vị:</div>{" "}
             <div className={styles.subTitleText}>
               <div className={styles.labelTitle && styles.title}>Thông tin người quản lý</div>
-              <div className={styles.titleName}>
+              {/* <div className={styles.titleName}>
                 <button className={styles.btnView} style={{marginTop: "8px"}} onClick={() => navigate("/thong-tin-tai-khoan")}>
                     Chi tiết
                 </button>
-              </div>
+              </div> */}
             </div>
             <div className={styles.subTitleText}>
               <div className={styles.labelTitle}>Họ tên: </div>
