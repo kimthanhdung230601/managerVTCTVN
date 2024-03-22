@@ -7,7 +7,7 @@ import {
 import type { SearchProps } from "antd/es/input";
 import { Input, Table, Button, TableProps, Row, Col } from "antd";
 import styles from "./styles.module.scss";
-import { level, managerf1, province, randomState, statess } from "../../until/until";
+import { level, levelFilters, managerf1, province, randomState, statess } from "../../until/until";
 import { useMediaQuery } from "react-responsive";
 import type { ColumnsType } from "antd/es/table";
 import type { FilterValue } from "antd/es/table/interface";
@@ -52,8 +52,8 @@ for (let i = 1; i < 46; i++) {
   var randomManager = manager[Math.floor(Math.random() * manager.length)];
   var club = ["Câu lạc bộ B", "Câu lạc bộ A", "Câu lạc bộ C", "Câu lạc bộ D"];
   var randomClub = club[Math.floor(Math.random() * club.length)];
-  var level2 = ["12", "13", "14", "15"];
-  var randomLevel = level2[Math.floor(Math.random() * level2.length)];
+  // var level2 = ["12", "13", "14", "15"];
+  var randomLevel = level[Math.floor(Math.random() * level.length)];
   var note = ["note content 1", "note content 2", "note content 3"];
   var randomNote = note[Math.floor(Math.random() * note.length)];
   var randomProvince = province[Math.floor(Math.random() * 62)];
@@ -133,27 +133,10 @@ const ManagerMember = () => {
       width: 160,
     },
     {
-      title: "Cấp độ",
+      title: "Đằng cấp",
       dataIndex: "level",
-      width: 100,
-      filters: [
-        {
-          text: "12",
-          value: "12",
-        },
-        {
-          text: "13",
-          value: "13",
-        },
-        {
-          text: "14",
-          value: "14",
-        },
-        {
-          text: "15",
-          value: "15",
-        },
-      ],
+      width: 130,
+      filters: levelFilters,
       filterMode: 'tree',
       onFilter: (value: any, rec) => rec.level.indexOf(value) === 0,
     },

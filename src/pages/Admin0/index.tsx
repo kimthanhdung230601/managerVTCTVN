@@ -1,78 +1,61 @@
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
+import { Tabs } from "antd";
+import { useParams, useNavigate } from "react-router-dom"; // Thay đổi ở đây
 import ManagerAccount from "./managerAccount";
 import ManagerMember from "./managerMember";
-import {
-  AudioOutlined,
-  SettingOutlined,
-  CaretDownOutlined,
-} from "@ant-design/icons";
-import type { MenuProps, TabsProps } from "antd";
-import type { SearchProps } from "antd/es/input";
-import { Menu, Input, Divider, Radio, Table, Button, Tabs } from "antd";
-import { admin } from "../../until/until";
-import styles from "./styles.module.scss";
-import type { ColumnsType } from "antd/es/table";
+import UpdateMember from "./updateMember";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
-import { useParams } from "react-router";
-import { setMaxListeners } from "stream";
-import UpdateMember from "./updateMember";
+import styles from "./styles.module.scss";
 
-type MenuItem = Required<MenuProps>["items"][number];
+const { TabPane } = Tabs;
 
-interface AdminProps {}
-
-const Admin = (props: any) => {
+const Admin = () => {
   document.title = "Quản lý hội viên";
+  const navigate = useNavigate(); // Thay đổi ở đây
   const paramValue = useParams();
-  // var check:any = paramValue.key;
-  //  console.log("paramValue", paramValue);
-  const [selectedMenuItem, setSelectedMenuItem] = useState<any>(paramValue.key||1);
-  let titleText = "";
+  const [selectedMenuItem, setSelectedMenuItem] = useState(paramValue.key || "quan-ly-hoi-vien");
+  const [titleText, setTitleText] = useState("Quản lý hội viên");
 
-  if (selectedMenuItem == 1) {
-    titleText = "Quản lý hội viên";
-  } else if (selectedMenuItem == 2) {
-    titleText = "Quản lý tài khoản";
-  } else if(selectedMenuItem == 3){
-    titleText = "Cập nhật dữ liệu";
-  }
-  // const onClick: MenuProps["onClick"] = (e) => {
-  //   console.log("click ", e);
-  // };
-  const items: TabsProps["items"] = [
-    {
-      key: "1",
-      label: "Quản lý hội viên",
-      children: (
-        <>
-          <ManagerMember />
-        </>
-      ),
-    },
-    {
-      key: "2",
-      label: "Quản lý tài khoản",
-      children: (
-        <>
-          <ManagerAccount />
-        </>
-      ),
-    },
-    {
-      key: "3",
-      label: "Cập nhật dữ liệu",
-      children: (
-        <>
-          <UpdateMember />
-        </>
-      ),
-    },
-  ];
-  const handleClick = (key: string) => {
-    console.log(key);
+  const handleTabChange = (key:string) => {
     setSelectedMenuItem(key);
+    navigate(`/Admin0/${key}`); // Thay đổi ở đây
   };
+
+  const items = useMemo(() => [
+    {
+      key: "quan-ly-hoi-vien",
+      tab: "Quản lý hội viên",
+      content: <ManagerMember />,
+    },
+    {
+      key: "quan-ly-tai-khoan",
+      tab: "Quản lý tài khoản",
+      content: <ManagerAccount />,
+    },
+    {
+      key: "cap=nhat-du-lieu",
+      tab: "Cập nhật dữ liệu",
+      content: <UpdateMember />,
+    },
+  ], []);
+
+  useEffect(() => {
+    switch (selectedMenuItem) {
+      case "quan-ly-hoi-vien":
+        setTitleText("Quản lý hội viên");
+        break;
+      case "quan-ly-tai-khoan":
+        setTitleText("Quản lý tài khoản");
+        break;
+      case "cap-nhat-du-lieu":
+        setTitleText("Cập nhật dữ liệu");
+        break;
+      default:
+        setTitleText("Quản lý hội viên");
+    }
+  }, [selectedMenuItem]);
+
   return (
     <>
       <Header />
@@ -89,13 +72,13 @@ const Admin = (props: any) => {
         </div>
       </div>
       <div className={styles.contentWrap}>
-        <Tabs
-          defaultActiveKey={paramValue.key}
-          items={items}
-          className={styles.tab}
-          centered={true}
-          onTabClick={handleClick}
-        />
+        <Tabs activeKey={selectedMenuItem} onChange={handleTabChange} className={styles.tab} centered>
+          {items.map(item => (
+            <TabPane tab={item.tab} key={item.key}>
+              {item.content}
+            </TabPane>
+          ))}
+        </Tabs>
       </div>
       <Footer />
     </>
