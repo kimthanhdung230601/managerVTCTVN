@@ -1,10 +1,10 @@
 import LevelOne from "../f1";
-import Search from "../Search";
+import SearchId from "../Search";
 
 interface HomeProps {}
 
 const Home = () => {
-  return <><Search /></>;
+  return <><SearchId /></>;
 };
 
 export default Home;

@@ -76,6 +76,11 @@ export default function Header() {
                             Đăng nhập
                         </Link>
                     </li>
+                    <li className={styles.menuItem}>
+                        <Link to={'/dang-nhap'} className={styles.menuItemLink}>
+                            Đăng ký
+                        </Link>
+                    </li>
                     
                 </div> 
             </div>

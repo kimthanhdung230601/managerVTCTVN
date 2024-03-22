@@ -61,29 +61,35 @@
 .userMenu{
     display: none;
     margin-top: 30px;
-    width: 150px;
+    width: 180px;
     right: 0;
     transform: translateX(10%);
     position: absolute;
     border-radius: 4px;
-    background-color: #f8f8f8;
+    background-color: #ecf8ea;
     overflow: hidden;
     z-index: 1;
     .menuItem{
         list-style: none;
-        padding: 10px 20px;
+        padding: 12px 20px;
         color: var(--primary);
         .menuItemLink{
             font-size: 16px;
+            color: var(--primary);
             &:hover{
-               color: var(--subPrimary); 
+                color: var(--subPrimary);
             }
         }
+        // &:hover{
+        //     color: #fff !important;
+        //     background-color: var(--primary);
+        // }
     }
 
 }
 
-.userMenu > li:first-child{
+.userMenu > li:nth-child(2){
+    border-top: 1px solid #e9e9e9;
     border-bottom: 1px solid #e9e9e9;
 }
 

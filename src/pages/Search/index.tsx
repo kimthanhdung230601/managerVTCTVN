@@ -1,10 +1,13 @@
-import { Image } from 'antd'
+import { Image, Input } from 'antd'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import Header from '../../components/Header'
 import styles from "./Style.module.scss"
-export default function Search() {
+import type { SearchProps } from 'antd/es/input/Search';
+const { Search } = Input;
+export default function SearchId() {
     document.title = "Tra cứu hội viên";
+    const onSearch: SearchProps['onSearch'] = (value, _e, info) => console.log(info?.source, value);
   return (
     <>
         <Header />
@@ -18,7 +21,13 @@ export default function Search() {
                     <div className={styles.titleSearch}>
                         Tra cứu dữ liệu hội viên (Nhập mã hội viên):
                         <br />
-                        <input type={"text"} className={styles.input}/>
+                        <Search
+                            placeholder="Tìm kiếm tại đây"
+                            allowClear
+                            onSearch={onSearch}
+                            size="large"
+                            className={styles.input}
+                        />
                         <br />
                         <button className={styles.btn}>
                             <Link to={"/thong-tin-ho-so"}>
