@@ -119,7 +119,7 @@ const UpdateMember = () => {
             </div>
             <p className={styles.note}>
               Lưu ý: Nhập đúng định dạng. Các thành viên viết cách nhau bởi dấu
-              "," <br></br> Ví dụ :H123|HLV 1 đẳng|2023, H46|Võ sinh cấp 1|2024
+              "," <br></br> Ví dụ: H123|HLV 1 đẳng|2023, H46|Võ sinh cấp 1|2024
             </p>
             <Form
               form={form}
@@ -165,7 +165,7 @@ const UpdateMember = () => {
             </div>
             <p className={styles.note}>
               Lưu ý: Nhập đúng định dạng. Các thành viên viết cách nhau bởi dấu
-              "," <br></br> Ví dụ :H123|Đai đen|Giải trẻ|Vàng|2023, H46|Giải
+              "," <br></br> Ví dụ: H123|Đai đen|Giải trẻ|Vàng|2023, H46|Giải
               trẻ|Vàng|2024
             </p>
             <Form
