@@ -260,16 +260,6 @@ export default function Signup() {
                         <Select.Option value="so_vhtt">Sở VHTT</Select.Option>
                 </Select>
                 </Form.Item>
-                
-                <Form.Item
-                    name="account"
-                    rules={[{ required: true, message: 'Vui lòng tài khoản đăng nhập!' }]}
-                    wrapperCol={{ span: 24 }}
-                    className={styles.formItem}
-                    >
-                    <Input prefix={<ProfileOutlined  className={styles.icon} />} placeholder="Tài khoản đăng nhập" className={styles.formInput}/>
-                
-                </Form.Item>
                 <Form.Item
                 name="password"
                 rules={[

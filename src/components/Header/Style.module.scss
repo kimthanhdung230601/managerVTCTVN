@@ -19,11 +19,13 @@
     cursor: pointer;
     font-size: 16px;
     color: var(--subPrimary);
+    font-weight: 500;
 }
 
 .headerItem:hover{
     color: #a88700 !important;
 }
+
 
 .itemLink:hover{
     color: #a88700 !important;
