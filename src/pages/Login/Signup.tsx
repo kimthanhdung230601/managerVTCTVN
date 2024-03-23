@@ -5,6 +5,8 @@ import { LockOutlined, UserOutlined, PhoneOutlined, IdcardOutlined, PlusOutlined
 import ReCAPTCHA from "react-google-recaptcha";
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { useMutation, useQuery } from 'react-query';
+import { signup } from '../../api/ApiUser';
 
 const getBase64 = (file: any): Promise<string> =>
   new Promise((resolve, reject) => {
@@ -37,6 +39,15 @@ export default function Signup() {
     const [previewImage2, setPreviewImage2] = useState('');
     const [previewTitle2, setPreviewTitle2] = useState('');
     const [fileList2, setFileList2] = useState<UploadFile[]>([]);
+    const signupMutation = useMutation(
+        async (payload: any) => await signup(payload), 
+        {
+            onSettled: (data: any) => {
+                console.log(data)
+            }
+        }
+        
+    )
     const handleCancel1 = () => setPreviewOpen1(false);
     const handleCancel2 = () => setPreviewOpen2(false);
     const handlePreview1 = async (file: UploadFile) => {
@@ -78,7 +89,23 @@ export default function Signup() {
     };
     const filterOption = (input: string, option?: { children: React.ReactNode }) => (option?.children as string).toLowerCase().includes(input.toLowerCase());
     const onFinish = (value: any) => {
+        console.log(delete value.confirm)
         console.log(value)
+        const formdata = new FormData();
+        formdata.append("name", value.name);
+        formdata.append("club", value.club);
+        formdata.append("idcard", value.idcard);
+        formdata.append("idday", value.idday);
+        formdata.append("idlocation", value.idlocation);
+        formdata.append("phone", value.phone);
+        formdata.append("email", value.email);
+        formdata.append("location", value.location);
+        formdata.append("manage", value.manage);
+        formdata.append("password", value.password);
+        formdata.append("image_certificate", value.image_certificate.file);
+        formdata.append("image_ref", value.image_ref.file);
+        console.log("data",formdata.values)
+        // signupMutation.mutate(value)
     }
     const props = {
         action: "https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188",
@@ -143,7 +170,7 @@ export default function Signup() {
                 
                 </Form.Item>
                 <Form.Item
-                name="username"
+                name="name"
                 rules={[{ required: true, message: 'Vui lòng nhập họ tên!' }]}
                 wrapperCol={{ span: 24 }}
                 className={styles.formItem}
@@ -151,7 +178,7 @@ export default function Signup() {
                     <Input prefix={<UserOutlined className={styles.icon} />} placeholder="Họ tên" className={styles.formInput}/>
                 </Form.Item>
                 <Form.Item
-                name="id"
+                name="idcard"
                 rules={[{ required: true, message: 'Vui lòng nhập mã định danh!' }]}
                 wrapperCol={{ span: 24 }}
                 className={styles.formItem}
@@ -161,7 +188,7 @@ export default function Signup() {
                 </Form.Item>
                 <div style={{display: "flex", width: "100%"}}>
                     <Form.Item
-                        name="id_date"
+                        name="idday"
                         rules={[{ required: true, message: 'Vui lòng nhập ngày cấp!' }]}
                         wrapperCol={{ span: 24 }}
                         className={styles.formItem}
@@ -170,7 +197,7 @@ export default function Signup() {
                         <Input prefix={<CalendarOutlined className={styles.icon} />} placeholder="Ngày cấp" type='date' className={styles.formInput}/>
                     </Form.Item>
                     <Form.Item
-                        name="id_issue"
+                        name="idlocation"
                         rules={[{ required: true, message: 'Vui lòng nhập nơi cấp!' }]}
                         wrapperCol={{ span: 24 }}
                         className={styles.formItem}
@@ -213,7 +240,7 @@ export default function Signup() {
                 </Form.Item>
                 <EnvironmentOutlined  className={styles.iconSelect}/>
                 <Form.Item
-                name="province"
+                name="location"
                 rules={[{ required: true, message: 'Vui lòng chọn tỉnh/thành/ngành!' }]}
                 wrapperCol={{ span: 24 }}
                 className={styles.formSelect}
@@ -237,7 +264,7 @@ export default function Signup() {
                 </Form.Item>
                 <DeploymentUnitOutlined  className={styles.iconSelect}/>
                 <Form.Item
-                name="unit"
+                name="manage"
                 rules={[{ required: true, message: 'Vui lòng chọn đơn vị quản lý!' }]}
                 wrapperCol={{ span: 24 }}
                 className={styles.formSelect}
@@ -252,12 +279,12 @@ export default function Signup() {
                        filterOption={filterOption}
                        className={styles.select}
                     >
-                        <Select.Option value="lien_doan">Liên Đoàn</Select.Option>
-                        <Select.Option value="hoi_vo_thuat">Hội Võ Thuật</Select.Option>
-                        <Select.Option value="cong_an">Công An</Select.Option>
-                        <Select.Option value="quan_doi">Quân Đội</Select.Option>
-                        <Select.Option value="giao_duc">Giáo Dục</Select.Option>
-                        <Select.Option value="so_vhtt">Sở VHTT</Select.Option>
+                        <Select.Option value="Liên Đoàn">Liên Đoàn</Select.Option>
+                        <Select.Option value="Hội Võ Thuật">Hội Võ Thuật</Select.Option>
+                        <Select.Option value="Công An">Công An</Select.Option>
+                        <Select.Option value="Quân Đội">Quân Đội</Select.Option>
+                        <Select.Option value="Giáo Dục">Giáo Dục</Select.Option>
+                        <Select.Option value="Sở VHTT">Sở VHTT</Select.Option>
                 </Select>
                 </Form.Item>
                 <Form.Item
@@ -310,7 +337,7 @@ export default function Signup() {
                     <div style={{height: "265px", overflow: "hidden"}}>
                     <div style={{textAlign: "center", marginBottom: "10px"}}>Ảnh Bằng cấp hiện tại</div>
                        <Form.Item
-                        name="image1"
+                        name="image_certificate"
                         rules={[{ required: true, message: 'Vui lòng tải ảnh lên' }]}
                         wrapperCol={{ span: 24 }}
                         className={`${styles.uploadForm} ${styles.formItem}`}
@@ -334,7 +361,7 @@ export default function Signup() {
                     <div style={{height: "265px", overflow: "hidden"}}>
                         <div style={{textAlign: "center", marginBottom: "10px"}}>Ảnh giấy giới thiệu</div>
                         <Form.Item
-                            name="image2"
+                            name="image_ref"
                             rules={[{ required: true, message: 'Vui lòng tải ảnh lên' }]}
                             wrapperCol={{ span: 24 }}
                             className={`${styles.uploadForm} ${styles.formItem}`}
