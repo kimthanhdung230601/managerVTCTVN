@@ -65,7 +65,7 @@ export default function Login() {
                 onFinish={onFinish}
             >
                  <Form.Item
-                    name="username"
+                    name="phone"
                     rules={[{ required: true, message: 'Hãy nhập số điện thoại!' }]}
                     wrapperCol={{ span: 24 }}
                     className={styles.formItem}
