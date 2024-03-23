@@ -1,3 +1,4 @@
+import CryptoJS from "crypto-js";
 export const admin = ["Nguyễn Văn A"];
 export const level: any = [
   "Võ sinh cấp 1",
@@ -114,3 +115,5 @@ export const province = [
   "Công An",
   "Giáo Dục",
 ];
+// export const bytes = (ciphertext:any)=> CryptoJS.AES.decrypt(ciphertext, "e1c3465b54ef1e1a36726b0c2c8058da1eb59e224fa4b1133e6da677dc960c24");
+// export const decryptedText = bytes.toString(CryptoJS.enc.Utf8);

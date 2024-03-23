@@ -16,7 +16,7 @@ import UpdateMember from "../pages/Admin0/updateMember";
 import AdminTwo from "../pages/Admin2";
 import Account from "../pages/Account";
 import ChangePassword from "../pages/ChangePassword";
-
+import CryptoJS from "crypto-js";
 const Wrapper = () => {
   return (
     <>

@@ -14,6 +14,9 @@ import type { ColumnsType } from "antd/es/table";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import { useNavigate } from "react-router";
+import Cookies from "js-cookie";
+import CryptoJS from "crypto-js";
+const secretKey = process.env.REACT_APP_SECRET_KEY as string;
 
 type MenuItem = Required<MenuProps>["items"][number];
 
@@ -31,7 +34,6 @@ function getItem(
   } as MenuItem;
 }
 
-
 interface AdminProps {}
 
 const items: MenuItem[] = [
@@ -44,20 +46,23 @@ const items: MenuItem[] = [
 // submenu keys of first level
 const rootSubmenuKeys = ["sub1"];
 
-
-
 const AdminTwo = () => {
-  document.title = "Đơn vị quản lý"
-  const navigate = useNavigate()
+  document.title = "Đơn vị quản lý";
+  const navigate = useNavigate();
   const [openKeys, setOpenKeys] = useState(["sub1"]);
-
-  
+  // const name = Cookies.get("name") as string;
+  const name = CryptoJS.AES.decrypt(Cookies.get("name") as string, secretKey);
+  const decryptedName = name.toString(CryptoJS.enc.Utf8);
+  const phone = CryptoJS.AES.decrypt(Cookies.get("phone") as string, secretKey);
+  const decryptedPhone = phone.toString(CryptoJS.enc.Utf8);
+  const email = CryptoJS.AES.decrypt(Cookies.get("email") as string, secretKey);
+  const decryptedEmail = email.toString(CryptoJS.enc.Utf8);
   const onClick: MenuProps["onClick"] = (e) => {
     console.log("click ", e);
   };
   return (
     <>
-      <Header/>
+      <Header />
       <div className={styles.logoWrap}>
         <div className={styles.title}>
           <div className={styles.logoContainer}>
@@ -70,7 +75,9 @@ const AdminTwo = () => {
           <div className={styles.titleContent}>
             <div className={styles.titleText}>Đơn vị:</div>{" "}
             <div className={styles.subTitleText}>
-              <div className={`$(styles.boldText)`}>Thông tin người quản lý</div>
+              <div className={`$(styles.boldText)`}>
+                Thông tin người quản lý
+              </div>
               {/* <div className={styles.titleName}>
                 <button className={styles.btnView} style={{marginTop: "8px"}} onClick={() => navigate("/thong-tin-tai-khoan")}>
                     Chi tiết
@@ -79,25 +86,23 @@ const AdminTwo = () => {
             </div>
             <div className={styles.subTitleText}>
               <div className={styles.labelTitle}>Họ tên: </div>
-              <div className={styles.titleName}>Nguyễn Văn A</div>
+              <div className={styles.titleName}>{decryptedName}</div>
             </div>
             <div className={styles.subTitleText}>
               <div className={styles.labelTitle}>Số điện thoại:</div>
-              <div className={styles.titleName}>Nguyễn Văn A</div>
+              <div className={styles.titleName}>{decryptedPhone}</div>
             </div>
             <div className={styles.subTitleText}>
               <div className={styles.labelTitle}>Email: </div>
-              <div className={styles.titleName}>Nguyễn Văn A</div>
+              <div className={styles.titleName}>{decryptedEmail}</div>
             </div>
-            
-            
           </div>
         </div>
       </div>
       <div className={styles.contentWrap}>
         <ManagerMemberTwo />
       </div>
-      <Footer/>
+      <Footer />
     </>
   );
 };

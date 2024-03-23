@@ -236,10 +236,10 @@ const ManagerMemberTwo = () => {
           >
             Sửa{" "}
           </button>
-          <button className={styles.btnHide}>Ẩn</button>
-          {record.state == "Chưa duyệt HS" && (
-            <button className={styles.btnTbDanger}>Xóa</button>
-          )}
+          {/* <button className={styles.btnHide}>Ẩn</button> */}
+          {/* {record.state == "Chưa duyệt HS" && ( */}
+          <button className={styles.btnTbDanger}>Xóa</button>
+          {/* )} */}
         </div>
       ),
       width: 230,
