@@ -296,13 +296,14 @@
     margin-right: 4px;
   }
 }
-.btnUpdate{
+.btnUpdate {
   float: right;
 }
-.note{
+.note {
   font-style: italic;
-font-size: 14px;
-color: var(--secondary);
+  font-size: 14px;
+  color: var(--secondary);
+  margin-bottom: 2vh;
 }
 .imageWrap {
   display: flex;
@@ -318,7 +319,7 @@ color: var(--secondary);
   margin-right: 8px;
 }
 @media (max-width: 768px) {
-  .btn{
+  .btn {
     margin-top: 0.4vh;
   }
 }
