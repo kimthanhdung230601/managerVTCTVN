@@ -102,8 +102,7 @@ export default function Signup() {
     };
     const filterOption = (input: string, option?: { children: React.ReactNode }) => (option?.children as string).toLowerCase().includes(input.toLowerCase());
     const onFinish = (value: any) => {
-        console.log(delete value.confirm)
-        console.log(value)
+        delete value.confirm
         const randomKey = CryptoJS.lib.WordArray.random(32).toString();
         const formdata = new FormData();
         formdata.append("name", value.name);

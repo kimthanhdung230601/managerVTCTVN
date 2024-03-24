@@ -18,6 +18,7 @@ export const logout = () => {
 axiosInstance.interceptors.request.use(
   (config) => {
     const token = Cookies.get("token");
+    config.headers.Authorization = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiMSIsInBlcm1pc3Npb24iOiIyIiwiaWRfY2x1YiI6IjEiLCJwZW5kaW5nIjoiMCIsImV4cCI6MTcxMTU0NDY5OH0.xIOjlWnCnLDOTZxXeZsJgTTKyqLWo_p9lzchPxZc8LU'
     if (token) {
       config.headers.Authorization = `${token}`;
     }

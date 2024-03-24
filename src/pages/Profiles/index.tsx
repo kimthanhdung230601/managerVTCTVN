@@ -103,7 +103,7 @@ const Profiles = () => {
     console.log(date, dateString);
   };
   const onFinish = (values: any) => {
-    console.log("values", values);
+    console.log("form", values);
   };
   //button
   const [selectedButton, setSelectedButton] = useState("show");
@@ -134,7 +134,7 @@ const Profiles = () => {
                         {" "}
                         <Form.Item
                           label="Tải ảnh lên"
-                          name="upload"
+                          name="image_certificate"
                           valuePropName="fileList"
                           getValueFromEvent={normFile}
                           rules={[
@@ -165,7 +165,7 @@ const Profiles = () => {
                         {" "}
                         <Form.Item
                           label="Tải ảnh lên"
-                          name="upload"
+                          name="image_ref"
                           valuePropName="fileListLevel"
                           getValueFromEvent={normFile}
                           rules={[
@@ -232,7 +232,7 @@ const Profiles = () => {
                     </Form.Item>
                     <Form.Item
                       label="Số điện thoại"
-                      name="phoneNumber"
+                      name="phone"
                       rules={[
                         {
                           required: true,
@@ -251,7 +251,7 @@ const Profiles = () => {
                     {" "}
                     <Form.Item
                       label="Quốc tịch"
-                      name="countries"
+                      name="nationality"
                       rules={[
                         { required: true, message: "Vui lòng điền quốc tịch" },
                       ]}
@@ -262,7 +262,7 @@ const Profiles = () => {
                       <Col span={12}>
                         <Form.Item
                           label="Năm sinh"
-                          name="yearBorn"
+                          name="birthday"
                           rules={[
                             {
                               required: true,
@@ -335,7 +335,7 @@ const Profiles = () => {
                   <Col span={8} xs={24} sm={12} md={8}>
                     <Form.Item
                       label="Tỉnh/Thành "
-                      name="city"
+                      name="address"
                       rules={[
                         { required: true, message: "Vui lòng điền thông tin" },
                       ]}
@@ -357,7 +357,7 @@ const Profiles = () => {
                   <Col span={8} xs={24} sm={12} md={8}>
                     <Form.Item
                       label="Số CCCD "
-                      name="CCCD"
+                      name="idcard"
                       rules={[
                         { required: true, message: "Vui lòng điền CCCD" },
                       ]}
@@ -370,7 +370,7 @@ const Profiles = () => {
                   <Col span={8} xs={24} sm={12} md={8}>
                     <Form.Item
                       label="Quê quán"
-                      name="contry"
+                      name="hometown"
                       rules={[
                         { required: true, message: "Vui lòng điền quê quán" },
                       ]}
@@ -403,7 +403,7 @@ const Profiles = () => {
                             <Form.Item
                               {...restField}
                               label={"Thành tích"}
-                              name={[name, "achie"]}
+                              name={[name, "achievements"]}
                               rules={[
                                 {
                                   required: true,
@@ -447,7 +447,7 @@ const Profiles = () => {
                   )}
                 </Form.List>
                 <Form.Item
-                  name="Ghi chú hiển thị với người dùng"
+                  name="note"
                   label="Ghi chú hiển thị với người dùng"
                   rules={[
                     { required: true, message: "Vui lòng điền thông tin" },

@@ -6,6 +6,8 @@ import { Table } from 'antd';
 import { ColumnsType, TableProps } from 'antd/es/table';
 import { useNavigate } from 'react-router';
 import { levelFilters } from '../../until/until';
+import { useQuery } from 'react-query';
+import { getListMember } from '../../api/f1';
 
 const customLocale = {
     filterConfirm: 'OK',  // Thay đổi nút xác nhận
@@ -17,103 +19,18 @@ const customLocale = {
 
 interface DataType_CN {
     key: React.Key;
+    id: string;
     name: string;
-    birth: string;
+    birthday: string;
     phone: string;
-    identity: string;
+    idcard: string;
     level: string;
     club: string;
     note: string;
     status: string;
-    awards: string;
+    achievements: string;
 }
 
-const dataCN: DataType_CN[] = [
-    {
-      key: "1",
-      name: "Nguyễn Văn A",
-      birth: "24/12/2001",
-      phone: "0987838929",
-      identity: "009387466534",
-      level: "Võ sinh cấp 8",
-      club: "CLB Hà Nội",
-      note: "Thành viên tiềm năng",
-      status: "Hoạt động",
-      awards: "1 giải vô địch quốc gia",
-    },
-    {
-      key: "2",
-      name: "Nguyễn Văn B",
-      birth: "24/12/2001",
-      phone: "0987838929",
-      identity: "009387466534",
-      level: "Võ sinh cấp 11",
-      club: "CLB Hải Phòng",
-      note: "Thành viên tiềm năng",
-      status: "Hoạt động",
-      awards: "1 giải vô địch quốc gia",
-    },
-    {
-      key: "3",
-      name: "Nguyễn Văn C",
-      birth: "24/12/2001",
-      phone: "0987838929",
-      identity: "009387466534",
-      level: "Võ sinh cấp 12",
-      club: "HLV 1 đẳng",
-      note: "Thành viên tiềm năng",
-      status: "Hoạt động",
-      awards: "1 giải vô địch quốc gia",
-    },
-    {
-      key: "4",
-      name: "Nguyễn Văn D",
-      birth: "24/12/2001",
-      phone: "0987838929",
-      identity: "009387466534",
-      level: "HLV 3 đẳng",
-      club: "CLB TP HCM",
-      note: "Thành viên tiềm năng",
-      status: "Hoạt động",
-      awards: "1 giải vô địch quốc gia",
-    },
-    {
-      key: "5",
-      name: "Nguyễn Văn E",
-      birth: "24/12/2001",
-      phone: "0987838929",
-      identity: "009387466534",
-      level: "Võ sinh cấp 10",
-      club: "CLB Hà Nội",
-      note: "Thành viên tiềm năng",
-      status: "Hoạt động",
-      awards: "1 giải vô địch quốc gia",
-    },
-    {
-      key: "6",
-      name: "Nguyễn Văn G",
-      birth: "24/12/2001",
-      phone: "0987838929",
-      identity: "009387466534",
-      level: "Võ sinh cấp 1",
-      club: "CLB Hải Phòng",
-      note: "Thành viên tiềm năng",
-      status: "Hoạt động",
-      awards: "1 giải vô địch quốc gia",
-    },
-    {
-      key: "7",
-      name: "Nguyễn Văn H",
-      birth: "24/12/2001",
-      phone: "0987838929",
-      identity: "009387466534",
-      level: "Võ sinh cấp 12",
-      club: "CLB TP HCM",
-      note: "Thành viên tiềm năng",
-      status: "Hoạt động",
-      awards: "1 giải vô địch quốc gia",
-    },
-];
 
 const onChange: TableProps<DataType_CN>["onChange"] = (
     pagination,
@@ -127,6 +44,7 @@ export default function ManageMember() {
     const [currentPage1, setCurrentPage1] = useState(1);
     const [selectedRowKeysCLB, setSelectedRowKeysCLB] = useState<React.Key[]>([]);
     const [selectedRowKeysCN, setSelectedRowKeysCN] = useState<React.Key[]>([]);
+    const {data: memberList} = useQuery(['member'], () => getListMember())
     const onSelectChangeCN = (newSelectedRowKeysCN: React.Key[]) => {
         setSelectedRowKeysCLB(newSelectedRowKeysCN);
     };
@@ -158,7 +76,7 @@ export default function ManageMember() {
         },
         {
           title: "Ngày sinh",
-          dataIndex: "birth",
+          dataIndex: "birthday",
         },
         {
           title: "Số điện thoại",
@@ -166,7 +84,7 @@ export default function ManageMember() {
         },
         {
           title: "Số định danh",
-          dataIndex: "identity",
+          dataIndex: "idcard",
         },
         {
           title: "Đẳng cấp",
@@ -227,12 +145,12 @@ export default function ManageMember() {
         },
         {
           title: "Thành tích",
-          dataIndex: "awards",
+          dataIndex: "achievements",
         },
         {
           title: "Chi tiết",
           render: (value, record) => {
-            return <button className={styles.btn} onClick={()=>navigate("/thong-tin-ho-so")}>Xem</button>;
+            return <button className={styles.btn} onClick={()=>navigate(`/thong-tin-ho-so/${record.id}`)}>Xem</button>;
           },
         },
       ];
@@ -242,7 +160,7 @@ export default function ManageMember() {
         <div>
             {hasSelected
             ? `Đã chọn ${selectedRowKeysCLB.length} hồ sơ`
-            : "Tổng số 7 hồ sơ"}
+            : `Tổng số ${memberList?.total_products} hồ sơ`}
         </div>
         <div className={styles.filter}>
         <Search
@@ -261,14 +179,14 @@ export default function ManageMember() {
         <Table
         rowSelection={rowSelectionCN}
         columns={columns_CN}
-        dataSource={dataCN}
+        dataSource={memberList?.data}
         locale={customLocale}
         pagination={{
             current: currentPage1,
             onChange: onPaginationChange1,
-            pageSize: 5,
+            pageSize: 12,
             defaultCurrent: 1,
-            total: 7,
+            total: memberList?.total_products,
         }}
         className={styles.table}
         />
