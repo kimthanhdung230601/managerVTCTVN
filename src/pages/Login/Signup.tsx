@@ -4,10 +4,12 @@ import { Button, Form, Image, Input, message, Modal, Select, Upload, UploadFile,
 import { LockOutlined, UserOutlined, PhoneOutlined, IdcardOutlined, PlusOutlined, MailOutlined, CheckOutlined, BankOutlined, HomeOutlined, EnvironmentOutlined, DeploymentUnitOutlined, SolutionOutlined, ProfileOutlined, CalendarOutlined, AimOutlined } from '@ant-design/icons';
 import ReCAPTCHA from "react-google-recaptcha";
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useMutation, useQuery } from 'react-query';
 import { signup } from '../../api/ApiUser';
 import { province } from '../../until/until';
+
+import CryptoJS from 'crypto-js';
 
 const getBase64 = (file: any): Promise<string> =>
   new Promise((resolve, reject) => {
@@ -29,6 +31,7 @@ const getBase64 = (file: any): Promise<string> =>
 export default function Signup() {
     document.title = "Đăng ký";
     const dispatch = useDispatch();
+    const navigate = useNavigate()
     const reloadCount = useSelector((state:any) => state.reloadCount);
     const [showCaptcha, setShowCaptcha] = useState(false);
     const [isVerify, setIsVerify] = useState(false);
@@ -43,8 +46,19 @@ export default function Signup() {
     const signupMutation = useMutation(
         async (payload: any) => await signup(payload), 
         {
-            onSettled: (data: any) => {
-                console.log(data)
+            
+            onSuccess: (data: any) => {
+                if(data.status === "success") {
+                    message.success("Đăng ký thành công, vui lòng đăng nhập để tiếp tục")
+                    setTimeout(()=> {
+                        navigate(`/dang-nhap`)
+                    },2000)
+                } else if(data.status === "failed") {
+                   message.error(data.data)
+                } else message.error("Có lỗi xảy ra, vui lòng thử lại sau")
+            },
+            onError: () => {
+                message.error("Có lỗi xảy ra, vui lòng thử lại sau")
             }
         }
         
@@ -83,15 +97,16 @@ export default function Signup() {
         return acceptedImageTypes.includes(file.type);
     };
     const onChange = (value: string) => {
-        console.log(`selected ${value}`);
+        // console.log(`selected ${value}`);
     };
     const onSearch = (value: string) => {
-        console.log('search:', value);
+        // console.log('search:', value);
     };
     const filterOption = (input: string, option?: { children: React.ReactNode }) => (option?.children as string).toLowerCase().includes(input.toLowerCase());
     const onFinish = (value: any) => {
         console.log(delete value.confirm)
         console.log(value)
+        const randomKey = CryptoJS.lib.WordArray.random(32).toString();
         const formdata = new FormData();
         formdata.append("name", value.name);
         formdata.append("club", value.club);
@@ -103,10 +118,17 @@ export default function Signup() {
         formdata.append("location", value.location);
         formdata.append("manage", value.manage);
         formdata.append("password", value.password);
-        formdata.append("image_certificate", value.image_certificate.file);
-        formdata.append("image_ref", value.image_ref.file);
-        console.log("data",formdata.values)
-        // signupMutation.mutate(value)
+        formdata.append(
+            `image_certificate`,
+            value.image_certificate.file.originFileObj as File,
+            CryptoJS.AES.encrypt(value.image_certificate.file.name, randomKey).toString()
+        );
+        formdata.append(
+            `image_ref`,
+            value.image_ref.file.originFileObj as File,
+            CryptoJS.AES.encrypt(value.image_ref.file.name, randomKey).toString()
+        );
+        signupMutation.mutate(formdata)
     }
     const props = {
         action: "https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188",
@@ -119,7 +141,7 @@ export default function Signup() {
         },
         onChange(info:any) {
             if (info.file.status !== 'uploading') {
-            console.log(info.file, info.fileList);
+            // console.log(info.file, info.fileList);
             }
             if (info.file.status === 'done') {
             message.success(`${info.file.name} tải ảnh thành công`);
@@ -141,7 +163,7 @@ export default function Signup() {
         if(isVerify) dispatch({ type: 'RESET_LOAD_COUNT' });
          
       }, [isVerify]);
-      console.log(province.length)
+   
   return (
     <div className={styles.loginWrap}>
         <div className={styles.logo}>
