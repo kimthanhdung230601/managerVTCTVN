@@ -349,11 +349,7 @@ const ManagerMemberTwo = () => {
         note={note}
         refetch={refetchListF3}
       />
-      {/* <ModalMember
-        isModalOpen={isModalOpenMember}
-        handleCancel={handleCancelMember}
-        handleOk={handleOkMember}
-      /> */}
+
     </div>
   );
 };
