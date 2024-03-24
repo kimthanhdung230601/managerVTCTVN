@@ -65,7 +65,7 @@ export default function Login() {
       switch (true) {
         case res?.info_user[0].permission === "0":
           // console.log("Mật khẩu đúng cho accountF0");
-          // navigate("/Admin0/quan-ly-hoi-vien");
+          navigate("/Admin0/quan-ly-hoi-vien");
           break;
 
         case res?.info_user[0].permission === "1":
@@ -102,9 +102,8 @@ export default function Login() {
         "email",
         CryptoJS.AES.encrypt(res?.info_user[0].email, secretKey).toString()
       );
-    }
-    else{
-      message.error("Nhập sai tài khoản hoặc mật khẩu")
+    } else {
+      message.error("Nhập sai tài khoản hoặc mật khẩu");
     }
   };
   return (
