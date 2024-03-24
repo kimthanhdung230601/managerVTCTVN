@@ -170,22 +170,22 @@ h3 {
 // .ant-table-row-selected {
 //   z-index: 1;
 //   background-color: rgba(4, 108, 57, 0.2) !important;
+// // }
+// ::-webkit-scrollbar {
+//   width: 10px;
 // }
-::-webkit-scrollbar {
-  width: 10px;
-}
 
-/* Track */
-::-webkit-scrollbar-track {
-  // box-shadow: inset 0 0 5px grey;
-  border-radius: 4px;
-}
+// /* Track */
+// ::-webkit-scrollbar-track {
+//   // box-shadow: inset 0 0 5px grey;
+//   border-radius: 4px;
+// }
 
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background: var(--line);
-  border-radius: 4px;
-}
+// /* Handle */
+// ::-webkit-scrollbar-thumb {
+//   background: var(--line);
+//   border-radius: 4px;
+// }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {

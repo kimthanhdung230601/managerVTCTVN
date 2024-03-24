@@ -1,13 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   AudioOutlined,
   PlusOutlined,
   DownloadOutlined,
 } from "@ant-design/icons";
 import type { SearchProps } from "antd/es/input";
-import { Input, Table, Button, TableProps, Row, Col } from "antd";
+import { Input, Table, Button, TableProps, Row, Col, Spin, Pagination } from "antd";
 import styles from "./styles.module.scss";
-import { level, levelFilters, managerf1, province, randomState, statess } from "../../until/until";
+import {
+  level,
+  levelFilters,
+  managerf1,
+  province,
+  randomState,
+  statess,
+} from "../../until/until";
 import { useMediaQuery } from "react-responsive";
 import type { ColumnsType } from "antd/es/table";
 import type { FilterValue } from "antd/es/table/interface";
@@ -15,6 +22,9 @@ import type { FilterValue } from "antd/es/table/interface";
 import Search from "antd/es/input/Search";
 // import ModalMember from "../../components/Modal/ModalAccount";
 import { useNavigate } from "react-router-dom";
+import { useQuery } from "react-query";
+import { getListMember } from "../../api/f0";
+import moment from "moment";
 
 interface ManagerMemberProps {}
 interface DataType {
@@ -31,6 +41,7 @@ interface DataType {
   status: string;
   achie: string;
   level: string;
+  achievements: string;
 }
 const customLocale = {
   filterConfirm: "OK", // Thay đổi nút xác nhận
@@ -49,44 +60,26 @@ for (let i = 1; i < 46; i++) {
     "Sở VHTT",
     "Hội Võ Thuật",
   ];
-  var randomManager = manager[Math.floor(Math.random() * manager.length)];
-  var club = ["Câu lạc bộ B", "Câu lạc bộ A", "Câu lạc bộ C", "Câu lạc bộ D"];
-  var randomClub = club[Math.floor(Math.random() * club.length)];
-  // var level2 = ["12", "13", "14", "15"];
-  var randomLevel = level[Math.floor(Math.random() * level.length)];
-  var note = ["note content 1", "note content 2", "note content 3"];
-  var randomNote = note[Math.floor(Math.random() * note.length)];
-  var randomProvince = province[Math.floor(Math.random() * 62)];
-  data.push({
-    key: i,
-    stt: `${i}`,
-    dateOfBirth: "01/12/1991",
-    phoneNumber: "0971123123",
-    id: `${i}`,
-    city: randomProvince,
-    name: `Nguyễn Văn A`,
-    f1: randomManager,
-    f2: randomClub,
-    status: randomState(),
-    note: randomNote,
-    achie: `giải thưởng ${i}`,
-    level: randomLevel,
-  });
 }
 const ManagerMember = () => {
+  const {
+    data: allMember,
+    refetch,
+    isFetching,
+  } = useQuery("allMember", () => getListMember());
+  const filtersListNote = allMember?.list_note.map((item: any, index: any) => ({
+    text: item.note,
+    value: item.note,
+  }));
+  // const filtersClub = allMember?.club.map((item:any, index:any) => ({
+  //   text:  item.detail,
+  //   value: item.detail
+  // }));
   const navigate = useNavigate();
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
   const isMobile = useMediaQuery({ maxWidth: 768 });
-  const start = () => {
-    setLoading(true);
-    // ajax request after empty completing
-    setTimeout(() => {
-      setSelectedRowKeys([]);
-      setLoading(false);
-    }, 1000);
-  };
-
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
     console.log("selectedRowKeys changed: ", newSelectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
@@ -99,6 +92,16 @@ const ManagerMember = () => {
     selectedRowKeys,
     onChange: onSelectChange,
   };
+  //page
+
+  useEffect(() => {
+    refetch();
+  }, [currentPage, allMember?.total_products]);
+  const onChangePage = (value: any) => {
+    setCurrentPage(value);
+    refetch();
+  };
+
   const hasSelected = selectedRowKeys.length > 0;
   const onSearch: SearchProps["onSearch"] = (value: any, _e: any, info: any) =>
     console.log(info?.source, value);
@@ -119,17 +122,19 @@ const ManagerMember = () => {
     },
     {
       title: "Ngày sinh",
-      dataIndex: "dateOfBirth",
-      width: 130,
+      dataIndex: "birthday",
+      render: (value, record) => {
+        return moment(value).format("DD/MM/YYYY");
+      },
     },
     {
       title: "Số điện thoại",
-      dataIndex: "phoneNumber",
+      dataIndex: "phone",
       width: 170,
     },
     {
       title: "Số định danh",
-      dataIndex: "id",
+      dataIndex: "idcard",
       width: 160,
     },
     {
@@ -137,16 +142,16 @@ const ManagerMember = () => {
       dataIndex: "level",
       width: 130,
       filters: levelFilters,
-      filterMode: 'tree',
+      filterMode: "tree",
       onFilter: (value: any, rec) => rec.level.indexOf(value) === 0,
     },
     {
-      title: 'Tỉnh',
-      dataIndex: 'city',
+      title: "Tỉnh",
+      dataIndex: "address",
       filters: filterProivce,
-      onFilter: (value:any, record) => record.city.startsWith(value),
+      onFilter: (value: any, record) => record.city.startsWith(value),
       filterSearch: true,
-      width:120,
+      width: 120,
     },
     {
       title: "Đơn vị quản lý F1",
@@ -178,12 +183,12 @@ const ManagerMember = () => {
           value: "Quân Đội",
         },
       ],
-      filterMode: 'tree',
+      filterMode: "tree",
       onFilter: (value: any, rec) => rec.f1.indexOf(value) === 0,
     },
     {
       title: "CLB trực thuộc F2",
-      dataIndex: "f2",
+      dataIndex: "club",
       width: 300,
       filters: [
         {
@@ -203,63 +208,49 @@ const ManagerMember = () => {
           value: "Câu lạc bộ D",
         },
       ],
-      filterMode: 'tree',
+      filterMode: "tree",
       onFilter: (value: any, rec) => rec.f2.indexOf(value) === 0,
     },
     {
       title: "Ghi chú",
       dataIndex: "note",
       width: 130,
-      filters: [
-        {
-          text: "note content 1",
-          value: "note content 1",
-        },
-        {
-          text: "note content 2",
-          value: "note content 2",
-        },
-        {
-          text: "note content 3",
-          value: "note content 3",
-        },
-      ],
+      filters: filtersListNote,
+      filterMode: "tree",
       onFilter: (value: any, rec) => rec.note.indexOf(value) === 0,
-      filterMode: 'tree',
     },
     {
       title: "Tình trạng",
       dataIndex: "status",
-      width: 300,
+      width: 140,
       filters: [
         {
           text: "Hoạt động",
-          value: "Hoạt động",
+          value: "Đã duyệt",
         },
         {
-          text: "Chưa duyệt HS",
-          value: "Chưa duyệt HS",
+          text: "Chờ duyệt xóa",
+          value: "Chờ duyệt xoá",
         },
         {
-          text: "Nghỉ",
-          value: "Nghỉ",
+          text: "Chờ duyệt HS",
+          value: "Chờ duyệt",
         },
       ],
-      
+      filterMode: "tree",
       render: (value, record) => {
-        if (value === "Hoạt động")
-          return <span style={{ color: "#046C39" }}>{value}</span>;
-        if (value === "Nghỉ")
-          return <span style={{ color: "#8D8D8D" }}>{value}</span>;
-        if (value === "Chưa duyệt HS")
-          return <span style={{ color: "#F6C404" }}>{value}</span>;
+        if (value === "Đã duyệt")
+          return <span style={{ color: "#046C39" }}>Hoạt động</span>;
+        if (value === "Chờ duyệt xoá")
+          return <span style={{ color: "#8D8D8D" }}>Chờ duyệt xóa</span>;
+        if (value === "Chờ duyệt")
+          return <span style={{ color: "#F6C404" }}>Chờ duyệt HS</span>;
       },
-      filterMode: 'tree',
       onFilter: (value: any, rec) => rec.status.indexOf(value) === 0,
     },
     {
       title: "Thành tích",
-      dataIndex: "achie",
+      dataIndex: "achievements",
       width: 130,
       filters: [
         {
@@ -271,8 +262,22 @@ const ManagerMember = () => {
           value: "Không",
         },
       ],
-      filterMode: 'tree',
-      onFilter: (value: any, rec) => rec.achie.indexOf(value) === 0,
+      filterMode: "tree",
+      onFilter: (value: any, record) => {
+        if (value === "Có" && record.achievements.length > 0) {
+          return true; // Trả về true nếu giá trị là "Có" và có thành tích
+        } else if (value === "Không" && record.achievements.length === 0) {
+          return true; // Trả về true nếu giá trị là "Không" và không có thành tích
+        }
+        return false; // Trả về false nếu không khớp với bất kỳ điều kiện nào
+      },
+      render: (value, record) => {
+        if (record.achievements.length > 0) {
+          return <>Có</>;
+        } else {
+          return <>Không</>;
+        }
+      },
     },
     {
       // title: 'Action',
@@ -287,13 +292,18 @@ const ManagerMember = () => {
           >
             Xem
           </button>
+
           <button
             className={styles.btnTb}
             onClick={() => navigate("/them-hoi-vien")}
           >
             Sửa
           </button>
-          <button className={styles.btnTbDanger}>Xóa</button>
+          {record.status === "Chờ duyệt xoá" ? (
+            <Button className={styles.btnTbDanger}>Xóa</Button>
+          ) : (
+            <></>
+          )}
         </span>
       ),
     },
@@ -301,9 +311,10 @@ const ManagerMember = () => {
   const columnsMobile: ColumnsType<DataType> = [
     {
       title: "STT",
-      dataIndex: "stt",
-
-      width: 70,
+      dataIndex: "STT",
+      render: (value, record, index) => {
+        return index + 1 + (currentPage - 1) * 10;
+      },
     },
     {
       title: "Họ tên",
@@ -313,51 +324,36 @@ const ManagerMember = () => {
     },
     {
       title: "Ngày sinh",
-      dataIndex: "dateOfBirth",
-      width: 130,
+      dataIndex: "birthday",
+      render: (value, record) => {
+        return moment(value).format("DD/MM/YYYY");
+      },
     },
     {
       title: "Số điện thoại",
-      dataIndex: "phoneNumber",
+      dataIndex: "phone",
       width: 170,
     },
     {
       title: "Số định danh",
-      dataIndex: "id",
+      dataIndex: "idcard",
       width: 160,
     },
     {
-      title: "Cấp độ",
+      title: "Đằng cấp",
       dataIndex: "level",
-      width: 100,
-      filters: [
-        {
-          text: "12",
-          value: "12",
-        },
-        {
-          text: "13",
-          value: "13",
-        },
-        {
-          text: "14",
-          value: "14",
-        },
-        {
-          text: "15",
-          value: "15",
-        },
-      ],
-      filterMode: 'tree',
+      width: 130,
+      filters: levelFilters,
+      filterMode: "tree",
       onFilter: (value: any, rec) => rec.level.indexOf(value) === 0,
     },
     {
-      title: 'Tỉnh',
-      dataIndex: 'city',
+      title: "Tỉnh",
+      dataIndex: "address",
       filters: filterProivce,
-      onFilter: (value:any, record) => record.city.startsWith(value),
+      onFilter: (value: any, record) => record.city.startsWith(value),
       filterSearch: true,
-      width:120,
+      width: 120,
     },
     {
       title: "Đơn vị quản lý F1",
@@ -389,7 +385,7 @@ const ManagerMember = () => {
           value: "Quân Đội",
         },
       ],
-      filterMode: 'tree',
+      filterMode: "tree",
       onFilter: (value: any, rec) => rec.f1.indexOf(value) === 0,
     },
     {
@@ -414,62 +410,49 @@ const ManagerMember = () => {
           value: "Câu lạc bộ D",
         },
       ],
-      filterMode: 'tree',
+      filterMode: "tree",
       onFilter: (value: any, rec) => rec.f2.indexOf(value) === 0,
     },
     {
       title: "Ghi chú",
       dataIndex: "note",
       width: 130,
-      filters: [
-        {
-          text: "note content 1",
-          value: "note content 1",
-        },
-        {
-          text: "note content 2",
-          value: "note content 2",
-        },
-        {
-          text: "note content 3",
-          value: "note content 3",
-        },
-      ],
-      filterMode: 'tree',
+      filters: filtersListNote,
+      filterMode: "tree",
       onFilter: (value: any, rec) => rec.note.indexOf(value) === 0,
     },
     {
       title: "Tình trạng",
       dataIndex: "status",
-      width: 300,
+      width: 140,
       filters: [
         {
           text: "Hoạt động",
-          value: "Hoạt động",
+          value: "Đã duyệt",
         },
         {
-          text: "Chưa duyệt HS",
-          value: "Chưa duyệt HS",
+          text: "Chờ duyệt xóa",
+          value: "Chờ duyệt xoá",
         },
         {
-          text: "Nghỉ",
-          value: "Nghỉ",
+          text: "Chờ duyệt HS",
+          value: "Chờ duyệt",
         },
       ],
+      filterMode: "tree",
       render: (value, record) => {
-        if (value === "Hoạt động")
-          return <span style={{ color: "#046C39" }}>{value}</span>;
-        if (value === "Nghỉ")
-          return <span style={{ color: "#8D8D8D" }}>{value}</span>;
-        if (value === "Chưa duyệt HS")
-          return <span style={{ color: "#F6C404" }}>{value}</span>;
+        if (value === "Đã duyệt")
+          return <span style={{ color: "#046C39" }}>Hoạt động</span>;
+        if (value === "Chờ duyệt xoá")
+          return <span style={{ color: "#8D8D8D" }}>Chờ duyệt xóa</span>;
+        if (value === "Chờ duyệt")
+          return <span style={{ color: "#F6C404" }}>Chờ duyệt HS</span>;
       },
-      filterMode: 'tree',
       onFilter: (value: any, rec) => rec.status.indexOf(value) === 0,
     },
     {
       title: "Thành tích",
-      dataIndex: "achie",
+      dataIndex: "achievements",
       width: 130,
       filters: [
         {
@@ -481,8 +464,22 @@ const ManagerMember = () => {
           value: "Không",
         },
       ],
-      filterMode: 'tree',
-      onFilter: (value: any, rec) => rec.achie.indexOf(value) === 0,
+      filterMode: "tree",
+      onFilter: (value: any, record) => {
+        if (value === "Có" && record.achievements.length > 0) {
+          return true; // Trả về true nếu giá trị là "Có" và có thành tích
+        } else if (value === "Không" && record.achievements.length === 0) {
+          return true; // Trả về true nếu giá trị là "Không" và không có thành tích
+        }
+        return false; // Trả về false nếu không khớp với bất kỳ điều kiện nào
+      },
+      render: (value, record) => {
+        if (record.achievements.length > 0) {
+          return <>Có</>;
+        } else {
+          return <>Không</>;
+        }
+      },
     },
     {
       // title: 'Action',
@@ -490,19 +487,23 @@ const ManagerMember = () => {
       width: 200,
       render: (_, record) => (
         <span>
-          <button
+          <Button
             className={styles.btnView}
             onClick={() => navigate("/thong-tin-ho-so")}
           >
             Xem
-          </button>
-          <button
+          </Button>
+          <Button
             className={styles.btnTb}
             onClick={() => navigate("/UpdateMember")}
           >
             Sửa
-          </button>
-          <button className={styles.btnTbDanger}>Xóa</button>
+          </Button>
+          {record.status === "Chờ duyệt xóa" ? (
+            <Button className={styles.btnTbDanger}>Xóa</Button>
+          ) : (
+            <></>
+          )}
         </span>
       ),
     },
@@ -546,7 +547,7 @@ const ManagerMember = () => {
                 style={{ marginBottom: "8px" }}
               >
                 <Search
-                className={styles.btn}
+                  className={styles.btn}
                   placeholder="Tìm kiếm tại đây"
                   allowClear
                   onSearch={onSearch}
@@ -586,17 +587,25 @@ const ManagerMember = () => {
             </Row>
           </Col>
         </Row>
-        <Table
-          rowSelection={rowSelection}
-          columns={isMobile ? columnsMobile : columnsDesktop}
-          dataSource={data}
-          locale={customLocale}
-          scroll={{
-            x: "max-content",
-            y: "calc(100vh - 200px)",
-          }}
-          className={styles.responsiveTable}
-        />
+        <Spin>
+          <Table
+            rowSelection={rowSelection}
+            columns={isMobile ? columnsMobile : columnsDesktop}
+            dataSource={allMember?.data}
+            locale={customLocale}
+            scroll={{
+              x: "max-content",
+            }}
+            className={styles.responsiveTable}
+          />
+          <Pagination
+            defaultCurrent={1}
+            onChange={onChangePage}
+            total={allMember?.total_products}
+            pageSize={10}
+            style={{ margin: "1vh 0", float: "right" }}
+          />
+        </Spin>
       </div>
     </div>
   );
