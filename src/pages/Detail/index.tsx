@@ -1,10 +1,16 @@
 import { Col, Image, Row } from 'antd'
 import React from 'react'
+import { useQuery } from 'react-query';
+import { useParams } from 'react-router-dom';
+import { getInforF3 } from '../../api/f2';
 import Header from '../../components/Header'
 import styles from "./Style.module.scss"
 
 export default function Detail() {
     document.title = "Thông tin hồ sơ";
+    const params = useParams()
+    const {data: userInfor} = useQuery(['userInfor', params.id], ()=> getInforF3(params.id))
+    console.log(userInfor?.data[0])
   return (
     <div>
         <Header />
@@ -32,7 +38,7 @@ export default function Detail() {
                                 Họ tên
                             </Col>
                             <Col className='gutter-row' xxl={12} lg={12} md={12} xs={12}>
-                                Nguyễn Văn A
+                                {userInfor?.data[0].name}
                             </Col>
                         </Row>
                         <Row gutter={40} className={styles.DetailItem}>
@@ -41,7 +47,7 @@ export default function Detail() {
                                 Quốc tịch
                             </Col>
                             <Col className='gutter-row' xxl={12} lg={12} md={12} xs={12}>
-                                Việt Nam
+                            {userInfor?.data[0].nationality}
                             </Col>
                         </Row>
                         <Row gutter={40} className={styles.DetailItem}>
@@ -50,16 +56,16 @@ export default function Detail() {
                                 Mã định danh
                             </Col>
                             <Col className='gutter-row' xxl={12} lg={12} md={12} xs={12}>
-                                VCT0120304958578
+                            {userInfor?.data[0].idcard}
                             </Col>
                         </Row>
                         <Row gutter={40} className={styles.DetailItem}>
                             <Col className='gutter-row' xxl={12} lg={12} md={12} xs={12} >
                                 <span className={styles.NumberOrders}>4.</span> 
-                                Năm sinh
+                                Ngày sinh
                             </Col>
                             <Col className='gutter-row' xxl={12} lg={12} md={12} xs={12}>
-                                1990
+                            {userInfor?.data[0].birthday}
                             </Col>
                         </Row>
                         <Row gutter={40} className={styles.DetailItem}>
@@ -68,7 +74,7 @@ export default function Detail() {
                                 Giới tính
                             </Col>
                             <Col className='gutter-row' xxl={12} lg={12} md={12} xs={12}>
-                                Nữ
+                            {userInfor?.data[0].sex}
                             </Col>
                         </Row>
                         <Row gutter={40} className={styles.DetailItem}>
@@ -77,16 +83,16 @@ export default function Detail() {
                                 CLB(Môn phái/ Võ đường/ Võ phái)
                             </Col>
                             <Col className='gutter-row' xxl={12} lg={12} md={12} xs={12}>
-                                Tổ Thanh Hà
+                            {userInfor?.data[0].club}
                             </Col>
                         </Row>
                         <Row gutter={40} className={styles.DetailItem}>
                             <Col className='gutter-row' xxl={12} lg={12} md={12} xs={12} >
                                 <span className={styles.NumberOrders}>7.</span> 
-                                Tỉnh/ Thành/ Quận/ Huyện
+                                Tỉnh/ Thành - Quận/ Huyện
                             </Col>
                             <Col className='gutter-row' xxl={12} lg={12} md={12} xs={12}>
-                                Đông Anh - Hà Nội
+                            {userInfor?.data[0].hometown}
                             </Col>
                         </Row>
                         <Row gutter={40} className={styles.DetailItem}>
@@ -95,7 +101,7 @@ export default function Detail() {
                                 Cấp đai/ đẳng hiện tại
                             </Col>
                             <Col className='gutter-row' xxl={12} lg={12} md={12} xs={12}>
-                                13
+                            {userInfor?.data[0].level}
                             </Col>
                         </Row>
                         <Row gutter={40} className={styles.DetailItem}>
@@ -104,7 +110,7 @@ export default function Detail() {
                                 Số CCCD
                             </Col>
                             <Col className='gutter-row' xxl={12} lg={12} md={12} xs={12}>
-                                008769888746
+                            {userInfor?.data[0].idcard}
                             </Col>
                         </Row>
                         
@@ -113,7 +119,7 @@ export default function Detail() {
                                 Địa chỉ thường trú
                             </Col>
                             <Col className='gutter-row' xxl={12} lg={12} md={12} xs={12}>
-                                Văn Miếu - Đống Đa - Hà Nội
+                            {userInfor?.data[0].address}
                             </Col>
                         </Row>
                         <Row gutter={40} className={styles.DetailItem}>
@@ -121,7 +127,7 @@ export default function Detail() {
                                 SĐT
                             </Col>
                             <Col className='gutter-row' xxl={12} lg={12} md={12} xs={12}>
-                                09876452737
+                            {userInfor?.data[0].phone}
                             </Col>
                         </Row>
                         <Row gutter={40} className={styles.DetailItem}>
@@ -130,7 +136,7 @@ export default function Detail() {
                                 Email
                             </Col>
                             <Col className='gutter-row' xxl={12} lg={12} md={12} xs={12}>
-                                anguyenvan@gmail.com
+                            {userInfor?.data[0].email}
                             </Col>
                         </Row>
                         <Row gutter={40} className={styles.DetailItem}>
@@ -140,8 +146,11 @@ export default function Detail() {
                             </Col>
                             <Col className='gutter-row' xxl={12} lg={12} md={12} xs={12}>
                                 <ul className={styles.awardsList}>
-                                    <li className={styles.award}>Giải nhất Giải Vô địch võ cổ truyền quốc gia lần thứ 30</li>
-                                    <li className={styles.award}>Giải nhất Giải Vô địch võ cổ truyền quốc gia lần thứ 29</li>
+                                    {/* {userInfor?.data[0].achievements.split(',').include(",") ? 
+                                        userInfor?.data[0].achievements.split(',').filter((achie:string) => achie.trim() !== '')
+                                        : null
+                                    } */}
+                                    <li className={styles.award}>{userInfor?.data[0].achievements}</li>
                                 </ul>
                                 
                             </Col>
@@ -152,7 +161,7 @@ export default function Detail() {
                                 Ghi chú
                             </Col>
                             <Col className='gutter-row' xxl={12} lg={12} md={12} xs={12}>
-                                Thành viên tiềm năng
+                                {userInfor?.data[0].note}
                             </Col>
                         </Row>
                     </Col>
