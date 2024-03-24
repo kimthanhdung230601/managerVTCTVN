@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./style.module.scss";
 import { PlusOutlined, MinusCircleOutlined } from "@ant-design/icons";
 
@@ -21,8 +21,16 @@ import ImgCrop from "antd-img-crop";
 import useImageCompression from "../../hook/imageCompression";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
+import axios from "axios";
+import Cookies from "js-cookie";
+import CryptoJS from "crypto-js";
+import { level } from "../../until/until";
+import moment from "moment";
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
+const { Option } = Select;
+const secretKey = process.env.REACT_APP_SECRET_KEY as string;
+
 interface ProfilesProps {}
 const Profiles = () => {
   const [form] = Form.useForm();
@@ -63,6 +71,7 @@ const Profiles = () => {
       window.location.href = src;
     }
   };
+
   //image CN đẳng cấp
   const [fileListLevel, setFileListLevel] = useState<any>([]);
   const normFileLevel = (e: any) => {
@@ -100,18 +109,111 @@ const Profiles = () => {
   };
   // date
   const onChange: DatePickerProps["onChange"] = (date, dateString) => {
-    console.log(date, dateString);
+    // console.log(date, dateString);
   };
-  const onFinish = (values: any) => {
-    console.log("values", values);
-  };
+
   //button
   const [selectedButton, setSelectedButton] = useState("show");
 
   const handleButtonClick = (buttonName: any) => {
     setSelectedButton(buttonName);
   };
+  //tỉnh,thành,quận,huyện
+  const [provinces, setProvinces] = useState([]);
+  const [districts, setDistricts] = useState([]);
+  const [selectedProvinceFullName, setSelectedProvinceFullName] = useState("");
+  const [selectedDistrictFullName, setSelectedDistrictFullName] = useState("");
+  const [selectedProvince, setSelectedProvince] = useState("");
 
+  useEffect(() => {
+    // Fetch provinces when component mounts
+    axios
+      .get(
+        "https://vnprovinces.pythonanywhere.com/api/provinces/?basic=true&limit=100"
+      )
+      .then((response) => {
+        setProvinces(response.data.results);
+      })
+      .catch((error) => {
+        console.error("Error fetching provinces:", error);
+      });
+  }, []);
+
+  const handleProvinceChange = (value: any) => {
+    const [selectedProvinceId, selectedProvinceFullName] = value.split("-");
+    setSelectedProvinceFullName(selectedProvinceFullName);
+    // setSelectedDistrictFullName(selectedProvinceId);
+    form.setFieldValue("district", "");
+    // Update selected province and fetch corresponding districts
+    setSelectedProvince(selectedProvinceId); // Update selected province and fetch corresponding districts
+    setSelectedProvince(value);
+    axios
+      .get(
+        `https://vnprovinces.pythonanywhere.com/api/provinces/${selectedProvinceId}`
+      )
+      .then((response) => {
+        setDistricts(response.data.districts);
+      })
+      .catch((error) => {
+        console.error("Error fetching districts:", error);
+      });
+  };
+  // giải mã cookieJS
+  const permission = CryptoJS.AES.decrypt(
+    Cookies.get("permission") as string,
+    secretKey
+  );
+  const decryptedPermission = permission.toString(CryptoJS.enc.Utf8);
+  const club = CryptoJS.AES.decrypt(Cookies.get("club") as string, secretKey);
+  const decryptedClub = club.toString(CryptoJS.enc.Utf8);
+  // const permission = CryptoJS.AES.decrypt(
+  //   Cookies.get("permission") as string,
+  //   secretKey
+  // );
+  // const decryptedPermission = permission.toString(CryptoJS.enc.Utf8);
+  //fill club
+  useEffect(() => {
+    form.setFieldValue("club", "CLB Hà Nội");
+  }, [form]);
+  const onFinish = (values: any) => {
+    // console.log("form", values);
+    const payload = {
+      // address: `${selectedProvinceFullName} - ${values.district}`,
+      // birthday: moment(values.birthday).format("YYYY-MM-DD")
+      // img1: values.image_certificate[0].originFileObj,
+      // img2: values.image_ref[0].originFileObj,
+    };
+    console.log("pl", payload);
+    // formData.append("image_certificate", values.image_certificate[0].originFileObj);
+    // formData.append("image_ref", values.image_ref[0].originFileObj);
+
+    const formdata = new FormData();
+    formdata.append("name", values.name);
+    formdata.append(
+      "birthday",
+      values.moment(values.birthday).format("YYYY-MM-DD")
+    );
+    formdata.append("sex", values.sex);
+    formdata.append("phone", values.phone);
+    formdata.append("idcard", values.idcard);
+    formdata.append("level", values.level);
+    formdata.append("note", values.note);
+    formdata.append("detail", values.detail);
+    formdata.append("achievements", values.achievements);
+    formdata.append("club", decryptedClub);
+    formdata.append("hometown", values.hometown);
+    formdata.append(
+      "address",
+      `${selectedProvinceFullName} - ${values.district}`
+    );
+    formdata.append("nationality", values.nationality);
+    formdata.append(
+      "image_certificate",
+      values.image_certificate[0].originFileObj
+    );
+    formdata.append("image_ref", values.image_ref[0].originFileObj);
+    console.log("data", formdata.values);
+  };
   return (
     <>
       <div className={styles.wrap}>
@@ -134,12 +236,12 @@ const Profiles = () => {
                         {" "}
                         <Form.Item
                           label="Tải ảnh lên"
-                          name="upload"
+                          name="image_certificate"
                           valuePropName="fileList"
                           getValueFromEvent={normFile}
-                          rules={[
-                            { required: true, message: "Vui lòng tải ảnh" },
-                          ]}
+                          // rules={[
+                          //   { required: true, message: "Vui lòng tải ảnh" },
+                          // ]}
                         >
                           <ImgCrop showGrid showReset>
                             <Upload
@@ -165,12 +267,12 @@ const Profiles = () => {
                         {" "}
                         <Form.Item
                           label="Tải ảnh lên"
-                          name="upload"
+                          name="image_ref"
                           valuePropName="fileListLevel"
                           getValueFromEvent={normFile}
-                          rules={[
-                            { required: true, message: "Vui lòng tải ảnh" },
-                          ]}
+                          // rules={[
+                          //   { required: true, message: "Vui lòng tải ảnh" },
+                          // ]}
                         >
                           <ImgCrop showGrid showReset>
                             <Upload
@@ -232,7 +334,7 @@ const Profiles = () => {
                     </Form.Item>
                     <Form.Item
                       label="Số điện thoại"
-                      name="phoneNumber"
+                      name="phone"
                       rules={[
                         {
                           required: true,
@@ -251,7 +353,7 @@ const Profiles = () => {
                     {" "}
                     <Form.Item
                       label="Quốc tịch"
-                      name="countries"
+                      name="nationality"
                       rules={[
                         { required: true, message: "Vui lòng điền quốc tịch" },
                       ]}
@@ -261,8 +363,8 @@ const Profiles = () => {
                     <Row gutter={16}>
                       <Col span={12}>
                         <Form.Item
-                          label="Năm sinh"
-                          name="yearBorn"
+                          label="Ngày sinh"
+                          name="birthday"
                           rules={[
                             {
                               required: true,
@@ -270,7 +372,7 @@ const Profiles = () => {
                             },
                           ]}
                         >
-                          <DatePicker onChange={onChange} picker="year" />
+                          <DatePicker onChange={onChange} />
                         </Form.Item>
                       </Col>
                       <Col span={12}>
@@ -285,9 +387,9 @@ const Profiles = () => {
                           ]}
                         >
                           <Select>
-                            <Select.Option value="male">Nam</Select.Option>
-                            <Select.Option value="female">Nữ</Select.Option>
-                            <Select.Option value="other">Khác</Select.Option>
+                            <Select.Option value="Nam">Nam</Select.Option>
+                            <Select.Option value="Nữ">Nữ</Select.Option>
+                            <Select.Option value="Khác">Khác</Select.Option>
                           </Select>
                         </Form.Item>
                       </Col>
@@ -303,7 +405,7 @@ const Profiles = () => {
                         { required: true, message: "Vui lòng điền câu lạc bộ" },
                       ]}
                     >
-                      <Input />
+                      <Input disabled/>
                     </Form.Item>
                   </Col>
                   <Col span={8} xs={24} sm={12} md={8}>
@@ -312,7 +414,13 @@ const Profiles = () => {
                       name="level"
                       rules={[{ required: true, message: "Vui lòng chọn đai" }]}
                     >
-                      <Input />
+                      <Select placeholder="Chọn cấp/đai">
+                        {level.map((item: any, index: any) => (
+                          <Option key={index} value={item}>
+                            {item}
+                          </Option>
+                        ))}
+                      </Select>
                     </Form.Item>
                   </Col>
                   <Col span={8} xs={24} sm={12} md={8}>
@@ -334,13 +442,22 @@ const Profiles = () => {
                 <Row gutter={16}>
                   <Col span={8} xs={24} sm={12} md={8}>
                     <Form.Item
-                      label="Tỉnh/Thành "
-                      name="city"
+                      label="Tỉnh/Thành"
+                      name="province"
                       rules={[
-                        { required: true, message: "Vui lòng điền thông tin" },
+                        { required: true, message: "Vui lòng chọn tỉnh/thành" },
                       ]}
                     >
-                      <Input />
+                      <Select onChange={handleProvinceChange}>
+                        {provinces.map((province: any) => (
+                          <Option
+                            key={province.id}
+                            value={`${province.id}- ${province.full_name}`}
+                          >
+                            {province.full_name}
+                          </Option>
+                        ))}
+                      </Select>
                     </Form.Item>
                   </Col>
                   <Col span={8} xs={24} sm={12} md={8}>
@@ -348,16 +465,25 @@ const Profiles = () => {
                       label="Quận/Huyện"
                       name="district"
                       rules={[
-                        { required: true, message: "Vui lòng điền thông tin" },
+                        { required: true, message: "Vui lòng chọn quận/huyện" },
                       ]}
                     >
-                      <Input />
+                      <Select>
+                        {districts.map((district: any) => (
+                          <Option
+                            // key={district.id}
+                            value={district.full_name}
+                          >
+                            {district.full_name}
+                          </Option>
+                        ))}
+                      </Select>
                     </Form.Item>
                   </Col>
                   <Col span={8} xs={24} sm={12} md={8}>
                     <Form.Item
                       label="Số CCCD "
-                      name="CCCD"
+                      name="idcard"
                       rules={[
                         { required: true, message: "Vui lòng điền CCCD" },
                       ]}
@@ -370,7 +496,7 @@ const Profiles = () => {
                   <Col span={8} xs={24} sm={12} md={8}>
                     <Form.Item
                       label="Quê quán"
-                      name="contry"
+                      name="hometown"
                       rules={[
                         { required: true, message: "Vui lòng điền quê quán" },
                       ]}
@@ -379,75 +505,84 @@ const Profiles = () => {
                     </Form.Item>
                   </Col>
                 </Row>
-                <Form.List name="users">
-                  {(fields, { add, remove }) => (
-                    <>
-                      {" "}
-                      <Form.Item>
-                        <Button
-                          type="dashed"
-                          onClick={() => add()}
-                          style={{ float: "left" }}
-                          icon={<PlusOutlined />}
-                        >
-                          Thành tích cá nhân
-                        </Button>
-                      </Form.Item>
-                      {fields.map(({ key, name, ...restField }) => (
-                        <div style={{ display: "flex", justifyContent:"space-between"}}>
-                          <Space
-                            key={key}
-                            style={{ display: "flex", width:"97%"}}
-                            // align="baseline"
+                {decryptedPermission == "0" ? (
+                  <Form.List name="users">
+                    {(fields, { add, remove }) => (
+                      <>
+                        {" "}
+                        <Form.Item>
+                          <Button
+                            type="dashed"
+                            onClick={() => add()}
+                            style={{ float: "left" }}
+                            icon={<PlusOutlined />}
                           >
-                            <Form.Item
-                              {...restField}
-                              label={"Thành tích"}
-                              name={[name, "achie"]}
-                              rules={[
-                                {
-                                  required: true,
-                                  message: "Vui lòng điền thành tích",
-                                },
-                              ]}
+                            Thành tích cá nhân
+                          </Button>
+                        </Form.Item>
+                        {fields.map(({ key, name, ...restField }) => (
+                          <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "space-between",
+                            }}
+                          >
+                            <Space
+                              key={key}
+                              style={{ display: "flex", width: "97%" }}
+                              // align="baseline"
                             >
-                              <Input style={{ width: "100%" }} />
-                            </Form.Item>
-                            <Form.Item
-                              {...restField}
-                              name={[name, "prize"]}
-                              label={"Giải"}
-                              rules={[
-                                {
-                                  required: true,
-                                  message: "Vui lòng điền giải",
-                                },
-                              ]}
-                            >
-                              <Input placeholder="Giải" />
-                            </Form.Item>
-                            <Form.Item
-                              {...restField}
-                              name={[name, "last"]}
-                              label={"Thời gian"}
-                              rules={[
-                                {
-                                  required: true,
-                                  message: "Vui lòng thời gian",
-                                },
-                              ]}
-                            >
-                              <DatePicker style={{ width: "100%" }} />
-                            </Form.Item>
-                          </Space>{" "}
-                          <MinusCircleOutlined onClick={() => remove(name)} />
-                        </div>
-                      ))}
-                    </>
-                  )}
-                </Form.List>
+                              <Form.Item
+                                {...restField}
+                                label={"Thành tích"}
+                                name={[name, "achievements"]}
+                                rules={[
+                                  {
+                                    required: true,
+                                    message: "Vui lòng điền thành tích",
+                                  },
+                                ]}
+                              >
+                                <Input style={{ width: "100%" }} />
+                              </Form.Item>
+                              <Form.Item
+                                {...restField}
+                                name={[name, "prize"]}
+                                label={"Giải"}
+                                rules={[
+                                  {
+                                    required: true,
+                                    message: "Vui lòng điền giải",
+                                  },
+                                ]}
+                              >
+                                <Input placeholder="Giải" />
+                              </Form.Item>
+                              <Form.Item
+                                {...restField}
+                                name={[name, "last"]}
+                                label={"Thời gian"}
+                                rules={[
+                                  {
+                                    required: true,
+                                    message: "Vui lòng thời gian",
+                                  },
+                                ]}
+                              >
+                                <DatePicker style={{ width: "100%" }} />
+                              </Form.Item>
+                            </Space>{" "}
+                            <MinusCircleOutlined onClick={() => remove(name)} />
+                          </div>
+                        ))}
+                      </>
+                    )}
+                  </Form.List>
+                ) : (
+                  <Space></Space>
+                )}
                 <Form.Item
-                  name="Ghi chú hiển thị với người dùng"
+                  name="note"
                   label="Ghi chú hiển thị với người dùng"
                   rules={[
                     { required: true, message: "Vui lòng điền thông tin" },
