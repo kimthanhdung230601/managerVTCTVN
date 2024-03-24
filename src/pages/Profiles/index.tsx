@@ -71,7 +71,7 @@ const Profiles = () => {
       window.location.href = src;
     }
   };
-
+  const filterOption = (input: string, option?: { children: React.ReactNode }) => (option?.children as string).toLowerCase().includes(input.toLowerCase());
   //image CN đẳng cấp
   const [fileListLevel, setFileListLevel] = useState<any>([]);
   const normFileLevel = (e: any) => {
@@ -176,7 +176,7 @@ const Profiles = () => {
     form.setFieldValue("club", "CLB Hà Nội");
   }, [form]);
   const onFinish = (values: any) => {
-    // console.log("form", values);
+    console.log("form", values);
     const payload = {
       // address: `${selectedProvinceFullName} - ${values.district}`,
       // birthday: moment(values.birthday).format("YYYY-MM-DD")
@@ -239,11 +239,11 @@ const Profiles = () => {
                           name="image_certificate"
                           valuePropName="fileList"
                           getValueFromEvent={normFile}
-                          // rules={[
-                          //   { required: true, message: "Vui lòng tải ảnh" },
-                          // ]}
+                          rules={[
+                            { required: true, message: "Vui lòng tải ảnh" },
+                          ]}
                         >
-                          <ImgCrop showGrid showReset>
+                          {/* <ImgCrop showGrid showReset> */}
                             <Upload
                               listType="picture-card"
                               fileList={fileList}
@@ -260,7 +260,7 @@ const Profiles = () => {
                                 </>
                               )}
                             </Upload>
-                          </ImgCrop>
+                          {/* </ImgCrop> */}
                         </Form.Item>
                       </Col>
                       <Col span={12}>
@@ -270,11 +270,11 @@ const Profiles = () => {
                           name="image_ref"
                           valuePropName="fileListLevel"
                           getValueFromEvent={normFile}
-                          // rules={[
-                          //   { required: true, message: "Vui lòng tải ảnh" },
-                          // ]}
+                          rules={[
+                            { required: true, message: "Vui lòng tải ảnh" },
+                          ]}
                         >
-                          <ImgCrop showGrid showReset>
+                          {/* <ImgCrop showGrid showReset> */}
                             <Upload
                               listType="picture-card"
                               fileList={fileListLevel}
@@ -293,7 +293,7 @@ const Profiles = () => {
                                 </>
                               )}
                             </Upload>
-                          </ImgCrop>
+                          {/* </ImgCrop> */}
                         </Form.Item>
                       </Col>
                     </Row>{" "}
@@ -448,7 +448,12 @@ const Profiles = () => {
                         { required: true, message: "Vui lòng chọn tỉnh/thành" },
                       ]}
                     >
-                      <Select onChange={handleProvinceChange}>
+                      <Select 
+                        onChange={handleProvinceChange} 
+                        filterOption={filterOption}
+                        optionFilterProp="children"
+                        showSearch
+                      >
                         {provinces.map((province: any) => (
                           <Option
                             key={province.id}
