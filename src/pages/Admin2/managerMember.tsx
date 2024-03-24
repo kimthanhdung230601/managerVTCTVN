@@ -35,10 +35,12 @@ interface DataType {
   f2: string;
   note: string;
   state: string;
-  achie: string;
+  achievements: string;
+  isAchie: any;
 }
 
 interface DataType {
+  isAchie: any;
   key: React.Key;
   name: string;
   STT: number;
@@ -50,7 +52,7 @@ interface DataType {
   f2: string;
   note: string;
   status: string;
-  achie: string;
+  achievements: string;
   total_products: any;
 }
 
@@ -70,6 +72,7 @@ const ManagerMemberTwo = () => {
   } = useQuery("listF3", () => getListMemberF3());
   const [id, setID] = useState();
   const [note, setNote] = useState("");
+  const [isAchie, setAchie] = useState("");
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
@@ -169,6 +172,7 @@ const ManagerMemberTwo = () => {
           value: "note content 3",
         },
       ],
+      filterMode: "tree",
       onFilter: (value: any, rec) => rec.note.indexOf(value) === 0,
     },
     {
@@ -189,6 +193,7 @@ const ManagerMemberTwo = () => {
           value: "detail 3",
         },
       ],
+      filterMode: "tree",
       onFilter: (value: any, rec) => rec.detail.indexOf(value) === 0,
     },
     {
@@ -198,17 +203,18 @@ const ManagerMemberTwo = () => {
       filters: [
         {
           text: "Hoạt động",
-          value: "Hoạt động",
+          value: "Đã duyệt",
         },
         {
-          text: "Nghỉ",
-          value: "Nghỉ",
+          text: "Chờ duyệt xóa",
+          value: "Chờ duyệt xoá",
         },
         {
-          text: "Chưa duyệt HS",
-          value: "Chưa duyệt HS",
+          text: "Chờ duyệt HS",
+          value: "Chờ duyệt",
         },
       ],
+      filterMode: "tree",
       render: (value, record) => {
         if (value === "Đã duyệt")
           return <span style={{ color: "#046C39" }}>Hoạt động</span>;
@@ -217,7 +223,7 @@ const ManagerMemberTwo = () => {
         if (value === "Chờ duyệt")
           return <span style={{ color: "#F6C404" }}>Chờ duyệt HS</span>;
       },
-      onFilter: (value: any, rec) => rec.state.indexOf(value) === 0,
+      onFilter: (value: any, rec) => rec.status.indexOf(value) === 0,
     },
     {
       title: "Thành tích",
@@ -233,10 +239,21 @@ const ManagerMemberTwo = () => {
           value: "Không",
         },
       ],
-      onFilter: (value: any, rec) => rec.achie.indexOf(value) === 0,
+      filterMode: "tree",
+      onFilter: (value: any, record) => {
+        if (value === "Có" && record.achievements.length > 0) {
+          return true; // Trả về true nếu giá trị là "Có" và có thành tích
+        } else if (value === "Không" && record.achievements.length === 0) {
+          return true; // Trả về true nếu giá trị là "Không" và không có thành tích
+        }
+        return false; // Trả về false nếu không khớp với bất kỳ điều kiện nào
+      },
       render: (value, record) => {
-        if (value.length > 0) return <>Có</>;
-        else return <>Không</>;
+        if (record.achievements.length > 0) {
+          return <>Có</>;
+        } else {
+          return <>Không</>;
+        }
       },
     },
     {

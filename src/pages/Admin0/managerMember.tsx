@@ -245,6 +245,7 @@ const ManagerMember = () => {
           value: "Nghỉ",
         },
       ],
+      
       render: (value, record) => {
         if (value === "Hoạt động")
           return <span style={{ color: "#046C39" }}>{value}</span>;
