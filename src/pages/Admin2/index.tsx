@@ -16,6 +16,8 @@ import Footer from "../../components/Footer";
 import { useNavigate } from "react-router";
 import Cookies from "js-cookie";
 import CryptoJS from "crypto-js";
+import { useQuery } from "react-query";
+import { getListMemberF3 } from "../../api/f2";
 const secretKey = process.env.REACT_APP_SECRET_KEY as string;
 
 type MenuItem = Required<MenuProps>["items"][number];
@@ -49,7 +51,8 @@ const rootSubmenuKeys = ["sub1"];
 const AdminTwo = () => {
   document.title = "Đơn vị quản lý";
   const navigate = useNavigate();
-  const [openKeys, setOpenKeys] = useState(["sub1"]);
+  const { data: listF3, refetch } = useQuery("listF3", () => getListMemberF3);
+  // const [openKeys, setOpenKeys] = useState(["sub1"]);
   // const name = Cookies.get("name") as string;
   const name = CryptoJS.AES.decrypt(Cookies.get("name") as string, secretKey);
   const decryptedName = name.toString(CryptoJS.enc.Utf8);
