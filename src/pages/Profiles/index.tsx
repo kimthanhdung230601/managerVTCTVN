@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styles from "./style.module.scss";
 import { PlusOutlined, MinusCircleOutlined } from "@ant-design/icons";
-
 import {
   Button,
   DatePicker,
@@ -13,6 +12,7 @@ import {
   Col,
   Tooltip,
   Space,
+  message,
 } from "antd";
 import type { DatePickerProps } from "antd";
 import type { UploadFile, UploadProps } from "antd";
@@ -26,6 +26,8 @@ import Cookies from "js-cookie";
 import CryptoJS from "crypto-js";
 import { level } from "../../until/until";
 import moment from "moment";
+import { useMutation } from "react-query";
+import { addNewF3 } from "../../api/f2";
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
 const { Option } = Select;
@@ -71,7 +73,10 @@ const Profiles = () => {
       window.location.href = src;
     }
   };
-  const filterOption = (input: string, option?: { children: React.ReactNode }) => (option?.children as string).toLowerCase().includes(input.toLowerCase());
+  const filterOption = (
+    input: string,
+    option?: { children: React.ReactNode }
+  ) => (option?.children as string).toLowerCase().includes(input.toLowerCase());
   //image CN đẳng cấp
   const [fileListLevel, setFileListLevel] = useState<any>([]);
   const normFileLevel = (e: any) => {
@@ -175,24 +180,27 @@ const Profiles = () => {
   useEffect(() => {
     form.setFieldValue("club", "CLB Hà Nội");
   }, [form]);
+  const [loading, setLoading] = useState(false);
+  const mutation = useMutation(addNewF3, {
+    onSuccess: () => {
+      message.success(
+        "Thêm thành công, yêu cầu đã được gửi đến Liên đoàn VTCT Việt Nam"
+      );
+      setLoading(false);
+    },
+    onError: () => {
+      setLoading(false);
+      message.error("Thêm thất bại");
+      // Xử lý lỗi nếu cần
+    },
+  });
   const onFinish = (values: any) => {
+    const formattedBirthday = moment(values.birthday).format("YYYY-MM-DD");
+    setLoading(true);
     console.log("form", values);
-    const payload = {
-      // address: `${selectedProvinceFullName} - ${values.district}`,
-      // birthday: moment(values.birthday).format("YYYY-MM-DD")
-      // img1: values.image_certificate[0].originFileObj,
-      // img2: values.image_ref[0].originFileObj,
-    };
-    console.log("pl", payload);
-    // formData.append("image_certificate", values.image_certificate[0].originFileObj);
-    // formData.append("image_ref", values.image_ref[0].originFileObj);
-
     const formdata = new FormData();
     formdata.append("name", values.name);
-    formdata.append(
-      "birthday",
-      values.moment(values.birthday).format("YYYY-MM-DD")
-    );
+    formdata.append("birthday", formattedBirthday);
     formdata.append("sex", values.sex);
     formdata.append("phone", values.phone);
     formdata.append("idcard", values.idcard);
@@ -213,6 +221,7 @@ const Profiles = () => {
     );
     formdata.append("image_ref", values.image_ref[0].originFileObj);
     console.log("data", formdata.values);
+    mutation.mutate(formdata);
   };
   return (
     <>
@@ -244,22 +253,22 @@ const Profiles = () => {
                           ]}
                         >
                           {/* <ImgCrop showGrid showReset> */}
-                            <Upload
-                              listType="picture-card"
-                              fileList={fileList}
-                              onChange={onChangeImg}
-                              onPreview={onPreview}
-                            >
-                              {fileList.length >= 1 ? null : (
-                                <>
-                                  {" "}
-                                  <div>
-                                    <PlusOutlined />
-                                    <div style={{ marginTop: 8 }}>Tải ảnh</div>
-                                  </div>
-                                </>
-                              )}
-                            </Upload>
+                          <Upload
+                            listType="picture-card"
+                            fileList={fileList}
+                            onChange={onChangeImg}
+                            onPreview={onPreview}
+                          >
+                            {fileList.length >= 1 ? null : (
+                              <>
+                                {" "}
+                                <div>
+                                  <PlusOutlined />
+                                  <div style={{ marginTop: 8 }}>Tải ảnh</div>
+                                </div>
+                              </>
+                            )}
+                          </Upload>
                           {/* </ImgCrop> */}
                         </Form.Item>
                       </Col>
@@ -275,24 +284,24 @@ const Profiles = () => {
                           ]}
                         >
                           {/* <ImgCrop showGrid showReset> */}
-                            <Upload
-                              listType="picture-card"
-                              fileList={fileListLevel}
-                              onChange={onChangeImgLevel}
-                              onPreview={onPreviewLevel}
-                            >
-                              {fileListLevel.length >= 1 ? null : (
-                                <>
-                                  {" "}
-                                  <div>
-                                    <PlusOutlined />
-                                    <div style={{ marginTop: 8 }}>
-                                      Tải giấy CN đẳng cấp
-                                    </div>
+                          <Upload
+                            listType="picture-card"
+                            fileList={fileListLevel}
+                            onChange={onChangeImgLevel}
+                            onPreview={onPreviewLevel}
+                          >
+                            {fileListLevel.length >= 1 ? null : (
+                              <>
+                                {" "}
+                                <div>
+                                  <PlusOutlined />
+                                  <div style={{ marginTop: 8 }}>
+                                    Tải giấy CN đẳng cấp
                                   </div>
-                                </>
-                              )}
-                            </Upload>
+                                </div>
+                              </>
+                            )}
+                          </Upload>
                           {/* </ImgCrop> */}
                         </Form.Item>
                       </Col>
@@ -405,7 +414,7 @@ const Profiles = () => {
                         { required: true, message: "Vui lòng điền câu lạc bộ" },
                       ]}
                     >
-                      <Input disabled/>
+                      <Input disabled />
                     </Form.Item>
                   </Col>
                   <Col span={8} xs={24} sm={12} md={8}>
@@ -448,8 +457,8 @@ const Profiles = () => {
                         { required: true, message: "Vui lòng chọn tỉnh/thành" },
                       ]}
                     >
-                      <Select 
-                        onChange={handleProvinceChange} 
+                      <Select
+                        onChange={handleProvinceChange}
                         filterOption={filterOption}
                         optionFilterProp="children"
                         showSearch
@@ -597,7 +606,11 @@ const Profiles = () => {
                   <Input.TextArea showCount maxLength={1000} />
                 </Form.Item>
                 <Form.Item>
-                  <Button className={styles.btn} htmlType="submit">
+                  <Button
+                    className={styles.btn}
+                    htmlType="submit"
+                    loading={loading}
+                  >
                     Thêm
                   </Button>
                 </Form.Item>
