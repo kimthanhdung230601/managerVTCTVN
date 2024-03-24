@@ -587,7 +587,7 @@ const ManagerMember = () => {
             </Row>
           </Col>
         </Row>
-        <Spin>
+        <Spin spinning={isFetching}>
           <Table
             rowSelection={rowSelection}
             columns={isMobile ? columnsMobile : columnsDesktop}
