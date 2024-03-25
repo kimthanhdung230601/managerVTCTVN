@@ -122,7 +122,11 @@ const ManagerMember = () => {
     refetch();
     message.success("Xóa thành công");
   };
-
+  const confirmUpdate = async (value: any) => {
+    const payload = {
+      id: value,
+    };
+  };
   const cancel = (value: any) => {
     console.log(value);
     // message.error("");
@@ -292,15 +296,22 @@ const ManagerMember = () => {
       ],
       filterMode: "tree",
       onFilter: (value: any, record) => {
-        if (value === "Có" && record.achievements.length > 0) {
+        if (
+          value === "Có" &&
+          record.achievements &&
+          record.achievements.length > 0
+        ) {
           return true; // Trả về true nếu giá trị là "Có" và có thành tích
-        } else if (value === "Không" && record.achievements.length === 0) {
+        } else if (
+          value === "Không" &&
+          (!record.achievements || record.achievements.length === 0)
+        ) {
           return true; // Trả về true nếu giá trị là "Không" và không có thành tích
         }
         return false; // Trả về false nếu không khớp với bất kỳ điều kiện nào
       },
       render: (value, record) => {
-        if (record.achievements.length > 0) {
+        if (record.achievements && record.achievements.length > 0) {
           return <>Có</>;
         } else {
           return <>Không</>;
@@ -327,6 +338,21 @@ const ManagerMember = () => {
           >
             Sửa
           </button>
+          {record.status === "Chờ duyệt" ? (
+            <Popconfirm
+              title="Xóa"
+              description={`Bạn có muốn xóa ${record.name} không`}
+              onConfirm={() => confirmUpdate(record.id)}
+              onCancel={cancel}
+              okText="Có"
+              cancelText="Không"
+            >
+              {" "}
+              <Button className={styles.btnTb}>Duyệt</Button>
+            </Popconfirm>
+          ) : (
+            <></>
+          )}
           {record.status === "Chờ duyệt xoá" ? (
             <Popconfirm
               title="Xóa"

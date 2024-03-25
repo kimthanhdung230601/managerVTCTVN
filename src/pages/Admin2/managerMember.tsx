@@ -231,13 +231,13 @@ const filtersDetail = listF3?.list_detail.map((item:any, index:any) => ({
         }
         return false; // Trả về false nếu không khớp với bất kỳ điều kiện nào
       },
-      render: (value, record) => {
-        if (record.achievements.length > 0) {
-          return <>Có</>;
-        } else {
-          return <>Không</>;
-        }
-      },
+      // render: (value, record) => {
+      //   if (record?.achievements.length > 0) {
+      //     return <>Có</>;
+      //   } else {
+      //     return <>Không</>;
+      //   }
+      // },
     },
     {
       key: "action",

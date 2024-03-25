@@ -18,6 +18,7 @@ import {
   Popconfirm,
   message,
   Pagination,
+  Spin,
 } from "antd";
 import { admin, province } from "../../until/until";
 import styles from "./styles.module.scss";
@@ -31,7 +32,7 @@ import { useMediaQuery } from "react-responsive";
 import { text } from "stream/consumers";
 import type { ColumnsType } from "antd/es/table";
 import { useQuery } from "react-query";
-import { deleteMemberF12, getListMemberF12 } from "../../api/f0";
+import { deleteMemberF12, getListMemberF12, updateAccount } from "../../api/f0";
 interface ManagerAccountProps {}
 interface DataType {
   key: React.Key;
@@ -62,14 +63,31 @@ const customLocale = {
   selectAll: "Chọn tất cả", // Thay đổi văn bản "Select All Items" ở đây
   selectInvert: "Đảo ngược", // Thay đổi văn bản khi chọn ngược
 };
-const data: DataType[] = [];
 const ManagerAccount = () => {
   const {
     data: dataMemberF12,
     refetch,
     isFetching,
   } = useQuery("dataF12", () => getListMemberF12());
-  const [form] = Form.useForm();
+  // const handleUpdateAccount =async (payload: any) => {
+  //   const res =await updateAccount(payload);
+  //   res.status ==="success" ? message.success("ập nhật thành công") : message.error("Cập nhật thất bại")
+  // };
+  const [unAccept, setUnAccept] = useState([]);
+  const [accept, setAccept] = useState([]);
+
+  useEffect(() => {
+    if (dataMemberF12 && dataMemberF12.data) {
+      const unAcceptMembers = dataMemberF12?.data.filter(
+        (member: any) => member.pending === "0"
+      );
+      const acceptMembers = dataMemberF12?.data.filter(
+        (member: any) => member.pending === "1"
+      );
+      setUnAccept(unAcceptMembers);
+      setAccept(acceptMembers);
+    }
+  }, [dataMemberF12]);
   const naviagte = useNavigate();
   const isMobile = useMediaQuery({ maxWidth: 768 });
 
@@ -77,12 +95,20 @@ const ManagerAccount = () => {
     const payload = {
       id: value,
     };
-    // console.log("payload:",payload);
     const res = await deleteMemberF12(payload);
     refetch();
     message.success("Xóa thành công");
   };
-
+  const confirmAccept = async (value: any) => {
+    const payload = {
+      id: value,
+    };
+    const res = await updateAccount(payload);
+    res.status === "success"
+      ? message.success("Cập nhật thành công")
+      : message.error("Cập nhật thất bại");
+    refetch();
+  };
   const cancel = (value: any) => {
     console.log(value);
     // message.error("");
@@ -100,21 +126,6 @@ const ManagerAccount = () => {
   const handleCancelMember = () => {
     setIsModalOpenMember(false);
   };
-  //modal xét duyệt hồ sơ
-  const [isModalOpenAccept, setIsModalOpenAccept] = useState(false);
-  const showModalAccept = () => {
-    setIsModalOpenAccept(true);
-  };
-
-  const handleOkAccept = () => {
-    setIsModalOpenAccept(false);
-    console.log("đã duyệt");
-  };
-
-  const handleCancelAccept = () => {
-    setIsModalOpenAccept(false);
-  };
-
   const [currentPageAccount, setCurrentPageAccount] = useState(1);
   useEffect(() => {
     refetch();
@@ -449,6 +460,9 @@ const ManagerAccount = () => {
       dataIndex: "key",
       fixed: "left",
       width: 70,
+      render: (value, record, index) => {
+        return index + 1 + (currentPageAccount - 1) * 10;
+      },
     },
     {
       title: "Họ và tên",
@@ -458,7 +472,7 @@ const ManagerAccount = () => {
     },
     {
       title: "Mã định danh",
-      dataIndex: "id",
+      dataIndex: "idcard",
       width: 250,
     },
     {
@@ -473,7 +487,7 @@ const ManagerAccount = () => {
     },
     {
       title: "Tỉnh",
-      dataIndex: "city",
+      dataIndex: "location",
       filters: filterProivce,
       onFilter: (value: any, record) => record.city.startsWith(value),
       filterSearch: true,
@@ -482,7 +496,7 @@ const ManagerAccount = () => {
     },
     {
       title: "Đơn vị quản lý",
-      dataIndex: "managerF1",
+      dataIndex: "manage",
       width: 200,
       filters: [
         {
@@ -555,12 +569,12 @@ const ManagerAccount = () => {
       render: (_, record) => (
         <div className={styles.imageWrap}>
           <Image
-            src={require("../../assets/image/degree.jpg")}
+            src={`https://vocotruyen.id.vn/PHP_IMG/${record.image_ref}`}
             preview={true}
             className={styles.img}
           />
           <Image
-            src={require("../../assets/image/referral.jpg")}
+            src={`https://vocotruyen.id.vn/PHP_IMG/${record.image_certificate}`}
             preview={true}
             className={styles.img}
           />
@@ -574,10 +588,29 @@ const ManagerAccount = () => {
       fixed: "right",
       render: (_, record) => (
         <span>
-          <button className={styles.btnView} onClick={() => showModalAccept()}>
-            Duyệt
-          </button>
-          <button className={styles.btnTbDanger}>Xóa</button>
+          <Popconfirm
+            title="Xóa"
+            description={`Bạn có muốn duyệt tài khoản ${record.name} không`}
+            onConfirm={() => confirmAccept(record.id)}
+            onCancel={cancel}
+            okText="Có"
+            cancelText="Không"
+          >
+            {" "}
+            <button className={styles.btnView}>Duyệt</button>
+          </Popconfirm>
+
+          <Popconfirm
+            title="Xóa"
+            description={`Bạn có muốn xóa ${record.name} không`}
+            onConfirm={() => confirm(record.id)}
+            onCancel={cancel}
+            okText="Có"
+            cancelText="Không"
+          >
+            {" "}
+            <button className={styles.btnTbDanger}>Xóa</button>
+          </Popconfirm>
         </span>
       ),
     },
@@ -597,7 +630,7 @@ const ManagerAccount = () => {
     },
     {
       title: "Mã định danh",
-      dataIndex: "id",
+      dataIndex: "idcard",
       width: 250,
     },
     {
@@ -612,7 +645,7 @@ const ManagerAccount = () => {
     },
     {
       title: "Tỉnh",
-      dataIndex: "city",
+      dataIndex: "location",
       filters: filterProivce,
       onFilter: (value: any, record) => record.city.startsWith(value),
       filterSearch: true,
@@ -621,7 +654,7 @@ const ManagerAccount = () => {
     },
     {
       title: "Đơn vị quản lý",
-      dataIndex: "managerF1",
+      dataIndex: "manage",
       filters: [
         {
           text: "Công An",
@@ -694,12 +727,12 @@ const ManagerAccount = () => {
       render: (_, record) => (
         <div className={styles.imageWrap}>
           <Image
-            src={require("../../assets/image/degree.jpg")}
+            src={`https://vocotruyen.id.vn/PHP_IMG/${record.image_ref}`}
             preview={true}
             className={styles.img}
           />
           <Image
-            src={require("../../assets/image/referral.jpg")}
+            src={`https://vocotruyen.id.vn/PHP_IMG/${record.image_certificate}`}
             preview={true}
             className={styles.img}
           />
@@ -713,10 +746,29 @@ const ManagerAccount = () => {
 
       render: (_, record) => (
         <span>
-          <Button className={styles.btnView} onClick={() => showModalAccept()}>
-            Duyệt
-          </Button>
-          <Button className={styles.btnTbDanger}>Xóa</Button>
+          <Popconfirm
+            title="Xóa"
+            description={`Bạn có muốn duyệt tài khoản ${record.name} không`}
+            onConfirm={() => confirmAccept(record.id)}
+            onCancel={cancel}
+            okText="Có"
+            cancelText="Không"
+          >
+            {" "}
+            <button className={styles.btnView}>Duyệt</button>
+          </Popconfirm>
+
+          <Popconfirm
+            title="Xóa"
+            description={`Bạn có muốn xóa ${record.name} không`}
+            onConfirm={() => confirm(record.id)}
+            onCancel={cancel}
+            okText="Có"
+            cancelText="Không"
+          >
+            {" "}
+            <button className={styles.btnTbDanger}>Xóa</button>
+          </Popconfirm>
         </span>
       ),
     },
@@ -724,7 +776,6 @@ const ManagerAccount = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-    // console.log('selectedRowKeys changed: ', newSelectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
   };
 
@@ -768,9 +819,13 @@ const ManagerAccount = () => {
             className="gutter-row"
           >
             <div style={{ display: "flex", justifyContent: "end" }}>
-              <Button className={styles.btn} style={{ paddingRight: "10px" }}>
+              <Button
+                className={styles.btn}
+                style={{ paddingRight: "10px" }}
+                onClick={() => naviagte("/dang-ky")}
+              >
                 <PlusOutlined className={styles.icon} />
-                Thêm tài khoản
+                Đăng ký tài khoản mới
               </Button>
             </div>
           </Col>
@@ -778,16 +833,15 @@ const ManagerAccount = () => {
         <div className={styles.table}>
           <Table
             columns={isMobile ? columnsMobileAccount : columnsDesktopAccount}
-            dataSource={dataMemberF12?.data}
+            dataSource={accept}
             pagination={false}
             locale={customLocale}
             scroll={{
               x: "max-content",
-              // y: "calc(100vh - 200px)",
             }}
             style={{ overflowX: "auto" }}
           />
-            <Pagination
+          <Pagination
             defaultCurrent={1}
             onChange={onChangePageAccount}
             total={dataMemberF12?.total_products}
@@ -811,10 +865,7 @@ const ManagerAccount = () => {
               {selectedRowKeys.length > 1 ? (
                 <>
                   {" "}
-                  <Button
-                    className={styles.btn}
-                    onClick={() => showModalAccept()}
-                  >
+                  <Button className={styles.btn}>
                     <CheckOutlined className={styles.icon} />
                     Duyệt toàn bộ
                   </Button>
@@ -829,30 +880,27 @@ const ManagerAccount = () => {
           <span style={{ marginLeft: 8 }}>
             {hasSelected ? `Đã chọn ${selectedRowKeys.length} hồ sơ` : ""}
           </span>
-          <Table
-            rowSelection={rowSelection}
-            locale={customLocale}
-            columns={isMobile ? columnsMobileAccept : columnsDesktopAccept}
-            dataSource={data}
-            onChange={onChange}
-            pagination={{}}
-            scroll={{
-              x: "max-content",
-            }}
-            style={{ overflowX: "auto" }}
-          />
+          <Spin spinning={isFetching}>
+            {" "}
+            <Table
+              rowSelection={rowSelection}
+              locale={customLocale}
+              columns={isMobile ? columnsMobileAccept : columnsDesktopAccept}
+              dataSource={unAccept}
+              onChange={onChange}
+              pagination={{}}
+              scroll={{
+                x: "max-content",
+              }}
+              style={{ overflowX: "auto" }}
+            />
+          </Spin>
         </div>
       </div>
       <ModalAccount
         isModalOpen={isModalOpenMember}
         handleCancel={handleCancelMember}
         handleOk={handleOkMember}
-      />
-      <ModalAccept
-        selectedRowKeys={selectedRowKeys}
-        isModalOpen={isModalOpenAccept}
-        handleCancel={handleCancelAccept}
-        handleOk={handleOkAccept}
       />
     </div>
   );

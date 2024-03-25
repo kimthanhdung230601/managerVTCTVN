@@ -24,7 +24,7 @@ import Footer from "../../components/Footer";
 import axios from "axios";
 import Cookies from "js-cookie";
 import CryptoJS from "crypto-js";
-import { level } from "../../until/until";
+import { level, province } from "../../until/until";
 import moment from "moment";
 import { useMutation } from "react-query";
 import { addNewF3 } from "../../api/f2";
@@ -123,46 +123,7 @@ const Profiles = () => {
   const handleButtonClick = (buttonName: any) => {
     setSelectedButton(buttonName);
   };
-  //tỉnh,thành,quận,huyện
-  const [provinces, setProvinces] = useState([]);
-  const [districts, setDistricts] = useState([]);
-  const [selectedProvinceFullName, setSelectedProvinceFullName] = useState("");
-  const [selectedDistrictFullName, setSelectedDistrictFullName] = useState("");
-  const [selectedProvince, setSelectedProvince] = useState("");
 
-  useEffect(() => {
-    // Fetch provinces when component mounts
-    axios
-      .get(
-        "https://vnprovinces.pythonanywhere.com/api/provinces/?basic=true&limit=100"
-      )
-      .then((response) => {
-        setProvinces(response.data.results);
-      })
-      .catch((error) => {
-        console.error("Error fetching provinces:", error);
-      });
-  }, []);
-
-  const handleProvinceChange = (value: any) => {
-    const [selectedProvinceId, selectedProvinceFullName] = value.split("-");
-    setSelectedProvinceFullName(selectedProvinceFullName);
-    // setSelectedDistrictFullName(selectedProvinceId);
-    form.setFieldValue("district", "");
-    // Update selected province and fetch corresponding districts
-    setSelectedProvince(selectedProvinceId); // Update selected province and fetch corresponding districts
-    setSelectedProvince(value);
-    axios
-      .get(
-        `https://vnprovinces.pythonanywhere.com/api/provinces/${selectedProvinceId}`
-      )
-      .then((response) => {
-        setDistricts(response.data.districts);
-      })
-      .catch((error) => {
-        console.error("Error fetching districts:", error);
-      });
-  };
   // giải mã cookieJS
   const permission = CryptoJS.AES.decrypt(
     Cookies.get("permission") as string,
@@ -182,16 +143,19 @@ const Profiles = () => {
   }, [form]);
   const [loading, setLoading] = useState(false);
   const mutation = useMutation(addNewF3, {
-    onSuccess: () => {
-      message.success(
-        "Thêm thành công, yêu cầu đã được gửi đến Liên đoàn VTCT Việt Nam"
-      );
+    onSuccess: (data: any) => {
+      console.log("data: ", data);
+      data.status === "success"
+        ? message.success(
+            "Thêm thành công, yêu cầu đã được gửi đến Liên đoàn VTCT Việt Nam"
+          )
+        : message.error(`${data.data}`);
+
       setLoading(false);
     },
     onError: () => {
       setLoading(false);
       message.error("Thêm thất bại");
-      // Xử lý lỗi nếu cần
     },
   });
   const onFinish = (values: any) => {
@@ -207,20 +171,18 @@ const Profiles = () => {
     formdata.append("level", values.level);
     formdata.append("note", values.note);
     formdata.append("detail", values.detail);
-    formdata.append("achievements", values.achievements);
+    // formdata.append("achievements", values.achievements);
     formdata.append("club", decryptedClub);
     formdata.append("hometown", values.hometown);
-    formdata.append(
-      "address",
-      `${selectedProvinceFullName} - ${values.district}`
-    );
+    formdata.append("address", values.address);
     formdata.append("nationality", values.nationality);
+    formdata.append("email", values.email);
     formdata.append(
       "image_certificate",
       values.image_certificate[0].originFileObj
     );
-    formdata.append("image_ref", values.image_ref[0].originFileObj);
-    console.log("data", formdata.values);
+    formdata.append("avatar", values.avatar[0].originFileObj);
+    // console.log("data", formdata.values);
     mutation.mutate(formdata);
   };
   return (
@@ -276,7 +238,7 @@ const Profiles = () => {
                         {" "}
                         <Form.Item
                           label="Tải ảnh lên"
-                          name="image_ref"
+                          name="avatar"
                           valuePropName="fileListLevel"
                           getValueFromEvent={normFile}
                           rules={[
@@ -451,47 +413,34 @@ const Profiles = () => {
                 <Row gutter={16}>
                   <Col span={8} xs={24} sm={12} md={8}>
                     <Form.Item
-                      label="Tỉnh/Thành"
-                      name="province"
+                      label="Tỉnh/Thành/Ngành"
+                      name="address"
                       rules={[
                         { required: true, message: "Vui lòng chọn tỉnh/thành" },
                       ]}
                     >
                       <Select
-                        onChange={handleProvinceChange}
                         filterOption={filterOption}
                         optionFilterProp="children"
                         showSearch
                       >
-                        {provinces.map((province: any) => (
-                          <Option
-                            key={province.id}
-                            value={`${province.id}- ${province.full_name}`}
-                          >
-                            {province.full_name}
-                          </Option>
+                        {province.map((option) => (
+                          <Select.Option key={option} value={option}>
+                            {option}
+                          </Select.Option>
                         ))}
                       </Select>
                     </Form.Item>
                   </Col>
                   <Col span={8} xs={24} sm={12} md={8}>
                     <Form.Item
-                      label="Quận/Huyện"
-                      name="district"
+                      label="Quê quán"
+                      name="hometown"
                       rules={[
-                        { required: true, message: "Vui lòng chọn quận/huyện" },
+                        { required: true, message: "Vui lòng điền quê quán" },
                       ]}
                     >
-                      <Select>
-                        {districts.map((district: any) => (
-                          <Option
-                            // key={district.id}
-                            value={district.full_name}
-                          >
-                            {district.full_name}
-                          </Option>
-                        ))}
-                      </Select>
+                      <Input />
                     </Form.Item>
                   </Col>
                   <Col span={8} xs={24} sm={12} md={8}>
@@ -507,17 +456,7 @@ const Profiles = () => {
                   </Col>
                 </Row>
                 <Row gutter={16}>
-                  <Col span={8} xs={24} sm={12} md={8}>
-                    <Form.Item
-                      label="Quê quán"
-                      name="hometown"
-                      rules={[
-                        { required: true, message: "Vui lòng điền quê quán" },
-                      ]}
-                    >
-                      <Input />
-                    </Form.Item>
-                  </Col>
+                  <Col span={8} xs={24} sm={12} md={8}></Col>
                 </Row>
                 {decryptedPermission == "0" ? (
                   <Form.List name="users">
