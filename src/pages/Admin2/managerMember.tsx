@@ -323,6 +323,7 @@ const filtersDetail = listF3?.list_detail.map((item:any, index:any) => ({
             locale={customLocale}
             scroll={{ x: 1300 }}
             style={{ overflowX: "auto" }}
+            pagination={false}
           />
           <Pagination
                 defaultCurrent={1}

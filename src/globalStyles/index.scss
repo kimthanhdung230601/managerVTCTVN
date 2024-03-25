@@ -46,7 +46,7 @@ h3 {
 }
 .ant-btn {
   background-color: var(--primary);
-  color: #fff !important;  
+  color: #fff !important;
   border-radius: 4px;
   border: none;
   cursor: pointer;
@@ -57,7 +57,7 @@ h3 {
     border-radius: 4px;
     border: none;
     // padding: 1vh 1vh;
-    opacity: 0.7 !important; 
+    opacity: 0.7 !important;
   }
 }
 .second-btn {
@@ -137,7 +137,6 @@ h3 {
   justify-content: center !important;
 }
 
-
 .ant-tabs .ant-tabs-tab {
   font-size: 16px;
   font-weight: 500;
@@ -146,27 +145,28 @@ h3 {
 .ant-tooltip {
   display: none;
 }
-.ant-tabs-nav{
+.ant-tabs-nav {
   margin: 3vh 5vh;
 }
-.ant-tabs-nav::before{
+.ant-tabs-nav::before {
   border: none !important;
 }
-.ant-table-container{
+.ant-table-container {
   border-inline-start: none !important;
   border-top: none !important;
 }
-.ant-table-cell{
+.ant-table-cell {
   border-bottom: none !important;
-  border-inline-end:none !important;
+  border-inline-end: none !important;
 }
-.ant-table-row- :hover{
+.ant-table-row- :hover {
   z-index: 1;
   background-color: #b4ddc194 !important;
 }
-.ant-space-item{
+.ant-space-item {
   width: 100% !important;
 }
+
 // .ant-table-row-selected {
 //   z-index: 1;
 //   background-color: rgba(4, 108, 57, 0.2) !important;

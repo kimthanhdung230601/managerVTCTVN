@@ -5,7 +5,18 @@ import {
   DownloadOutlined,
 } from "@ant-design/icons";
 import type { SearchProps } from "antd/es/input";
-import { Input, Table, Button, TableProps, Row, Col, Spin, Pagination } from "antd";
+import {
+  Input,
+  Table,
+  Button,
+  TableProps,
+  Row,
+  Col,
+  Spin,
+  Pagination,
+  Popconfirm,
+  message,
+} from "antd";
 import styles from "./styles.module.scss";
 import {
   level,
@@ -23,7 +34,7 @@ import Search from "antd/es/input/Search";
 // import ModalMember from "../../components/Modal/ModalAccount";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "react-query";
-import { getListMember } from "../../api/f0";
+import { deleteMemberF3, getListMember } from "../../api/f0";
 import moment from "moment";
 
 interface ManagerMemberProps {}
@@ -101,7 +112,21 @@ const ManagerMember = () => {
     setCurrentPage(value);
     refetch();
   };
+  //btn xóa
 
+  const confirm = async (value: any) => {
+    const payload = {
+      id: value,
+    };
+    const res = await deleteMemberF3(payload);
+    refetch();
+    message.success("Xóa thành công");
+  };
+
+  const cancel = (value: any) => {
+    console.log(value);
+    // message.error("");
+  };
   const hasSelected = selectedRowKeys.length > 0;
   const onSearch: SearchProps["onSearch"] = (value: any, _e: any, info: any) =>
     console.log(info?.source, value);
@@ -113,6 +138,9 @@ const ManagerMember = () => {
       dataIndex: "stt",
       fixed: "left",
       width: 70,
+      render: (value, record, index) => {
+        return index + 1 + (currentPage - 1) * 10;
+      },
     },
     {
       title: "Họ tên",
@@ -300,7 +328,17 @@ const ManagerMember = () => {
             Sửa
           </button>
           {record.status === "Chờ duyệt xoá" ? (
-            <Button className={styles.btnTbDanger}>Xóa</Button>
+            <Popconfirm
+              title="Xóa"
+              description={`Bạn có muốn xóa ${record.name} không`}
+              onConfirm={() => confirm(record.id)}
+              onCancel={cancel}
+              okText="Có"
+              cancelText="Không"
+            >
+              {" "}
+              <Button className={styles.btnTbDanger}>Xóa</Button>
+            </Popconfirm>
           ) : (
             <></>
           )}
@@ -499,8 +537,18 @@ const ManagerMember = () => {
           >
             Sửa
           </Button>
-          {record.status === "Chờ duyệt xóa" ? (
-            <Button className={styles.btnTbDanger}>Xóa</Button>
+          {record.status === "Chờ duyệt xoá" ? (
+            <Popconfirm
+              title="Xóa"
+              description={`Bạn có muốn xóa ${record.name} không`}
+              onConfirm={() => confirm(record.id)}
+              onCancel={cancel}
+              okText="Có"
+              cancelText="Không"
+            >
+              {" "}
+              <Button className={styles.btnTbDanger}>Xóa</Button>
+            </Popconfirm>
           ) : (
             <></>
           )}
@@ -597,6 +645,7 @@ const ManagerMember = () => {
               x: "max-content",
             }}
             className={styles.responsiveTable}
+            pagination={false}
           />
           <Pagination
             defaultCurrent={1}
