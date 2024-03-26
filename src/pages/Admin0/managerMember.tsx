@@ -34,8 +34,9 @@ import Search from "antd/es/input/Search";
 // import ModalMember from "../../components/Modal/ModalAccount";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "react-query";
-import { deleteMemberF3, getListMember } from "../../api/f0";
+import { deleteMemberF3, getListMember, updateMemberF3 } from "../../api/f0";
 import moment from "moment";
+import ListClub from "../../hook/listClub";
 
 interface ManagerMemberProps {}
 interface DataType {
@@ -47,7 +48,7 @@ interface DataType {
   key: React.Key;
   name: string;
   f1: string;
-  f2: string;
+  NameClb: string;
   note: string;
   status: string;
   achie: string;
@@ -82,13 +83,8 @@ const ManagerMember = () => {
     text: item.note,
     value: item.note,
   }));
-  // const filtersClub = allMember?.club.map((item:any, index:any) => ({
-  //   text:  item.detail,
-  //   value: item.detail
-  // }));
   const navigate = useNavigate();
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
-  const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const isMobile = useMediaQuery({ maxWidth: 768 });
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
@@ -113,7 +109,6 @@ const ManagerMember = () => {
     refetch();
   };
   //btn xóa
-
   const confirm = async (value: any) => {
     const payload = {
       id: value,
@@ -126,6 +121,11 @@ const ManagerMember = () => {
     const payload = {
       id: value,
     };
+    const res = await updateMemberF3(payload);
+    res.status === "success"
+      ? message.success("Cập nhật thông tin thành công")
+      : message.error(res?.data);
+    refetch();
   };
   const cancel = (value: any) => {
     console.log(value);
@@ -220,28 +220,12 @@ const ManagerMember = () => {
     },
     {
       title: "CLB trực thuộc F2",
-      dataIndex: "club",
+      dataIndex: "NameClb",
       width: 300,
-      filters: [
-        {
-          text: "Câu lạc bộ A",
-          value: "Câu lạc bộ A",
-        },
-        {
-          text: "Câu lạc bộ B",
-          value: "Câu lạc bộ B",
-        },
-        {
-          text: "Câu lạc bộ C",
-          value: "Câu lạc bộ C",
-        },
-        {
-          text: "Câu lạc bộ D",
-          value: "Câu lạc bộ D",
-        },
-      ],
+      filters: ListClub(),
       filterMode: "tree",
-      onFilter: (value: any, rec) => rec.f2.indexOf(value) === 0,
+      filterSearch: true,
+      onFilter: (value: any, rec) => rec.NameClb.indexOf(value) === 0,
     },
     {
       title: "Ghi chú",
@@ -249,6 +233,7 @@ const ManagerMember = () => {
       width: 130,
       filters: filtersListNote,
       filterMode: "tree",
+      filterSearch: true,
       onFilter: (value: any, rec) => rec.note.indexOf(value) === 0,
     },
     {
@@ -306,9 +291,9 @@ const ManagerMember = () => {
           value === "Không" &&
           (!record.achievements || record.achievements.length === 0)
         ) {
-          return true; // Trả về true nếu giá trị là "Không" và không có thành tích
+          return true;
         }
-        return false; // Trả về false nếu không khớp với bất kỳ điều kiện nào
+        return false;
       },
       render: (value, record) => {
         if (record.achievements && record.achievements.length > 0) {
@@ -348,7 +333,7 @@ const ManagerMember = () => {
               cancelText="Không"
             >
               {" "}
-              <Button className={styles.btnTb}>Duyệt</Button>
+              <button className={styles.btnView}>Duyệt</button>
             </Popconfirm>
           ) : (
             <></>
@@ -363,7 +348,7 @@ const ManagerMember = () => {
               cancelText="Không"
             >
               {" "}
-              <Button className={styles.btnTbDanger}>Xóa</Button>
+              <button className={styles.btnTbDanger}>Xóa</button>
             </Popconfirm>
           ) : (
             <></>
@@ -454,28 +439,11 @@ const ManagerMember = () => {
     },
     {
       title: "CLB trực thuộc F2",
-      dataIndex: "f2",
+      dataIndex: "name_club",
       width: 300,
-      filters: [
-        {
-          text: "Câu lạc bộ A",
-          value: "Câu lạc bộ A",
-        },
-        {
-          text: "Câu lạc bộ B",
-          value: "Câu lạc bộ B",
-        },
-        {
-          text: "Câu lạc bộ C",
-          value: "Câu lạc bộ C",
-        },
-        {
-          text: "Câu lạc bộ D",
-          value: "Câu lạc bộ D",
-        },
-      ],
+      filters: ListClub(),
       filterMode: "tree",
-      onFilter: (value: any, rec) => rec.f2.indexOf(value) === 0,
+      onFilter: (value: any, rec) => rec.NameClb.indexOf(value) === 0,
     },
     {
       title: "Ghi chú",

@@ -75,7 +75,7 @@ const UpdateMember = () => {
   const onFinish = (values: any) => {
     setLoading(true);
     const inputData = values.dataLevel;
-    const separatedData = inputData.split(",").map((item: any) => {
+    const separatedData = inputData.split("\n").map((item: any) => {
       const [id, level, timeLevel] = item
         .split("|")
         .map((str: string) => str.trim());
@@ -93,7 +93,7 @@ const UpdateMember = () => {
     setLoadingAchie(true);
 
     const inputData = values.dataAchie;
-    const separatedData = inputData.split(",").map((item: any) => {
+    const separatedData = inputData.split("\n").map((item: any) => {
       const [id, achie, prize, timeAchie] = item
         .split("|")
         .map((str: string) => str.trim());
@@ -118,8 +118,9 @@ const UpdateMember = () => {
               </div>
             </div>
             <p className={styles.note}>
-              Lưu ý: Nhập đúng định dạng. Các thành viên viết cách nhau bởi dấu
-              "," <br></br> Ví dụ: H123|HLV 1 đẳng|2023, H46|Võ sinh cấp 1|2024
+              Lưu ý: Nhập đúng định dạng. Các thành viên viết xuống dòng.{" "}
+              <br></br> Ví dụ:<br></br> H123|HLV 1 đẳng|2023 <br></br> H46|Võ
+              sinh cấp 1|2024
             </p>
             <Form
               form={form}
@@ -157,16 +158,16 @@ const UpdateMember = () => {
           </Col>
           <Col span={12} xs={24} sm={12} lg={12} xl={12}>
             {" "}
-            <div style={{ display:"inline-block" ,margin: "2vh 0" }}>
+            <div style={{ display: "inline-block", margin: "2vh 0" }}>
               <div className={styles.postLabel}>
                 <FileTextOutlined style={{ marginRight: "10px" }} />
                 Cập nhật giải thưởng
               </div>
             </div>
             <p className={styles.note}>
-              Lưu ý: Nhập đúng định dạng. Các thành viên viết cách nhau bởi dấu
-              "," <br></br> Ví dụ: H123|Đai đen|Giải trẻ|Vàng|2023, H46|Giải
-              trẻ|Vàng|2024
+              Lưu ý: Nhập đúng định dạng. Các thành viên viết xuống dòng.{" "}
+              <br></br> Ví dụ: <br></br> H123|Giải trẻ|Vàng|2023 <br></br>{" "}
+              H46|Giải trẻ|Vàng|2024
             </p>
             <Form
               form={formAchie}

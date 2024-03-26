@@ -33,6 +33,7 @@ import { text } from "stream/consumers";
 import type { ColumnsType } from "antd/es/table";
 import { useQuery } from "react-query";
 import { deleteMemberF12, getListMemberF12, updateAccount } from "../../api/f0";
+import ListClub from "../../hook/listClub";
 interface ManagerAccountProps {}
 interface DataType {
   key: React.Key;
@@ -69,10 +70,7 @@ const ManagerAccount = () => {
     refetch,
     isFetching,
   } = useQuery("dataF12", () => getListMemberF12());
-  // const handleUpdateAccount =async (payload: any) => {
-  //   const res =await updateAccount(payload);
-  //   res.status ==="success" ? message.success("ập nhật thành công") : message.error("Cập nhật thất bại")
-  // };
+
   const [unAccept, setUnAccept] = useState([]);
   const [accept, setAccept] = useState([]);
 
@@ -208,25 +206,8 @@ const ManagerAccount = () => {
     },
     {
       title: "Tên câu lạc bộ",
-      dataIndex: "club",
-      filters: [
-        {
-          text: "Câu lạc bộ A",
-          value: "Câu lạc bộ A",
-        },
-        {
-          text: "Câu lạc bộ B",
-          value: "Câu lạc bộ B",
-        },
-        {
-          text: "Câu lạc bộ C",
-          value: "Câu lạc bộ C",
-        },
-        {
-          text: "Câu lạc bộ D",
-          value: "Câu lạc bộ D",
-        },
-      ],
+      dataIndex: "NameClb",
+      filters: ListClub(),
       filterSearch: true,
       onFilter: (value: any, rec) => rec.club.indexOf(value) === 0,
       filterMode: "tree",
@@ -373,24 +354,7 @@ const ManagerAccount = () => {
     {
       title: "Tên câu lạc bộ",
       dataIndex: "club",
-      filters: [
-        {
-          text: "Câu lạc bộ A",
-          value: "Câu lạc bộ A",
-        },
-        {
-          text: "Câu lạc bộ B",
-          value: "Câu lạc bộ B",
-        },
-        {
-          text: "Câu lạc bộ C",
-          value: "Câu lạc bộ C",
-        },
-        {
-          text: "Câu lạc bộ D",
-          value: "Câu lạc bộ D",
-        },
-      ],
+      filters: ListClub(),
       filterMode: "tree",
       onFilter: (value: any, rec) => rec.club.indexOf(value) === 0,
       width: 200,
@@ -529,26 +493,9 @@ const ManagerAccount = () => {
     },
     {
       title: "Tên câu lạc bộ",
-      dataIndex: "club",
+      dataIndex: "clubName",
       width: 200,
-      filters: [
-        {
-          text: "Câu lạc bộ A",
-          value: "Câu lạc bộ A",
-        },
-        {
-          text: "Câu lạc bộ B",
-          value: "Câu lạc bộ B",
-        },
-        {
-          text: "Câu lạc bộ C",
-          value: "Câu lạc bộ C",
-        },
-        {
-          text: "Câu lạc bộ D",
-          value: "Câu lạc bộ D",
-        },
-      ],
+      filters: ListClub(),
       onFilter: (value: any, rec) => rec.club.indexOf(value) === 0,
       filterMode: "tree",
     },
@@ -689,24 +636,7 @@ const ManagerAccount = () => {
       title: "Tên câu lạc bộ",
       dataIndex: "club",
       width: 200,
-      filters: [
-        {
-          text: "Câu lạc bộ A",
-          value: "Câu lạc bộ A",
-        },
-        {
-          text: "Câu lạc bộ B",
-          value: "Câu lạc bộ B",
-        },
-        {
-          text: "Câu lạc bộ C",
-          value: "Câu lạc bộ C",
-        },
-        {
-          text: "Câu lạc bộ D",
-          value: "Câu lạc bộ D",
-        },
-      ],
+      filters: ListClub(),
       onFilter: (value: any, rec) => rec.club.indexOf(value) === 0,
       filterMode: "tree",
     },
