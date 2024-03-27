@@ -1,5 +1,5 @@
-import { Col, Image, Row } from 'antd'
-import React from 'react'
+import { Col, Image, message, Row } from 'antd'
+import React, { useEffect } from 'react'
 import { useQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
 import { getInforF3 } from '../../api/f2';
@@ -9,8 +9,22 @@ import styles from "./Style.module.scss"
 export default function Detail() {
     document.title = "Thông tin hồ sơ";
     const params = useParams()
-    const {data: userInfor} = useQuery(['userInfor', params.id], ()=> getInforF3(params.id))
-    console.log(userInfor?.data[0])
+    const {data: userInfor} = useQuery(['userInfor', params.id], ()=> getInforF3(params.id),{
+        onSettled: (data) => {
+            if(data.status === "failed"){
+                message.error("Có lỗi xảy ra, vui lòng thử lại sau")
+                setTimeout(()=> {
+                    window.history.back()
+                },2000)
+                
+            } 
+        }
+    })
+    // useEffect(()=> {
+    //     if(userInfor){
+    //         if(userInfor.status === "failed") message.error("Có lỗi xảy ra, vui lòng thử lại sau")
+    //     }
+    // }, [userInfor])
   return (
     <div>
         <Header />
@@ -24,7 +38,7 @@ export default function Detail() {
                     <Col className='gutter-row' xxl={3} lg={6} md={8} xs={24}>
                         <Row gutter={20}>
                             <Col className='gutter-row' xxl={24} md={24} xs={12}>
-                                <Image src={require("../../assets/image/jisoo.jpg")} preview={false} className={styles.detailImg}/>
+                                <Image src={`https://vocotruyen.id.vn/PHP_IMG/${userInfor?.data[0].image_certificate}`} preview={false} className={styles.detailImg}/>
                             </Col>
                             <Col className='gutter-row' xxl={24} md={24} xs={12}>
                                 <Image src={require("../../assets/image/qr.png")} preview={false} className={styles.detailImg}/>

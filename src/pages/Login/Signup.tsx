@@ -20,7 +20,7 @@ const getBase64 = (file: any): Promise<string> =>
 });
 
 export default function Signup() {
-    document.title = "Đăng ký";
+    document.title = "Đăng ký tài khoản";
     const dispatch = useDispatch();
     const navigate = useNavigate()
     const reloadCount = useSelector((state:any) => state.reloadCount);
@@ -40,7 +40,7 @@ export default function Signup() {
             
             onSuccess: (data: any) => {
                 if(data.status === "success") {
-                    message.success("Đăng ký thành công, vui lòng đăng nhập để tiếp tục")
+                    message.success("Đăng ký thành công, tài khoản của bạn đang chờ phê duyệt!")
                     setTimeout(()=> {
                         navigate(`/dang-nhap`)
                     },2000)
@@ -160,7 +160,7 @@ export default function Signup() {
             <Image src={require("../../assets/image/logo.png")} preview={false} className={styles.logoImg}/>
         </div>
         <div className={styles.login}>
-            <div className={styles.title}>Đăng ký</div>
+            <div className={styles.title}>Đăng ký tài khoản hội viên, tổ chức, chủ nhiệm CLB</div>
             
             <Form
                 name="basic"
