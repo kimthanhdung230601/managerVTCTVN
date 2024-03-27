@@ -16,7 +16,6 @@ import {
 } from "antd";
 import type { DatePickerProps } from "antd";
 import type { UploadFile, UploadProps } from "antd";
-import ImgCrop from "antd-img-crop";
 
 import useImageCompression from "../../hook/imageCompression";
 import Header from "../../components/Header";
@@ -27,7 +26,7 @@ import CryptoJS from "crypto-js";
 import { level, province } from "../../until/until";
 import moment from "moment";
 import { useMutation } from "react-query";
-import { addNewF3 } from "../../api/f2";
+import { addMember } from "../../api/ApiUser";
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
 const { Option } = Select;
@@ -38,7 +37,26 @@ const Profiles = () => {
   const [form] = Form.useForm();
   const [fileList, setFileList] = useState<any>([]);
   const { compressImage } = useImageCompression();
-
+  const addMemberMutation = useMutation(
+    async (payload: any) => await addMember(payload),
+    {
+      onSuccess: (data) => {
+        if(data.status === "success") message.success("Thêm hội viên thành công!")
+        else{
+          message.error("Có lỗi xảy ra, vui lòng thử lại sau!")
+          setTimeout(()=> {
+            window.location.reload()
+          },2000)
+        } 
+      },
+      onError(error, variables, context) {
+        message.error("Có lỗi xảy ra, vui lòng thử lại sau!")
+        setTimeout(()=> {
+          window.location.reload()
+        },2000)
+      },
+    }
+  )
   //image avatar
   const normFile = (e: any) => {
     if (Array.isArray(e)) {
@@ -162,11 +180,16 @@ const Profiles = () => {
     const formattedBirthday = moment(values.birthday).format("YYYY-MM-DD");
     setLoading(true);
     console.log("form", values);
+    const randomKey = CryptoJS.lib.WordArray.random(16).toString();
     const formdata = new FormData();
     formdata.append("name", values.name);
-    formdata.append("birthday", formattedBirthday);
+    formdata.append(
+      "birthday",
+      values.birthday
+    );
     formdata.append("sex", values.sex);
     formdata.append("phone", values.phone);
+    formdata.append("email", values.email);
     formdata.append("idcard", values.idcard);
     formdata.append("level", values.level);
     formdata.append("note", values.note);
@@ -177,13 +200,18 @@ const Profiles = () => {
     formdata.append("address", values.address);
     formdata.append("nationality", values.nationality);
     formdata.append("email", values.email);
-    formdata.append(
-      "image_certificate",
-      values.image_certificate[0].originFileObj
+      formdata.append(
+        `image_certificate`,
+        values.image_certificate[0].originFileObj as File,
+        CryptoJS.AES.encrypt(values.image_certificate[0].name, randomKey).toString()
     );
-    formdata.append("avatar", values.avatar[0].originFileObj);
-    // console.log("data", formdata.values);
-    mutation.mutate(formdata);
+    formdata.append(
+        `avatar`,
+        values.image_ref[0].originFileObj as File,
+        CryptoJS.AES.encrypt(values.image_ref[0].name, randomKey).toString()
+    );
+
+    addMemberMutation.mutate(formdata)
   };
   return (
     <>
@@ -343,7 +371,8 @@ const Profiles = () => {
                             },
                           ]}
                         >
-                          <DatePicker onChange={onChange} />
+                          {/* <DatePicker onChange={onChange} /> */}
+                          <Input type="date" />
                         </Form.Item>
                       </Col>
                       <Col span={12}>

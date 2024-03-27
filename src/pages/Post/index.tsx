@@ -1,4 +1,4 @@
-import { Col, Modal, Row, Upload, UploadFile, UploadProps, Form, Input, Button, message } from 'antd'
+import { Col, Modal, Row, Upload, UploadFile, UploadProps, Form, Input, Button, message, Select } from 'antd'
 import React, { useState } from 'react'
 import Header from '../../components/Header'
 import styles from "./Style.module.scss"
@@ -128,7 +128,17 @@ export default function Post() {
                         >
                             <Input style={{padding: "10px 12px"}} />
                         </Form.Item>
-                        
+                        <Form.Item
+                        label="Danh mục"
+                        name="title"
+                        rules={[{ required: true, message: 'Vui lòng nhập tiêu đề bài viết!' }]}
+                        >
+                          <Select>
+                            <Select.Option value="1" style={{padding: "10px 12px"}}>Tin tức</Select.Option>
+                            <Select.Option value="2" style={{padding: "10px 12px"}}>Hướng dẫn</Select.Option>
+                          </Select>
+                            
+                        </Form.Item>
                         <Form.Item
                         label="Nội dung"
                         name="content"

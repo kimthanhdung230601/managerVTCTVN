@@ -1,20 +1,22 @@
 import Search, { SearchProps } from 'antd/es/input/Search';
 import { ColumnsType } from 'antd/es/table';
-import { Table } from "antd";
+import { message, Table } from "antd";
 import React, { useState } from 'react'
 import styles from "./Style.module.scss";
-import { useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import { levelFilters } from '../../until/until';
+import { useQuery } from 'react-query';
+import { getListClub, getListMember } from '../../api/f1';
 interface DataType_CLB {
     key: React.Key;
     name: string;
     birth: string;
     phone: string;
-    identity: string;
+    idcard: string;
     level: string;
-    club: string;
-    quantity_records: string;
+    member_count: string;
     status: string;
+    NameClb: string;
 }
 
 const customLocale = {
@@ -25,93 +27,29 @@ const customLocale = {
     selectInvert: 'Đảo ngược', // Thay đổi văn bản khi chọn ngược
 };
 
-const dataCLB: DataType_CLB[] = [
-    {
-      key: "1",
-      name: "Nguyễn Văn A",
-      birth: "24/12/2001",
-      phone: "0987838929",
-      identity: "009387466534",
-      level: "HLV 4 đẳng",
-      club: "CLB Hà Nội",
-      quantity_records: "12",
-      status: "Hoạt động",
-    },
-    {
-      key: "2",
-      name: "Nguyễn Văn B",
-      birth: "24/12/2001",
-      phone: "0987838929",
-      identity: "009387466534",
-      level: "HLV 4 đẳng",
-      club: "CLB Hải Phòng",
-      quantity_records: "12",
-      status: "Hoạt động",
-    },
-    {
-      key: "3",
-      name: "Nguyễn Văn C",
-      birth: "24/12/2001",
-      phone: "0987838929",
-      identity: "009387466534",
-      level: "Võ sinh cấp 12",
-      club: "CLB TP HCM",
-      quantity_records: "12",
-      status: "Hoạt động",
-    },
-    {
-      key: "4",
-      name: "Nguyễn Văn D",
-      birth: "24/12/2001",
-      phone: "0987838929",
-      identity: "009387466534",
-      level: "Võ sinh cấp 4",
-      club: "CLB Hải Phòng",
-      quantity_records: "12",
-      status: "Hoạt động",
-    },
-    {
-      key: "5",
-      name: "Nguyễn Văn E",
-      birth: "24/12/2001",
-      phone: "0987838929",
-      identity: "009387466534",
-      level: "Võ sinh cấp 8",
-      club: "CLB Hà Nội",
-      quantity_records: "12",
-      status: "Hoạt động",
-    },
-    {
-      key: "6",
-      name: "Nguyễn Văn G",
-      birth: "24/12/2001",
-      phone: "0987838929",
-      identity: "009387466534",
-      level: "Võ sinh cấp 7",
-      club: "CLB Hà Nội",
-      quantity_records: "12",
-      status: "Hoạt động",
-    },
-    {
-      key: "7",
-      name: "Nguyễn Văn H",
-      birth: "24/12/2001",
-      phone: "0987838929",
-      identity: "009387466534",
-      level: "HLV 2 đẳng",
-      club: "CLB Hải Phòng",
-      quantity_records: "12",
-      status: "Hoạt động",
-    },
-  ];
-  
+ 
 export default function ManageClub() {
     const navigate = useNavigate();
-    const [currentPage2, setCurrentPage2] = useState(1);
+    const location = useLocation()
+    const searchURL = new URLSearchParams(useLocation().search)
+    const [currentPage2, setCurrentPage2] = useState(searchURL.get("page") || "1");
     const [selectedRowKeysCLB, setSelectedRowKeysCLB] = useState<React.Key[]>([]);
-    const onSelectChangeCN = (newSelectedRowKeysCN: React.Key[]) => {
-        setSelectedRowKeysCLB(newSelectedRowKeysCN);
-    };
+    const [clubList, setClubList] = useState<DataType_CLB[]>([])
+    const {data: clubListData} = useQuery(['club'], () => getListClub(), {
+      onSettled: (data) => {
+        if(data.status === "failed"){
+          message.warning(data.data)
+          setTimeout(()=> {
+            window.location.replace("/dang-nhap")
+          }, 2000)
+        } else {
+          const newData = data.data.map((item: DataType_CLB, index:number)=> {
+              return {...item, key: index}
+          })
+          setClubList(newData)
+        } 
+      }
+    })
     const onSelectChangeCLB = (newSelectedRowKeysCLB: React.Key[]) => {
         setSelectedRowKeysCLB(newSelectedRowKeysCLB);
     };
@@ -121,14 +59,18 @@ export default function ManageClub() {
     };
     const hasSelected = selectedRowKeysCLB.length > 0;
     const onPaginationChange2 = (page: number) => {
-        setCurrentPage2(page);
+      const newPage = searchURL.get("page")
+      searchURL.set("page", page.toString());
+      navigate(location.pathname + "?tab=CLB"+(newPage ? `&page=${page}` : `&page=${page}`))
+      setCurrentPage2(page.toString());
+
     };
     const onSearch: SearchProps["onSearch"] = (value, _e, info) =>console.log(info?.source, value);
     const columns_CLB: ColumnsType<DataType_CLB> = [
         {
           title: "STT",
           dataIndex: "key",
-          render: (_, __, index) => (currentPage2 - 1) * 5 + index + 1,
+          render: (_, __, index) => (parseInt(currentPage2, 10) - 1) * 10 + index + 1,
         },
         {
           title: "Họ tên",
@@ -144,7 +86,7 @@ export default function ManageClub() {
         },
         {
           title: "Số định danh",
-          dataIndex: "identity",
+          dataIndex: "idcard",
         },
         {
           title: "Đẳng cấp",
@@ -155,7 +97,7 @@ export default function ManageClub() {
         },
         {
           title: "CLB trực thuộc",
-          dataIndex: "club",
+          dataIndex: "NameClb",
           filters: [
             {
               text: "CLB Hà Nội",
@@ -170,11 +112,11 @@ export default function ManageClub() {
               value: "CLB TP HCM",
             },
           ],
-          onFilter: (value: any, record) => record.club.indexOf(value) === 0,
+          onFilter: (value: any, record) => record.NameClb.indexOf(value) === 0,
         },
         {
           title: "Số lượng hồ sơ",
-          dataIndex: "quantity_records",
+          dataIndex: "member_count",
         },
         {
           title: "Tình trạng",
@@ -182,24 +124,24 @@ export default function ManageClub() {
           filters: [
             {
               text: "Hoạt động",
-              value: "active",
+              value: "Đã duyệt",
             },
             {
               text: "Nghỉ",
-              value: "off",
+              value: "Nghỉ",
             },
             {
-              text: "Chưa duyệt hồ sơ",
-              value: "notApproved",
+              text: "Chờ duyệt HS",
+              value: "Chờ duyệt",
             },
           ],
-          //  onFilter: (value: string, record) => record.status.indexOf(value) === 0,
+          onFilter: (value: any, record) => record.status.indexOf(value) === 0,
           render: (value, record) => {
             if (value === "Hoạt động")
               return <span style={{ color: "#046C39" }}>{value}</span>;
             if (value === "Nghỉ")
               return <span style={{ color: "#8D8D8D" }}>{value}</span>;
-            if (value === "Chưa duyệt hồ sơ")
+            if (value === "Chờ duyệt HS")
               return <span style={{ color: "#F6C404" }}>{value}</span>;
           },
         },
@@ -210,6 +152,7 @@ export default function ManageClub() {
           },
         },
       ];
+    
   return (
     <>
         <div className={styles.tableTop}>
@@ -232,12 +175,12 @@ export default function ManageClub() {
         <Table
         rowSelection={rowSelectionCLB}
         columns={columns_CLB}
-        dataSource={dataCLB}
+        dataSource={clubList}
         locale={customLocale}
         pagination={{
-            current: currentPage2,
+            current: parseInt(currentPage2, 10),
             onChange: onPaginationChange2,
-            pageSize: 5,
+            pageSize: 10,
             defaultCurrent: 1,
             total: 7,
         }}

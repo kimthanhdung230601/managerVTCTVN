@@ -2,9 +2,9 @@ import React, { useState } from 'react'
 import Search, { SearchProps } from "antd/es/input/Search";
 import styles from "./Style.module.scss";
 import { PlusOutlined } from "@ant-design/icons";
-import { Table } from 'antd';
+import { message, Table } from 'antd';
 import { ColumnsType, TableProps } from 'antd/es/table';
-import { useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import { levelFilters } from '../../until/until';
 import { useQuery } from 'react-query';
 import { getListMember } from '../../api/f1';
@@ -25,7 +25,7 @@ interface DataType_CN {
     phone: string;
     idcard: string;
     level: string;
-    club: string;
+    NameClb: string;
     note: string;
     status: string;
     achievements: string;
@@ -41,34 +41,48 @@ const onChange: TableProps<DataType_CN>["onChange"] = (
   
 export default function ManageMember() {
     const navigate = useNavigate();
-    const [currentPage1, setCurrentPage1] = useState(1);
+    const location = useLocation()
+    const searchURL = new URLSearchParams(useLocation().search)
+    const [currentPage1, setCurrentPage1] = useState(searchURL.get("page") || "1");
     const [selectedRowKeysCLB, setSelectedRowKeysCLB] = useState<React.Key[]>([]);
     const [selectedRowKeysCN, setSelectedRowKeysCN] = useState<React.Key[]>([]);
-    const {data: memberList} = useQuery(['member'], () => getListMember())
+    const [memberList, setMemberList] = useState<DataType_CN[]>([])
+    const {data: memberListData} = useQuery(['member'], () => getListMember(), {
+      onSettled: (data) => {
+        if(data.status === "failed"){
+          message.warning(data.data)
+          setTimeout(()=> {
+            window.location.replace("/dang-nhap")
+          }, 2000)
+        } else {
+          const newData = data.data.map((item: DataType_CN, index:number)=> {
+              return {...item, key: index}
+          })
+          console.log(data)
+          setMemberList(newData)
+        } 
+      }
+    })
     const onSelectChangeCN = (newSelectedRowKeysCN: React.Key[]) => {
         setSelectedRowKeysCLB(newSelectedRowKeysCN);
-    };
-    const onSelectChangeCLB = (newSelectedRowKeysCLB: React.Key[]) => {
-    setSelectedRowKeysCLB(newSelectedRowKeysCLB);
     };
     const rowSelectionCN = {
     selectedRowKeysCN,
     onChange: onSelectChangeCN,
     };
-    const rowSelectionCLB = {
-    selectedRowKeysCLB,
-    onChange: onSelectChangeCLB,
-    };
     const hasSelected = selectedRowKeysCLB.length > 0;
     const onPaginationChange1 = (page: number) => {
-        setCurrentPage1(page);
+      const newPage = searchURL.get("page")
+      searchURL.set("page", page.toString());
+      navigate(location.pathname + "?tab=Member"+(newPage ? `&page=${page}` : `&page=${page}`))
+      setCurrentPage1(page.toString());
     };
     const onSearch: SearchProps["onSearch"] = (value, _e, info) => console.log(info?.source, value);
     const columns_CN: ColumnsType<DataType_CN> = [
         {
           title: "STT",
-          dataIndex: "key",
-          render: (_, __, index) => (currentPage1 - 1) * 5 + index + 1,
+          dataIndex: "id",
+          render: (_, __, index) => (parseInt(currentPage1, 10) - 1) * 10 + index + 1,
         },
         {
           title: "Họ tên",
@@ -95,7 +109,7 @@ export default function ManageMember() {
         },
         {
           title: "CLB trực thuộc",
-          dataIndex: "club",
+          dataIndex: "NameClb",
           filters: [
             {
               text: "CLB Hà Nội",
@@ -110,7 +124,7 @@ export default function ManageMember() {
               value: "CLB TP HCM",
             },
           ],
-          onFilter: (value: any, record) => record.club.indexOf(value) === 0,
+          onFilter: (value: any, record) => record.NameClb.indexOf(value) === 0,
         },
         {
           title: "Ghi chú",
@@ -122,18 +136,18 @@ export default function ManageMember() {
           filters: [
             {
               text: "Hoạt động",
-              value: "active",
+              value: "Hoạt động",
             },
             {
               text: "Nghỉ",
-              value: "off",
+              value: "Nghỉ",
             },
             {
               text: "Chưa duyệt hồ sơ",
-              value: "notApproved",
+              value: "Chưa duyệt hồ sơ",
             },
           ],
-          //  onFilter: (value: string, record) => record.status.indexOf(value) === 0,
+          onFilter: (value: any, record) => record.status.indexOf(value) === 0,
           render: (value, record) => {
             if (value === "Hoạt động")
               return <span style={{ color: "#046C39" }}>{value}</span>;
@@ -154,13 +168,14 @@ export default function ManageMember() {
           },
         },
       ];
+ 
   return (
     <>
         <div className={styles.tableTop}>
         <div>
             {hasSelected
             ? `Đã chọn ${selectedRowKeysCLB.length} hồ sơ`
-            : `Tổng số ${memberList?.total_products} hồ sơ`}
+            : `Tổng số ${memberListData?.status === "success" ? memberListData?.total_products: "0"} hồ sơ`}
         </div>
         <div className={styles.filter}>
         <Search
@@ -179,14 +194,14 @@ export default function ManageMember() {
         <Table
         rowSelection={rowSelectionCN}
         columns={columns_CN}
-        dataSource={memberList?.data}
+        dataSource={memberList}
         locale={customLocale}
         pagination={{
-            current: currentPage1,
+            current: parseInt(currentPage1, 10),
             onChange: onPaginationChange1,
-            pageSize: 12,
+            pageSize: 10,
             defaultCurrent: 1,
-            total: memberList?.total_products,
+            total:memberListData?.status === "success" ? memberListData?.total_products : null,
         }}
         className={styles.table}
         />

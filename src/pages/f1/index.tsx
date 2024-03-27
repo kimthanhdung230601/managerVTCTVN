@@ -9,26 +9,32 @@ import Footer from "../../components/Footer";
 import Search, { SearchProps } from "antd/es/input/Search";
 import ManageClub from "./manageClub";
 import ManageMember from "./manageMember";
+import { useLocation, useNavigate } from "react-router";
 
 export default function LevelOne() {
   document.title = "Quản lý Liên đoàn, Sở, Ngành";
+  const navigate = useNavigate()
+  const tab = new URLSearchParams(useLocation().search);
+  const  [activeTab, setActiveTab] = useState(tab.get("tab") || "CLB")
+  const onChange = (key: string) => {
+    navigate(`/admin1?tab=${key}&page=1`)
+  };
   const items: TabsProps["items"] = [
     {
-      key: "1",
+      key: "CLB",
       label: "Hội viên CLB",
       children: (
         <ManageClub />
       ),
     },
     {
-      key: "2",
+      key: "Member",
       label: "Hội viên cá nhân",
       children: (
         <ManageMember />
       ),
     },
   ];
-
   return (
     <>
       <Header />
@@ -44,7 +50,7 @@ export default function LevelOne() {
           </div>
         </div>
         <div className={styles.tableWrap}>
-          <Tabs defaultActiveKey="1" items={items} className={styles.tab} />
+          <Tabs defaultActiveKey={activeTab} items={items} className={styles.tab} onChange={onChange}/>
         </div>
       </div>
       <Footer />

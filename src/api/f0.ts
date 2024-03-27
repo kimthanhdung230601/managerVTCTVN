@@ -1,3 +1,4 @@
+
 import { sendDelete, sendGet, sendPost, sendPut } from "./api";
 
 export const getListMember = () => sendGet(`/AdminGetMembers`);
@@ -13,3 +14,9 @@ export const updateMemberF3 = (payload: any) =>
 export const getListClub = () => sendGet(`/GetNameClub`);
 export const updateMultiAchie = (payload: any) =>
   sendPost(`/UpdateMultiData.php`, payload);
+
+const path = {
+    accountAdmin: '/AdminGetUserID?id=',
+}
+export const getInforAdmin= (param:any) => sendGet('/AdminGetUserID?id='+param)
+
