@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom'
 import styles from "./Style.module.scss"
 import 'animate.css';
 import {MenuOutlined, CloseOutlined, UserOutlined } from "@ant-design/icons";
+import Cookies from 'js-cookie';
+import { logout } from '../../api/api';
 export default function Header() {
     const [isOpen, setIsOpen] = useState(false)
     const handleOpenMenu = () => {
@@ -23,6 +25,10 @@ export default function Header() {
            setIsOpen(false) 
            menu.style.display = 'none'
         } 
+    }
+    const handleLogout = () => {
+        logout();
+        window.location.replace("/dang-nhap")
     }
   return (
     <>
@@ -72,16 +78,25 @@ export default function Header() {
                         </Link>
                     </li>
                     <li className={styles.menuItem}>
+                        <Link to={'/dang-ky'} className={styles.menuItemLink}>
+                            Đăng ký
+                        </Link>
+                    </li>
+                    {
+                        Cookies.get("token") ? 
+                        <li className={styles.menuItem}>
+                            <span className={styles.menuItemLink} onClick={handleLogout}>
+                                Đăng xuất
+                            </span>
+                        </li>
+                        :
+                        <li className={styles.menuItem}>
                         <Link to={'/dang-nhap'} className={styles.menuItemLink}>
                             Đăng nhập
                         </Link>
                     </li>
-                    <li className={styles.menuItem}>
-                        <Link to={'/dang-nhap'} className={styles.menuItemLink}>
-                            Đăng ký
-                        </Link>
-                    </li>
-                    
+                    }
+                                     
                 </div> 
             </div>
                 {/* <Link to={"/dang-nhap"} className={styles.itemLink}>

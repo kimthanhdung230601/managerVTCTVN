@@ -36,7 +36,7 @@ const Wrapper = () => {
           element={<JuryMember />}
         ></Route>
         <Route
-          path="/thong-tin-tai-khoan"
+          path="/thong-tin-tai-khoan/:id"
           element={<Account />}
         ></Route>
         <Route

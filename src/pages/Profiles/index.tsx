@@ -13,10 +13,10 @@ import {
   Col,
   Tooltip,
   Space,
+  message,
 } from "antd";
 import type { DatePickerProps } from "antd";
 import type { UploadFile, UploadProps } from "antd";
-import ImgCrop from "antd-img-crop";
 
 import useImageCompression from "../../hook/imageCompression";
 import Header from "../../components/Header";
@@ -26,6 +26,8 @@ import Cookies from "js-cookie";
 import CryptoJS from "crypto-js";
 import { level } from "../../until/until";
 import moment from "moment";
+import { useMutation } from "react-query";
+import { addMember } from "../../api/ApiUser";
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
 const { Option } = Select;
@@ -36,7 +38,26 @@ const Profiles = () => {
   const [form] = Form.useForm();
   const [fileList, setFileList] = useState<any>([]);
   const { compressImage } = useImageCompression();
-
+  const addMemberMutation = useMutation(
+    async (payload: any) => await addMember(payload),
+    {
+      onSuccess: (data) => {
+        if(data.status === "success") message.success("Thêm hội viên thành công!")
+        else{
+          message.error("Có lỗi xảy ra, vui lòng thử lại sau!")
+          setTimeout(()=> {
+            window.location.reload()
+          },2000)
+        } 
+      },
+      onError(error, variables, context) {
+        message.error("Có lỗi xảy ra, vui lòng thử lại sau!")
+        setTimeout(()=> {
+          window.location.reload()
+        },2000)
+      },
+    }
+  )
   //image avatar
   const normFile = (e: any) => {
     if (Array.isArray(e)) {
@@ -177,24 +198,16 @@ const Profiles = () => {
   }, [form]);
   const onFinish = (values: any) => {
     console.log("form", values);
-    const payload = {
-      // address: `${selectedProvinceFullName} - ${values.district}`,
-      // birthday: moment(values.birthday).format("YYYY-MM-DD")
-      // img1: values.image_certificate[0].originFileObj,
-      // img2: values.image_ref[0].originFileObj,
-    };
-    console.log("pl", payload);
-    // formData.append("image_certificate", values.image_certificate[0].originFileObj);
-    // formData.append("image_ref", values.image_ref[0].originFileObj);
-
+    const randomKey = CryptoJS.lib.WordArray.random(16).toString();
     const formdata = new FormData();
     formdata.append("name", values.name);
     formdata.append(
       "birthday",
-      values.moment(values.birthday).format("YYYY-MM-DD")
+      values.birthday
     );
     formdata.append("sex", values.sex);
     formdata.append("phone", values.phone);
+    formdata.append("email", values.email);
     formdata.append("idcard", values.idcard);
     formdata.append("level", values.level);
     formdata.append("note", values.note);
@@ -207,12 +220,17 @@ const Profiles = () => {
       `${selectedProvinceFullName} - ${values.district}`
     );
     formdata.append("nationality", values.nationality);
-    formdata.append(
-      "image_certificate",
-      values.image_certificate[0].originFileObj
+      formdata.append(
+        `image_certificate`,
+        values.image_certificate[0].originFileObj as File,
+        CryptoJS.AES.encrypt(values.image_certificate[0].name, randomKey).toString()
     );
-    formdata.append("image_ref", values.image_ref[0].originFileObj);
-    console.log("data", formdata.values);
+    formdata.append(
+        `avatar`,
+        values.image_ref[0].originFileObj as File,
+        CryptoJS.AES.encrypt(values.image_ref[0].name, randomKey).toString()
+    );
+    addMemberMutation.mutate(formdata)
   };
   return (
     <>
@@ -372,7 +390,8 @@ const Profiles = () => {
                             },
                           ]}
                         >
-                          <DatePicker onChange={onChange} />
+                          {/* <DatePicker onChange={onChange} /> */}
+                          <Input type="date" />
                         </Form.Item>
                       </Col>
                       <Col span={12}>

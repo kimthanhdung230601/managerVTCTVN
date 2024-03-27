@@ -1,10 +1,26 @@
-import { Col, Image, Row } from 'antd'
+import { Col, Image, message, Row } from 'antd'
 import React from 'react'
+import { useQuery } from 'react-query';
+import { useParams } from 'react-router-dom';
+import { getInforAdmin } from '../../api/f0';
 import Header from '../../components/Header'
 import styles from "../Detail/Style.module.scss"
 
 export default function Account() {
     document.title = "Thông tin tài khoản";
+    const params = useParams()
+    const {data: adminInfor} = useQuery(['adminInfor', params.id], () => getInforAdmin(params.id), {
+        enabled: params.id !== undefined,
+        onSettled: (data) => {
+            if(data.status === "failed"){
+                message.error("Có lỗi xảy ra, vui lòng thử lại sau")
+                setTimeout(()=> {
+                    window.history.back()
+                },2000)
+            } 
+        }
+    })
+    console.log(adminInfor)
   return (
     <div>
         <Header />
@@ -18,14 +34,12 @@ export default function Account() {
                     <Col className='gutter-row' xxl={5} lg={6} md={8} xs={24}>
                         <Row gutter={20}>
                             <Col className='gutter-row' xxl={24} md={24} xs={12} style={{textAlign: "center", marginBottom: "10px"}}>
-                               
-                                    <Image src={require("../../assets/image/degree.jpg")} preview={true} className={styles.detailImg}/>
+                                    <Image src={`https://vocotruyen.id.vn/PHP_IMG/${adminInfor?.data[0].image_certificate}`} preview={true} className={styles.detailImg}/>
                                     <div style={{fontWeight: "500"}}>Ảnh Bằng cấp hiện tại</div>
 
                             </Col>
                             <Col className='gutter-row' xxl={24} md={24} xs={12} style={{textAlign: "center", marginBottom: "10px"}}>
-                               
-                                    <Image src={require("../../assets/image/referral.jpg")} preview={true} className={styles.detailImg}/>
+                                    <Image src={`https://vocotruyen.id.vn/PHP_IMG/${adminInfor?.data[0].image_ref}`} preview={true} className={styles.detailImg}/>
                                     <div style={{fontWeight: "500"}}>Ảnh giấy giới thiệu</div>
                             </Col>
                         </Row>
@@ -37,7 +51,7 @@ export default function Account() {
                                 Họ tên
                             </Col>
                             <Col className='gutter-row' xxl={12} lg={12} md={12} xs={12}>
-                                Nguyễn Văn A
+                                {adminInfor?.data[0].name}
                             </Col>
                         </Row>
                         <Row gutter={40} className={styles.DetailItem}>
@@ -46,7 +60,7 @@ export default function Account() {
                                 Mã định danh
                             </Col>
                             <Col className='gutter-row' xxl={12} lg={12} md={12} xs={12}>
-                                VCT0120304958578
+                                {adminInfor?.data[0].idcard}
                             </Col>
                         </Row>
                         <Row gutter={40} className={styles.DetailItem}>
@@ -55,7 +69,7 @@ export default function Account() {
                                 SĐT
                             </Col>
                             <Col className='gutter-row' xxl={12} lg={12} md={12} xs={12}>
-                                09876452737
+                                {adminInfor?.data[0].phone}
                             </Col>
                         </Row>
                         <Row gutter={40} className={styles.DetailItem}>
@@ -64,7 +78,7 @@ export default function Account() {
                                 Email
                             </Col>
                             <Col className='gutter-row' xxl={12} lg={12} md={12} xs={12}>
-                                Nguyễn Văn A
+                                {adminInfor?.data[0].email}
                             </Col>
                         </Row>
                         <Row gutter={40} className={styles.DetailItem}>
@@ -73,7 +87,7 @@ export default function Account() {
                                 Tỉnh/ Thành Phố
                             </Col>
                             <Col className='gutter-row' xxl={12} lg={12} md={12} xs={12}>
-                                Hà Nội
+                                {adminInfor?.data[0].location}
                             </Col>
                         </Row>
                         <Row gutter={40} className={styles.DetailItem}>
@@ -82,7 +96,7 @@ export default function Account() {
                                 Đơn vị quản lý
                             </Col>
                             <Col className='gutter-row' xxl={12} lg={12} md={12} xs={12}>
-                                Liên đoàn
+                                {adminInfor?.data[0].manage}
                             </Col>
                         </Row>
                         <Row gutter={40} className={styles.DetailItem}>
@@ -91,30 +105,9 @@ export default function Account() {
                                 CLB(Môn phái/ Võ đường/ Võ phái)
                             </Col>
                             <Col className='gutter-row' xxl={12} lg={12} md={12} xs={12}>
-                                Tổ Thanh Hà
+                                {adminInfor?.data[0].club}
                             </Col>
-                        </Row>
-                        
-                        <Row gutter={40} className={styles.DetailItem}>
-                            <Col className='gutter-row' xxl={9} lg={12} md={12} xs={12} >
-                                <span className={styles.NumberOrders}>8.</span> 
-                                Tài khoản đăng nhập
-                            </Col>
-                            <Col className='gutter-row' xxl={12} lg={12} md={12} xs={12}>
-                                nguyenvanaa
-                            </Col>
-                        </Row>
-                        
-                        
-                        <Row gutter={40} className={styles.DetailItem}>
-                            <Col className='gutter-row' xxl={9} lg={12} md={12} xs={12} >
-                            <span className={styles.NumberOrders}>9.</span> 
-                                Mật khẩu
-                            </Col>
-                            <Col className='gutter-row' xxl={12} lg={12} md={12} xs={12}>
-                                0122334455
-                            </Col>
-                        </Row>    
+                        </Row>  
                     </Col>
                 </Row>
             </div>

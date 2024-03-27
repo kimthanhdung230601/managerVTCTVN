@@ -1,10 +1,10 @@
 import { sendGet, sendPost } from "./api"
 
 const path = {
-    member: '/Members',
-    club: '/Members?club='
+    member: '/ManageGetMembers',
+    club: '/ManageGetUsers'
 }
 
 export const getListMember = () => sendGet(path.member)
-export const getListClub = (param: any) => sendGet(path.member+param)
+export const getListClub = () => sendGet(path.club)
 
