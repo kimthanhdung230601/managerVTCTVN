@@ -27,6 +27,9 @@ import { useNavigate } from "react-router-dom";
 import { useQuery } from "react-query";
 import { deleteMemberF3, getListMemberF3 } from "../../api/f2";
 import moment from "moment";
+import CryptoJS from "crypto-js";
+import Cookies from "js-cookie";
+const secretKey = process.env.REACT_APP_SECRET_KEY as string;
 
 interface ManagerMemberProps {}
 interface DataType {
@@ -66,22 +69,24 @@ const customLocale = {
 };
 
 const ManagerMemberTwo = () => {
+  const club = CryptoJS.AES.decrypt(Cookies.get("club") as string, secretKey);
+  const decryptedClub = club.toString(CryptoJS.enc.Utf8);
+
   const {
     data: listF3,
     refetch: refetchListF3,
     isFetching,
-  } = useQuery("listF3", () => getListMemberF3());
-  const filtersListNote = listF3?.list_note.map((item:any, index:any) => ({
+  } = useQuery("listF3", () => getListMemberF3(decryptedClub));
+  const filtersListNote = listF3?.list_note.map((item: any, index: any) => ({
     text: item.note,
-    value: item.note
-}));
-const filtersDetail = listF3?.list_detail.map((item:any, index:any) => ({
-  text:  item.detail,
-  value: item.detail
-}));
+    value: item.note,
+  }));
+  const filtersDetail = listF3?.list_detail.map((item: any, index: any) => ({
+    text: item.detail,
+    value: item.detail,
+  }));
   const [id, setID] = useState();
   const [note, setNote] = useState("");
-  const [isAchie, setAchie] = useState("");
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
@@ -326,12 +331,12 @@ const filtersDetail = listF3?.list_detail.map((item:any, index:any) => ({
             pagination={false}
           />
           <Pagination
-                defaultCurrent={1}
-                onChange={onChangePage}
-                total={listF3?.total_products}
-                pageSize={10}
-                style={{ margin: "1vh 0", float: "right" }}
-              />
+            defaultCurrent={1}
+            onChange={onChangePage}
+            total={listF3?.total_products}
+            pageSize={10}
+            style={{ margin: "1vh 0", float: "right" }}
+          />
         </Spin>
       </div>
       <ModalUpdateNote
@@ -342,7 +347,6 @@ const filtersDetail = listF3?.list_detail.map((item:any, index:any) => ({
         note={note}
         refetch={refetchListF3}
       />
-
     </div>
   );
 };

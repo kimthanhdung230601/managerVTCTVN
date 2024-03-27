@@ -29,6 +29,7 @@ import {
 import { useMediaQuery } from "react-responsive";
 import type { ColumnsType } from "antd/es/table";
 import type { FilterValue } from "antd/es/table/interface";
+import * as XLSX from "xlsx";
 
 import Search from "antd/es/input/Search";
 // import ModalMember from "../../components/Modal/ModalAccount";
@@ -62,17 +63,6 @@ const customLocale = {
   selectAll: "Chọn tất cả", // Thay đổi văn bản "Select All Items" ở đây
   selectInvert: "Đảo ngược", // Thay đổi văn bản khi chọn ngược
 };
-const data: DataType[] = [];
-for (let i = 1; i < 46; i++) {
-  var manager = [
-    "Quân Đội",
-    "Liên Đoàn",
-    "Công An",
-    "Giáo Dục",
-    "Sở VHTT",
-    "Hội Võ Thuật",
-  ];
-}
 const ManagerMember = () => {
   const {
     data: allMember,
@@ -88,9 +78,11 @@ const ManagerMember = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const isMobile = useMediaQuery({ maxWidth: 768 });
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-    console.log("selectedRowKeys changed: ", newSelectedRowKeys);
+    // console.log('selectedRowKeys changed: ', newSelectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
   };
+  const hasSelected = selectedRowKeys.length > 0;
+
   const filterProivce = province.map((province) => ({
     text: province,
     value: province,
@@ -99,6 +91,7 @@ const ManagerMember = () => {
     selectedRowKeys,
     onChange: onSelectChange,
   };
+
   //page
 
   useEffect(() => {
@@ -131,7 +124,6 @@ const ManagerMember = () => {
     console.log(value);
     // message.error("");
   };
-  const hasSelected = selectedRowKeys.length > 0;
   const onSearch: SearchProps["onSearch"] = (value: any, _e: any, info: any) =>
     console.log(info?.source, value);
   //modal
@@ -253,6 +245,10 @@ const ManagerMember = () => {
           text: "Chờ duyệt HS",
           value: "Chờ duyệt",
         },
+        {
+          text: "Nghỉ",
+          value: "Nghỉ",
+        },
       ],
       filterMode: "tree",
       render: (value, record) => {
@@ -360,7 +356,7 @@ const ManagerMember = () => {
   const columnsMobile: ColumnsType<DataType> = [
     {
       title: "STT",
-      dataIndex: "STT",
+      dataIndex: "stt",
       render: (value, record, index) => {
         return index + 1 + (currentPage - 1) * 10;
       },
@@ -550,6 +546,35 @@ const ManagerMember = () => {
       ),
     },
   ];
+  const exportToExcel = () => {
+    // Dữ liệu cần xuất
+    const dataToExport = allMember?.data || [];
+
+    // Tạo một mảng dữ liệu chứa thông tin cần xuất
+    let exportData: any[] = [{ "": "DANH SÁCH HỘI VIÊN" }];
+    exportData = dataToExport.map((item: any, index: number) => ({
+      STT: index + 1 + (currentPage - 1) * 10,
+      "Họ tên": item.name,
+      "Ngày sinh": moment(item.birthday).format("DD/MM/YYYY"),
+      "Số điện thoại": item.phone,
+      CCCD: item.idcard,
+      "Đẳng cấp": item.level,
+      "Địa chỉ": item.address,
+      CLB: item.NameClb,
+      "Ghi chú": item.note,
+      "Tình trạng": item.status,
+      "Thành tích": item.achievements,
+    }));
+
+    // Tạo một workbook mới
+    const wb = XLSX.utils.book_new();
+    // Tạo một worksheet từ dữ liệu
+    const ws = XLSX.utils.json_to_sheet(exportData);
+    // Thêm worksheet vào workbook với tên "Danh sách hội viên"
+    XLSX.utils.book_append_sheet(wb, ws, "Danh sách hội viên");
+    // Tạo một file Excel từ workbook
+    XLSX.writeFile(wb, "Danh sách hội viên.xlsx");
+  };
   return (
     <div className={styles.wrap}>
       {" "}
@@ -621,7 +646,7 @@ const ManagerMember = () => {
                   <PlusOutlined className={styles.icon} />
                   Thêm hội viên
                 </Button>
-                <Button className={styles.btn}>
+                <Button className={styles.btn} onClick={exportToExcel}>
                   <DownloadOutlined className={styles.icon} />
                   Xuất excel
                 </Button>

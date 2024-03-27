@@ -125,12 +125,16 @@ const ManagerAccount = () => {
     setIsModalOpenMember(false);
   };
   const [currentPageAccount, setCurrentPageAccount] = useState(1);
-  useEffect(() => {
-    refetch();
-  }, [currentPageAccount, dataMemberF12?.total_products]);
+  const [currentPageAccept, setCurrentPageAccept] = useState(1);
+  // useEffect(() => {
+  //   refetch();
+  // }, [currentPageAccount,currentPageAccept, dataMemberF12?.total_products]);
   const onChangePageAccount = (value: any) => {
     setCurrentPageAccount(value);
-    refetch();
+    // refetch();
+  };
+  const onChangePageAccept = (value: any) => {
+    setCurrentPageAccept(value);
   };
   const columnsDesktopAccount: ColumnsType<DataType> = [
     {
@@ -774,7 +778,7 @@ const ManagerAccount = () => {
           <Pagination
             defaultCurrent={1}
             onChange={onChangePageAccount}
-            total={dataMemberF12?.total_products}
+            total={accept.length}
             pageSize={10}
             style={{ margin: "1vh 0", float: "right" }}
           />
@@ -817,12 +821,18 @@ const ManagerAccount = () => {
               locale={customLocale}
               columns={isMobile ? columnsMobileAccept : columnsDesktopAccept}
               dataSource={unAccept}
-              onChange={onChange}
-              pagination={{}}
+              pagination={false}
               scroll={{
                 x: "max-content",
               }}
               style={{ overflowX: "auto" }}
+            />
+            <Pagination
+              defaultCurrent={1}
+              onChange={onChangePageAccept}
+              total={unAccept.length}
+              pageSize={10}
+              style={{ margin: "1vh 0", float: "right" }}
             />
           </Spin>
         </div>

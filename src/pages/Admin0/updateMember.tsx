@@ -31,14 +31,14 @@ interface DataType {
 const columnsLevel: TableProps<DataType>["columns"] = [
   {
     title: "Mã định danh",
-    dataIndex: "member_id",
-    key: "member_id",
+    dataIndex: "id",
+    key: "id",
   },
-  {
-    title: "Họ tên",
-    dataIndex: "name",
-    key: "name",
-  },
+  // {
+  //   title: "Họ tên",
+  //   dataIndex: "name",
+  //   key: "name",
+  // },
   {
     title: "Đẳng cấp",
     dataIndex: "level",
@@ -46,8 +46,8 @@ const columnsLevel: TableProps<DataType>["columns"] = [
   },
   {
     title: "Ngày cấp",
-    dataIndex: "timeLevel",
-    key: "timeLevel",
+    dataIndex: "time",
+    key: "time",
   },
 ];
 const columnsAchie: TableProps<DataType>["columns"] = [
@@ -88,20 +88,34 @@ const UpdateMember = () => {
     setLoading(true);
     const inputData = values.dataLevel;
     const separatedData = inputData.split("\n").map((item: any) => {
-      const [member_id, level, timeLevel] = item
+      const [id, level, time] = item
         .split("|")
         .map((str: string) => str.trim());
       return {
         // key: member_id,
-        member_id,
+        id,
         level,
-        timeLevel: moment(timeLevel, "DD/MM/YYYY").format("YYYY/MM/DD"),
+        time: moment(time, "DD/MM/YYYY").format("YYYY/MM/DD"),
       };
     });
     setTimeout(() => {
       setDataLevel(separatedData);
       setLoading(false);
     }, 500);
+  };
+  const handleConfirmLevel = async () => {
+    const payload = {
+      type: "members",
+      data: dataLevel?.map((item: any) => ({
+        id: item.id,
+        level: item.level,
+        time: item.time,
+      })),
+    };
+    const res = await updateMultiAchie(payload);
+    res?.status === "success"
+      ? message.success("Cập nhật thành công")
+      : message.error(res?.status);
   };
   //achie
   const [dataAchie, setDataAchie] = useState<any[]>();
@@ -187,6 +201,7 @@ const UpdateMember = () => {
               <Button
                 disabled={dataLevel === undefined}
                 className={styles.btnUpdate}
+                onClick={() => handleConfirmLevel()}
               >
                 Xác nhận cập nhật
               </Button>
