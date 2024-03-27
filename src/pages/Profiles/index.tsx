@@ -27,6 +27,7 @@ import { level, province } from "../../until/until";
 import moment from "moment";
 import { useMutation } from "react-query";
 import { addMember } from "../../api/ApiUser";
+import { addNewF3 } from "../../api/f2";
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
 const { Option } = Select;
@@ -41,22 +42,23 @@ const Profiles = () => {
     async (payload: any) => await addMember(payload),
     {
       onSuccess: (data) => {
-        if(data.status === "success") message.success("Thêm hội viên thành công!")
-        else{
-          message.error("Có lỗi xảy ra, vui lòng thử lại sau!")
-          setTimeout(()=> {
-            window.location.reload()
-          },2000)
-        } 
+        if (data.status === "success")
+          message.success("Thêm hội viên thành công!");
+        else {
+          message.error("Có lỗi xảy ra, vui lòng thử lại sau!");
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
+        }
       },
       onError(error, variables, context) {
-        message.error("Có lỗi xảy ra, vui lòng thử lại sau!")
-        setTimeout(()=> {
-          window.location.reload()
-        },2000)
+        message.error("Có lỗi xảy ra, vui lòng thử lại sau!");
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
       },
     }
-  )
+  );
   //image avatar
   const normFile = (e: any) => {
     if (Array.isArray(e)) {
@@ -167,10 +169,7 @@ const Profiles = () => {
     const randomKey = CryptoJS.lib.WordArray.random(16).toString();
     const formdata = new FormData();
     formdata.append("name", values.name);
-    formdata.append(
-      "birthday",
-      formattedBirthday
-    );
+    formdata.append("birthday", formattedBirthday);
     formdata.append("sex", values.sex);
     formdata.append("phone", values.phone);
     formdata.append("email", values.email);
@@ -184,18 +183,26 @@ const Profiles = () => {
     formdata.append("address", values.address);
     formdata.append("nationality", values.nationality);
     formdata.append("email", values.email);
-      formdata.append(
-        `image_certificate`,
-        values.image_certificate[0].originFileObj as File,
-        CryptoJS.AES.encrypt(values.image_certificate[0].name, randomKey).toString()
+    formdata.append(
+      `image_certificate`,
+      values.image_certificate[0].originFileObj as File,
+      CryptoJS.AES.encrypt(
+        values.image_certificate[0].name,
+        randomKey
+      ).toString()
     );
     formdata.append(
-        `avatar`,
-        values.image_ref[0].originFileObj as File,
-        CryptoJS.AES.encrypt(values.avatar[0].name, randomKey).toString()
+      `avatar`,
+      values.avatar[0].originFileObj as File,
+      CryptoJS.AES.encrypt(values.avatar[0].name, randomKey).toString()
     );
+    // formdata.append(
+    //   "image_certificate",
+    //   values.image_certificate[0].originFileObj
+    // );
+    // formdata.append("avatar", values.avatar[0].originFileObj);
 
-    addMemberMutation.mutate(formdata)
+    mutation.mutate(formdata);
   };
   return (
     <>
@@ -351,12 +358,12 @@ const Profiles = () => {
                           rules={[
                             {
                               required: true,
-                              message: "Vui lòng điền năm sinh",
+                              message: "Vui lòng điền ngày sinh",
                             },
                           ]}
                         >
-                          {/* <DatePicker onChange={onChange} /> */}
-                          <Input type="date" />
+                          <DatePicker />
+                          {/* <Input type="date" /> */}
                         </Form.Item>
                       </Col>
                       <Col span={12}>
