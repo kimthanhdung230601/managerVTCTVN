@@ -15,8 +15,9 @@ interface DataType_CLB {
     idcard: string;
     level: string;
     member_count: string;
-    status: string;
+    pending: string;
     NameClb: string;
+    club: string;
 }
 
 const customLocale = {
@@ -120,35 +121,32 @@ export default function ManageClub() {
         },
         {
           title: "Tình trạng",
-          dataIndex: "status",
+          dataIndex: "pending",
           filters: [
             {
               text: "Hoạt động",
-              value: "Đã duyệt",
+              value: "1",
             },
-            {
-              text: "Nghỉ",
-              value: "Nghỉ",
-            },
+            
             {
               text: "Chờ duyệt HS",
-              value: "Chờ duyệt",
+              value: "0",
             },
           ],
-          onFilter: (value: any, record) => record.status.indexOf(value) === 0,
+          onFilter: (value: any, record) => record.pending.indexOf(value) === 0,
           render: (value, record) => {
-            if (value === "Hoạt động")
-              return <span style={{ color: "#046C39" }}>{value}</span>;
-            if (value === "Nghỉ")
-              return <span style={{ color: "#8D8D8D" }}>{value}</span>;
-            if (value === "Chờ duyệt HS")
-              return <span style={{ color: "#F6C404" }}>{value}</span>;
+            if (value === "1")
+              return <span style={{ color: "#046C39" }}>Hoạt động</span>;
+            // if (value === "Nghỉ")
+            //   return <span style={{ color: "#8D8D8D" }}>{value}</span>;
+            if (value === "0")
+              return <span style={{ color: "#F6C404" }}>Chờ duyệt HS</span>;
           },
         },
         {
           title: "Chi tiết",
           render: (value, record) => {
-            return <button className={styles.btn} onClick={()=>navigate("/Admin2")}>Xem</button>;
+            return <button className={styles.btn} onClick={()=>navigate(`/Admin2?club=${record.club}`)}>Xem</button>;
           },
         },
       ];

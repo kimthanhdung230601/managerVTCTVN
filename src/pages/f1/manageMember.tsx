@@ -168,7 +168,7 @@ export default function ManageMember() {
           },
         },
       ];
- 
+ console.log(memberList)
   return (
     <>
         <div className={styles.tableTop}>

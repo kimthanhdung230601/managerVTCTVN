@@ -160,22 +160,6 @@ const Profiles = () => {
     form.setFieldValue("club", "CLB Hà Nội");
   }, [form]);
   const [loading, setLoading] = useState(false);
-  const mutation = useMutation(addNewF3, {
-    onSuccess: (data: any) => {
-      console.log("data: ", data);
-      data.status === "success"
-        ? message.success(
-            "Thêm thành công, yêu cầu đã được gửi đến Liên đoàn VTCT Việt Nam"
-          )
-        : message.error(`${data.data}`);
-
-      setLoading(false);
-    },
-    onError: () => {
-      setLoading(false);
-      message.error("Thêm thất bại");
-    },
-  });
   const onFinish = (values: any) => {
     const formattedBirthday = moment(values.birthday).format("YYYY-MM-DD");
     setLoading(true);
@@ -185,7 +169,7 @@ const Profiles = () => {
     formdata.append("name", values.name);
     formdata.append(
       "birthday",
-      values.birthday
+      formattedBirthday
     );
     formdata.append("sex", values.sex);
     formdata.append("phone", values.phone);
@@ -208,7 +192,7 @@ const Profiles = () => {
     formdata.append(
         `avatar`,
         values.image_ref[0].originFileObj as File,
-        CryptoJS.AES.encrypt(values.image_ref[0].name, randomKey).toString()
+        CryptoJS.AES.encrypt(values.avatar[0].name, randomKey).toString()
     );
 
     addMemberMutation.mutate(formdata)
