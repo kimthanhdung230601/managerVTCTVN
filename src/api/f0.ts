@@ -11,3 +11,5 @@ export const updateAccount = (payload: any) =>
 export const updateMemberF3 = (payload: any) =>
   sendPost(`/AdminAcceptMember`, payload);
 export const getListClub = () => sendGet(`/GetNameClub`);
+export const updateMultiAchie = (payload: any) =>
+  sendPost(`/UpdateMultiData.php`, payload);
