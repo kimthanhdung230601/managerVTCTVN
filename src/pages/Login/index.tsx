@@ -39,27 +39,6 @@ export default function Login() {
   const onFinish = async (value: any) => {
     // console.log(value);
     const res = await signin(value);
-    // console.log("res", res?.info_user[0].permission);
-    // switch (true) {
-    //   case accountF0[0].password === value.password && accountF0[0].username === value.username:
-    //     console.log("Mật khẩu đúng cho accountF0");
-    //     navigate("/Admin0/quan-ly-hoi-vien");
-    //     break;
-
-    //   case accountF1[0].password === value.password && accountF1[0].username === value.username:
-    //     console.log("Mật khẩu đúng cho accountF1");
-    //     navigate("/Admin1");
-    //     break;
-
-    //   case accountF2[0].password === value.password && accountF2[0].username === value.username:
-    //     console.log("Mật khẩu đúng cho accountF2");
-    //     navigate("/Admin2");
-    //     break;
-
-    //   default:
-    //     alert("Nhập sai tài khoản hoặc mật khẩu");
-    //     break;
-    // }
 
     if (res.status === "success") {
       switch (true) {

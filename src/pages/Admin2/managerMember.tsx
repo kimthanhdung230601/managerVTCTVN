@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   AudioOutlined,
   PlusOutlined,
@@ -13,6 +13,7 @@ import {
   Spin,
   Popconfirm,
   message,
+  Pagination,
 } from "antd";
 import { admin, level, levelFilters, randomState } from "../../until/until";
 import styles from "./styles.module.scss";
@@ -26,6 +27,9 @@ import { useNavigate } from "react-router-dom";
 import { useQuery } from "react-query";
 import { deleteMemberF3, getListMemberF3 } from "../../api/f2";
 import moment from "moment";
+import CryptoJS from "crypto-js";
+import Cookies from "js-cookie";
+const secretKey = process.env.REACT_APP_SECRET_KEY as string;
 
 interface ManagerMemberProps {}
 interface DataType {
@@ -65,14 +69,24 @@ const customLocale = {
 };
 
 const ManagerMemberTwo = () => {
+  const club = CryptoJS.AES.decrypt(Cookies.get("club") as string, secretKey);
+  const decryptedClub = club.toString(CryptoJS.enc.Utf8);
+
   const {
     data: listF3,
     refetch: refetchListF3,
     isFetching,
-  } = useQuery("listF3", () => getListMemberF3());
+  } = useQuery("listF3", () => getListMemberF3(decryptedClub));
+  const filtersListNote = listF3?.list_note.map((item: any, index: any) => ({
+    text: item.note,
+    value: item.note,
+  }));
+  const filtersDetail = listF3?.list_detail.map((item: any, index: any) => ({
+    text: item.detail,
+    value: item.detail,
+  }));
   const [id, setID] = useState();
   const [note, setNote] = useState("");
-  const [isAchie, setAchie] = useState("");
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
@@ -81,7 +95,7 @@ const ManagerMemberTwo = () => {
   };
   const rowSelection = {
     selectedRowKeys,
-    onChange: onSelectChange,
+    onChangePage: onSelectChange,
   };
   const hasSelected = selectedRowKeys.length > 0;
   const onSearch: SearchProps["onSearch"] = (value, _e, info) =>
@@ -158,20 +172,7 @@ const ManagerMemberTwo = () => {
       title: "Ghi chú",
       dataIndex: "note",
       width: 130,
-      filters: [
-        {
-          text: "note content 1",
-          value: "note content 1",
-        },
-        {
-          text: "note content 2",
-          value: "note content 2",
-        },
-        {
-          text: "note content 3",
-          value: "note content 3",
-        },
-      ],
+      filters: filtersListNote,
       filterMode: "tree",
       onFilter: (value: any, rec) => rec.note.indexOf(value) === 0,
     },
@@ -179,20 +180,7 @@ const ManagerMemberTwo = () => {
       title: "Chi tiết",
       dataIndex: "detail",
       width: 130,
-      filters: [
-        {
-          text: "detail 1",
-          value: "detail 1",
-        },
-        {
-          text: "detail 2",
-          value: "detail 2",
-        },
-        {
-          text: "detail 3",
-          value: "detail 3",
-        },
-      ],
+      filters: filtersDetail,
       filterMode: "tree",
       onFilter: (value: any, rec) => rec.detail.indexOf(value) === 0,
     },
@@ -248,13 +236,13 @@ const ManagerMemberTwo = () => {
         }
         return false; // Trả về false nếu không khớp với bất kỳ điều kiện nào
       },
-      render: (value, record) => {
-        if (record.achievements.length > 0) {
-          return <>Có</>;
-        } else {
-          return <>Không</>;
-        }
-      },
+      // render: (value, record) => {
+      //   if (record?.achievements.length > 0) {
+      //     return <>Có</>;
+      //   } else {
+      //     return <>Không</>;
+      //   }
+      // },
     },
     {
       key: "action",
@@ -292,6 +280,13 @@ const ManagerMemberTwo = () => {
       width: 230,
     },
   ];
+  useEffect(() => {
+    refetchListF3();
+  }, [currentPage, listF3?.total_products]);
+  const onChangePage = (value: any) => {
+    setCurrentPage(value);
+    // refetch();
+  };
   return (
     <div className={styles.wrap}>
       {" "}
@@ -333,11 +328,14 @@ const ManagerMemberTwo = () => {
             locale={customLocale}
             scroll={{ x: 1300 }}
             style={{ overflowX: "auto" }}
-            pagination={{
-              total: listF3?.total_products,
-              defaultPageSize: 10,
-              defaultCurrent: 1,
-            }}
+            pagination={false}
+          />
+          <Pagination
+            defaultCurrent={1}
+            onChange={onChangePage}
+            total={listF3?.total_products}
+            pageSize={10}
+            style={{ margin: "1vh 0", float: "right" }}
           />
         </Spin>
       </div>
@@ -349,7 +347,6 @@ const ManagerMemberTwo = () => {
         note={note}
         refetch={refetchListF3}
       />
-
     </div>
   );
 };

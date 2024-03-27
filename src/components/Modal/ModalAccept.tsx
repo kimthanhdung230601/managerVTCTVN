@@ -6,12 +6,14 @@ interface ModalAcceptProp {
   isModalOpen: any;
   handleOk: () => void;
   handleCancel: () => void;
+  id:string;
 }
 const ModalAccept = ({
   selectedRowKeys,
   isModalOpen,
   handleCancel,
   handleOk,
+  id
 }: ModalAcceptProp) => {
   const [open, setOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);

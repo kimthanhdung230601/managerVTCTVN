@@ -18,6 +18,7 @@ import type { DatePickerProps } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { Option } from "antd/es/mentions";
 import { useState } from "react";
+import { province } from "../../until/until";
 
 interface ModalAccountProps {
   isModalOpen: any;
@@ -31,7 +32,7 @@ const getBase64 = (file: any): Promise<string> =>
     reader.readAsDataURL(file);
     reader.onload = () => resolve(reader.result as string);
     reader.onerror = (error) => reject(error);
-});
+  });
 const ModalAccount = ({
   isModalOpen,
   handleCancel,
@@ -39,62 +40,68 @@ const ModalAccount = ({
 }: ModalAccountProps) => {
   const [form] = useForm();
   const [previewOpen1, setPreviewOpen1] = useState(false);
-    const [previewImage1, setPreviewImage1] = useState('');
-    const [previewTitle1, setPreviewTitle1] = useState('');
-    const [fileList1, setFileList1] = useState<UploadFile[]>([]);
-    const [previewOpen2, setPreviewOpen2] = useState(false);
-    const [previewImage2, setPreviewImage2] = useState('');
-    const [previewTitle2, setPreviewTitle2] = useState('');
-    const [fileList2, setFileList2] = useState<UploadFile[]>([]);
-    const handleCancel1 = () => setPreviewOpen1(false);
-    const handleCancel2 = () => setPreviewOpen2(false);
-    const handlePreview1 = async (file: UploadFile) => {
-        if (!file.url && !file.preview) {
-        file.preview = await getBase64(file.originFileObj );
-        }
-        setPreviewImage1(file.url || (file.preview as string));
-        setPreviewOpen1(true);
-        setPreviewTitle1(file.name || file.url!.substring(file.url!.lastIndexOf('/') + 1));
-    };
-    const handleChange1: UploadProps['onChange'] = ({ fileList: newFileList }) => setFileList1(newFileList);
-    const handlePreview2 = async (file: UploadFile) => {
-        if (!file.url && !file.preview) {
-        file.preview = await getBase64(file.originFileObj );
-        }
-        setPreviewImage2(file.url || (file.preview as string));
-        setPreviewOpen2(true);
-        setPreviewTitle2(file.name || file.url!.substring(file.url!.lastIndexOf('/') + 1));
-    };
-    const handleChange2: UploadProps['onChange'] = ({ fileList: newFileList }) => setFileList2(newFileList);
-    const uploadButton = (
-        <button style={{ border: 0, background: 'none' }} type="button">
-        <PlusOutlined />
-        <div style={{ marginTop: 8 }}>Tải ảnh lên</div>
-        </button>
+  const [previewImage1, setPreviewImage1] = useState("");
+  const [previewTitle1, setPreviewTitle1] = useState("");
+  const [fileList1, setFileList1] = useState<UploadFile[]>([]);
+  const [previewOpen2, setPreviewOpen2] = useState(false);
+  const [previewImage2, setPreviewImage2] = useState("");
+  const [previewTitle2, setPreviewTitle2] = useState("");
+  const [fileList2, setFileList2] = useState<UploadFile[]>([]);
+  const handleCancel1 = () => setPreviewOpen1(false);
+  const handleCancel2 = () => setPreviewOpen2(false);
+  const handlePreview1 = async (file: UploadFile) => {
+    if (!file.url && !file.preview) {
+      file.preview = await getBase64(file.originFileObj);
+    }
+    setPreviewImage1(file.url || (file.preview as string));
+    setPreviewOpen1(true);
+    setPreviewTitle1(
+      file.name || file.url!.substring(file.url!.lastIndexOf("/") + 1)
     );
-    const isImage = (file:any) => {
-      const acceptedImageTypes = ['image/jpeg', 'image/png'];
-      return acceptedImageTypes.includes(file.type);
   };
-    const props = {
-      action: "https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188",
-      beforeUpload: (file:any) => {
-          if (!isImage(file)) {
-          message.error('Chỉ cho phép tải lên các file ảnh (JPEG, PNG).');
-          return false; 
-          }
-          return true; // Cho phép tải lên nếu là file ảnh
-      },
-      onChange(info:any) {
-          if (info.file.status !== 'uploading') {
-          console.log(info.file, info.fileList);
-          }
-          if (info.file.status === 'done') {
-          message.success(`${info.file.name} tải ảnh thành công`);
-          } else if (info.file.status === 'error') {
-          message.error(`${info.file.name} tải ảnh thất bại.`);
-          }
-      },
+  const handleChange1: UploadProps["onChange"] = ({ fileList: newFileList }) =>
+    setFileList1(newFileList);
+  const handlePreview2 = async (file: UploadFile) => {
+    if (!file.url && !file.preview) {
+      file.preview = await getBase64(file.originFileObj);
+    }
+    setPreviewImage2(file.url || (file.preview as string));
+    setPreviewOpen2(true);
+    setPreviewTitle2(
+      file.name || file.url!.substring(file.url!.lastIndexOf("/") + 1)
+    );
+  };
+  const handleChange2: UploadProps["onChange"] = ({ fileList: newFileList }) =>
+    setFileList2(newFileList);
+  const uploadButton = (
+    <button style={{ border: 0, background: "none" }} type="button">
+      <PlusOutlined />
+      <div style={{ marginTop: 8 }}>Tải ảnh lên</div>
+    </button>
+  );
+  const isImage = (file: any) => {
+    const acceptedImageTypes = ["image/jpeg", "image/png"];
+    return acceptedImageTypes.includes(file.type);
+  };
+  const props = {
+    action: "https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188",
+    beforeUpload: (file: any) => {
+      if (!isImage(file)) {
+        message.error("Chỉ cho phép tải lên các file ảnh (JPEG, PNG).");
+        return false;
+      }
+      return true; // Cho phép tải lên nếu là file ảnh
+    },
+    onChange(info: any) {
+      if (info.file.status !== "uploading") {
+        console.log(info.file, info.fileList);
+      }
+      if (info.file.status === "done") {
+        message.success(`${info.file.name} tải ảnh thành công`);
+      } else if (info.file.status === "error") {
+        message.error(`${info.file.name} tải ảnh thất bại.`);
+      }
+    },
   };
   const onFinish = (value: any) => {
     console.log("value:", value);
@@ -108,6 +115,14 @@ const ModalAccount = ({
   const onChange: DatePickerProps["onChange"] = (date, dateString) => {
     console.log(date, dateString);
   };
+
+  //select
+  const onChangeSelect = (value: string) => {
+    // console.log(`selected ${value}`);
+};
+const onSearchSelect= (value: string) => {
+    // console.log('search:', value);
+};
   return (
     <>
       <Modal
@@ -122,9 +137,11 @@ const ModalAccount = ({
           <Row gutter={16}>
             <Col span={12}>
               <Form.Item
-                label="Account"
-                name="name"
-                rules={[{ required: true, message: "Vui lòng điền account" }]}
+                label="Người quản lý"
+                name="Manager"
+                rules={[
+                  { required: true, message: "Vui lòng điền tên quản lý" },
+                ]}
               >
                 <Input />
               </Form.Item>
@@ -133,14 +150,27 @@ const ModalAccount = ({
                 name="city"
                 rules={[{ required: true, message: "Vui lòng chọn tỉnh" }]}
               >
-                <Input />
+                <Select
+                      //  menuItemSelectedIcon={<CheckOutlined />}
+                       showSearch
+                       placeholder={"Tỉnh/Thành/Ngành"}
+                       optionFilterProp="children"
+                       onChange={onChangeSelect}
+                       onSearch={onSearchSelect}
+                      //  filterOption={filterOption}
+                       className={styles.select}
+                    >
+                        {province.map((option) => (
+                            <Select.Option key={option} value={option}>
+                            {option}
+                            </Select.Option>))
+                        }
+                    </Select>
               </Form.Item>
               <Form.Item
-                label="Người quản lý"
-                name="Manager"
-                rules={[
-                  { required: true, message: "Vui lòng điền tên quản lý" },
-                ]}
+                label="Căn cước công dân"
+                name="name"
+                rules={[{ required: true, message: "Vui lòng điền account" }]}
               >
                 <Input />
               </Form.Item>
@@ -180,6 +210,10 @@ const ModalAccount = ({
                     required: true,
                     message: "Vui lòng điền số điện thoại",
                   },
+                  {
+                    pattern: /^(\+\d{1,3}[- ]?)?\d{10}$/,
+                    message: "Vui lòng điền đúng định dạng số điện thoại",
+                  },
                 ]}
               >
                 <Input />
@@ -192,13 +226,10 @@ const ModalAccount = ({
                 label="Email"
                 name="email"
                 rules={[
-                  {
-                    required: true,
-                    message: "Vui lòng điền email",
-                  },
+                  { required: true, message: "Vui lòng điền email" },
                   {
                     type: "email",
-                    message: "Vui lòng điền đúng định dạng email",
+                    message: "Định dạng email không đúng",
                   },
                 ]}
               >
@@ -221,58 +252,76 @@ const ModalAccount = ({
             </Col>
           </Row>
           <div className={styles.formImage}>
-                    <div style={{height: "100%"}}>
-                    <div style={{textAlign: "center", marginBottom: "10px"}}>Ảnh Bằng cấp hiện tại</div>
-                       <Form.Item
-                        name="image1"
-                        rules={[{ required: true, message: 'Vui lòng tải ảnh lên' }]}
-                        wrapperCol={{ span: 24 }}
-                        className={`${styles.uploadForm} ${styles.formItem}`}
-                        >
-                            
-                            <Upload
-                                {...props}
-                                listType="picture-card"
-                                fileList={fileList1}
-                                onPreview={handlePreview1}
-                                onChange={handleChange1}
-                                className={styles.uploadImg}
-                            >
-                                {fileList1.length >= 1 ? null : uploadButton}
-                            </Upload>
-                        </Form.Item>
-                        <Modal open={previewOpen1} title={previewTitle1} footer={null} onCancel={handleCancel1}>
-                            <img alt="degree" style={{ width: '100%' }} src={previewImage1} />
-                        </Modal> 
-                    </div>
-                    
-                    <div style={{height: "100%"}}>
-                        <div style={{textAlign: "center", marginBottom: "10px"}}>Ảnh giấy giới thiệu</div>
-                        <Form.Item
-                            name="image2"
-                            rules={[{ required: true, message: 'Vui lòng tải ảnh lên' }]}
-                            wrapperCol={{ span: 24 }}
-                            className={`${styles.uploadForm} ${styles.formItem}`}
-                        >
-                            
-                            <Upload
-                                {...props}
-                                listType="picture-card"
-                                // fileList={fileList2}
-                                onPreview={handlePreview2}
-                                onChange={handleChange2}
-                                className={styles.uploadImg}
-                            >
-                                {fileList2.length >= 1 ? null : uploadButton}
-                            </Upload>
-                        </Form.Item>
-                        <Modal open={previewOpen2} title={previewTitle2} footer={null} onCancel={handleCancel2}>
-                            <img alt="referral" style={{ width: '100%' }} src={previewImage2} />
-                        </Modal>
-                    </div>
-                    
-                    
-                </div>
+            <div style={{ height: "100%" }}>
+              <div style={{ textAlign: "center", marginBottom: "10px" }}>
+                Ảnh Bằng cấp hiện tại
+              </div>
+              <Form.Item
+                name="image1"
+                rules={[{ required: true, message: "Vui lòng tải ảnh lên" }]}
+                wrapperCol={{ span: 24 }}
+                className={`${styles.uploadForm} ${styles.formItem}`}
+              >
+                <Upload
+                  {...props}
+                  listType="picture-card"
+                  fileList={fileList1}
+                  onPreview={handlePreview1}
+                  onChange={handleChange1}
+                  className={styles.uploadImg}
+                >
+                  {fileList1.length >= 1 ? null : uploadButton}
+                </Upload>
+              </Form.Item>
+              <Modal
+                open={previewOpen1}
+                title={previewTitle1}
+                footer={null}
+                onCancel={handleCancel1}
+              >
+                <img
+                  alt="degree"
+                  style={{ width: "100%" }}
+                  src={previewImage1}
+                />
+              </Modal>
+            </div>
+
+            <div style={{ height: "100%" }}>
+              <div style={{ textAlign: "center", marginBottom: "10px" }}>
+                Ảnh giấy giới thiệu
+              </div>
+              <Form.Item
+                name="image2"
+                rules={[{ required: true, message: "Vui lòng tải ảnh lên" }]}
+                wrapperCol={{ span: 24 }}
+                className={`${styles.uploadForm} ${styles.formItem}`}
+              >
+                <Upload
+                  {...props}
+                  listType="picture-card"
+                  // fileList={fileList2}
+                  onPreview={handlePreview2}
+                  onChange={handleChange2}
+                  className={styles.uploadImg}
+                >
+                  {fileList2.length >= 1 ? null : uploadButton}
+                </Upload>
+              </Form.Item>
+              <Modal
+                open={previewOpen2}
+                title={previewTitle2}
+                footer={null}
+                onCancel={handleCancel2}
+              >
+                <img
+                  alt="referral"
+                  style={{ width: "100%" }}
+                  src={previewImage2}
+                />
+              </Modal>
+            </div>
+          </div>
           <Form.Item className={styles.btn}>
             <div className={styles.btnContainer}>
               <Button className="btn" htmlType="submit">

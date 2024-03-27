@@ -1,14 +1,26 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { Button, Col, Form, Input, Popconfirm, Row, Spin, Table } from "antd";
+import {
+  Button,
+  Col,
+  Form,
+  Input,
+  Popconfirm,
+  Row,
+  Spin,
+  Table,
+  message,
+} from "antd";
 import styles from "./styles.module.scss";
 //  Adjust the path accordingly
 import type { TableProps } from "antd";
 import { FileTextOutlined } from "@ant-design/icons";
 import TextArea from "antd/es/input/TextArea";
+import { updateMultiAchie } from "../../api/f0";
+import moment from "moment";
 
 interface DataType {
   key: any;
-  id?: string;
+  member_id: number;
   level?: string;
   name?: string;
   achie?: string;
@@ -22,11 +34,11 @@ const columnsLevel: TableProps<DataType>["columns"] = [
     dataIndex: "id",
     key: "id",
   },
-  {
-    title: "Họ tên",
-    dataIndex: "name",
-    key: "name",
-  },
+  // {
+  //   title: "Họ tên",
+  //   dataIndex: "name",
+  //   key: "name",
+  // },
   {
     title: "Đẳng cấp",
     dataIndex: "level",
@@ -34,26 +46,26 @@ const columnsLevel: TableProps<DataType>["columns"] = [
   },
   {
     title: "Ngày cấp",
-    dataIndex: "timeLevel",
-    key: "timeLevel",
+    dataIndex: "time",
+    key: "time",
   },
 ];
 const columnsAchie: TableProps<DataType>["columns"] = [
   {
     title: "Mã định danh",
-    dataIndex: "id",
-    key: "id",
+    dataIndex: "member_id",
+    key: "member_id",
   },
-  {
-    title: "Họ tên",
-    dataIndex: "name",
-    key: "name",
-    render: (text) => <a>{text}</a>,
-  },
+  // {
+  //   title: "Họ tên",
+  //   dataIndex: "name",
+  //   key: "name",
+  //   render: (text) => <a>{text}</a>,
+  // },
   {
     title: "Thành tích",
-    dataIndex: "achie",
-    key: "achie",
+    dataIndex: "name_achievements",
+    key: "name_achievements",
   },
   {
     title: "Giải thưởng",
@@ -62,8 +74,8 @@ const columnsAchie: TableProps<DataType>["columns"] = [
   },
   {
     title: "Thời gian",
-    dataIndex: "timeAchie",
-    key: "timeAchie",
+    dataIndex: "time",
+    key: "time",
   },
 ];
 const UpdateMember = () => {
@@ -75,34 +87,72 @@ const UpdateMember = () => {
   const onFinish = (values: any) => {
     setLoading(true);
     const inputData = values.dataLevel;
-    const separatedData = inputData.split(",").map((item: any) => {
-      const [id, level, timeLevel] = item
+    const separatedData = inputData.split("\n").map((item: any) => {
+      const [id, level, time] = item
         .split("|")
         .map((str: string) => str.trim());
-      return { key: id, id, level, timeLevel };
+      return {
+        // key: member_id,
+        id,
+        level,
+        time: moment(time, "DD/MM/YYYY").format("YYYY/MM/DD"),
+      };
     });
     setTimeout(() => {
       setDataLevel(separatedData);
       setLoading(false);
     }, 500);
   };
+  const handleConfirmLevel = async () => {
+    const payload = {
+      type: "members",
+      data: dataLevel?.map((item: any) => ({
+        id: item.id,
+        level: item.level,
+        time: item.time,
+      })),
+    };
+    const res = await updateMultiAchie(payload);
+    res?.status === "success"
+      ? message.success("Cập nhật thành công")
+      : message.error(res?.status);
+  };
   //achie
   const [dataAchie, setDataAchie] = useState<any[]>();
   const [loadingAchie, setLoadingAchie] = useState(false);
-  const onFinishAchie = (values: any) => {
+  const onFinishAchie = async (values: any) => {
     setLoadingAchie(true);
-
     const inputData = values.dataAchie;
-    const separatedData = inputData.split(",").map((item: any) => {
-      const [id, achie, prize, timeAchie] = item
+    const separatedData = inputData?.split("\n").map((item: any) => {
+      const [member_id, name_achievements, prize, time] = item
         .split("|")
         .map((str: string) => str.trim());
-      return { key: id, id, achie, prize, timeAchie };
+      return {
+        member_id,
+        name_achievements,
+        prize,
+        time: moment(time, "DD/MM/YYYY").format("YYYY/MM/DD"),
+      };
     });
     setTimeout(() => {
       setDataAchie(separatedData);
       setLoadingAchie(false);
     }, 500);
+  };
+  const handleConfirm = async () => {
+    const payload = {
+      type: "achievements",
+      data: dataAchie?.map((item: any) => ({
+        name_achievements: item.name_achievements,
+        prize: item.prize,
+        time: item.time,
+        member_id: item.member_id,
+      })),
+    };
+    const res = await updateMultiAchie(payload);
+    res?.status === "success"
+      ? message.success("Cập nhật thành công")
+      : message.error(res?.status);
   };
   return (
     <>
@@ -118,8 +168,9 @@ const UpdateMember = () => {
               </div>
             </div>
             <p className={styles.note}>
-              Lưu ý: Nhập đúng định dạng. Các thành viên viết cách nhau bởi dấu
-              "," <br></br> Ví dụ: H123|HLV 1 đẳng|2023, H46|Võ sinh cấp 1|2024
+              Lưu ý: Nhập đúng định dạng. Các thành viên viết xuống dòng.{" "}
+              <br></br> Ví dụ:<br></br> 1|HLV 1 đẳng|24/12/2024 <br></br> 5|Võ
+              sinh cấp 1|03/07/2024
             </p>
             <Form
               form={form}
@@ -137,7 +188,7 @@ const UpdateMember = () => {
                   htmlType="submit"
                   className={styles.btnUpdate}
                 >
-                  Cập nhật cấp đai
+                  Cập nhật đẳng cấp
                 </Button>
               </Form.Item>
             </Form>
@@ -150,6 +201,7 @@ const UpdateMember = () => {
               <Button
                 disabled={dataLevel === undefined}
                 className={styles.btnUpdate}
+                onClick={() => handleConfirmLevel()}
               >
                 Xác nhận cập nhật
               </Button>
@@ -157,16 +209,16 @@ const UpdateMember = () => {
           </Col>
           <Col span={12} xs={24} sm={12} lg={12} xl={12}>
             {" "}
-            <div style={{ display:"inline-block" ,margin: "2vh 0" }}>
+            <div style={{ display: "inline-block", margin: "2vh 0" }}>
               <div className={styles.postLabel}>
                 <FileTextOutlined style={{ marginRight: "10px" }} />
                 Cập nhật giải thưởng
               </div>
             </div>
             <p className={styles.note}>
-              Lưu ý: Nhập đúng định dạng. Các thành viên viết cách nhau bởi dấu
-              "," <br></br> Ví dụ: H123|Đai đen|Giải trẻ|Vàng|2023, H46|Giải
-              trẻ|Vàng|2024
+              Lưu ý: Nhập đúng định dạng. Các thành viên viết xuống dòng.{" "}
+              <br></br> Ví dụ: <br></br> 1|Giải trẻ|Vàng|30/12/2023 <br></br>{" "}
+              2|Giải trẻ|Vàng|01/04/2024
             </p>
             <Form
               form={formAchie}
@@ -183,6 +235,7 @@ const UpdateMember = () => {
                   type="primary"
                   htmlType="submit"
                   className={styles.btnUpdate}
+                  // onLoad={loadingAchie}
                 >
                   Cập nhật giải thưởng
                 </Button>
@@ -193,10 +246,15 @@ const UpdateMember = () => {
                 dataSource={dataAchie}
                 columns={columnsAchie}
                 loading={loadingAchie}
+                pagination={{ pageSize: 10 }}
               />
               <Button
                 disabled={dataAchie === undefined || dataAchie.length === 0}
+                onClick={() => {
+                  handleConfirm();
+                }}
                 className={styles.btnUpdate}
+                // onLoad={loadingAchie}
               >
                 Xác nhận cập nhật
               </Button>

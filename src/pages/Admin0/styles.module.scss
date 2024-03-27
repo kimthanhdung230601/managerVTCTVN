@@ -81,6 +81,7 @@
       cursor: pointer;
     }
     .btnTbDanger {
+      cursor: pointer;
       border-radius: 4px;
       margin-left: 4px;
       background: var(--secondary);
@@ -315,7 +316,7 @@
   object-fit: cover;
 }
 
-.img:first-child {
+.imgWrapItem:first-child {
   margin-right: 8px;
 }
 @media (max-width: 768px) {

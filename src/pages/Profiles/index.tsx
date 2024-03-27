@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styles from "./style.module.scss";
 import { PlusOutlined, MinusCircleOutlined } from "@ant-design/icons";
-
 import {
   Button,
   DatePicker,
@@ -24,7 +23,7 @@ import Footer from "../../components/Footer";
 import axios from "axios";
 import Cookies from "js-cookie";
 import CryptoJS from "crypto-js";
-import { level } from "../../until/until";
+import { level, province } from "../../until/until";
 import moment from "moment";
 import { useMutation } from "react-query";
 import { addMember } from "../../api/ApiUser";
@@ -92,7 +91,10 @@ const Profiles = () => {
       window.location.href = src;
     }
   };
-  const filterOption = (input: string, option?: { children: React.ReactNode }) => (option?.children as string).toLowerCase().includes(input.toLowerCase());
+  const filterOption = (
+    input: string,
+    option?: { children: React.ReactNode }
+  ) => (option?.children as string).toLowerCase().includes(input.toLowerCase());
   //image CN đẳng cấp
   const [fileListLevel, setFileListLevel] = useState<any>([]);
   const normFileLevel = (e: any) => {
@@ -139,46 +141,7 @@ const Profiles = () => {
   const handleButtonClick = (buttonName: any) => {
     setSelectedButton(buttonName);
   };
-  //tỉnh,thành,quận,huyện
-  const [provinces, setProvinces] = useState([]);
-  const [districts, setDistricts] = useState([]);
-  const [selectedProvinceFullName, setSelectedProvinceFullName] = useState("");
-  const [selectedDistrictFullName, setSelectedDistrictFullName] = useState("");
-  const [selectedProvince, setSelectedProvince] = useState("");
 
-  useEffect(() => {
-    // Fetch provinces when component mounts
-    axios
-      .get(
-        "https://vnprovinces.pythonanywhere.com/api/provinces/?basic=true&limit=100"
-      )
-      .then((response) => {
-        setProvinces(response.data.results);
-      })
-      .catch((error) => {
-        console.error("Error fetching provinces:", error);
-      });
-  }, []);
-
-  const handleProvinceChange = (value: any) => {
-    const [selectedProvinceId, selectedProvinceFullName] = value.split("-");
-    setSelectedProvinceFullName(selectedProvinceFullName);
-    // setSelectedDistrictFullName(selectedProvinceId);
-    form.setFieldValue("district", "");
-    // Update selected province and fetch corresponding districts
-    setSelectedProvince(selectedProvinceId); // Update selected province and fetch corresponding districts
-    setSelectedProvince(value);
-    axios
-      .get(
-        `https://vnprovinces.pythonanywhere.com/api/provinces/${selectedProvinceId}`
-      )
-      .then((response) => {
-        setDistricts(response.data.districts);
-      })
-      .catch((error) => {
-        console.error("Error fetching districts:", error);
-      });
-  };
   // giải mã cookieJS
   const permission = CryptoJS.AES.decrypt(
     Cookies.get("permission") as string,
@@ -196,7 +159,26 @@ const Profiles = () => {
   useEffect(() => {
     form.setFieldValue("club", "CLB Hà Nội");
   }, [form]);
+  const [loading, setLoading] = useState(false);
+  const mutation = useMutation(addNewF3, {
+    onSuccess: (data: any) => {
+      console.log("data: ", data);
+      data.status === "success"
+        ? message.success(
+            "Thêm thành công, yêu cầu đã được gửi đến Liên đoàn VTCT Việt Nam"
+          )
+        : message.error(`${data.data}`);
+
+      setLoading(false);
+    },
+    onError: () => {
+      setLoading(false);
+      message.error("Thêm thất bại");
+    },
+  });
   const onFinish = (values: any) => {
+    const formattedBirthday = moment(values.birthday).format("YYYY-MM-DD");
+    setLoading(true);
     console.log("form", values);
     const randomKey = CryptoJS.lib.WordArray.random(16).toString();
     const formdata = new FormData();
@@ -212,14 +194,12 @@ const Profiles = () => {
     formdata.append("level", values.level);
     formdata.append("note", values.note);
     formdata.append("detail", values.detail);
-    formdata.append("achievements", values.achievements);
+    // formdata.append("achievements", values.achievements);
     formdata.append("club", decryptedClub);
     formdata.append("hometown", values.hometown);
-    formdata.append(
-      "address",
-      `${selectedProvinceFullName} - ${values.district}`
-    );
+    formdata.append("address", values.address);
     formdata.append("nationality", values.nationality);
+    formdata.append("email", values.email);
       formdata.append(
         `image_certificate`,
         values.image_certificate[0].originFileObj as File,
@@ -230,6 +210,7 @@ const Profiles = () => {
         values.image_ref[0].originFileObj as File,
         CryptoJS.AES.encrypt(values.image_ref[0].name, randomKey).toString()
     );
+
     addMemberMutation.mutate(formdata)
   };
   return (
@@ -262,22 +243,22 @@ const Profiles = () => {
                           ]}
                         >
                           {/* <ImgCrop showGrid showReset> */}
-                            <Upload
-                              listType="picture-card"
-                              fileList={fileList}
-                              onChange={onChangeImg}
-                              onPreview={onPreview}
-                            >
-                              {fileList.length >= 1 ? null : (
-                                <>
-                                  {" "}
-                                  <div>
-                                    <PlusOutlined />
-                                    <div style={{ marginTop: 8 }}>Tải ảnh</div>
-                                  </div>
-                                </>
-                              )}
-                            </Upload>
+                          <Upload
+                            listType="picture-card"
+                            fileList={fileList}
+                            onChange={onChangeImg}
+                            onPreview={onPreview}
+                          >
+                            {fileList.length >= 1 ? null : (
+                              <>
+                                {" "}
+                                <div>
+                                  <PlusOutlined />
+                                  <div style={{ marginTop: 8 }}>Tải ảnh</div>
+                                </div>
+                              </>
+                            )}
+                          </Upload>
                           {/* </ImgCrop> */}
                         </Form.Item>
                       </Col>
@@ -285,7 +266,7 @@ const Profiles = () => {
                         {" "}
                         <Form.Item
                           label="Tải ảnh lên"
-                          name="image_ref"
+                          name="avatar"
                           valuePropName="fileListLevel"
                           getValueFromEvent={normFile}
                           rules={[
@@ -293,24 +274,24 @@ const Profiles = () => {
                           ]}
                         >
                           {/* <ImgCrop showGrid showReset> */}
-                            <Upload
-                              listType="picture-card"
-                              fileList={fileListLevel}
-                              onChange={onChangeImgLevel}
-                              onPreview={onPreviewLevel}
-                            >
-                              {fileListLevel.length >= 1 ? null : (
-                                <>
-                                  {" "}
-                                  <div>
-                                    <PlusOutlined />
-                                    <div style={{ marginTop: 8 }}>
-                                      Tải giấy CN đẳng cấp
-                                    </div>
+                          <Upload
+                            listType="picture-card"
+                            fileList={fileListLevel}
+                            onChange={onChangeImgLevel}
+                            onPreview={onPreviewLevel}
+                          >
+                            {fileListLevel.length >= 1 ? null : (
+                              <>
+                                {" "}
+                                <div>
+                                  <PlusOutlined />
+                                  <div style={{ marginTop: 8 }}>
+                                    Tải giấy CN đẳng cấp
                                   </div>
-                                </>
-                              )}
-                            </Upload>
+                                </div>
+                              </>
+                            )}
+                          </Upload>
                           {/* </ImgCrop> */}
                         </Form.Item>
                       </Col>
@@ -424,7 +405,7 @@ const Profiles = () => {
                         { required: true, message: "Vui lòng điền câu lạc bộ" },
                       ]}
                     >
-                      <Input disabled/>
+                      <Input disabled />
                     </Form.Item>
                   </Col>
                   <Col span={8} xs={24} sm={12} md={8}>
@@ -461,47 +442,34 @@ const Profiles = () => {
                 <Row gutter={16}>
                   <Col span={8} xs={24} sm={12} md={8}>
                     <Form.Item
-                      label="Tỉnh/Thành"
-                      name="province"
+                      label="Tỉnh/Thành/Ngành"
+                      name="address"
                       rules={[
                         { required: true, message: "Vui lòng chọn tỉnh/thành" },
                       ]}
                     >
-                      <Select 
-                        onChange={handleProvinceChange} 
+                      <Select
                         filterOption={filterOption}
                         optionFilterProp="children"
                         showSearch
                       >
-                        {provinces.map((province: any) => (
-                          <Option
-                            key={province.id}
-                            value={`${province.id}- ${province.full_name}`}
-                          >
-                            {province.full_name}
-                          </Option>
+                        {province.map((option) => (
+                          <Select.Option key={option} value={option}>
+                            {option}
+                          </Select.Option>
                         ))}
                       </Select>
                     </Form.Item>
                   </Col>
                   <Col span={8} xs={24} sm={12} md={8}>
                     <Form.Item
-                      label="Quận/Huyện"
-                      name="district"
+                      label="Quê quán"
+                      name="hometown"
                       rules={[
-                        { required: true, message: "Vui lòng chọn quận/huyện" },
+                        { required: true, message: "Vui lòng điền quê quán" },
                       ]}
                     >
-                      <Select>
-                        {districts.map((district: any) => (
-                          <Option
-                            // key={district.id}
-                            value={district.full_name}
-                          >
-                            {district.full_name}
-                          </Option>
-                        ))}
-                      </Select>
+                      <Input />
                     </Form.Item>
                   </Col>
                   <Col span={8} xs={24} sm={12} md={8}>
@@ -517,17 +485,7 @@ const Profiles = () => {
                   </Col>
                 </Row>
                 <Row gutter={16}>
-                  <Col span={8} xs={24} sm={12} md={8}>
-                    <Form.Item
-                      label="Quê quán"
-                      name="hometown"
-                      rules={[
-                        { required: true, message: "Vui lòng điền quê quán" },
-                      ]}
-                    >
-                      <Input />
-                    </Form.Item>
-                  </Col>
+                  <Col span={8} xs={24} sm={12} md={8}></Col>
                 </Row>
                 {decryptedPermission == "0" ? (
                   <Form.List name="users">
@@ -616,7 +574,11 @@ const Profiles = () => {
                   <Input.TextArea showCount maxLength={1000} />
                 </Form.Item>
                 <Form.Item>
-                  <Button className={styles.btn} htmlType="submit">
+                  <Button
+                    className={styles.btn}
+                    htmlType="submit"
+                    loading={loading}
+                  >
                     Thêm
                   </Button>
                 </Form.Item>

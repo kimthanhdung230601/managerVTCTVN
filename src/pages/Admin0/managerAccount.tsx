@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   AudioOutlined,
   PlusOutlined,
@@ -6,11 +6,24 @@ import {
   CheckOutlined,
   FileTextOutlined,
 } from "@ant-design/icons";
-import { Input, Table, Button, Form, Select, Col, Row, Image } from "antd";
+import {
+  Input,
+  Table,
+  Button,
+  Form,
+  Select,
+  Col,
+  Row,
+  Image,
+  Popconfirm,
+  message,
+  Pagination,
+  Spin,
+} from "antd";
 import { admin, province } from "../../until/until";
 import styles from "./styles.module.scss";
 // import type { TableColumnsType, TableProps } from "antd/es/table";
-import type { TableColumnsType, TableProps } from 'antd';
+import type { TableColumnsType, TableProps } from "antd";
 
 import ModalAccount from "../../components/Modal/ModalAccount";
 import ModalAccept from "../../components/Modal/ModalAccept";
@@ -18,6 +31,9 @@ import { useNavigate } from "react-router";
 import { useMediaQuery } from "react-responsive";
 import { text } from "stream/consumers";
 import type { ColumnsType } from "antd/es/table";
+import { useQuery } from "react-query";
+import { deleteMemberF12, getListMemberF12, updateAccount } from "../../api/f0";
+import ListClub from "../../hook/listClub";
 interface ManagerAccountProps {}
 interface DataType {
   key: React.Key;
@@ -32,6 +48,8 @@ interface DataType {
   managerF1: string;
   id: string;
   phone: string;
+  image_certificate: any;
+  image_ref: any;
 }
 
 const { Option } = Select;
@@ -46,41 +64,52 @@ const customLocale = {
   selectAll: "Chọn tất cả", // Thay đổi văn bản "Select All Items" ở đây
   selectInvert: "Đảo ngược", // Thay đổi văn bản khi chọn ngược
 };
-const data: DataType[] = [];
-for (let i = 0; i < 46; i++) {
-  var manager = [
-    "Quân Đội",
-    "Liên Đoàn",
-    "Công An",
-    "Giáo Dục",
-    "Sở VHTT",
-    "Hội Võ Thuật",
-  ];
-  var randomManager = manager[Math.floor(Math.random() * manager.length)];
-  var club = ["Câu lạc bộ B", "Câu lạc bộ A", "Câu lạc bộ C", "Câu lạc bộ D"];
-  var randomClub = club[Math.floor(Math.random() * club.length)];
-  var randomProvince = province[Math.floor(Math.random() * province.length)];
-  data.push({
-    key: ++i,
-    account: `account ${i}`,
-    password: `pass ${i}`,
-    manager: `manager ${i}`,
-    phoneNumber: `phone ${i}`,
-    email: `email ${i}`,
-    name: "Nguyễn Văn A",
-    club: randomClub,
-    managerF1: randomManager,
-    city: randomProvince,
-    id: "VCT010203050066",
-    phone: "0988674868",
-  });
-}
 const ManagerAccount = () => {
-  const [form] = Form.useForm();
+  const {
+    data: dataMemberF12,
+    refetch,
+    isFetching,
+  } = useQuery("dataF12", () => getListMemberF12());
+
+  const [unAccept, setUnAccept] = useState([]);
+  const [accept, setAccept] = useState([]);
+
+  useEffect(() => {
+    if (dataMemberF12 && dataMemberF12.data) {
+      const unAcceptMembers = dataMemberF12?.data.filter(
+        (member: any) => member.pending === "0"
+      );
+      const acceptMembers = dataMemberF12?.data.filter(
+        (member: any) => member.pending === "1"
+      );
+      setUnAccept(unAcceptMembers);
+      setAccept(acceptMembers);
+    }
+  }, [dataMemberF12]);
   const naviagte = useNavigate();
   const isMobile = useMediaQuery({ maxWidth: 768 });
-  const onFinish = (values: any) => {
-    console.log(values);
+
+  const confirm = async (value: any) => {
+    const payload = {
+      id: value,
+    };
+    const res = await deleteMemberF12(payload);
+    refetch();
+    message.success("Xóa thành công");
+  };
+  const confirmAccept = async (value: any) => {
+    const payload = {
+      id: value,
+    };
+    const res = await updateAccount(payload);
+    res.status === "success"
+      ? message.success("Cập nhật thành công")
+      : message.error("Cập nhật thất bại");
+    refetch();
+  };
+  const cancel = (value: any) => {
+    console.log(value);
+    // message.error("");
   };
   //modal quản lý thành viên
   const [isModalOpenMember, setIsModalOpenMember] = useState(false);
@@ -95,36 +124,37 @@ const ManagerAccount = () => {
   const handleCancelMember = () => {
     setIsModalOpenMember(false);
   };
-  //modal xét duyệt hồ sơ
-  const [isModalOpenAccept, setIsModalOpenAccept] = useState(false);
-  const showModalAccept = () => {
-    setIsModalOpenAccept(true);
+  const [currentPageAccount, setCurrentPageAccount] = useState(1);
+  const [currentPageAccept, setCurrentPageAccept] = useState(1);
+  // useEffect(() => {
+  //   refetch();
+  // }, [currentPageAccount,currentPageAccept, dataMemberF12?.total_products]);
+  const onChangePageAccount = (value: any) => {
+    setCurrentPageAccount(value);
+    // refetch();
   };
-
-  const handleOkAccept = () => {
-    setIsModalOpenAccept(false);
-    console.log("đã duyệt");
-  };
-
-  const handleCancelAccept = () => {
-    setIsModalOpenAccept(false);
+  const onChangePageAccept = (value: any) => {
+    setCurrentPageAccept(value);
   };
   const columnsDesktopAccount: ColumnsType<DataType> = [
     {
       title: "STT",
       dataIndex: "key",
       fixed: "left",
-      width: 70,
+      width: 20,
+      render: (value, record, index) => {
+        return index + 1 + (currentPageAccount - 1) * 10;
+      },
     },
     {
       title: "Họ và tên",
       dataIndex: "name",
       fixed: "left",
-      width: 250,
+      width: 210,
     },
     {
       title: "Mã định danh",
-      dataIndex: "id",
+      dataIndex: "idcard",
       width: 250,
     },
     {
@@ -138,16 +168,16 @@ const ManagerAccount = () => {
       width: 300,
     },
     {
-      title: 'Tỉnh',
-      dataIndex: 'city',
+      title: "Tỉnh",
+      dataIndex: "location",
       filters: filterProivce,
-      onFilter: (value:any, record) => record.city.startsWith(value),
+      onFilter: (value: any, record) => record.city.startsWith(value),
       filterSearch: true,
-      width:120,
+      width: 120,
     },
     {
       title: "Đơn vị quản lý",
-      dataIndex: "managerF1",
+      dataIndex: "manage",
       filters: [
         {
           text: "Công An",
@@ -175,32 +205,16 @@ const ManagerAccount = () => {
         },
       ],
       onFilter: (value: any, rec) => rec.managerF1.indexOf(value) === 0,
-      filterMode: 'tree',
+      filterMode: "tree",
       width: 200,
     },
     {
       title: "Tên câu lạc bộ",
-      dataIndex: "club",
-      filters: [
-        {
-          text: "Câu lạc bộ A",
-          value: "Câu lạc bộ A",
-        },
-        {
-          text: "Câu lạc bộ B",
-          value: "Câu lạc bộ B",
-        },
-        {
-          text: "Câu lạc bộ C",
-          value: "Câu lạc bộ C",
-        },
-        {
-          text: "Câu lạc bộ D",
-          value: "Câu lạc bộ D",
-        },
-      ],
+      dataIndex: "NameClb",
+      filters: ListClub(),
+      filterSearch: true,
       onFilter: (value: any, rec) => rec.club.indexOf(value) === 0,
-      filterMode: 'tree',
+      filterMode: "tree",
       width: 200,
     },
     {
@@ -219,23 +233,30 @@ const ManagerAccount = () => {
       width: 150,
       render: (_, record) => (
         <div className={styles.imageWrap}>
-          <Image
-            src={require("../../assets/image/degree.jpg")}
-            preview={true}
-            className={styles.img}
-          />
-          <Image
-            src={require("../../assets/image/referral.jpg")}
-            preview={true}
-            className={styles.img}
-          />
+          <div className={styles.imgWrapItem}>
+            {" "}
+            <Image
+              src={`https://vocotruyen.id.vn/PHP_IMG/${record.image_ref}`}
+              preview={true}
+              // alt="no image"
+              className={styles.img}
+            />
+          </div>
+          <div className={styles.imgWrapItem}>
+            <Image
+              src={`https://vocotruyen.id.vn/PHP_IMG/${record.image_certificate}`}
+              preview={true}
+              // alt="no image"
+              className={styles.img}
+            />
+          </div>
         </div>
       ),
     },
     {
       // title: 'Action',
       key: "action",
-      width: 150,
+      width: 200,
       fixed: "right",
       render: (_, record) => (
         <span>
@@ -248,6 +269,17 @@ const ManagerAccount = () => {
           <button className={styles.btnTb} onClick={() => showModalMember()}>
             Sửa
           </button>
+          <Popconfirm
+            title="Xóa"
+            description={`Bạn có muốn xóa ${record.name} không`}
+            onConfirm={() => confirm(record.id)}
+            onCancel={cancel}
+            okText="Có"
+            cancelText="Không"
+          >
+            {" "}
+            <button className={styles.btnTbDanger}>Xóa</button>
+          </Popconfirm>
         </span>
       ),
     },
@@ -256,16 +288,19 @@ const ManagerAccount = () => {
     {
       title: "STT",
       dataIndex: "key",
-      width: 70,
+      width: 20,
+      render: (value, record, index) => {
+        return index + 1 + (currentPageAccount - 1) * 10;
+      },
     },
     {
       title: "Họ và tên",
       dataIndex: "name",
-      width: 250,
+      width: 210,
     },
     {
       title: "Mã định danh",
-      dataIndex: "id",
+      dataIndex: "idcard",
       width: 250,
     },
     {
@@ -279,17 +314,17 @@ const ManagerAccount = () => {
       width: 300,
     },
     {
-      title: 'Tỉnh',
-      dataIndex: 'city',
+      title: "Tỉnh",
+      dataIndex: "location",
       filters: filterProivce,
-      onFilter: (value:any, record) => record.city.startsWith(value),
-      filterMode: 'tree',
+      onFilter: (value: any, record) => record.city.startsWith(value),
+      filterMode: "tree",
       filterSearch: true,
-      width:120,
+      width: 120,
     },
     {
       title: "Đơn vị quản lý",
-      dataIndex: "managerF1",
+      dataIndex: "manage",
       filters: [
         {
           text: "Công An",
@@ -316,33 +351,15 @@ const ManagerAccount = () => {
           value: "Quân Đội",
         },
       ],
-      filterMode: 'tree',
+      filterMode: "tree",
       onFilter: (value: any, rec) => rec.managerF1.indexOf(value) === 0,
       width: 200,
-      
     },
     {
       title: "Tên câu lạc bộ",
       dataIndex: "club",
-      filters: [
-        {
-          text: "Câu lạc bộ A",
-          value: "Câu lạc bộ A",
-        },
-        {
-          text: "Câu lạc bộ B",
-          value: "Câu lạc bộ B",
-        },
-        {
-          text: "Câu lạc bộ C",
-          value: "Câu lạc bộ C",
-        },
-        {
-          text: "Câu lạc bộ D",
-          value: "Câu lạc bộ D",
-        },
-      ],
-      filterMode: 'tree',
+      filters: ListClub(),
+      filterMode: "tree",
       onFilter: (value: any, rec) => rec.club.indexOf(value) === 0,
       width: 200,
     },
@@ -378,7 +395,7 @@ const ManagerAccount = () => {
     {
       // title: 'Action',
       key: "action",
-      width: 150,
+      width: 200,
       render: (_, record) => (
         <span>
           <button
@@ -390,6 +407,17 @@ const ManagerAccount = () => {
           <button className={styles.btnTb} onClick={() => showModalMember()}>
             Sửa
           </button>
+          <Popconfirm
+            title="Xóa"
+            description={`Bạn có muốn xóa ${record.name} không`}
+            onConfirm={() => confirm(record.id)}
+            onCancel={cancel}
+            okText="Có"
+            cancelText="Không"
+          >
+            {" "}
+            <button className={styles.btnTbDanger}>Xóa</button>
+          </Popconfirm>
         </span>
       ),
     },
@@ -400,6 +428,9 @@ const ManagerAccount = () => {
       dataIndex: "key",
       fixed: "left",
       width: 70,
+      render: (value, record, index) => {
+        return index + 1 + (currentPageAccount - 1) * 10;
+      },
     },
     {
       title: "Họ và tên",
@@ -409,7 +440,7 @@ const ManagerAccount = () => {
     },
     {
       title: "Mã định danh",
-      dataIndex: "id",
+      dataIndex: "idcard",
       width: 250,
     },
     {
@@ -423,17 +454,17 @@ const ManagerAccount = () => {
       width: 300,
     },
     {
-      title: 'Tỉnh',
-      dataIndex: 'city',
+      title: "Tỉnh",
+      dataIndex: "location",
       filters: filterProivce,
-      onFilter: (value:any, record) => record.city.startsWith(value),
+      onFilter: (value: any, record) => record.city.startsWith(value),
       filterSearch: true,
-    
-      width:120,
+
+      width: 120,
     },
     {
       title: "Đơn vị quản lý",
-      dataIndex: "managerF1",
+      dataIndex: "manage",
       width: 200,
       filters: [
         {
@@ -462,32 +493,15 @@ const ManagerAccount = () => {
         },
       ],
       onFilter: (value: any, rec) => rec.managerF1.indexOf(value) === 0,
-      filterMode: 'tree',
+      filterMode: "tree",
     },
     {
       title: "Tên câu lạc bộ",
-      dataIndex: "club",
+      dataIndex: "clubName",
       width: 200,
-      filters: [
-        {
-          text: "Câu lạc bộ A",
-          value: "Câu lạc bộ A",
-        },
-        {
-          text: "Câu lạc bộ B",
-          value: "Câu lạc bộ B",
-        },
-        {
-          text: "Câu lạc bộ C",
-          value: "Câu lạc bộ C",
-        },
-        {
-          text: "Câu lạc bộ D",
-          value: "Câu lạc bộ D",
-        },
-      ],
+      filters: ListClub(),
       onFilter: (value: any, rec) => rec.club.indexOf(value) === 0,
-      filterMode: 'tree',
+      filterMode: "tree",
     },
     {
       title: "Tài khoản",
@@ -506,12 +520,12 @@ const ManagerAccount = () => {
       render: (_, record) => (
         <div className={styles.imageWrap}>
           <Image
-            src={require("../../assets/image/degree.jpg")}
+            src={`https://vocotruyen.id.vn/PHP_IMG/${record.image_ref}`}
             preview={true}
             className={styles.img}
           />
           <Image
-            src={require("../../assets/image/referral.jpg")}
+            src={`https://vocotruyen.id.vn/PHP_IMG/${record.image_certificate}`}
             preview={true}
             className={styles.img}
           />
@@ -525,10 +539,29 @@ const ManagerAccount = () => {
       fixed: "right",
       render: (_, record) => (
         <span>
-          <button className={styles.btnView} onClick={() => showModalAccept()}>
-            Duyệt
-          </button>
-          <button className={styles.btnTbDanger}>Xóa</button>
+          <Popconfirm
+            title="Xóa"
+            description={`Bạn có muốn duyệt tài khoản ${record.name} không`}
+            onConfirm={() => confirmAccept(record.id)}
+            onCancel={cancel}
+            okText="Có"
+            cancelText="Không"
+          >
+            {" "}
+            <button className={styles.btnView}>Duyệt</button>
+          </Popconfirm>
+
+          <Popconfirm
+            title="Xóa"
+            description={`Bạn có muốn xóa ${record.name} không`}
+            onConfirm={() => confirm(record.id)}
+            onCancel={cancel}
+            okText="Có"
+            cancelText="Không"
+          >
+            {" "}
+            <button className={styles.btnTbDanger}>Xóa</button>
+          </Popconfirm>
         </span>
       ),
     },
@@ -548,7 +581,7 @@ const ManagerAccount = () => {
     },
     {
       title: "Mã định danh",
-      dataIndex: "id",
+      dataIndex: "idcard",
       width: 250,
     },
     {
@@ -562,17 +595,17 @@ const ManagerAccount = () => {
       width: 300,
     },
     {
-      title: 'Tỉnh',
-      dataIndex: 'city',
+      title: "Tỉnh",
+      dataIndex: "location",
       filters: filterProivce,
-      onFilter: (value:any, record) => record.city.startsWith(value),
+      onFilter: (value: any, record) => record.city.startsWith(value),
       filterSearch: true,
-      filterMode: 'tree',
-      width:120,
+      filterMode: "tree",
+      width: 120,
     },
     {
       title: "Đơn vị quản lý",
-      dataIndex: "managerF1",
+      dataIndex: "manage",
       filters: [
         {
           text: "Công An",
@@ -600,33 +633,16 @@ const ManagerAccount = () => {
         },
       ],
       onFilter: (value: any, rec) => rec.managerF1.indexOf(value) === 0,
-      filterMode: 'tree',
+      filterMode: "tree",
       width: 200,
     },
     {
       title: "Tên câu lạc bộ",
       dataIndex: "club",
       width: 200,
-      filters: [
-        {
-          text: "Câu lạc bộ A",
-          value: "Câu lạc bộ A",
-        },
-        {
-          text: "Câu lạc bộ B",
-          value: "Câu lạc bộ B",
-        },
-        {
-          text: "Câu lạc bộ C",
-          value: "Câu lạc bộ C",
-        },
-        {
-          text: "Câu lạc bộ D",
-          value: "Câu lạc bộ D",
-        },
-      ],
+      filters: ListClub(),
       onFilter: (value: any, rec) => rec.club.indexOf(value) === 0,
-      filterMode: 'tree',
+      filterMode: "tree",
     },
     {
       title: "Tài khoản",
@@ -645,12 +661,12 @@ const ManagerAccount = () => {
       render: (_, record) => (
         <div className={styles.imageWrap}>
           <Image
-            src={require("../../assets/image/degree.jpg")}
+            src={`https://vocotruyen.id.vn/PHP_IMG/${record.image_ref}`}
             preview={true}
             className={styles.img}
           />
           <Image
-            src={require("../../assets/image/referral.jpg")}
+            src={`https://vocotruyen.id.vn/PHP_IMG/${record.image_certificate}`}
             preview={true}
             className={styles.img}
           />
@@ -664,10 +680,29 @@ const ManagerAccount = () => {
 
       render: (_, record) => (
         <span>
-          <Button className={styles.btnView} onClick={() => showModalAccept()}>
-            Duyệt
-          </Button>
-          <Button className={styles.btnTbDanger}>Xóa</Button>
+          <Popconfirm
+            title="Xóa"
+            description={`Bạn có muốn duyệt tài khoản ${record.name} không`}
+            onConfirm={() => confirmAccept(record.id)}
+            onCancel={cancel}
+            okText="Có"
+            cancelText="Không"
+          >
+            {" "}
+            <button className={styles.btnView}>Duyệt</button>
+          </Popconfirm>
+
+          <Popconfirm
+            title="Xóa"
+            description={`Bạn có muốn xóa ${record.name} không`}
+            onConfirm={() => confirm(record.id)}
+            onCancel={cancel}
+            okText="Có"
+            cancelText="Không"
+          >
+            {" "}
+            <button className={styles.btnTbDanger}>Xóa</button>
+          </Popconfirm>
         </span>
       ),
     },
@@ -675,7 +710,6 @@ const ManagerAccount = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-    // console.log('selectedRowKeys changed: ', newSelectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
   };
 
@@ -719,9 +753,13 @@ const ManagerAccount = () => {
             className="gutter-row"
           >
             <div style={{ display: "flex", justifyContent: "end" }}>
-              <Button className={styles.btn} style={{ paddingRight: "10px" }}>
+              <Button
+                className={styles.btn}
+                style={{ paddingRight: "10px" }}
+                onClick={() => naviagte("/dang-ky")}
+              >
                 <PlusOutlined className={styles.icon} />
-                Thêm tài khoản
+                Đăng ký tài khoản mới
               </Button>
             </div>
           </Col>
@@ -729,14 +767,20 @@ const ManagerAccount = () => {
         <div className={styles.table}>
           <Table
             columns={isMobile ? columnsMobileAccount : columnsDesktopAccount}
-            dataSource={data}
-            pagination={{}}
+            dataSource={accept}
+            pagination={false}
             locale={customLocale}
             scroll={{
               x: "max-content",
-              y: "calc(100vh - 200px)",
             }}
             style={{ overflowX: "auto" }}
+          />
+          <Pagination
+            defaultCurrent={1}
+            onChange={onChangePageAccount}
+            total={accept.length}
+            pageSize={10}
+            style={{ margin: "1vh 0", float: "right" }}
           />
         </div>
       </div>
@@ -755,10 +799,7 @@ const ManagerAccount = () => {
               {selectedRowKeys.length > 1 ? (
                 <>
                   {" "}
-                  <Button
-                    className={styles.btn}
-                    onClick={() => showModalAccept()}
-                  >
+                  <Button className={styles.btn}>
                     <CheckOutlined className={styles.icon} />
                     Duyệt toàn bộ
                   </Button>
@@ -773,31 +814,33 @@ const ManagerAccount = () => {
           <span style={{ marginLeft: 8 }}>
             {hasSelected ? `Đã chọn ${selectedRowKeys.length} hồ sơ` : ""}
           </span>
-          <Table
-            rowSelection={rowSelection}
-            locale={customLocale}
-            columns={isMobile ? columnsMobileAccept : columnsDesktopAccept}
-            dataSource={data}
-            onChange={onChange}
-            pagination={{}}
-            scroll={{
-              x: "max-content",
-              y: "calc(100vh - 200px)",
-            }}
-            style={{ overflowX: "auto" }}
-          />
+          <Spin spinning={isFetching}>
+            {" "}
+            <Table
+              rowSelection={rowSelection}
+              locale={customLocale}
+              columns={isMobile ? columnsMobileAccept : columnsDesktopAccept}
+              dataSource={unAccept}
+              pagination={false}
+              scroll={{
+                x: "max-content",
+              }}
+              style={{ overflowX: "auto" }}
+            />
+            <Pagination
+              defaultCurrent={1}
+              onChange={onChangePageAccept}
+              total={unAccept.length}
+              pageSize={10}
+              style={{ margin: "1vh 0", float: "right" }}
+            />
+          </Spin>
         </div>
       </div>
       <ModalAccount
         isModalOpen={isModalOpenMember}
         handleCancel={handleCancelMember}
         handleOk={handleOkMember}
-      />
-      <ModalAccept
-        selectedRowKeys={selectedRowKeys}
-        isModalOpen={isModalOpenAccept}
-        handleCancel={handleCancelAccept}
-        handleOk={handleOkAccept}
       />
     </div>
   );
