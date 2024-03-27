@@ -13,7 +13,7 @@ import styles from "./styles.module.scss";
 import type { ColumnsType } from "antd/es/table";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate, useParams } from "react-router";
 import Cookies from "js-cookie";
 import CryptoJS from "crypto-js";
 import { useQuery } from "react-query";
@@ -51,7 +51,8 @@ const rootSubmenuKeys = ["sub1"];
 const AdminTwo = () => {
   document.title = "Đơn vị quản lý";
   const navigate = useNavigate();
-  const { data: listF3, refetch } = useQuery("listF3", () => getListMemberF3);
+  const idClub = new URLSearchParams(useLocation().search)
+  const { data: listF3, refetch } = useQuery(["listF3", idClub.get("club")], () => getListMemberF3(idClub.get("club")));
   // const [openKeys, setOpenKeys] = useState(["sub1"]);
   // const name = Cookies.get("name") as string;
   const name = CryptoJS.AES.decrypt(Cookies.get("name") as string, secretKey);
@@ -63,6 +64,7 @@ const AdminTwo = () => {
   const onClick: MenuProps["onClick"] = (e) => {
     console.log("click ", e);
   };
+  console.log(idClub.get("club"))
   return (
     <>
       <Header />

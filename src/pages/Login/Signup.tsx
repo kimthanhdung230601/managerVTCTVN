@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import styles from "./Style.module.scss"
-import { Button, Form, Image, Input, message, Modal, Select, Upload, UploadFile, UploadProps } from 'antd'
-import { LockOutlined, UserOutlined, PhoneOutlined, IdcardOutlined, PlusOutlined, MailOutlined, CheckOutlined, BankOutlined, HomeOutlined, EnvironmentOutlined, DeploymentUnitOutlined, SolutionOutlined, ProfileOutlined, CalendarOutlined, AimOutlined } from '@ant-design/icons';
+import { Button, Form, Image, Input, message, Modal, Select, Upload, UploadFile, UploadProps, DatePicker } from 'antd'
+import { LineChartOutlined,LockOutlined, UserOutlined, PhoneOutlined, IdcardOutlined, PlusOutlined, MailOutlined, CheckOutlined, BankOutlined, HomeOutlined, EnvironmentOutlined, DeploymentUnitOutlined, SolutionOutlined, ProfileOutlined, CalendarOutlined, AimOutlined } from '@ant-design/icons';
 import ReCAPTCHA from "react-google-recaptcha";
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { useMutation, useQuery } from 'react-query';
 import { signup } from '../../api/ApiUser';
-import { province } from '../../until/until';
+import { level, province } from '../../until/until';
 
 import CryptoJS from 'crypto-js';
+import moment from 'moment';
 
 const getBase64 = (file: any): Promise<string> =>
   new Promise((resolve, reject) => {
@@ -97,16 +98,20 @@ export default function Signup() {
     const onFinish = (value: any) => {
         delete value.confirm
         const randomKey = CryptoJS.lib.WordArray.random(32).toString();
+        const formattedBirthday = moment(value.birthday).format("YYYY-MM-DD");
+        const formattedIdday = moment(value.idday).format("YYYY-MM-DD");
         const formdata = new FormData();
         formdata.append("name", value.name);
         formdata.append("club", value.club);
         formdata.append("idcard", value.idcard);
-        formdata.append("idday", value.idday);
+        formdata.append("idday", formattedIdday);
+        formdata.append("birthday", formattedBirthday);
         formdata.append("idlocation", value.idlocation);
         formdata.append("phone", value.phone);
         formdata.append("email", value.email);
         formdata.append("location", value.location);
         formdata.append("manage", value.manage);
+        formdata.append("level", value.level);
         formdata.append("password", value.password);
         formdata.append(
             `image_certificate`,
@@ -191,6 +196,14 @@ export default function Signup() {
                     <Input prefix={<UserOutlined className={styles.icon} />} placeholder="Họ tên" className={styles.formInput}/>
                 </Form.Item>
                 <Form.Item
+                name="birthday"
+                rules={[{ required: true, message: 'Vui lòng nhập ngày sinh!' }]}
+                wrapperCol={{ span: 24 }}
+                className={styles.formItem}
+                >
+                    <DatePicker size='large' placeholder='Ngày sinh' className={styles.formDate}/>
+                </Form.Item>
+                <Form.Item
                 name="idcard"
                 rules={[{ required: true, message: 'Vui lòng nhập mã định danh!' }]}
                 wrapperCol={{ span: 24 }}
@@ -199,7 +212,7 @@ export default function Signup() {
                 <Input prefix={<IdcardOutlined className={styles.icon} />} placeholder="Mã định danh" className={styles.formInput}/>
                
                 </Form.Item>
-                <div style={{display: "flex", width: "100%"}}>
+                <div style={{display: "flex", width: "100%", height: "95%"}}>
                     <Form.Item
                         name="idday"
                         rules={[{ required: true, message: 'Vui lòng nhập ngày cấp!' }]}
@@ -207,7 +220,7 @@ export default function Signup() {
                         className={styles.formItem}
                         style={{marginRight: "10px"}}
                     >
-                        <Input prefix={<CalendarOutlined className={styles.icon} />} placeholder="Ngày cấp" type='date' className={styles.formInput}/>
+                        <DatePicker size='large' placeholder='Ngày cấp' className={styles.formDate}/>
                     </Form.Item>
                     <Form.Item
                         name="idlocation"
@@ -299,6 +312,30 @@ export default function Signup() {
                         <Select.Option value="Giáo Dục">Giáo Dục</Select.Option>
                         <Select.Option value="Sở VHTT">Sở VHTT</Select.Option>
                 </Select>
+                </Form.Item>
+                <LineChartOutlined className={styles.iconSelect}/>
+                <Form.Item
+                    name="level"
+                    rules={[{ required: true, message: 'Vui lòng chọn đẳng cấp!' }]}
+                    wrapperCol={{ span: 24 }}
+                    className={styles.formSelect}
+                >
+                    <Select
+                       menuItemSelectedIcon={<LineChartOutlined />}
+                       showSearch
+                       placeholder={"Đẳng cấp"}
+                       optionFilterProp="children"
+                       onChange={onChange}
+                       onSearch={onSearch}
+                       filterOption={filterOption}
+                       className={styles.select}
+                    >
+                        {level.map((option:string) => (
+                            <Select.Option key={option} value={option}>
+                            {option}
+                            </Select.Option>))
+                        }
+                    </Select>
                 </Form.Item>
                 <Form.Item
                 name="password"
