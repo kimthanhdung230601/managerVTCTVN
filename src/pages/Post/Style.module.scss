@@ -19,8 +19,7 @@
 }
 
 .formWrap{
-    padding: 50px 20px;
-    justify-content: center;
+    padding: 50px 10%;
 }
 
 .upload > div > div{
@@ -31,6 +30,7 @@
 }
 
 .btn{
+    margin-top: 40px;
     height: 40px;
     padding: 0 10px;
     font-size: 16px;
@@ -46,4 +46,22 @@
     font-weight: 500;
     color: #fff;
     background-color: var(--subPrimary);
+}
+
+@media screen and (max-width: 992px) {
+    .btn {
+        margin-top: 70px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .btn {
+        margin-top: 80px;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .btn {
+        margin-top: 100px;
+    }
 }
