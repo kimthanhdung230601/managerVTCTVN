@@ -77,13 +77,6 @@ const ManagerMemberTwo = () => {
   const currentURL = window.location.href;
   var urlParams = new URLSearchParams(currentURL.split("?")[1]);
   var clubValue = urlParams.get("club");
-  // const [clubSelected, setClubSelected] = useState<any>();
-  // useEffect(() => {
-  //   decryptedClub == "2"
-  //     ? setClubSelected(decryptedClub)
-  //     : setClubSelected(clubValue);
-  // }, [decryptedClub]);
-  // console.log("clubSelected", clubSelected);
   const {
     data: listF3,
     refetch: refetchListF3,

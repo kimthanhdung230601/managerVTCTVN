@@ -210,18 +210,18 @@ const ManagerAccount = () => {
     },
     {
       title: "Tên câu lạc bộ",
-      dataIndex: "NameClb",
+      dataIndex: "NameClub",
       filters: ListClub(),
       filterSearch: true,
       onFilter: (value: any, rec) => rec.club.indexOf(value) === 0,
       filterMode: "tree",
       width: 200,
     },
-    {
-      title: "Tài khoản",
-      dataIndex: "account",
-      width: 200,
-    },
+    // {
+    //   title: "Tài khoản",
+    //   dataIndex: "account",
+    //   width: 200,
+    // },
     {
       title: "Mật khẩu",
       dataIndex: "password",
@@ -262,7 +262,7 @@ const ManagerAccount = () => {
         <span>
           <button
             className={styles.btnView}
-            onClick={() => naviagte("/thong-tin-tai-khoan")}
+            onClick={() => naviagte(`/thong-tin-tai-khoan/ecord.id}`)}
           >
             Xem
           </button>
@@ -363,11 +363,11 @@ const ManagerAccount = () => {
       onFilter: (value: any, rec) => rec.club.indexOf(value) === 0,
       width: 200,
     },
-    {
-      title: "Tài khoản",
-      dataIndex: "account",
-      width: 200,
-    },
+    // {
+    //   title: "Tài khoản",
+    //   dataIndex: "account",
+    //   width: 200,
+    // },
     {
       title: "Mật khẩu",
       dataIndex: "password",
@@ -400,7 +400,7 @@ const ManagerAccount = () => {
         <span>
           <button
             className={styles.btnView}
-            onClick={() => naviagte("/thong-tin-tai-khoan")}
+            onClick={() => naviagte(`/thong-tin-tai-khoan/${record.id}`)}
           >
             Xem
           </button>
@@ -497,17 +497,17 @@ const ManagerAccount = () => {
     },
     {
       title: "Tên câu lạc bộ",
-      dataIndex: "clubName",
+      dataIndex: "NameClub",
       width: 200,
       filters: ListClub(),
       onFilter: (value: any, rec) => rec.club.indexOf(value) === 0,
       filterMode: "tree",
     },
-    {
-      title: "Tài khoản",
-      dataIndex: "account",
-      width: 200,
-    },
+    // {
+    //   title: "Tài khoản",
+    //   dataIndex: "account",
+    //   width: 200,
+    // },
     {
       title: "Mật khẩu",
       dataIndex: "password",
@@ -638,17 +638,17 @@ const ManagerAccount = () => {
     },
     {
       title: "Tên câu lạc bộ",
-      dataIndex: "club",
+      dataIndex: "NameClub",
       width: 200,
       filters: ListClub(),
       onFilter: (value: any, rec) => rec.club.indexOf(value) === 0,
       filterMode: "tree",
     },
-    {
-      title: "Tài khoản",
-      dataIndex: "account",
-      width: 200,
-    },
+    // {
+    //   title: "Tài khoản",
+    //   dataIndex: "account",
+    //   width: 200,
+    // },
     {
       title: "Mật khẩu",
       dataIndex: "password",
