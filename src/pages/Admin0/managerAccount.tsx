@@ -262,7 +262,7 @@ const ManagerAccount = () => {
         <span>
           <button
             className={styles.btnView}
-            onClick={() => naviagte(`/thong-tin-tai-khoan/ecord.id}`)}
+            onClick={() => naviagte(`/thong-tin-tai-khoan/${record.id}`)}
           >
             Xem
           </button>
