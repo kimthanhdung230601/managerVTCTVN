@@ -49,7 +49,7 @@ export default function Login() {
 
         case res?.info_user[0].permission === "1":
           // console.log("Mật khẩu đúng cho accountF1");
-          // navigate("/Admin1");
+          navigate("/admin1");
           break;
 
         case res?.info_user[0].permission === "2":

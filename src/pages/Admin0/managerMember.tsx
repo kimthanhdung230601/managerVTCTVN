@@ -34,21 +34,27 @@ import * as XLSX from "xlsx";
 import Search from "antd/es/input/Search";
 // import ModalMember from "../../components/Modal/ModalAccount";
 import { useNavigate } from "react-router-dom";
-import { useQuery } from "react-query";
-import { deleteMemberF3, getListMember, updateMemberF3 } from "../../api/f0";
+import { Mutation, useMutation, useQuery } from "react-query";
+import {
+  deleteMemberF3,
+  findMember,
+  getListMember,
+  updateMemberF3,
+} from "../../api/f0";
 import moment from "moment";
 import ListClub from "../../hook/listClub";
 
 interface ManagerMemberProps {}
 interface DataType {
   stt: any;
-  dateOfBirth: any;
-  phoneNumber: string;
+  birthday: any;
+  phone: string;
   id: any;
-  city: string;
+  idCard: number;
+  address: string;
   key: React.Key;
   name: string;
-  f1: string;
+  DonViQuanLy: string;
   NameClb: string;
   note: string;
   status: string;
@@ -124,8 +130,25 @@ const ManagerMember = () => {
     console.log(value);
     // message.error("");
   };
-  const onSearch: SearchProps["onSearch"] = (value: any, _e: any, info: any) =>
-    console.log(info?.source, value);
+
+  //tìm kiếm
+  const [dataFind, setDataFind] = useState<DataType[]>([]);
+  const onSearch: SearchProps["onSearch"] = async (
+    value: any,
+    _e: any,
+    info: any
+  ) => {
+    const res = await findMember(value);
+    // console.log("ress",res);
+    if (res.status === "success") {
+      setDataFind(res.data); // Cập nhật dataFind nếu tìm thấy kết quả
+    } else {
+      setDataFind([]); // Đặt dataFind về rỗng nếu không tìm thấy kết quả
+      message.error("Không tìm thấy kết quả");
+    }
+  };
+  console.log("dataFind", dataFind);
+
   //modal
   //modal quản lý thành viên
   const columnsDesktop: ColumnsType<DataType> = [
@@ -173,13 +196,13 @@ const ManagerMember = () => {
       title: "Tỉnh",
       dataIndex: "address",
       filters: filterProivce,
-      onFilter: (value: any, record) => record.city.startsWith(value),
+      onFilter: (value: any, record) => record.address.startsWith(value),
       filterSearch: true,
       width: 120,
     },
     {
       title: "Đơn vị quản lý F1",
-      dataIndex: "f1",
+      dataIndex: "DonViQuanLy",
       width: 300,
       filters: [
         {
@@ -208,7 +231,7 @@ const ManagerMember = () => {
         },
       ],
       filterMode: "tree",
-      onFilter: (value: any, rec) => rec.f1.indexOf(value) === 0,
+      onFilter: (value: any, rec) => rec.DonViQuanLy.indexOf(value) === 0,
     },
     {
       title: "CLB trực thuộc F2",
@@ -308,7 +331,7 @@ const ManagerMember = () => {
         <span>
           <button
             className={styles.btnView}
-            onClick={() => navigate("/thong-tin-ho-so")}
+            onClick={() => navigate(`/thong-tin-ho-so/${record.id}`)}
           >
             Xem
           </button>
@@ -322,7 +345,7 @@ const ManagerMember = () => {
           {record.status === "Chờ duyệt" ? (
             <Popconfirm
               title="Xóa"
-              description={`Bạn có muốn xóa ${record.name} không`}
+              description={`Bạn có muốn cập nhật ${record.name} không`}
               onConfirm={() => confirmUpdate(record.id)}
               onCancel={cancel}
               okText="Có"
@@ -396,13 +419,13 @@ const ManagerMember = () => {
       title: "Tỉnh",
       dataIndex: "address",
       filters: filterProivce,
-      onFilter: (value: any, record) => record.city.startsWith(value),
+      onFilter: (value: any, record) => record.address.startsWith(value),
       filterSearch: true,
       width: 120,
     },
     {
       title: "Đơn vị quản lý F1",
-      dataIndex: "f1",
+      dataIndex: "DonViQuanLy",
       width: 300,
       filters: [
         {
@@ -431,7 +454,7 @@ const ManagerMember = () => {
         },
       ],
       filterMode: "tree",
-      onFilter: (value: any, rec) => rec.f1.indexOf(value) === 0,
+      onFilter: (value: any, rec) => rec.DonViQuanLy.indexOf(value) === 0,
     },
     {
       title: "CLB trực thuộc F2",
@@ -517,7 +540,7 @@ const ManagerMember = () => {
         <span>
           <Button
             className={styles.btnView}
-            onClick={() => navigate("/thong-tin-ho-so")}
+            onClick={() => navigate(`/thong-tin-ho-so/${record.id}`)}
           >
             Xem
           </Button>
@@ -658,7 +681,7 @@ const ManagerMember = () => {
           <Table
             rowSelection={rowSelection}
             columns={isMobile ? columnsMobile : columnsDesktop}
-            dataSource={allMember?.data}
+            dataSource={dataFind.length > 0 ? dataFind : allMember?.data}
             locale={customLocale}
             scroll={{
               x: "max-content",

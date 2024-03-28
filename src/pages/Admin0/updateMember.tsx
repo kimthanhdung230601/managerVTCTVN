@@ -20,7 +20,7 @@ import moment from "moment";
 
 interface DataType {
   key: any;
-  member_id: number;
+  code: number;
   level?: string;
   name?: string;
   achie?: string;
@@ -31,8 +31,8 @@ interface DataType {
 const columnsLevel: TableProps<DataType>["columns"] = [
   {
     title: "Mã định danh",
-    dataIndex: "id",
-    key: "id",
+    dataIndex: "code",
+    key: "code",
   },
   // {
   //   title: "Họ tên",
@@ -53,8 +53,8 @@ const columnsLevel: TableProps<DataType>["columns"] = [
 const columnsAchie: TableProps<DataType>["columns"] = [
   {
     title: "Mã định danh",
-    dataIndex: "member_id",
-    key: "member_id",
+    dataIndex: "code",
+    key: "code",
   },
   // {
   //   title: "Họ tên",
@@ -88,12 +88,12 @@ const UpdateMember = () => {
     setLoading(true);
     const inputData = values.dataLevel;
     const separatedData = inputData.split("\n").map((item: any) => {
-      const [id, level, time] = item
+      const [code, level, time] = item
         .split("|")
         .map((str: string) => str.trim());
       return {
-        // key: member_id,
-        id,
+        // key: code,
+        code,
         level,
         time: moment(time, "DD/MM/YYYY").format("YYYY/MM/DD"),
       };
@@ -107,7 +107,7 @@ const UpdateMember = () => {
     const payload = {
       type: "members",
       data: dataLevel?.map((item: any) => ({
-        id: item.id,
+        code: item.code,
         level: item.level,
         time: item.time,
       })),
@@ -124,11 +124,11 @@ const UpdateMember = () => {
     setLoadingAchie(true);
     const inputData = values.dataAchie;
     const separatedData = inputData?.split("\n").map((item: any) => {
-      const [member_id, name_achievements, prize, time] = item
+      const [code, name_achievements, prize, time] = item
         .split("|")
         .map((str: string) => str.trim());
       return {
-        member_id,
+        code,
         name_achievements,
         prize,
         time: moment(time, "DD/MM/YYYY").format("YYYY/MM/DD"),
@@ -146,7 +146,7 @@ const UpdateMember = () => {
         name_achievements: item.name_achievements,
         prize: item.prize,
         time: item.time,
-        member_id: item.member_id,
+        code: item.code,
       })),
     };
     const res = await updateMultiAchie(payload);
@@ -169,8 +169,8 @@ const UpdateMember = () => {
             </div>
             <p className={styles.note}>
               Lưu ý: Nhập đúng định dạng. Các thành viên viết xuống dòng.{" "}
-              <br></br> Ví dụ:<br></br> 1|HLV 1 đẳng|24/12/2024 <br></br> 5|Võ
-              sinh cấp 1|03/07/2024
+              <br></br> Ví dụ:<br></br> VCT00000001|HLV 1 đẳng|24/12/2024{" "}
+              <br></br> VCT00000001|Võ sinh cấp 1|03/07/2024
             </p>
             <Form
               form={form}
@@ -217,8 +217,8 @@ const UpdateMember = () => {
             </div>
             <p className={styles.note}>
               Lưu ý: Nhập đúng định dạng. Các thành viên viết xuống dòng.{" "}
-              <br></br> Ví dụ: <br></br> 1|Giải trẻ|Vàng|30/12/2023 <br></br>{" "}
-              2|Giải trẻ|Vàng|01/04/2024
+              <br></br> Ví dụ: <br></br> VCT00000001|Giải trẻ|Vàng|30/12/2023{" "}
+              <br></br> VCT00000001|Giải trẻ|Vàng|01/04/2024
             </p>
             <Form
               form={formAchie}
