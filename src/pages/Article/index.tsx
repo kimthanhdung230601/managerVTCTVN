@@ -1,10 +1,36 @@
 import { Col, Image, Row } from 'antd'
-import React from 'react'
+import {useEffect} from 'react'
+import { useQuery } from 'react-query'
+import { useParams } from 'react-router'
+import { Link } from 'react-router-dom'
+import { getListNews, getNewsbyID } from '../../api/f0'
 import Footer from '../../components/Footer'
 import Header from '../../components/Header'
 import styles from "./Style.module.scss"
 export default function Article() {
-    document.title = "Khai mạc Giải vô địch Võ cổ truyền quốc gia lần thứ 32";
+    document.title = "Bài viết"
+    const id = useParams()
+    const {data} = useQuery(["new", id.id], ()=> getNewsbyID(id.id ? id.id : ""), {
+        enabled: id.id !== undefined,
+        onSuccess: (data) => {
+            if(data.status === "success") {
+                const content = document.getElementById("content")
+                
+                if(content){
+                    content.innerHTML = data.data[0].content || ""
+                    const imgElements = document.querySelectorAll("#content img");
+                    imgElements.forEach(img => {
+                    img.classList.add(`${styles.imgWrap}`);
+                });
+                } 
+            }
+        }
+
+    })
+    const {data: listNews} = useQuery(["listNews"], () => getListNews("1","0"))
+    useEffect(()=> {
+        document.title = data?.data[0].title
+    }, [data])
   return (
     <div>
         <Header />
@@ -15,28 +41,14 @@ export default function Article() {
                         BÀI VIẾT GẦN ĐÂY
                     </div>
                     <div className={styles.title}>
-                        KHAI MẠC GIẢI VÔ ĐỊCH VÕ CỔ TRUYỀN QUỐC GIA LẦN THỨ 32
+                        {data?.data[0].title}
                     </div>
                     <div className={styles.border}></div>
                     <div className={styles.time}>
-                        ĐĂNG NGÀY 2/10/2023 BY ADMIN
+                        ĐĂNG NGÀY {data?.data[0].time} BY ADMIN
                     </div>
-                    <div className={styles.article}>
-                        <Image src={require("../../assets/image/post.jpg")} preview={false} className={styles.img}/>
-                        <div className={styles.note}>Hình ảnh khai mạc giải đấu</div>
-                        <div className={styles.paragraph}>Ngày 22/10, tại tỉnh Nam Định, Cục Thể dục Thể thao (Bộ Văn hoá, Thể thao và Du lịch) phối hợp Sở Văn hoá, 
-                            Thể thao và Du lịch tỉnh Nam Định tổ chức khai mạc Giải vô địch Võ cổ truyền quốc gia lần thứ 32 năm 2023.
-                        </div>
-                        <div className={styles.paragraph}>
-                            Ông Nguyễn Tân Anh, Phó Giám đốc Sở Văn hoá, Thể thao và Du lịch tỉnh Nam Định, Trưởng Ban tổ chức giải cho biết, Giải Vô địch Võ cổ truyền quốc gia lần thứ 32 là cơ hội,
-                             điều kiện để các vận động viên thi đấu cọ sát, nâng cao trình độ chuyên môn, qua đó tuyển chọn những vận động viên tài năng bổ sung cho đội tuyển quốc gia tham dự các giải đấu lớn sắp tới. Giải cũng tạo động lực đẩy mạnh phát triển phong trào tập luyện, thi đấu môn võ cổ truyền rộng khắp trên mọi miền Tổ quốc.
-                        </div>
-                        <Image src={require("../../assets/image/image.jpg")} preview={false} className={styles.img}/>
-                        <div className={styles.note}>Hình ảnh khai mạc giải đấu</div>
-                        <div className={styles.paragraph}>
-                        Giải đấu năm nay quy tụ 385 vận động viên đến từ 32 đoàn trong nước có phong trào tập luyện và thi đấu môn Võ cổ truyền Việt Nam phát triển như: Bình Định, Bình Dương, Bà Rịa-Vũng Tàu, Quân Đội, Thái Nguyên, Nam Định… Các vận động viên sẽ tham gia tranh tài ở 2 nội dung thi quyền biểu diễn và đối kháng. Trong đó, tại nội dung đối kháng, các vận động viên sẽ tranh tài từ hạng cân 50kg đến trên 90kg nam và từ hạng cân 48kg đến trên 75kg đối với nữ.
-                        Giải Vô địch Võ cổ truyền quốc gia lần thứ 32 dự kiến sẽ kết thúc vào ngày 29/10.
-                        </div>
+                    <div className={styles.article} id="content">
+                        
                     </div>
                     <div className={styles.author}>
                         <Image src={require("../../assets/image/user.jpg")} preview={false} className={styles.authorImg}/>
@@ -47,9 +59,16 @@ export default function Article() {
                     <div className={styles.orther}>Các bài viết khác</div>
                     
                     <ul className={styles.articleList}>
-                        <li className={styles.post}>Khai mạc Giải Vô địch Võ cổ truyền quốc gia lần thứ 32</li>
-                        <li className={styles.post}>Khai mạc Giải Vô địch Võ cổ truyền quốc gia lần thứ 31</li>
-                        <li className={styles.post}>Tìm giải pháp đưa Võ cổ truyền Việt Nam ra thế giới</li>
+                        {
+                            listNews?.data.map((item: any, index: number) => {
+                                return (
+                                    <Link to={`/bai-viet/${item.id}`}>
+                                        <li className={styles.post}>{item.title}</li>
+                                    </Link>
+                                )
+                            })
+                        }
+                        
                     </ul>
                 </Col>
             </Row>

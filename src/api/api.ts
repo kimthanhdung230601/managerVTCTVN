@@ -18,9 +18,9 @@ export const logout = () => {
 axiosInstance.interceptors.request.use(
   (config) => {
     const token = Cookies.get("token");
-    config.headers.Authorization = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiMTkiLCJwZXJtaXNzaW9uIjoiMSIsImlkX2NsdWIiOiI4IiwicGVuZGluZyI6IjEiLCJtYW5hZ2UiOiJIXHUwMGUwIE5cdTFlZDlpIiwiZXhwIjoxNzExODI0NjI2fQ.XTUezqZ_NNofEi8VmlBEVq8lsOuOxhWTNZd9ERzbxX0'
+    // config.headers.Authorization = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiMTkiLCJwZXJtaXNzaW9uIjoiMCIsImlkX2NsdWIiOiI4IiwicGVuZGluZyI6IjAiLCJtYW5hZ2UiOiJHaVx1MDBlMW8gRFx1MWVlNWMiLCJleHAiOjE3MTE5NzIwNjN9.H2Ooe25lkOeVIuMhPBM-BwgckVFKR2yquUxAcF2T2BQ'
     if (token) {
-      config.headers.Authorization = `${token}`;
+       config.headers.Authorization = `${token}`;
     }
     config.headers.url = window.location.href;
     return config;

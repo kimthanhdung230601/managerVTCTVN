@@ -1,26 +1,53 @@
-import { Col, Image, Row } from 'antd'
-import React from 'react'
+import { Col, Image, Pagination, Row, Spin } from 'antd'
+import React, { useEffect, useState } from 'react'
 import Header from '../../components/Header'
 import styles from "./Style.module.scss"
 import {FileTextOutlined, PlusOutlined} from'@ant-design/icons';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Footer from '../../components/Footer';
+import { useQuery } from 'react-query';
+import { getListNews } from '../../api/f0';
+import Cookies from 'js-cookie';
+import CryptoJS from 'crypto-js';
+
+const secretKey = process.env.REACT_APP_SECRET_KEY || "";
+const isAdmin = (): string => {
+    const isAdminn = Cookies.get("permission") || ""
+    const bytes = CryptoJS.AES.decrypt(isAdminn, secretKey);
+    const permission = bytes.toString(CryptoJS.enc.Utf8);
+    return permission;
+}
 export default function News() {
     document.title = "Tin tức";
+    const navigate = useNavigate()
+    const param = new URLSearchParams(useLocation().search)
+    const [currentPage, setCurrentPage] = useState(param.get("page") || "1")
+    const {data, isFetching} = useQuery(["news", currentPage], () => getListNews(currentPage, "0"))
+    const onChange = (page: number) => {
+        navigate(`/tin-tuc?page=${page}`)
+        setCurrentPage(page.toString())
+    }
+    console.log(data)
   return (
     <>
         <Header />
         <div className={styles.wrap}>
             <div className={styles.title}>
-                TIN TỨC
+                 TIN TỨC
             </div>
-            <div className={styles.newPostWrap}>
-                <Link to={"/dang-bai"} >
-                    <button className={styles.newPostBtn}>
-                    <PlusOutlined style={{marginRight: "6px"}}/> Tạo bài viết
-                    </button>
-                </Link>  
-            </div>
+            {
+                isAdmin() === "0" ? 
+                <div className={styles.newPostWrap}>
+                    <Link to={"/dang-bai"} >
+                        <button className={styles.newPostBtn}>
+                        <PlusOutlined style={{marginRight: "6px"}}/> Tạo bài viết
+                        </button>
+                    </Link>  
+                </div>
+                : 
+                null
+            }
+            
             
             <div className={styles.postWrap}>
                 <div className={styles.postLabel}>
@@ -28,48 +55,53 @@ export default function News() {
                     TIN TỨC GẦN ĐÂY
                 </div>
                 <div className={styles.postList}>
-                    <Row gutter={40} className={styles.post} justify="center">
-                        <Col className={`gutter-row`} xxl={8} lg={8} md={8} >
-                            <Link to={"/bai-viet"} className={styles.imgWrap}>
-                                <Image src={require("../../assets/image/post.jpg")} preview={false} className={styles.postImg}/>
-                            </Link>
-                        </Col>
-                        <Col className='gutter-row' xxl={16} lg={16} md={16} style={{padding:"20px 10px"}}>
-                            <Link to={"/bai-viet"}>
-                                <div className={styles.postTitle}>Khai mạc giải vô địch các Câu lạc bộ Võ cổ truyền quốc gia lần thứ 32 năm 2023</div>
-                            </Link>
-                            <div className={styles.postContent}>Tối 21/8, tại Nhà thi đấu Thể dục thể thao tỉnh Bà Rịa-Vũng Tàu (thành phố Vũng Tàu), Sở Văn hóa, Thể thao tỉnh Bà Rịa-Vũng Tàu phối hợp cùng Cục Thể dục, Thể thao, Liên đoàn Võ thuật Việt Nam tổ chức khai mạc Giải vô địch các Câu lạc bộ Võ cổ truyền toàn quốc lần thứ XII.</div>
-                            <div className={styles.time}>Đăng ngày 2/10/2023</div>
-                        </Col>
-                    </Row>
-                    <Row gutter={40} className={styles.post} justify="center">
-                        <Col className={`gutter-row`} xxl={8} lg={8} md={8} >
-                            <Link to={"/bai-viet"} className={styles.imgWrap}>
-                                <Image src={require("../../assets/image/post.jpg")} preview={false} className={styles.postImg}/>
-                            </Link>
-                        </Col>
-                        <Col className='gutter-row' xxl={16} lg={16} md={16} style={{padding:"20px 10px"}}>
-                            <Link to={"/bai-viet"}>
-                                <div className={styles.postTitle}>Khai mạc giải vô địch các Câu lạc bộ Võ cổ truyền quốc gia lần thứ 32 năm 2023</div>
-                            </Link>
-                            <div className={styles.postContent}>Tối 21/8, tại Nhà thi đấu Thể dục thể thao tỉnh Bà Rịa-Vũng Tàu (thành phố Vũng Tàu), Sở Văn hóa, Thể thao tỉnh Bà Rịa-Vũng Tàu phối hợp cùng Cục Thể dục, Thể thao, Liên đoàn Võ thuật Việt Nam tổ chức khai mạc Giải vô địch các Câu lạc bộ Võ cổ truyền toàn quốc lần thứ XII.</div>
-                            <div className={styles.time}>Đăng ngày 2/10/2023</div>
-                        </Col>
-                    </Row>
-                    <Row gutter={40} className={styles.post} justify="center">
-                        <Col className={`gutter-row`} xxl={8} lg={8} md={8} >
-                            <Link to={"/bai-viet"} className={styles.imgWrap}>
-                                <Image src={require("../../assets/image/post.jpg")} preview={false} className={styles.postImg}/>
-                            </Link>
-                        </Col>
-                        <Col className='gutter-row' xxl={16} lg={16} md={16} style={{padding:"20px 10px"}}>
-                            <Link to={"/bai-viet"}>
-                                <div className={styles.postTitle}>Khai mạc giải vô địch các Câu lạc bộ Võ cổ truyền quốc gia lần thứ 32 năm 2023</div>
-                            </Link>
-                            <div className={styles.postContent}>Tối 21/8, tại Nhà thi đấu Thể dục thể thao tỉnh Bà Rịa-Vũng Tàu (thành phố Vũng Tàu), Sở Văn hóa, Thể thao tỉnh Bà Rịa-Vũng Tàu phối hợp cùng Cục Thể dục, Thể thao, Liên đoàn Võ thuật Việt Nam tổ chức khai mạc Giải vô địch các Câu lạc bộ Võ cổ truyền toàn quốc lần thứ XII.</div>
-                            <div className={styles.time}>Đăng ngày 2/10/2023</div>
-                        </Col>
-                    </Row>
+                    {
+                        isFetching ? <Spin style={{width: "100%", textAlign: "center"}} size='large'/>
+                        :
+                        <>
+                            { 
+                                data?.total_products === 0 || data.status === "failed" ? 
+                                    <div style={{width: "100%", marginTop: "40px", textAlign: "center", fontSize: "18px", fontWeight: "500"}}>Chưa có bài viết nào </div>
+                                :
+                                <>
+                               { 
+                                data?.data.map((item: any, index: number) => {
+                                const img = /<img.*?src="(.*?)".*?>/;
+                                const match = img.exec(item.content)
+                                const imageLink = match ? match[1] : null;
+                                const p = /<p>(.*?)<\/p>/;
+                                const graph = p.exec(item.content)
+                                const dataContent = graph ? graph[1]: null
+                                return (
+                                    <Row gutter={40} className={styles.post} justify="center">
+                                        <Col className={`gutter-row`} xxl={8} lg={8} md={8} >
+                                            <Link to={`/bai-viet/${item.id}`} className={styles.imgWrap}>
+                                                <Image src={imageLink ? imageLink : require("../../assets/image/new.png")} preview={false} className={styles.postImg}/>
+                                            </Link>
+                                        </Col>
+                                        <Col className='gutter-row' xxl={16} lg={16} md={16} style={{padding:"20px 10px"}}>
+                                            <Link to={`/bai-viet/${item.id}`}>
+                                                <div className={styles.postTitle}>{item.title}</div>
+                                            </Link>
+                                            <div className={styles.postContent}>{dataContent}</div>
+                                            <div className={styles.time}>Đăng ngày {" "} {item.time}</div>
+                                        </Col>
+                                    </Row>
+                                )   
+                                })
+                                }
+    
+                            <Pagination 
+                                defaultCurrent={parseInt(currentPage, 10)}
+                                total={data?.total_products} 
+                                pageSize={12}
+                                onChange={onChange}
+                                style={{textAlign: "center", marginTop: "20px"}}
+                                />
+                            </>
+                            }
+                        </>
+                    }
                 </div>
             </div>
         </div>

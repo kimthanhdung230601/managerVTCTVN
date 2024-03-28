@@ -123,6 +123,7 @@ export default function Signup() {
             value.image_ref.file.originFileObj as File,
             CryptoJS.AES.encrypt(value.image_ref.file.name, randomKey).toString()
         );
+        // console.log( value.image_certificate.file)
         signupMutation.mutate(formdata)
     }
     const props = {
@@ -184,7 +185,7 @@ export default function Signup() {
                     wrapperCol={{ span: 24 }}
                     className={styles.formItem}
                     >
-                    <Input prefix={<SolutionOutlined  className={styles.icon} />} placeholder="CLB (Môn Phái, Võ Phái, Võ Đường, CLB,...)" className={styles.formInput}/>
+                    <Input prefix={<SolutionOutlined  className={styles.icon} />} placeholder="CLB, Môn Phái, Võ Phái, Võ Đường, Trung Tâm)" className={styles.formInput}/>
                 
                 </Form.Item>
                 <Form.Item
@@ -199,7 +200,7 @@ export default function Signup() {
                 name="birthday"
                 rules={[{ required: true, message: 'Vui lòng nhập ngày sinh!' }]}
                 wrapperCol={{ span: 24 }}
-                className={styles.formItem}
+                className={`${styles.formItem} ${styles.formDateWrap}` }
                 >
                     <DatePicker size='large' placeholder='Ngày sinh' className={styles.formDate}/>
                 </Form.Item>

@@ -1,6 +1,6 @@
 import Search, { SearchProps } from 'antd/es/input/Search';
 import { ColumnsType } from 'antd/es/table';
-import { message, Table } from "antd";
+import { message, Table, Spin } from "antd";
 import React, { useState } from 'react'
 import styles from "./Style.module.scss";
 import { useLocation, useNavigate } from 'react-router';
@@ -36,7 +36,7 @@ export default function ManageClub() {
     const [currentPage2, setCurrentPage2] = useState(searchURL.get("page") || "1");
     const [selectedRowKeysCLB, setSelectedRowKeysCLB] = useState<React.Key[]>([]);
     const [clubList, setClubList] = useState<DataType_CLB[]>([])
-    const {data: clubListData} = useQuery(['club'], () => getListClub(), {
+    const {data: clubListData, isFetching} = useQuery(['club'], () => getListClub(), {
       onSettled: (data) => {
         if(data.status === "failed"){
           message.warning(data.data)
@@ -153,11 +153,15 @@ export default function ManageClub() {
     
   return (
     <>
+    {
+        isFetching ? <div className={styles.fetching}><Spin size='large' /></div>
+        :
+        <>
         <div className={styles.tableTop}>
         <div>
             {hasSelected
             ? `Đã chọn ${selectedRowKeysCLB.length} hồ sơ`
-            : "Tổng số 7 hồ sơ"}
+            : `Tổng số ${clubListData?.status === "success" ? clubListData?.total_products: "0"} hồ sơ`}
         </div>
         <div className={styles.filter}>
         <Search
@@ -180,10 +184,12 @@ export default function ManageClub() {
             onChange: onPaginationChange2,
             pageSize: 10,
             defaultCurrent: 1,
-            total: 7,
+            total:clubListData?.status === "success" ? clubListData?.total_products : null,
         }}
         className={styles.table}
         />{" "}
+         </>
+      }
     </>
   )
 }
