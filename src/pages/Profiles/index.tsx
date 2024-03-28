@@ -196,13 +196,8 @@ const Profiles = () => {
       values.avatar[0].originFileObj as File,
       CryptoJS.AES.encrypt(values.avatar[0].name, randomKey).toString()
     );
-    // formdata.append(
-    //   "image_certificate",
-    //   values.image_certificate[0].originFileObj
-    // );
-    // formdata.append("avatar", values.avatar[0].originFileObj);
 
-    mutation.mutate(formdata);
+    addMemberMutation.mutate(formdata);
   };
   return (
     <>

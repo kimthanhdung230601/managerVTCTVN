@@ -29,6 +29,7 @@ import { deleteMemberF3, getListMemberF3 } from "../../api/f2";
 import moment from "moment";
 import CryptoJS from "crypto-js";
 import Cookies from "js-cookie";
+import { logout } from "../../api/api";
 const secretKey = process.env.REACT_APP_SECRET_KEY as string;
 
 interface ManagerMemberProps {}
@@ -71,20 +72,41 @@ const customLocale = {
 const ManagerMemberTwo = () => {
   const club = CryptoJS.AES.decrypt(Cookies.get("club") as string, secretKey);
   const decryptedClub = club.toString(CryptoJS.enc.Utf8);
-
+  const permission = CryptoJS.AES.decrypt(Cookies.get("permission") as string, secretKey);
+  const decryptedPerrmission = permission.toString(CryptoJS.enc.Utf8);
+  const currentURL = window.location.href;
+  var urlParams = new URLSearchParams(currentURL.split("?")[1]);
+  var clubValue = urlParams.get("club");
+  // const [clubSelected, setClubSelected] = useState<any>();
+  // useEffect(() => {
+  //   decryptedClub == "2"
+  //     ? setClubSelected(decryptedClub)
+  //     : setClubSelected(clubValue);
+  // }, [decryptedClub]);
+  // console.log("clubSelected", clubSelected);
   const {
     data: listF3,
     refetch: refetchListF3,
     isFetching,
-  } = useQuery("listF3", () => getListMemberF3(decryptedClub));
-  const filtersListNote = listF3?.list_note.map((item: any, index: any) => ({
-    text: item.note,
-    value: item.note,
-  }));
-  const filtersDetail = listF3?.list_detail.map((item: any, index: any) => ({
-    text: item.detail,
-    value: item.detail,
-  }));
+  } = useQuery(
+    "listF3",
+    decryptedPerrmission == "2"
+      ? () => getListMemberF3(decryptedClub)
+      : () => getListMemberF3(clubValue)
+  );
+  var filtersListNote,
+    filtersDetail = "";
+  if (listF3?.status === "success") {
+    filtersListNote = listF3?.list_note.map((item: any, index: any) => ({
+      text: item.note,
+      value: item.note,
+    }));
+    filtersDetail = listF3?.list_detail.map((item: any, index: any) => ({
+      text: item.detail,
+      value: item.detail,
+    }));
+  }
+
   const [id, setID] = useState();
   const [note, setNote] = useState("");
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
@@ -100,11 +122,11 @@ const ManagerMemberTwo = () => {
   const hasSelected = selectedRowKeys.length > 0;
   const onSearch: SearchProps["onSearch"] = (value, _e, info) =>
     console.log(info?.source, value);
-  const deleteMember = async (id: any) => {};
-  const confirm = async (value: any) => {
+
+  const confirmDelete = async (value: any) => {
     // console.log(e);
     const payload = {
-      id: id,
+      id: value,
     };
     const res = await deleteMemberF3(payload);
     message.success("Yêu câù đã được gửi đến LDVTCT Việt Nam");
@@ -265,7 +287,7 @@ const ManagerMemberTwo = () => {
             <Popconfirm
               title="Xóa"
               description={`Bạn có muốn xóa thành viên ${record.name}`}
-              onConfirm={() => confirm(record?.id)}
+              onConfirm={() => confirmDelete(record?.id)}
               onCancel={cancel}
               okText="Có"
               cancelText="Không"
@@ -321,22 +343,40 @@ const ManagerMemberTwo = () => {
           </span>
         </div>
         <Spin spinning={isFetching}>
-          <Table
-            rowSelection={rowSelection}
-            columns={columns}
-            dataSource={listF3?.data}
-            locale={customLocale}
-            scroll={{ x: 1300 }}
-            style={{ overflowX: "auto" }}
-            pagination={false}
-          />
-          <Pagination
-            defaultCurrent={1}
-            onChange={onChangePage}
-            total={listF3?.total_products}
-            pageSize={10}
-            style={{ margin: "1vh 0", float: "right" }}
-          />
+          {listF3?.status === "success" ? (
+            <>
+              {" "}
+              <Table
+                rowSelection={rowSelection}
+                columns={columns}
+                dataSource={listF3?.data}
+                locale={customLocale}
+                scroll={{ x: 1300 }}
+                style={{ overflowX: "auto" }}
+                pagination={false}
+              />
+              <Pagination
+                defaultCurrent={1}
+                onChange={onChangePage}
+                total={listF3?.total_products}
+                pageSize={10}
+                style={{ margin: "1vh 0", float: "right" }}
+              />
+            </>
+          ) : (
+            <>
+              {" "}
+              <Table
+                rowSelection={rowSelection}
+                columns={columns}
+                dataSource={[]}
+                locale={customLocale}
+                scroll={{ x: 1300 }}
+                style={{ overflowX: "auto" }}
+                pagination={false}
+              />
+            </>
+          )}
         </Spin>
       </div>
       <ModalUpdateNote
