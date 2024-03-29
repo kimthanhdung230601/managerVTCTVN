@@ -17,10 +17,12 @@ import AdminTwo from "../pages/Admin2";
 import Account from "../pages/Account";
 import ChangePassword from "../pages/ChangePassword";
 import CryptoJS from "crypto-js";
+import UpdateProfiles from "../pages/UpdateF0";
 const Wrapper = () => {
   return (
     <>
       <Routes>
+
         <Route path="/" element={<Home />}></Route>
         <Route path="/dang-nhap" element={<Login />}></Route>
         <Route path="/dang-ky" element={<Signup />}></Route>
@@ -45,6 +47,7 @@ const Wrapper = () => {
         ></Route>
         <Route path="/them-hoi-vien" element={<Profiles />}></Route>
         <Route path={`Admin0/:key`} element={<Admin />}></Route>
+        <Route path={`/chinh-sua-thanh-vien/:key`} element={<UpdateProfiles/>}></Route>
         <Route path="/Admin0/:key/UpdateMember" element={<UpdateMember />}></Route>
         <Route path="/Admin2/" element={<AdminTwo />}></Route>
       </Routes>

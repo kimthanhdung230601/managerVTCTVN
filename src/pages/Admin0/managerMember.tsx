@@ -79,12 +79,13 @@ const ManagerMember = () => {
     text: item.note,
     value: item.note,
   }));
+  console.log("data: ", allMember);
+
   const navigate = useNavigate();
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const isMobile = useMediaQuery({ maxWidth: 768 });
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-    // console.log('selectedRowKeys changed: ', newSelectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
   };
   const hasSelected = selectedRowKeys.length > 0;
@@ -331,7 +332,7 @@ const ManagerMember = () => {
         <span>
           <button
             className={styles.btnView}
-            onClick={() => navigate(`/thong-tin-ho-so/${record.id}`)}
+            onClick={() => navigate(`/chinh-sua-thanh-vien/${record.id}`)}
           >
             Xem
           </button>
