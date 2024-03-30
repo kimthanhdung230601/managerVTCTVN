@@ -9,6 +9,7 @@ import NotFoundPage from "../pages/404";
 import { RouteList } from './configRoute';
 import { isAdmin } from '../api/ApiUser';
 
+
 export default function Wrapper() {
   const navigate = useNavigate()
   const location = useLocation()

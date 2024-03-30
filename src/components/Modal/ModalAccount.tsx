@@ -11,19 +11,26 @@ import {
   UploadFile,
   UploadProps,
   message,
+  Spin,
 } from "antd";
 import styles from "./styles.module.scss";
 import { useForm } from "antd/es/form/Form";
 import type { DatePickerProps } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { Option } from "antd/es/mentions";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { province } from "../../until/until";
+import { useMutation, useQuery } from "react-query";
+import { getDetailF2, getDetailF3, updateUser } from "../../api/f0";
+import CryptoJS from "crypto-js";
 
 interface ModalAccountProps {
   isModalOpen: any;
   handleOk: () => void;
   handleCancel: () => void;
+  id: any;
+  setId: Function;
+  refetchAccountTable: () => void;
 }
 const { TextArea } = Input;
 const getBase64 = (file: any): Promise<string> =>
@@ -37,19 +44,21 @@ const ModalAccount = ({
   isModalOpen,
   handleCancel,
   handleOk,
+  refetchAccountTable,
+  id,
 }: ModalAccountProps) => {
   const [form] = useForm();
   const [previewOpen1, setPreviewOpen1] = useState(false);
   const [previewImage1, setPreviewImage1] = useState("");
   const [previewTitle1, setPreviewTitle1] = useState("");
-  const [fileList1, setFileList1] = useState<UploadFile[]>([]);
+  // const [fileList1, setFileList1] = useState<UploadFile[]>([]);
   const [previewOpen2, setPreviewOpen2] = useState(false);
   const [previewImage2, setPreviewImage2] = useState("");
   const [previewTitle2, setPreviewTitle2] = useState("");
-  const [fileList2, setFileList2] = useState<UploadFile[]>([]);
+  // const [fileList2, setFileList2] = useState<UploadFile[]>([]);
   const handleCancel1 = () => setPreviewOpen1(false);
   const handleCancel2 = () => setPreviewOpen2(false);
-  const handlePreview1 = async (file: UploadFile) => {
+  const handlePreviewCertificate = async (file: UploadFile) => {
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj);
     }
@@ -59,9 +68,8 @@ const ModalAccount = ({
       file.name || file.url!.substring(file.url!.lastIndexOf("/") + 1)
     );
   };
-  const handleChange1: UploadProps["onChange"] = ({ fileList: newFileList }) =>
-    setFileList1(newFileList);
-  const handlePreview2 = async (file: UploadFile) => {
+
+  const handlePreviewRef = async (file: UploadFile) => {
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj);
     }
@@ -71,8 +79,26 @@ const ModalAccount = ({
       file.name || file.url!.substring(file.url!.lastIndexOf("/") + 1)
     );
   };
-  const handleChange2: UploadProps["onChange"] = ({ fileList: newFileList }) =>
-    setFileList2(newFileList);
+  // const handleChangeCertificate: UploadProps["onChange"] = ({
+  //   fileList: newFileList,
+  // }) => setFileListCertificate(newFileList);
+  // const handleChangeListRef: UploadProps["onChange"] = ({
+  //   fileList: newFileList,
+  // }) => setFileListRef(newFileList);
+  // const onChangeCertificate = ({
+  //   fileList: newFileList,
+  // }: {
+  //   fileList: UploadFile[];
+  // }) => {
+  //   setFileListCertificate(newFileList);
+  // };
+  // const onChangeRef = ({
+  //   fileList: newFileList,
+  // }: {
+  //   fileList: UploadFile[];
+  // }) => {
+  //   setFileListRef(newFileList);
+  // };
   const uploadButton = (
     <button style={{ border: 0, background: "none" }} type="button">
       <PlusOutlined />
@@ -103,240 +129,377 @@ const ModalAccount = ({
       }
     },
   };
-  const onFinish = (value: any) => {
-    console.log("value:", value);
-  };
-  const normFile = (e: any) => {
-    if (Array.isArray(e)) {
-      return e;
+
+  //fetchData
+  // const [fileListcCertificate, setFileListCertificate] = useState<any>([]);
+  // const [fileListRef, setFileListRef] = useState<any>([]);
+  const [fileListCertificate, setFileListCertificate] = useState<any>([]);
+  const [fileListRef, setFileListRef] = useState<any>([]);
+  //image
+  const {
+    data: dataDetailF2,
+    isFetching,
+    refetch,
+  } = useQuery("getDetailF2", () => getDetailF2(id), {
+    onSettled: (data) => {
+      form.setFieldValue("name", data.data[0].name);
+      form.setFieldValue("code", data.data[0].code);
+      form.setFieldValue("location", data.data[0].location);
+      form.setFieldValue("NameClb", data.data[0].NameClb);
+      form.setFieldValue("manage", data.data[0].manage);
+      form.setFieldValue("phone", data.data[0].phone);
+      form.setFieldValue("email", data.data[0].email);
+      form.setFieldValue("idcard", data?.data[0].idcard);
+    },
+  });
+  //update
+  const [loading, setLoading] = useState(false);
+  const updateUserMutation = useMutation(
+    async (payload: any) => await updateUser(payload),
+    {
+      onSuccess: (data) => {
+        if (data.status === "success") {
+          message.success("Sửa hội viên thành công!");
+          refetchAccountTable();
+          setLoading(false);
+        } else {
+          message.error("Có lỗi xảy ra, vui lòng thử lại sau!");
+          setLoading(false);
+          console.log("data2", data);
+          // setTimeout(() => {
+          //   window.location.reload();
+          // }, 2000);
+        }
+      },
     }
-    return e?.fileList;
+  );
+  const getSrcFromFile = (file: any) => {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file.originFileObj);
+      reader.onload = () => resolve(reader.result);
+    });
   };
-  const onChange: DatePickerProps["onChange"] = (date, dateString) => {
-    console.log(date, dateString);
+  const [uploadedCertificate, setUploadedCertificate] = useState<any>(null);
+  const [uploadedRef, setUploadedARef] = useState<any>(null);
+  //image ref
+  const onChangeRef = ({
+    fileList: newFileList,
+  }: {
+    fileList: UploadFile[];
+  }) => {
+    // Nếu người dùng đã upload ảnh, lưu trạng thái ảnh đã upload
+    if (newFileList.length > 0) {
+      setUploadedARef(newFileList[0]);
+    } else {
+      setUploadedARef(null);
+    }
+    setFileListRef(newFileList);
   };
+  const onPreviewRef = async (file: any) => {
+    const src = file.url || (await getSrcFromFile(file));
+    const imgWindow = window.open(src);
+    if (imgWindow) {
+      const image = new Image();
+      image.src = src;
+      imgWindow.document.write(image.outerHTML);
+    } else {
+      window.location.href = src;
+    }
+  };
+  //image certificate
+  const onChangeCertificate = ({
+    fileList: newFileList,
+  }: {
+    fileList: UploadFile[];
+  }) => {
+    // Nếu người dùng đã upload ảnh, lưu trạng thái ảnh đã upload
+    if (newFileList.length > 0) {
+      setUploadedCertificate(newFileList[0]);
+    } else {
+      setUploadedCertificate(null);
+    }
+    setFileListCertificate(newFileList);
+  };
+  const onPreviewCertificate = async (file: any) => {
+    const src = file.url || (await getSrcFromFile(file));
+    const imgWindow = window.open(src);
+    if (imgWindow) {
+      const image = new Image();
+      image.src = src;
+      imgWindow.document.write(image.outerHTML);
+    } else {
+      window.location.href = src;
+    }
+  };
+  const onFinish = async (value: any) => {
+    setLoading(true);
+    console.log("value", value);
+
+    const randomKey = CryptoJS.lib.WordArray.random(16).toString();
+    const formdata = new FormData();
+    formdata.append("name", value.name);
+    formdata.append("phone", value.phone);
+    formdata.append("email", value.email);
+    formdata.append("location", value.location);
+    formdata.append("manage", value.manage);
+    //
+    formdata.append("club", dataDetailF2?.data[0].club);
+    formdata.append("id", id);
+    formdata.append("level", dataDetailF2?.data[0].level);
+    formdata.append("idcard", dataDetailF2?.data[0].idcard);
+    formdata.append("idday", dataDetailF2?.data[0].idday);
+    formdata.append("idlocation", dataDetailF2?.data[0].idlocation);
+    formdata.append("birthday", dataDetailF2?.data[0].birthday);
+    formdata.append("permission", dataDetailF2?.data[0].permission);
+    formdata.append("pending", dataDetailF2?.data[0].pending);
+    let certificateFile = null;
+    let avatarFile = null;
+
+    if (uploadedCertificate) {
+      certificateFile = uploadedCertificate.originFileObj as File;
+    } else if (fileListCertificate && fileListCertificate.length > 0) {
+      certificateFile = fileListCertificate[0].originFileObj as File;
+    }
+
+    if (uploadedRef) {
+      avatarFile = uploadedRef.originFileObj as File;
+    } else if (fileListRef && fileListRef.length > 0) {
+      avatarFile = fileListRef[0].originFileObj as File;
+    }
+
+    if (certificateFile) {
+      formdata.append(
+        `image_certificate`,
+        certificateFile,
+        CryptoJS.AES.encrypt(certificateFile.name, randomKey).toString()
+      );
+    }
+
+    if (avatarFile) {
+      formdata.append(
+        `avatar`,
+        avatarFile,
+        CryptoJS.AES.encrypt(avatarFile.name, randomKey).toString()
+      );
+    }
+    // const res = await updateUser(formdata);
+    // console.log("res", res);
+    // setLoading(true);
+
+    updateUserMutation.mutate(formdata);
+  };
+
+  useEffect(() => {
+    refetch();
+    //reload img
+    const imageCertificateFileName = dataDetailF2?.data[0].image_certificate;
+    const avatarFileName = dataDetailF2?.data[0].image_ref;
+    // Nếu tên file tồn tại, tạo đối tượng fileList từ tên file
+    if (imageCertificateFileName && avatarFileName) {
+      const CertificateFileList = [
+        {
+          uid: "-1",
+          name: imageCertificateFileName,
+          status: "done",
+          url: `https://vocotruyen.id.vn/PHP_IMG/${imageCertificateFileName}`,
+        },
+      ];
+      setFileListCertificate(CertificateFileList);
+    }
+    const avatarFileList = [
+      {
+        uid: "-1",
+        name: avatarFileName,
+        status: "done",
+        url: `https://vocotruyen.id.vn/PHP_IMG/${avatarFileName}`,
+      },
+    ];
+    setFileListRef(avatarFileList);
+  }, [id, dataDetailF2?.data[0]]);
 
   //select
   const onChangeSelect = (value: string) => {
     // console.log(`selected ${value}`);
-};
-const onSearchSelect= (value: string) => {
+  };
+  const onSearchSelect = (value: string) => {
     // console.log('search:', value);
-};
+  };
   return (
     <>
       <Modal
-        title="Quản lý tài khoản"
+        title={`Quản lý tài khoản`}
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
         footer={null}
         width={990}
       >
-        <Form layout="vertical" form={form} onFinish={onFinish}>
-          <Row gutter={16}>
-            <Col span={12}>
-              <Form.Item
-                label="Người quản lý"
-                name="Manager"
-                rules={[
-                  { required: true, message: "Vui lòng điền tên quản lý" },
-                ]}
-              >
-                <Input />
-              </Form.Item>
-              <Form.Item
-                label="Tỉnh"
-                name="city"
-                rules={[{ required: true, message: "Vui lòng chọn tỉnh" }]}
-              >
-                <Select
-                      //  menuItemSelectedIcon={<CheckOutlined />}
-                       showSearch
-                       placeholder={"Tỉnh/Thành/Ngành"}
-                       optionFilterProp="children"
-                       onChange={onChangeSelect}
-                       onSearch={onSearchSelect}
-                      //  filterOption={filterOption}
-                       className={styles.select}
-                    >
-                        {province.map((option) => (
-                            <Select.Option key={option} value={option}>
-                            {option}
-                            </Select.Option>))
-                        }
-                    </Select>
-              </Form.Item>
-              <Form.Item
-                label="Căn cước công dân"
-                name="name"
-                rules={[{ required: true, message: "Vui lòng điền account" }]}
-              >
-                <Input />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              {" "}
-              <Form.Item
-                label="Mật khẩu"
-                name="id"
-                rules={[
-                  {
-                    required: true,
-                    message: "Vui lòng điền mật khẩu",
-                  },
-                ]}
-              >
-                <Input />
-              </Form.Item>{" "}
-              <Form.Item
-                label="Đơn vị "
-                name="type"
-                rules={[{ required: true, message: "Vui lòng chọn đơn vị " }]}
-              >
-                <Select>
-                  <Option value="Liên đoàn">Liên đoàn</Option>
-                  <Option value="Hội võ thuật">Hội võ thuật</Option>
-                  <Option value="Công An">Công An</Option>
-                  <Option value="Quân đội">Quân đội</Option>
-                  <Option value="Sở VHTT">Sở VHTT</Option>
-                </Select>
-              </Form.Item>
-              <Form.Item
-                label="Số điện thoại"
-                name="phoneNumber"
-                rules={[
-                  {
-                    required: true,
-                    message: "Vui lòng điền số điện thoại",
-                  },
-                  {
-                    pattern: /^(\+\d{1,3}[- ]?)?\d{10}$/,
-                    message: "Vui lòng điền đúng định dạng số điện thoại",
-                  },
-                ]}
-              >
-                <Input />
-              </Form.Item>
-            </Col>
-          </Row>
-          <Row gutter={16}>
-            <Col span={12}>
-              <Form.Item
-                label="Email"
-                name="email"
-                rules={[
-                  { required: true, message: "Vui lòng điền email" },
-                  {
-                    type: "email",
-                    message: "Định dạng email không đúng",
-                  },
-                ]}
-              >
-                <Input />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item
-                label="CLB"
-                name="Câu lạc bộ"
-                rules={[
-                  {
-                    required: true,
-                    message: "Vui lòng điền câu lạc bộ",
-                  },
-                ]}
-              >
-                <Input />
-              </Form.Item>
-            </Col>
-          </Row>
-          <div className={styles.formImage}>
-            <div style={{ height: "100%" }}>
-              <div style={{ textAlign: "center", marginBottom: "10px" }}>
-                Ảnh Bằng cấp hiện tại
-              </div>
-              <Form.Item
-                name="image1"
-                rules={[{ required: true, message: "Vui lòng tải ảnh lên" }]}
-                wrapperCol={{ span: 24 }}
-                className={`${styles.uploadForm} ${styles.formItem}`}
-              >
-                <Upload
-                  {...props}
-                  listType="picture-card"
-                  fileList={fileList1}
-                  onPreview={handlePreview1}
-                  onChange={handleChange1}
-                  className={styles.uploadImg}
+        <Spin spinning={isFetching}>
+          <Form layout="vertical" form={form} onFinish={onFinish}>
+            <Row gutter={16}>
+              <Col span={12}>
+                <Form.Item
+                  label="Họ và tên"
+                  name="name"
+                  rules={[
+                    { required: true, message: "Vui lòng điền tên quản lý" },
+                  ]}
                 >
-                  {fileList1.length >= 1 ? null : uploadButton}
-                </Upload>
-              </Form.Item>
-              <Modal
-                open={previewOpen1}
-                title={previewTitle1}
-                footer={null}
-                onCancel={handleCancel1}
-              >
-                <img
-                  alt="degree"
-                  style={{ width: "100%" }}
-                  src={previewImage1}
-                />
-              </Modal>
-            </div>
+                  <Input />
+                </Form.Item>
+                {/* CCCD */}{" "}
+                <Form.Item
+                  label="Căn cước công dân"
+                  name="idcard"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Vui lòng điền mật khẩu",
+                    },
+                  ]}
+                >
+                  <Input disabled />
+                </Form.Item>{" "}
+                <Form.Item
+                  label="Tỉnh/Thành/Ngành"
+                  name="location"
+                  rules={[{ required: true, message: "Vui lòng chọn tỉnh" }]}
+                >
+                  <Select
+                    //  menuItemSelectedIcon={<CheckOutlined />}
+                    showSearch
+                    placeholder={"Tỉnh/Thành/Ngành"}
+                    optionFilterProp="children"
+                    onChange={onChangeSelect}
+                    onSearch={onSearchSelect}
+                    //  filterOption={filterOption}
+                    className={styles.select}
+                  >
+                    {province.map((option) => (
+                      <Select.Option key={option} value={option}>
+                        {option}
+                      </Select.Option>
+                    ))}
+                  </Select>
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                {" "}
+                <Form.Item
+                  label="Mã định danh"
+                  name="code"
+                  // rules={[{ required: true, message: "Vui lòng điền account" }]}
+                >
+                  <Input disabled={true} />
+                </Form.Item>{" "}
+                <Form.Item
+                  label="Đơn vị quản lý "
+                  name="manage"
+                  rules={[{ required: true, message: "Vui lòng chọn đơn vị " }]}
+                >
+                  <Select>
+                    <Option value="Liên đoàn">Liên đoàn</Option>
+                    <Option value="Hội võ thuật">Hội võ thuật</Option>
+                    <Option value="Công An">Công An</Option>
+                    <Option value="Quân đội">Quân đội</Option>
+                    <Option value="Sở VHTT">Sở VHTT</Option>
+                  </Select>
+                </Form.Item>
+                <Form.Item
+                  label="Số điện thoại"
+                  name="phone"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Vui lòng điền số điện thoại",
+                    },
+                    {
+                      pattern: /^(\+\d{1,3}[- ]?)?\d{10}$/,
+                      message: "Vui lòng điền đúng định dạng số điện thoại",
+                    },
+                  ]}
+                >
+                  <Input />
+                </Form.Item>
+              </Col>
+            </Row>
+            <Row gutter={16}>
+              <Col span={12}>
+                <Form.Item
+                  label="Email"
+                  name="email"
+                  rules={[
+                    { required: true, message: "Vui lòng điền email" },
+                    {
+                      type: "email",
+                      message: "Định dạng email không đúng",
+                    },
+                  ]}
+                >
+                  <Input />
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item label="Câu lạc bộ" name="NameClb">
+                  <Input disabled={true} />
+                </Form.Item>
+              </Col>
+            </Row>
+            <Row>
+              <Col span={12}>
+                {" "}
+                <Form.Item
+                  name="image_certificate"
+                  label="Ảnh bằng cấp hiện tại"
+                  // rules={[{ required: true, message: "Vui lòng tải ảnh lên" }]}
+                >
+                  <Upload
+                    listType="picture-card"
+                    fileList={fileListCertificate}
+                    onChange={onChangeCertificate}
+                    onPreview={onPreviewCertificate}
+                    className="avatar-uploader"
+                  >
+                    {fileListCertificate.length >= 1 ? null : uploadButton}
+                  </Upload>
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item
+                  name="image_ref"
+                  label="Ảnh giấy giới thiệu"
+                  // rules={[{ required: true, message: "Vui lòng tải ảnh lên" }]}
+                >
+                  <Upload
+                    onChange={onChangeRef}
+                    onPreview={onPreviewRef}
+                    listType="picture-card"
+                    fileList={fileListRef}
+                    className="avatar-uploader"
+                  >
+                    {fileListRef.length >= 1 ? null : uploadButton}
+                  </Upload>
+                </Form.Item>
+              </Col>
+            </Row>
 
-            <div style={{ height: "100%" }}>
-              <div style={{ textAlign: "center", marginBottom: "10px" }}>
-                Ảnh giấy giới thiệu
-              </div>
-              <Form.Item
-                name="image2"
-                rules={[{ required: true, message: "Vui lòng tải ảnh lên" }]}
-                wrapperCol={{ span: 24 }}
-                className={`${styles.uploadForm} ${styles.formItem}`}
-              >
-                <Upload
-                  {...props}
-                  listType="picture-card"
-                  // fileList={fileList2}
-                  onPreview={handlePreview2}
-                  onChange={handleChange2}
-                  className={styles.uploadImg}
+            <Form.Item className={styles.btn}>
+              <div className={styles.btnContainer}>
+                <Button htmlType="submit" loading={loading}>
+                  Lưu
+                </Button>
+                <Button
+                  onClick={handleCancel}
+                  className="btn-boder"
+                  style={{ marginLeft: "10px" }}
                 >
-                  {fileList2.length >= 1 ? null : uploadButton}
-                </Upload>
-              </Form.Item>
-              <Modal
-                open={previewOpen2}
-                title={previewTitle2}
-                footer={null}
-                onCancel={handleCancel2}
-              >
-                <img
-                  alt="referral"
-                  style={{ width: "100%" }}
-                  src={previewImage2}
-                />
-              </Modal>
-            </div>
-          </div>
-          <Form.Item className={styles.btn}>
-            <div className={styles.btnContainer}>
-              <Button className="btn" htmlType="submit">
-                Lưu
-              </Button>
-              <Button
-                onClick={handleCancel}
-                className="btn-boder"
-                style={{ marginLeft: "10px" }}
-              >
-                Hủy
-              </Button>
-            </div>
-          </Form.Item>
-        </Form>
+                  Hủy
+                </Button>
+              </div>
+            </Form.Item>
+          </Form>
+        </Spin>
       </Modal>
     </>
   );
