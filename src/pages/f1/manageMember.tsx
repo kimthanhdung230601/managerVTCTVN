@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import Search, { SearchProps } from "antd/es/input/Search";
 import styles from "./Style.module.scss";
 import { PlusOutlined } from "@ant-design/icons";
-import { message, Table } from 'antd';
+import { message, Table, Spin } from 'antd';
 import { ColumnsType, TableProps } from 'antd/es/table';
 import { useLocation, useNavigate } from 'react-router';
 import { levelFilters } from '../../until/until';
@@ -47,7 +47,7 @@ export default function ManageMember() {
     const [selectedRowKeysCLB, setSelectedRowKeysCLB] = useState<React.Key[]>([]);
     const [selectedRowKeysCN, setSelectedRowKeysCN] = useState<React.Key[]>([]);
     const [memberList, setMemberList] = useState<DataType_CN[]>([])
-    const {data: memberListData} = useQuery(['member'], () => getListMember(), {
+    const {data: memberListData, isFetching} = useQuery(['member'], () => getListMember(), {
       onSettled: (data) => {
         if(data.status === "failed"){
           message.warning(data.data)
@@ -136,24 +136,24 @@ export default function ManageMember() {
           filters: [
             {
               text: "Hoạt động",
-              value: "Hoạt động",
+              value: "Đã duyệt",
             },
             {
               text: "Nghỉ",
               value: "Nghỉ",
             },
             {
-              text: "Chưa duyệt hồ sơ",
-              value: "Chưa duyệt hồ sơ",
+              text: "Chờ duyệt HS",
+              value: "Chờ duyệt HS",
             },
           ],
           onFilter: (value: any, record) => record.status.indexOf(value) === 0,
           render: (value, record) => {
-            if (value === "Hoạt động")
-              return <span style={{ color: "#046C39" }}>{value}</span>;
+            if (value === "Đã duyệt")
+              return <span style={{ color: "#046C39" }}>Hoạt đ</span>;
             if (value === "Nghỉ")
               return <span style={{ color: "#8D8D8D" }}>{value}</span>;
-            if (value === "Chưa duyệt hồ sơ")
+            if (value === "Chờ duyệt HS")
               return <span style={{ color: "#F6C404" }}>{value}</span>;
           },
         },
@@ -168,43 +168,48 @@ export default function ManageMember() {
           },
         },
       ];
- console.log(memberList)
   return (
     <>
-        <div className={styles.tableTop}>
-        <div>
-            {hasSelected
-            ? `Đã chọn ${selectedRowKeysCLB.length} hồ sơ`
-            : `Tổng số ${memberListData?.status === "success" ? memberListData?.total_products: "0"} hồ sơ`}
-        </div>
-        <div className={styles.filter}>
-        <Search
-            placeholder="Tìm kiếm tại đây"
-            allowClear
-            onSearch={onSearch}
-            size="large"
-            style={{maxWidth: "300px", marginBottom: "4px", marginRight: "8px"}}
-        />
-            <div className={styles.addBtn} onClick={() => navigate("/them-hoi-vien")}>
-            <PlusOutlined className={styles.icon} />
-            Thêm hội viên
-            </div>
-        </div>
-        </div>
-        <Table
-        rowSelection={rowSelectionCN}
-        columns={columns_CN}
-        dataSource={memberList}
-        locale={customLocale}
-        pagination={{
-            current: parseInt(currentPage1, 10),
-            onChange: onPaginationChange1,
-            pageSize: 10,
-            defaultCurrent: 1,
-            total:memberListData?.status === "success" ? memberListData?.total_products : null,
-        }}
-        className={styles.table}
-        />
-    </>
+      {
+        isFetching ? <div className={styles.fetching}><Spin size='large'/></div>
+        :
+        <>
+          <div className={styles.tableTop}>
+          <div>
+              {hasSelected
+              ? `Đã chọn ${selectedRowKeysCLB.length} hồ sơ`
+              : `Tổng số ${memberListData?.status === "success" ? memberListData?.total_products: "0"} hồ sơ`}
+          </div>
+          <div className={styles.filter}>
+          <Search
+              placeholder="Tìm kiếm tại đây"
+              allowClear
+              onSearch={onSearch}
+              size="large"
+              style={{maxWidth: "300px", marginBottom: "4px", marginRight: "8px"}}
+          />
+              <div className={styles.addBtn} onClick={() => navigate("/them-hoi-vien")}>
+              <PlusOutlined className={styles.icon} />
+              Thêm hội viên
+              </div>
+          </div>
+          </div>
+          <Table
+          rowSelection={rowSelectionCN}
+          columns={columns_CN}
+          dataSource={memberList}
+          locale={customLocale}
+          pagination={{
+              current: parseInt(currentPage1, 10),
+              onChange: onPaginationChange1,
+              pageSize: 10,
+              defaultCurrent: 1,
+              total:memberListData?.status === "success" ? memberListData?.total_products : null,
+          }}
+          className={styles.table}
+          />
+          </>
+      }
+    </>  
   )
 }
