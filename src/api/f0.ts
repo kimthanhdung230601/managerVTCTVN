@@ -31,8 +31,7 @@ export const updateUser = (payload: any) =>
 const path = {
   accountAdmin: "/AdminGetUserID?id=",
 };
-export const getInforAdmin = (param: any) =>
-  sendGet("/AdminGetUserID?id=" + param);
+
 export const getInforAdmin= (param:any) => sendGet('/AdminGetUserID?id='+param)
 export const upLoadImage = (param: any) => sendPost("/AdminUploadImage", param)
 export const addNews = (param: any) =>  sendPost ("/AdminAddNews", param)
