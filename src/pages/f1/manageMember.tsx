@@ -79,9 +79,9 @@ export default function ManageMember() {
               setMemberList(data)
         } else if(data.status === "failed"){
           message.error("Không có dữ liệu.")
-          setTimeout(()=> {
-            window.location.reload()
-          }, 2000)
+          // setTimeout(()=> {
+          //   window.location.reload()
+          // }, 2000)
         } else {
           message.error("Có lỗi xảy ra, vui lòng thử lại sau")
           setTimeout(()=> {
@@ -98,9 +98,9 @@ export default function ManageMember() {
           setMemberList(data)
         } else if(data.status === "failed"){
           message.error("Không có dữ liệu.")
-          setTimeout(()=> {
-            window.location.reload()
-          }, 2000)
+          // setTimeout(()=> {
+          //   window.location.reload()
+          // }, 2000)
         } else {
           message.error("Có lỗi xảy ra, vui lòng thử lại sau")
           setTimeout(()=> {
@@ -160,20 +160,12 @@ export default function ManageMember() {
           title: "CLB trực thuộc",
           dataIndex: "NameClb",
           filterMultiple: false,
-          filters: [
-            {
-              text: "CLB Hà Nội",
-              value: "1",
-            },
-            {
-              text: "CLB Hải Phòng",
-              value: "2",
-            },
-            {
-              text: "CLB TP HCM",
-              value: "3",
-            },
-          ],
+          filters:clubs?.status === "success" ? clubs?.data.map((item: any, index: number) => {
+            return {
+              text: item.NameClb,
+              value: item.club
+            }
+          }) : null,
           onFilter: (value: any, record) => record.NameClb.indexOf(value) === 0,
         },
         {
@@ -187,20 +179,24 @@ export default function ManageMember() {
           filters: [
             {
               text: "Hoạt động",
-              value: "1",
+              value: "Đã duyệt",
             },
             {
-              text: "Chờ duyệt HS",
-              value: "0",
+              text: "Chờ duyệt",
+              value: "Chờ duyệt",
+            },
+            {
+              text: "Chờ duyệt xoá",
+              value: "Chờ duyệt xoá",
             },
           ],
           onFilter: (value: any, record) => record.status.indexOf(value) === 0,
           render: (value, record) => {
             if (value === "Đã duyệt")
               return <span style={{ color: "#046C39" }}>Hoạt động</span>;
-            if (value === "Nghỉ")
-              return <span style={{ color: "#8D8D8D" }}>{value}</span>;
-            if (value === "Chờ duyệt HS")
+            if (value === "Chờ duyệt xoá")
+              return <span style={{ color: "#8D8D8D" }}>Chờ duyệt xoá</span>;
+            if (value === "Chờ duyệt")
               return <span style={{ color: "#F6C404" }}>Chờ duyệt HS</span>;
           },
         },
@@ -218,7 +214,7 @@ export default function ManageMember() {
       ];
       const onChange: TableProps<DataType_CN>['onChange'] = (pagination, filters, sorter, extra) => {
         console.log('params', filters);
-        const param = '?page=' + currentPage1  + (filters.NameClb ? '&club=' + filters.NameClb[0] : "") + (filters.level ? '&level=' + encodeURIComponent(filters.level[0].toString())  : "") + (filters.status ? '&pending=' + filters.status[0] : "")
+        const param = '?page=' + currentPage1  + (filters.NameClb ? '&club=' + filters.NameClb[0] : "") + (filters.level ? '&level=' + encodeURIComponent(filters.level[0].toString())  : "") + (filters.status ? '&status=' + encodeURIComponent(filters.status[0].toString()) : "")
         console.log(param)
         setParam(param)
       };
@@ -253,7 +249,7 @@ export default function ManageMember() {
           </div>
           </div>
           <Table
-          rowSelection={rowSelectionCN}
+          // rowSelection={rowSelectionCN}
           columns={columns_CN}
           dataSource={memberList?.data}
           locale={customLocale}

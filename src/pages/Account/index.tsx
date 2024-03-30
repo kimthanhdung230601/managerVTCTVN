@@ -2,7 +2,7 @@ import { Col, Image, message, Row, Spin } from 'antd'
 import React from 'react'
 import { useQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
-import { getInforAdmin } from '../../api/f0';
+import { getInforAdmin } from '../../api/f2';
 import Header from '../../components/Header'
 import styles from "../Detail/Style.module.scss"
 

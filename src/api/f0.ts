@@ -1,5 +1,5 @@
 import { sendDelete, sendGet, sendPost, sendPut } from "./api";
-import { isAdmin } from "./ApiUser";
+
 
 export const getListMember = (payload: any) =>
   sendGet(`/AdminGetMembers?page=${payload}`);
@@ -21,11 +21,6 @@ export const getListClub = () => sendGet(`/GetNameClub`);
 export const updateMultiAchie = (payload: any) =>
   sendPost(`/UpdateMultiData.php`, payload);
 
-// export const getInforAdmin= (param:any) => {
-//   if(isAdmin() === "1") return sendGet(`/ManageGetUserID?id=`+param)
-//   return sendGet('/AdminGetUserID?id='+param)
-// }
-
 export const getDetailF3 = (payload: any) =>
   sendGet(`/AdminGetMemberID?id=${payload}`);
 export const updateF3 = (payload: any) =>
@@ -45,3 +40,4 @@ export const upLoadImage = (param: any) => sendPost("/AdminUploadImage", param)
 export const addNews = (param: any) =>  sendPost ("/AdminAddNews", param)
 export const getListNews = (page: string, category: string) => sendGet("/GetListNews?page="+ page + "&category=" + category)
 export const getNewsbyID = (param: any) =>  sendGet(`/GetNewsID?id=${param}`)
+

@@ -25,7 +25,7 @@ import ModalUpdateNote from "../../components/Modal/ModalUpdateNote";
 import ModalMember from "../../components/Modal/ModalAccount";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "react-query";
-import { deleteMemberF3, getListMemberF3 } from "../../api/f2";
+import { deleteMemberF3, getFilterTable, getListMemberF3, searchInTable } from "../../api/f2";
 import moment from "moment";
 import CryptoJS from "crypto-js";
 import Cookies from "js-cookie";
@@ -62,6 +62,14 @@ interface DataType {
   total_products: any;
 }
 
+interface data {
+  status: string,
+  total_products: number,
+  total_pages: number,
+  index_page: number,
+  data: DataType[]
+}
+
 const customLocale = {
   filterConfirm: "OK", // Thay đổi nút xác nhận
   filterReset: "Xoá", // Thay đổi nút reset
@@ -79,6 +87,9 @@ const ManagerMemberTwo = () => {
   );
   const decryptedPerrmission = permission.toString(CryptoJS.enc.Utf8);
   const currentURL = window.location.href;
+  const [param, setParam] = useState("")
+  const [key, setKey] = useState("")
+  const [memberList, setMemberList] =  useState<data>()
   var urlParams = new URLSearchParams(currentURL.split("?")[1]);
   var clubValue = urlParams.get("club");
   const {
@@ -90,7 +101,54 @@ const ManagerMemberTwo = () => {
     decryptedPerrmission == "2"
       ? () => getListMemberF3(decryptedClub)
       : () => getListMemberF3(clubValue)
+    , {
+      onSettled: (data) => {
+        if(data.status === "success" ){
+          setMemberList(data)
+        } else if(data.status === "failed"){
+          message.warning(data.data)
+        } else {
+          message.error("Có lỗi xảy ra, vui lòng thử lại sau")
+        }
+      }
+    }
   );
+  const {data: resultFilter} = useQuery(["filters", param], ()=> getFilterTable('/Members', param), {
+    enabled: param !== "",
+    onSettled: (data) => {
+      if(data.status === "success") {
+            setMemberList(data)
+      } else if(data.status === "failed"){
+        message.error("Không có dữ liệu.")
+        // setTimeout(()=> {
+        //   window.location.reload()
+        // }, 2000)
+      } else {
+        message.error("Có lỗi xảy ra, vui lòng thử lại sau")
+        setTimeout(()=> {
+          window.location.reload()
+        }, 2000)
+      }
+    }
+  })
+  const {data: search} = useQuery(["search", key], ()=> searchInTable(key), {
+    enabled: key !== "", 
+    onSettled: (data) => {
+      if(data.status === "success") {
+        setMemberList(data)
+      } else if(data.status === "failed"){
+        message.error("Không có dữ liệu.")
+        setTimeout(()=> {
+          window.location.reload()
+        }, 2000)
+      } else {
+        message.error("Có lỗi xảy ra, vui lòng thử lại sau")
+        setTimeout(()=> {
+          window.location.reload()
+        }, 2000)
+      }
+    }
+  })
   var filtersListNote,
     filtersDetail = "";
   if (listF3?.status === "success") {
@@ -130,22 +188,11 @@ const ManagerMemberTwo = () => {
 
   const cancel = (value: any) => {};
   //tìm kiếm
-  const [dataFind, setDataFind] = useState<DataType[]>([]);
-  const onSearch: SearchProps["onSearch"] = async (
-    value: any,
-    _e: any,
-    info: any
-  ) => {
-    const res = await findMember(value);
-    // console.log("ress",res);
-    if (res.status === "success") {
-      setDataFind(res.data); // Cập nhật dataFind nếu tìm thấy kết quả
-    } else {
-      setDataFind([]); // Đặt dataFind về rỗng nếu không tìm thấy kết quả
-      message.error("Không tìm thấy kết quả");
-    }
-  };
-  console.log("dataFind", dataFind);
+
+  const onSearch: SearchProps["onSearch"] = (value, _e, info) =>{
+    setKey(value)
+  }
+
 
   //modal
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -199,7 +246,7 @@ const ManagerMemberTwo = () => {
       dataIndex: "level",
       width: 130,
       filters: levelFilters,
-      filterMode: "tree",
+      filterMultiple: false,
       onFilter: (value: any, rec) => rec.level.indexOf(value) === 0,
     },
 
@@ -208,7 +255,7 @@ const ManagerMemberTwo = () => {
       dataIndex: "note",
       width: 130,
       filters: filtersListNote,
-      filterMode: "tree",
+      filterMultiple: false,
       onFilter: (value: any, rec) => rec.note.indexOf(value) === 0,
     },
     {
@@ -216,7 +263,7 @@ const ManagerMemberTwo = () => {
       dataIndex: "detail",
       width: 130,
       filters: filtersDetail,
-      filterMode: "tree",
+      filterMultiple: false,
       onFilter: (value: any, rec) => rec.detail.indexOf(value) === 0,
     },
     {
@@ -237,7 +284,7 @@ const ManagerMemberTwo = () => {
           value: "Chờ duyệt",
         },
       ],
-      filterMode: "tree",
+      filterMultiple: false,
       render: (value, record) => {
         if (value === "Đã duyệt")
           return <span style={{ color: "#046C39" }}>Hoạt động</span>;
@@ -322,6 +369,18 @@ const ManagerMemberTwo = () => {
     setCurrentPage(value);
     // refetch();
   };
+  const onChange: TableProps<DataType>['onChange'] = (pagination, filters, sorter, extra) => {
+    const param ='?club' + 
+    (decryptedPerrmission == "2" ? decryptedClub : clubValue ) + 
+    '&page=' + currentPage + 
+    (filters.level ? '&level=' + encodeURIComponent(filters.level[0].toString()) : "") + 
+    (filters.note ? '&note=' + encodeURIComponent(filters.note[0].toString())  : "") + 
+    (filters.detail ? '&detail=' +  encodeURIComponent(filters.detail[0].toString()) : "") + 
+    (filters.status ? '&status=' +  encodeURIComponent(filters.status[0].toString()) : "") + 
+    (filters.achievements ? '&achievements=' +  encodeURIComponent(filters.achievements[0].toString()): "")
+    console.log(param)
+    setParam(param)
+  };
   return (
     <div className={styles.wrap}>
       {" "}
@@ -356,18 +415,19 @@ const ManagerMemberTwo = () => {
           </span> */}
         </div>
         <Spin spinning={isFetching}>
-          {listF3?.status === "success" ? (
+          {memberList?.status === "success" ? (
             <>
               {" "}
               <Table
                 // rowSelection={rowSelection}
                 columns={columns}
-                dataSource={dataFind.length > 0 ? dataFind : listF3?.data}
+                dataSource={memberList?.data}
                 // dataSource={listF3?.data}
                 locale={customLocale}
                 scroll={{ x: 1300 }}
                 style={{ overflowX: "auto" }}
                 pagination={false}
+                onChange={onChange}
               />
               <Pagination
                 defaultCurrent={1}
