@@ -9,3 +9,9 @@ export const deleteMemberF3 = (payload: any) =>
 export const getInforF3 = (payload: any) =>
   sendGet(`/GetMemberID?id=${payload}`);
 export const addNewF3 = (payload: any) => sendPost("/AddMember", payload);
+
+
+export const editNote = (payload:any)=> sendPost(`/EditNoteMemberID`,payload);
+export const deleteMemberF3 = (payload:any)=> sendPost(`DeleteMemberID`,payload);
+export const addNewF3 = (payload:any)=> sendPost("/AddMember",payload);
+

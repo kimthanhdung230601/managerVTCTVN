@@ -33,3 +33,8 @@ const path = {
 };
 export const getInforAdmin = (param: any) =>
   sendGet("/AdminGetUserID?id=" + param);
+export const getInforAdmin= (param:any) => sendGet('/AdminGetUserID?id='+param)
+export const upLoadImage = (param: any) => sendPost("/AdminUploadImage", param)
+export const addNews = (param: any) =>  sendPost ("/AdminAddNews", param)
+export const getListNews = (page: string, category: string) => sendGet("/GetListNews?page="+ page + "&category=" + category)
+export const getNewsbyID = (param: any) =>  sendGet(`/GetNewsID?id=${param}`)

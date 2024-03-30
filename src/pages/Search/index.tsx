@@ -1,13 +1,17 @@
 import { Image, Input } from 'antd'
-import React from 'react'
-import { Link } from 'react-router-dom'
+import {useState} from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import Header from '../../components/Header'
 import styles from "./Style.module.scss"
 import type { SearchProps } from 'antd/es/input/Search';
 const { Search } = Input;
 export default function SearchId() {
     document.title = "Tra cứu hội viên";
-    const onSearch: SearchProps['onSearch'] = (value, _e, info) => console.log(info?.source, value);
+    const [key, setKey] = useState("")
+    const navigate = useNavigate()
+    const onSearch: SearchProps['onSearch'] = (value, _e, info) => {
+       navigate(`/thong-tin-ho-so?keyword=${value}`)
+    } 
   return (
     <>
         <Header />
@@ -27,10 +31,11 @@ export default function SearchId() {
                             onSearch={onSearch}
                             size="large"
                             className={styles.input}
+                            onChange={(e)=>setKey(e.target.value)}
                         />
                         <br />
                         <button className={styles.btn}>
-                            <Link to={"/thong-tin-ho-so"}>
+                            <Link to={`/thong-tin-ho-so?keyword=${key}`}>
                                 Tra cứu
                             </Link>
                             
