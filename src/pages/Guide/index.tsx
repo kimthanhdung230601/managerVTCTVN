@@ -17,7 +17,7 @@ const isAdmin = (): string => {
     const permission = bytes.toString(CryptoJS.enc.Utf8);
     return permission;
 }
-export default function News() {
+export default function Guide() {
     document.title = "Tin tức";
     const navigate = useNavigate()
     const param = new URLSearchParams(useLocation().search)
@@ -73,12 +73,12 @@ export default function News() {
                                 return (
                                     <Row gutter={40} className={styles.post} justify="center">
                                         <Col className={`gutter-row`} xxl={8} lg={8} md={8} >
-                                            <Link to={`/bai-viet/${item.id}`} className={styles.imgWrap}>
+                                            <Link to={`/huong-dan-admin/${item.id}`} className={styles.imgWrap}>
                                                 <Image src={imageLink ? imageLink : require("../../assets/image/new.png")} preview={false} className={styles.postImg}/>
                                             </Link>
                                         </Col>
                                         <Col className='gutter-row' xxl={16} lg={16} md={16} style={{padding:"20px 10px"}}>
-                                            <Link to={`/bai-viet/${item.id}`}>
+                                            <Link to={`/huong-dan-admin/${item.id}`}>
                                                 <div className={styles.postTitle}>{item.title}</div>
                                             </Link>
                                             <div className={styles.postContent}>{dataContent}</div>
