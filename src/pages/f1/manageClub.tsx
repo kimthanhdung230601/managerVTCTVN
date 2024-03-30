@@ -66,9 +66,9 @@ export default function ManageClub() {
               setClubList(data)
         } else if(data.status === "failed"){
           message.error("Không có dữ liệu.")
-          setTimeout(()=> {
-            window.location.reload()
-          }, 2000)
+          // setTimeout(()=> {
+          //   window.location.reload()
+          // }, 2000)
         } else {
           message.error("Có lỗi xảy ra, vui lòng thử lại sau")
           setTimeout(()=> {
@@ -194,7 +194,7 @@ export default function ManageClub() {
         },
     ];
     const onChange: TableProps<DataType_CLB>['onChange'] = (pagination, filters, sorter, extra) => {
-      const param = '?page=' + currentPage2  + (filters.NameClb ? '&club=' + filters.NameClb[0] : null) + (filters.level ? '&level=' + encodeURIComponent(filters.level[0].toString())  : null) + (filters.pending ? '&pending=' + filters.pending[0] : null)
+      const param = '?page=' + currentPage2  + (filters.NameClb ? '&club=' + filters.NameClb[0] : "") + (filters.level ? '&level=' + encodeURIComponent(filters.level[0].toString())  : "") + (filters.pending ? '&pending=' + filters.pending[0] : "")
       setParam(param)
     };
   return (
@@ -225,7 +225,7 @@ export default function ManageClub() {
             </div>
             </div>
             <Table
-            rowSelection={rowSelectionCLB}
+            // rowSelection={rowSelectionCLB}
             columns={columns_CLB}
             dataSource={clubList?.data}
             locale={customLocale}
