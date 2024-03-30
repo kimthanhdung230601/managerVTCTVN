@@ -207,7 +207,7 @@ const Profiles = () => {
     }
 
     formdata.append("hometown", values.hometown);
-    const address = `${values.city}-${values.district}`;
+    const address = `${values.city} - ${values.district}`;
     formdata.append("address", address);
     formdata.append("nationality", values.nationality);
     formdata.append("email", values.email);

@@ -10,6 +10,7 @@ export const deleteMemberF3 = (payload: any) =>
 export const getInforF3 = (payload: any) =>
   sendGet(`/GetMemberID?id=${payload}`);
 export const addNewF3 = (payload: any) => sendPost("/AddMember", payload);
+
 export const getInforAdmin= (param:any) => {
   if(isAdmin() === "1") return sendGet(`/ManageGetUserID?id=`+param)
   return sendGet('/AdminGetUserID?id='+param)

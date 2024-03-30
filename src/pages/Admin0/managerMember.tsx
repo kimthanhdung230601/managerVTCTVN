@@ -74,14 +74,19 @@ const customLocale = {
 const ManagerMember = () => {
   //filter
   const [currentPage, setCurrentPage] = useState(1);
-  const [payload, setPayload] = useState<any>(1);
+  const [payload, setPayload] = useState<any>(currentPage);
+
+  const {
+    data: allMember,
+    refetch,
+    isFetching,
+  } = useQuery(["allMember", payload], () => getListMember(payload));
   const onChange: TableProps<DataType>["onChange"] = (pagination, filters) => {
     const param =
       // "?page=" +
       currentPage +
       (filters.DonViQuanLy ? "&DonViQuanLy=" + filters.DonViQuanLy[0] : "") +
       (filters.NameClb ? "$club=" + filters.NameClb[0] : "") +
-      // (filter.achievements ? "$achievements=" + filters.achievements[0]:"")+
       (filters.address
         ? "$address=" + encodeURIComponent(filters.address[0].toString())
         : "") +
@@ -95,17 +100,15 @@ const ManagerMember = () => {
         ? "&status=" + encodeURIComponent(filters.status[0].toString())
         : "");
     setPayload(param);
+    console.log("param", param);
     refetch();
   };
-  const {
-    data: allMember,
-    refetch,
-    isFetching,
-  } = useQuery("allMember", () => getListMember(payload));
-  const filtersListNote = allMember?.list_note?.map((item: any, index: any) => ({
-    text: item.note,
-    value: item.note,
-  }));
+  const filtersListNote = allMember?.list_note?.map(
+    (item: any, index: any) => ({
+      text: item.note,
+      value: item.note,
+    })
+  );
 
   const navigate = useNavigate();
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
@@ -207,6 +210,17 @@ const ManagerMember = () => {
       title: "Mã định danh",
       dataIndex: "code",
       width: 160,
+      render: (value, record) => {
+        if (value == "null")
+          return <span style={{ color: "#8D8D8D" }}>Không tồn tại</span>;
+        else {
+          return (
+            <span style={{ color: "#046C39", fontWeight: "bold" }}>
+              {value}
+            </span>
+          );
+        }
+      },
     },
     {
       title: "Căn cước công dân",
@@ -218,14 +232,15 @@ const ManagerMember = () => {
       dataIndex: "level",
       width: 130,
       filters: levelFilters,
-      filterMode: "tree",
+
       filterMultiple: false,
-      onFilter: (value: any, rec) => rec.level.indexOf(value) === 0,
+      onFilter: (value: any, record) => record.level.startsWith(value),
     },
     {
       title: "Tỉnh",
       dataIndex: "address",
       filters: filterProivce,
+      filterMultiple: false,
       onFilter: (value: any, record) => record.address.startsWith(value),
       filterSearch: true,
       width: 120,
@@ -260,29 +275,29 @@ const ManagerMember = () => {
           value: "Quân Đội",
         },
       ],
-      filterMode: "tree",
+
       filterMultiple: false,
-      onFilter: (value: any, rec) => rec.DonViQuanLy.indexOf(value) === 0,
+      onFilter: (value: any, record) => record.DonViQuanLy.indexOf(value) === 0,
     },
     {
       title: "CLB trực thuộc F2",
       dataIndex: "NameClb",
       width: 300,
       filters: ListClub(),
-      filterMode: "tree",
+
       filterMultiple: false,
       filterSearch: true,
-      onFilter: (value: any, rec) => rec.club.indexOf(value) === 0,
+      onFilter: (value: any, record) => record.club.indexOf(value) === 0,
     },
     {
       title: "Ghi chú",
       dataIndex: "note",
       width: 130,
       filters: filtersListNote,
-      filterMode: "tree",
+
       filterSearch: true,
       filterMultiple: false,
-      onFilter: (value: any, rec) => rec.note.indexOf(value) === 0,
+      onFilter: (value: any, record) => record.note.indexOf(value) === 0,
     },
     {
       title: "Tình trạng",
@@ -306,7 +321,7 @@ const ManagerMember = () => {
           value: "Nghỉ",
         },
       ],
-      filterMode: "tree",
+
       filterMultiple: false,
       render: (value, record) => {
         if (value === "Đã duyệt")
@@ -316,7 +331,7 @@ const ManagerMember = () => {
         if (value === "Chờ duyệt")
           return <span style={{ color: "#F6C404" }}>Chờ duyệt HS</span>;
       },
-      onFilter: (value: any, rec) => rec.status.indexOf(value) === 0,
+      onFilter: (value: any, record) => record.status.indexOf(value) === 0,
     },
     {
       title: "Thành tích",
@@ -332,7 +347,7 @@ const ManagerMember = () => {
           value: "Không",
         },
       ],
-      filterMode: "tree",
+
       filterMultiple: false,
       onFilter: (value: any, record) => {
         if (
@@ -447,9 +462,9 @@ const ManagerMember = () => {
       dataIndex: "level",
       width: 130,
       filters: levelFilters,
-      filterMode: "tree",
+
       filterMultiple: false,
-      onFilter: (value: any, rec) => rec.level.indexOf(value) === 0,
+      onFilter: (value: any, record) => record.level.indexOf(value) === 0,
     },
     {
       title: "Tỉnh",
@@ -489,27 +504,27 @@ const ManagerMember = () => {
           value: "Quân Đội",
         },
       ],
-      filterMode: "tree",
+
       filterMultiple: false,
-      onFilter: (value: any, rec) => rec.DonViQuanLy.indexOf(value) === 0,
+      onFilter: (value: any, record) => record.DonViQuanLy.indexOf(value) === 0,
     },
     {
       title: "CLB trực thuộc F2",
       dataIndex: "name_club",
       width: 300,
       filters: ListClub(),
-      filterMode: "tree",
+
       filterMultiple: false,
-      onFilter: (value: any, rec) => rec.NameClb.indexOf(value) === 0,
+      onFilter: (value: any, record) => record.NameClb.indexOf(value) === 0,
     },
     {
       title: "Ghi chú",
       dataIndex: "note",
       width: 130,
       filters: filtersListNote,
-      filterMode: "tree",
+
       filterMultiple: false,
-      onFilter: (value: any, rec) => rec.note.indexOf(value) === 0,
+      onFilter: (value: any, record) => record.note.indexOf(value) === 0,
     },
     {
       title: "Tình trạng",
@@ -529,7 +544,7 @@ const ManagerMember = () => {
           value: "Chờ duyệt",
         },
       ],
-      filterMode: "tree",
+
       filterMultiple: false,
       render: (value, record) => {
         if (value === "Đã duyệt")
@@ -539,7 +554,7 @@ const ManagerMember = () => {
         if (value === "Chờ duyệt")
           return <span style={{ color: "#F6C404" }}>Chờ duyệt HS</span>;
       },
-      onFilter: (value: any, rec) => rec.status.indexOf(value) === 0,
+      onFilter: (value: any, record) => record.status.indexOf(value) === 0,
     },
     {
       title: "Thành tích",
@@ -555,7 +570,7 @@ const ManagerMember = () => {
           value: "Không",
         },
       ],
-      filterMode: "tree",
+
       filterMultiple: false,
       onFilter: (value: any, record) => {
         if (value === "Có" && record.achievements.length > 0) {
