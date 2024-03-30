@@ -43,17 +43,23 @@ import ListClub from "../../hook/listClub";
 interface ManagerAccountProps {}
 interface DataType {
   key: React.Key;
-  account: string;
-  password: string;
-  manager: string;
-  phoneNumber: string;
-  email: string;
-  name: string;
-  club: string;
-  manage: string;
-  location: string;
   id: string;
-  phone: string;
+  name: string;
+  birthday: string;
+  phone: any;
+  code: any;
+  idcard: any;
+  level: any;
+  address: any;
+  DonViQuanLy: any;
+  NameClb: any;
+  note: string;
+  status: any;
+  achievements: any;
+  NameClub: string;
+  location: string;
+  manage: string;
+  club: string;
   image_certificate: any;
   image_ref: any;
 }
@@ -71,58 +77,74 @@ const customLocale = {
   selectInvert: "Đảo ngược", // Thay đổi văn bản khi chọn ngược
 };
 const ManagerAccount = () => {
+  //tài khoản đã được duyệt
   const [currentPageAccount, setCurrentPageAccount] = useState(1);
-  const [payloadAccept, setPayloadAccept] = useState<any>(currentPageAccount);
+  const [payloadAccept, setPayloadAccept] = useState<any>(1);
   const {
     data: dataMemberF12Accept,
     refetch: refetchAccept,
     isFetching: isFetchingAccept,
-  } = useQuery("dataF12Accept", () => getListMemberF12Accept(payloadAccept));
-  const onChangeTableAccept: TableProps<DataType>["onChange"] = (
+  } = useQuery(["dataF12Accept", payloadAccept], () =>
+    getListMemberF12Accept(payloadAccept)
+  );
+  const onChange: TableProps<DataType>["onChange"] = (pagination, filters) => {
+    console.log(filters);
+    const param =
+      currentPageAccount +
+      (filters.location
+        ? "&location=" + encodeURIComponent(filters.location[0].toString())
+        : "") +
+      (filters.manage
+        ? "$manage=" + encodeURIComponent(filters.manage[0].toString())
+        : "") +
+      (filters.NameClb ? "$club=" + filters.NameClb[0] : "");
+    setPayloadAccept(param);
+    refetchAccept();
+  };
+
+  const onChangePageAccount = (value: any) => {
+    setCurrentPageAccount(value);
+    // refetch();
+  };
+  //tài khoản chưa được duyệt
+  const [currentPageUnAccept, setCurrentPageUnAccept] = useState(1);
+  const [payloadUnAccept, setPayloadUnAccept] = useState<any>(1);
+  const onChangeUnAccept: TableProps<DataType>["onChange"] = (
     pagination,
     filters
   ) => {
-    console.log("filters", filters);
-    const param = currentPageAccept;
-    // const param =
-    //   "?page=" +
-    //   currentPageAccept +
-    //   (filters.DonViQuanLy ? "&DonViQuanLy=" + filters.DonViQuanLy[0] : "") +
-    //   (filters.NameClb ? "$club=" + filters.NameClb[0] : "") +
-    //   // (filter.achievements ? "$achievements=" + filters.achievements[0]:"")+
-    //   (filters.address
-    //     ? "$address=" + encodeURIComponent(filters.address[0].toString())
-    //     : "") +
-    //   (filters.level
-    //     ? "&level=" + encodeURIComponent(filters.level[0].toString())
-    //     : "") +
-    //   (filters.note
-    //     ? "&note=" + encodeURIComponent(filters.note[0].toString())
-    //     : "") +
-    //   (filters.status
-    //     ? "&status=" + encodeURIComponent(filters.status[0].toString())
-    //     : "");
-    // setPayloadAccept(param);
-    // refetchAccept();
+    console.log(filters);
+    const param =
+      currentPageUnAccept +
+      (filters.location
+        ? "&location=" + encodeURIComponent(filters.location[0].toString())
+        : "") +
+      (filters.manage
+        ? "$manage=" + encodeURIComponent(filters.manage[0].toString())
+        : "") +
+      (filters.NameClb ? "$club=" + filters.NameClb[0] : "");
+    setPayloadUnAccept(param);
+    refetchUnAccept();
   };
-  const [currentPageAccept, setCurrentPageAccept] = useState(1);
-  const [payloadUnAccept, setPayloadUnAccept] = useState<any>(1);
-
   const {
     data: dataMemberF12UnAccept,
     refetch: refetchUnAccept,
     isFetching: isFetchingUnAccept,
-  } = useQuery("dataF12UnAccept", () => getListMemberF12UnAccept(payloadUnAccept));
-
+  } = useQuery(["dataF12UnAccept", payloadUnAccept], () =>
+    getListMemberF12UnAccept(payloadUnAccept)
+  );
+  const onChangePageAccept = (value: any) => {
+    setCurrentPageUnAccept(value);
+  };
   const [unAccept, setUnAccept] = useState([]);
   const [accept, setAccept] = useState([]);
 
   useEffect(() => {
-    if (dataMemberF12UnAccept && dataMemberF12UnAccept.data) {
+    if (dataMemberF12UnAccept && dataMemberF12UnAccept?.data) {
       const unAcceptMembers = dataMemberF12UnAccept?.data.filter(
         (member: any) => member.pending === "0"
       );
-      const acceptMembers = dataMemberF12Accept?.data.filter(
+      const acceptMembers = dataMemberF12Accept?.data?.filter(
         (member: any) => member.pending === "1"
       );
       setUnAccept(unAcceptMembers);
@@ -174,13 +196,7 @@ const ManagerAccount = () => {
   // useEffect(() => {
   //   refetch();
   // }, [currentPageAccount,currentPageAccept, dataMemberF12?.total_products]);
-  const onChangePageAccount = (value: any) => {
-    setCurrentPageAccount(value);
-    // refetch();
-  };
-  const onChangePageAccept = (value: any) => {
-    setCurrentPageAccept(value);
-  };
+
   const columnsDesktopAccount: ColumnsType<DataType> = [
     {
       title: "STT",
@@ -218,6 +234,7 @@ const ManagerAccount = () => {
       filters: filterProivce,
       onFilter: (value: any, record) => record.location.startsWith(value),
       filterSearch: true,
+      filterMultiple: false,
       width: 120,
     },
     {
@@ -251,7 +268,7 @@ const ManagerAccount = () => {
       ],
       onFilter: (value: any, rec) => rec.manage.indexOf(value) === 0,
       filterMultiple: false,
-      filterMode: "tree",
+
       width: 200,
     },
     {
@@ -261,7 +278,7 @@ const ManagerAccount = () => {
       filterSearch: true,
       onFilter: (value: any, rec) => rec.club.indexOf(value) === 0,
       filterMultiple: false,
-      filterMode: "tree",
+
       width: 200,
     },
     // {
@@ -369,7 +386,7 @@ const ManagerAccount = () => {
       filters: filterProivce,
       onFilter: (value: any, record) => record.location.startsWith(value),
       filterMultiple: false,
-      filterMode: "tree",
+
       filterSearch: true,
       width: 120,
     },
@@ -402,7 +419,7 @@ const ManagerAccount = () => {
           value: "Quân Đội",
         },
       ],
-      filterMode: "tree",
+
       onFilter: (value: any, rec) => rec.manage.indexOf(value) === 0,
       filterMultiple: false,
       width: 200,
@@ -411,7 +428,7 @@ const ManagerAccount = () => {
       title: "Tên câu lạc bộ",
       dataIndex: "club",
       filters: ListClub(),
-      filterMode: "tree",
+
       onFilter: (value: any, rec) => rec.club.indexOf(value) === 0,
       filterMultiple: false,
       width: 200,
@@ -551,7 +568,6 @@ const ManagerAccount = () => {
       ],
       onFilter: (value: any, rec) => rec.manage.indexOf(value) === 0,
       filterMultiple: false,
-      filterMode: "tree",
     },
     {
       title: "Tên câu lạc bộ",
@@ -560,7 +576,6 @@ const ManagerAccount = () => {
       filters: ListClub(),
       onFilter: (value: any, rec) => rec.club.indexOf(value) === 0,
       filterMultiple: false,
-      filterMode: "tree",
     },
     // {
     //   title: "Tài khoản",
@@ -660,7 +675,7 @@ const ManagerAccount = () => {
       onFilter: (value: any, record) => record.location.startsWith(value),
       filterMultiple: false,
       filterSearch: true,
-      filterMode: "tree",
+
       width: 120,
     },
     {
@@ -694,7 +709,7 @@ const ManagerAccount = () => {
       ],
       onFilter: (value: any, rec) => rec.manage.indexOf(value) === 0,
       filterMultiple: false,
-      filterMode: "tree",
+
       width: 200,
     },
     {
@@ -704,7 +719,6 @@ const ManagerAccount = () => {
       filters: ListClub(),
       onFilter: (value: any, rec) => rec.club.indexOf(value) === 0,
       filterMultiple: false,
-      filterMode: "tree",
     },
     // {
     //   title: "Tài khoản",
@@ -780,14 +794,6 @@ const ManagerAccount = () => {
     onChange: onSelectChange,
   };
   const hasSelected = selectedRowKeys.length > 0;
-  const onChange: TableProps<DataType>["onChange"] = (
-    pagination,
-    filters,
-    sorter,
-    extra
-  ) => {
-    console.log("params", pagination, filters, sorter, extra);
-  };
 
   const onSearch = (value: string) => {
     console.log("search:", value);
@@ -829,9 +835,10 @@ const ManagerAccount = () => {
         <div className={styles.table}>
           <Table
             columns={isMobile ? columnsMobileAccount : columnsDesktopAccount}
-            dataSource={accept}
+            dataSource={dataMemberF12Accept?.data}
             pagination={false}
             locale={customLocale}
+            onChange={onChange}
             scroll={{
               x: "max-content",
             }}
@@ -874,16 +881,16 @@ const ManagerAccount = () => {
         </Row>
         <div className={styles.table}>
           <span style={{ marginLeft: 8 }}>
-            {hasSelected ? `Đã chọn ${selectedRowKeys.length} hồ sơ` : ""}
+            {/* {hasSelected ? `Đã chọn ${selectedRowKeys.length} hồ sơ` : ""} */}
           </span>
           <Spin spinning={isFetchingAccept || isFetchingUnAccept}>
             {" "}
             <Table
-              rowSelection={rowSelection}
+              // rowSelection={rowSelection}
               locale={customLocale}
               columns={isMobile ? columnsMobileAccept : columnsDesktopAccept}
               dataSource={unAccept}
-              onChange={onChangeTableAccept}
+              onChange={onChangeUnAccept}
               pagination={false}
               scroll={{
                 x: "max-content",
