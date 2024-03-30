@@ -32,7 +32,13 @@ import { useMediaQuery } from "react-responsive";
 import { text } from "stream/consumers";
 import type { ColumnsType } from "antd/es/table";
 import { useQuery } from "react-query";
-import { deleteMemberF12, getListMemberF12, updateAccount } from "../../api/f0";
+import {
+  deleteMemberF12,
+  // getListMemberF12,
+  getListMemberF12Accept,
+  getListMemberF12UnAccept,
+  updateAccount,
+} from "../../api/f0";
 import ListClub from "../../hook/listClub";
 interface ManagerAccountProps {}
 interface DataType {
@@ -44,8 +50,8 @@ interface DataType {
   email: string;
   name: string;
   club: string;
-  city: string;
-  managerF1: string;
+  manage: string;
+  location: string;
   id: string;
   phone: string;
   image_certificate: any;
@@ -65,27 +71,64 @@ const customLocale = {
   selectInvert: "Đảo ngược", // Thay đổi văn bản khi chọn ngược
 };
 const ManagerAccount = () => {
+  const [currentPageAccount, setCurrentPageAccount] = useState(1);
+  const [payloadAccept, setPayloadAccept] = useState<any>(currentPageAccount);
   const {
-    data: dataMemberF12,
-    refetch,
-    isFetching,
-  } = useQuery("dataF12", () => getListMemberF12());
+    data: dataMemberF12Accept,
+    refetch: refetchAccept,
+    isFetching: isFetchingAccept,
+  } = useQuery("dataF12Accept", () => getListMemberF12Accept(payloadAccept));
+  const onChangeTableAccept: TableProps<DataType>["onChange"] = (
+    pagination,
+    filters
+  ) => {
+    console.log("filters", filters);
+    const param = currentPageAccept;
+    // const param =
+    //   "?page=" +
+    //   currentPageAccept +
+    //   (filters.DonViQuanLy ? "&DonViQuanLy=" + filters.DonViQuanLy[0] : "") +
+    //   (filters.NameClb ? "$club=" + filters.NameClb[0] : "") +
+    //   // (filter.achievements ? "$achievements=" + filters.achievements[0]:"")+
+    //   (filters.address
+    //     ? "$address=" + encodeURIComponent(filters.address[0].toString())
+    //     : "") +
+    //   (filters.level
+    //     ? "&level=" + encodeURIComponent(filters.level[0].toString())
+    //     : "") +
+    //   (filters.note
+    //     ? "&note=" + encodeURIComponent(filters.note[0].toString())
+    //     : "") +
+    //   (filters.status
+    //     ? "&status=" + encodeURIComponent(filters.status[0].toString())
+    //     : "");
+    // setPayloadAccept(param);
+    // refetchAccept();
+  };
+  const [currentPageAccept, setCurrentPageAccept] = useState(1);
+  const [payloadUnAccept, setPayloadUnAccept] = useState<any>(1);
+
+  const {
+    data: dataMemberF12UnAccept,
+    refetch: refetchUnAccept,
+    isFetching: isFetchingUnAccept,
+  } = useQuery("dataF12UnAccept", () => getListMemberF12UnAccept(payloadUnAccept));
 
   const [unAccept, setUnAccept] = useState([]);
   const [accept, setAccept] = useState([]);
 
   useEffect(() => {
-    if (dataMemberF12 && dataMemberF12.data) {
-      const unAcceptMembers = dataMemberF12?.data.filter(
+    if (dataMemberF12UnAccept && dataMemberF12UnAccept.data) {
+      const unAcceptMembers = dataMemberF12UnAccept?.data.filter(
         (member: any) => member.pending === "0"
       );
-      const acceptMembers = dataMemberF12?.data.filter(
+      const acceptMembers = dataMemberF12Accept?.data.filter(
         (member: any) => member.pending === "1"
       );
       setUnAccept(unAcceptMembers);
       setAccept(acceptMembers);
     }
-  }, [dataMemberF12]);
+  }, [dataMemberF12Accept, dataMemberF12UnAccept]);
   const naviagte = useNavigate();
   const isMobile = useMediaQuery({ maxWidth: 768 });
 
@@ -94,7 +137,8 @@ const ManagerAccount = () => {
       id: value,
     };
     const res = await deleteMemberF12(payload);
-    refetch();
+    refetchUnAccept();
+    refetchAccept();
     message.success("Xóa thành công");
   };
   const confirmAccept = async (value: any) => {
@@ -105,7 +149,8 @@ const ManagerAccount = () => {
     res.status === "success"
       ? message.success("Cập nhật thành công")
       : message.error("Cập nhật thất bại");
-    refetch();
+    refetchUnAccept();
+    refetchAccept();
   };
   const cancel = (value: any) => {
     console.log(value);
@@ -113,8 +158,10 @@ const ManagerAccount = () => {
   };
   //modal quản lý thành viên
   const [isModalOpenMember, setIsModalOpenMember] = useState(false);
-  const showModalMember = () => {
+  const [id, setId] = useState();
+  const showModalMember = (value: any) => {
     setIsModalOpenMember(true);
+    setId(value);
   };
 
   const handleOkMember = () => {
@@ -124,8 +171,6 @@ const ManagerAccount = () => {
   const handleCancelMember = () => {
     setIsModalOpenMember(false);
   };
-  const [currentPageAccount, setCurrentPageAccount] = useState(1);
-  const [currentPageAccept, setCurrentPageAccept] = useState(1);
   // useEffect(() => {
   //   refetch();
   // }, [currentPageAccount,currentPageAccept, dataMemberF12?.total_products]);
@@ -171,7 +216,7 @@ const ManagerAccount = () => {
       title: "Tỉnh",
       dataIndex: "location",
       filters: filterProivce,
-      onFilter: (value: any, record) => record.city.startsWith(value),
+      onFilter: (value: any, record) => record.location.startsWith(value),
       filterSearch: true,
       width: 120,
     },
@@ -204,7 +249,8 @@ const ManagerAccount = () => {
           value: "Quân Đội",
         },
       ],
-      onFilter: (value: any, rec) => rec.managerF1.indexOf(value) === 0,
+      onFilter: (value: any, rec) => rec.manage.indexOf(value) === 0,
+      filterMultiple: false,
       filterMode: "tree",
       width: 200,
     },
@@ -214,6 +260,7 @@ const ManagerAccount = () => {
       filters: ListClub(),
       filterSearch: true,
       onFilter: (value: any, rec) => rec.club.indexOf(value) === 0,
+      filterMultiple: false,
       filterMode: "tree",
       width: 200,
     },
@@ -266,10 +313,13 @@ const ManagerAccount = () => {
           >
             Xem
           </button>
-          <button className={styles.btnTb} onClick={() => showModalMember()}>
+          <button
+            className={styles.btnTb}
+            onClick={() => showModalMember(record.id)}
+          >
             Sửa
           </button>
-          <Popconfirm
+          {/* <Popconfirm
             title="Xóa"
             description={`Bạn có muốn xóa ${record.name} không`}
             onConfirm={() => confirm(record.id)}
@@ -279,7 +329,7 @@ const ManagerAccount = () => {
           >
             {" "}
             <button className={styles.btnTbDanger}>Xóa</button>
-          </Popconfirm>
+          </Popconfirm> */}
         </span>
       ),
     },
@@ -317,7 +367,8 @@ const ManagerAccount = () => {
       title: "Tỉnh",
       dataIndex: "location",
       filters: filterProivce,
-      onFilter: (value: any, record) => record.city.startsWith(value),
+      onFilter: (value: any, record) => record.location.startsWith(value),
+      filterMultiple: false,
       filterMode: "tree",
       filterSearch: true,
       width: 120,
@@ -352,7 +403,8 @@ const ManagerAccount = () => {
         },
       ],
       filterMode: "tree",
-      onFilter: (value: any, rec) => rec.managerF1.indexOf(value) === 0,
+      onFilter: (value: any, rec) => rec.manage.indexOf(value) === 0,
+      filterMultiple: false,
       width: 200,
     },
     {
@@ -361,6 +413,7 @@ const ManagerAccount = () => {
       filters: ListClub(),
       filterMode: "tree",
       onFilter: (value: any, rec) => rec.club.indexOf(value) === 0,
+      filterMultiple: false,
       width: 200,
     },
     // {
@@ -404,10 +457,13 @@ const ManagerAccount = () => {
           >
             Xem
           </button>
-          <button className={styles.btnTb} onClick={() => showModalMember()}>
+          <button
+            className={styles.btnTb}
+            onClick={() => showModalMember(record.id)}
+          >
             Sửa
           </button>
-          <Popconfirm
+          {/* <Popconfirm
             title="Xóa"
             description={`Bạn có muốn xóa ${record.name} không`}
             onConfirm={() => confirm(record.id)}
@@ -417,7 +473,7 @@ const ManagerAccount = () => {
           >
             {" "}
             <button className={styles.btnTbDanger}>Xóa</button>
-          </Popconfirm>
+          </Popconfirm> */}
         </span>
       ),
     },
@@ -457,7 +513,8 @@ const ManagerAccount = () => {
       title: "Tỉnh",
       dataIndex: "location",
       filters: filterProivce,
-      onFilter: (value: any, record) => record.city.startsWith(value),
+      onFilter: (value: any, record) => record.location.startsWith(value),
+      filterMultiple: false,
       filterSearch: true,
 
       width: 120,
@@ -492,7 +549,8 @@ const ManagerAccount = () => {
           value: "Quân Đội",
         },
       ],
-      onFilter: (value: any, rec) => rec.managerF1.indexOf(value) === 0,
+      onFilter: (value: any, rec) => rec.manage.indexOf(value) === 0,
+      filterMultiple: false,
       filterMode: "tree",
     },
     {
@@ -501,6 +559,7 @@ const ManagerAccount = () => {
       width: 200,
       filters: ListClub(),
       onFilter: (value: any, rec) => rec.club.indexOf(value) === 0,
+      filterMultiple: false,
       filterMode: "tree",
     },
     // {
@@ -540,7 +599,7 @@ const ManagerAccount = () => {
       render: (_, record) => (
         <span>
           <Popconfirm
-            title="Xóa"
+            title="Duyệt tài khoản"
             description={`Bạn có muốn duyệt tài khoản ${record.name} không`}
             onConfirm={() => confirmAccept(record.id)}
             onCancel={cancel}
@@ -598,7 +657,8 @@ const ManagerAccount = () => {
       title: "Tỉnh",
       dataIndex: "location",
       filters: filterProivce,
-      onFilter: (value: any, record) => record.city.startsWith(value),
+      onFilter: (value: any, record) => record.location.startsWith(value),
+      filterMultiple: false,
       filterSearch: true,
       filterMode: "tree",
       width: 120,
@@ -632,7 +692,8 @@ const ManagerAccount = () => {
           value: "Quân Đội",
         },
       ],
-      onFilter: (value: any, rec) => rec.managerF1.indexOf(value) === 0,
+      onFilter: (value: any, rec) => rec.manage.indexOf(value) === 0,
+      filterMultiple: false,
       filterMode: "tree",
       width: 200,
     },
@@ -642,6 +703,7 @@ const ManagerAccount = () => {
       width: 200,
       filters: ListClub(),
       onFilter: (value: any, rec) => rec.club.indexOf(value) === 0,
+      filterMultiple: false,
       filterMode: "tree",
     },
     // {
@@ -749,7 +811,7 @@ const ManagerAccount = () => {
           <Col
             xxl={12}
             md={24}
-            onClick={() => showModalMember()}
+            onClick={() => showModalMember(undefined)}
             className="gutter-row"
           >
             <div style={{ display: "flex", justifyContent: "end" }}>
@@ -778,7 +840,7 @@ const ManagerAccount = () => {
           <Pagination
             defaultCurrent={1}
             onChange={onChangePageAccount}
-            total={accept.length}
+            total={accept?.length}
             pageSize={10}
             style={{ margin: "1vh 0", float: "right" }}
           />
@@ -814,13 +876,14 @@ const ManagerAccount = () => {
           <span style={{ marginLeft: 8 }}>
             {hasSelected ? `Đã chọn ${selectedRowKeys.length} hồ sơ` : ""}
           </span>
-          <Spin spinning={isFetching}>
+          <Spin spinning={isFetchingAccept || isFetchingUnAccept}>
             {" "}
             <Table
               rowSelection={rowSelection}
               locale={customLocale}
               columns={isMobile ? columnsMobileAccept : columnsDesktopAccept}
               dataSource={unAccept}
+              onChange={onChangeTableAccept}
               pagination={false}
               scroll={{
                 x: "max-content",
@@ -831,7 +894,7 @@ const ManagerAccount = () => {
               defaultCurrent={1}
               onChange={onChangePageAccept}
               total={unAccept.length}
-              pageSize={10}
+              pageSize={30}
               style={{ margin: "1vh 0", float: "right" }}
             />
           </Spin>
@@ -841,6 +904,9 @@ const ManagerAccount = () => {
         isModalOpen={isModalOpenMember}
         handleCancel={handleCancelMember}
         handleOk={handleOkMember}
+        id={id}
+        setId={setId}
+        refetchAccountTable={refetchAccept}
       />
     </div>
   );

@@ -19,6 +19,7 @@ import {
 } from "antd";
 import styles from "./styles.module.scss";
 import {
+  OnlyProvince,
   level,
   levelFilters,
   managerf1,
@@ -56,6 +57,7 @@ interface DataType {
   name: string;
   DonViQuanLy: string;
   NameClb: string;
+  club: string;
   note: string;
   status: string;
   achie: string;
@@ -70,34 +72,58 @@ const customLocale = {
   selectInvert: "Đảo ngược", // Thay đổi văn bản khi chọn ngược
 };
 const ManagerMember = () => {
+  //filter
+  const [currentPage, setCurrentPage] = useState(1);
+  const [payload, setPayload] = useState<any>(1);
+  const onChange: TableProps<DataType>["onChange"] = (pagination, filters) => {
+    const param =
+      // "?page=" +
+      currentPage +
+      (filters.DonViQuanLy ? "&DonViQuanLy=" + filters.DonViQuanLy[0] : "") +
+      (filters.NameClb ? "$club=" + filters.NameClb[0] : "") +
+      // (filter.achievements ? "$achievements=" + filters.achievements[0]:"")+
+      (filters.address
+        ? "$address=" + encodeURIComponent(filters.address[0].toString())
+        : "") +
+      (filters.level
+        ? "&level=" + encodeURIComponent(filters.level[0].toString())
+        : "") +
+      (filters.note
+        ? "&note=" + encodeURIComponent(filters.note[0].toString())
+        : "") +
+      (filters.status
+        ? "&status=" + encodeURIComponent(filters.status[0].toString())
+        : "");
+    setPayload(param);
+    refetch();
+  };
   const {
     data: allMember,
     refetch,
     isFetching,
-  } = useQuery("allMember", () => getListMember());
-  const filtersListNote = allMember?.list_note.map((item: any, index: any) => ({
+  } = useQuery("allMember", () => getListMember(payload));
+  const filtersListNote = allMember?.list_note?.map((item: any, index: any) => ({
     text: item.note,
     value: item.note,
   }));
-  console.log("data: ", allMember);
 
   const navigate = useNavigate();
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
-  const [currentPage, setCurrentPage] = useState(1);
+
   const isMobile = useMediaQuery({ maxWidth: 768 });
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
     setSelectedRowKeys(newSelectedRowKeys);
   };
   const hasSelected = selectedRowKeys.length > 0;
 
-  const filterProivce = province.map((province) => ({
+  const filterProivce = OnlyProvince.map((province) => ({
     text: province,
     value: province,
   }));
-  const rowSelection = {
-    selectedRowKeys,
-    onChange: onSelectChange,
-  };
+  // const rowSelection = {
+  //   selectedRowKeys,
+  //   onChange: onSelectChange,
+  // };
 
   //page
 
@@ -128,7 +154,6 @@ const ManagerMember = () => {
     refetch();
   };
   const cancel = (value: any) => {
-    console.log(value);
     // message.error("");
   };
 
@@ -140,7 +165,6 @@ const ManagerMember = () => {
     info: any
   ) => {
     const res = await findMember(value);
-    // console.log("ress",res);
     if (res.status === "success") {
       setDataFind(res.data); // Cập nhật dataFind nếu tìm thấy kết quả
     } else {
@@ -148,7 +172,6 @@ const ManagerMember = () => {
       message.error("Không tìm thấy kết quả");
     }
   };
-  console.log("dataFind", dataFind);
 
   //modal
   //modal quản lý thành viên
@@ -181,9 +204,14 @@ const ManagerMember = () => {
       width: 170,
     },
     {
-      title: "Số định danh",
-      dataIndex: "idcard",
+      title: "Mã định danh",
+      dataIndex: "code",
       width: 160,
+    },
+    {
+      title: "Căn cước công dân",
+      dataIndex: "idcard",
+      width: 170,
     },
     {
       title: "Đằng cấp",
@@ -191,6 +219,7 @@ const ManagerMember = () => {
       width: 130,
       filters: levelFilters,
       filterMode: "tree",
+      filterMultiple: false,
       onFilter: (value: any, rec) => rec.level.indexOf(value) === 0,
     },
     {
@@ -232,6 +261,7 @@ const ManagerMember = () => {
         },
       ],
       filterMode: "tree",
+      filterMultiple: false,
       onFilter: (value: any, rec) => rec.DonViQuanLy.indexOf(value) === 0,
     },
     {
@@ -240,8 +270,9 @@ const ManagerMember = () => {
       width: 300,
       filters: ListClub(),
       filterMode: "tree",
+      filterMultiple: false,
       filterSearch: true,
-      onFilter: (value: any, rec) => rec.NameClb.indexOf(value) === 0,
+      onFilter: (value: any, rec) => rec.club.indexOf(value) === 0,
     },
     {
       title: "Ghi chú",
@@ -250,6 +281,7 @@ const ManagerMember = () => {
       filters: filtersListNote,
       filterMode: "tree",
       filterSearch: true,
+      filterMultiple: false,
       onFilter: (value: any, rec) => rec.note.indexOf(value) === 0,
     },
     {
@@ -275,6 +307,7 @@ const ManagerMember = () => {
         },
       ],
       filterMode: "tree",
+      filterMultiple: false,
       render: (value, record) => {
         if (value === "Đã duyệt")
           return <span style={{ color: "#046C39" }}>Hoạt động</span>;
@@ -300,6 +333,7 @@ const ManagerMember = () => {
         },
       ],
       filterMode: "tree",
+      filterMultiple: false,
       onFilter: (value: any, record) => {
         if (
           value === "Có" &&
@@ -332,14 +366,14 @@ const ManagerMember = () => {
         <span>
           <button
             className={styles.btnView}
-            onClick={() => navigate(`/chinh-sua-thanh-vien/${record.id}`)}
+            onClick={() => navigate(`/thong-tin-ho-so/${record.id}`)}
           >
             Xem
           </button>
 
           <button
             className={styles.btnTb}
-            onClick={() => navigate("/them-hoi-vien")}
+            onClick={() => navigate(`/chinh-sua-ho-so/${record.id}`)}
           >
             Sửa
           </button>
@@ -414,6 +448,7 @@ const ManagerMember = () => {
       width: 130,
       filters: levelFilters,
       filterMode: "tree",
+      filterMultiple: false,
       onFilter: (value: any, rec) => rec.level.indexOf(value) === 0,
     },
     {
@@ -455,6 +490,7 @@ const ManagerMember = () => {
         },
       ],
       filterMode: "tree",
+      filterMultiple: false,
       onFilter: (value: any, rec) => rec.DonViQuanLy.indexOf(value) === 0,
     },
     {
@@ -463,6 +499,7 @@ const ManagerMember = () => {
       width: 300,
       filters: ListClub(),
       filterMode: "tree",
+      filterMultiple: false,
       onFilter: (value: any, rec) => rec.NameClb.indexOf(value) === 0,
     },
     {
@@ -471,6 +508,7 @@ const ManagerMember = () => {
       width: 130,
       filters: filtersListNote,
       filterMode: "tree",
+      filterMultiple: false,
       onFilter: (value: any, rec) => rec.note.indexOf(value) === 0,
     },
     {
@@ -492,6 +530,7 @@ const ManagerMember = () => {
         },
       ],
       filterMode: "tree",
+      filterMultiple: false,
       render: (value, record) => {
         if (value === "Đã duyệt")
           return <span style={{ color: "#046C39" }}>Hoạt động</span>;
@@ -517,6 +556,7 @@ const ManagerMember = () => {
         },
       ],
       filterMode: "tree",
+      filterMultiple: false,
       onFilter: (value: any, record) => {
         if (value === "Có" && record.achievements.length > 0) {
           return true; // Trả về true nếu giá trị là "Có" và có thành tích
@@ -611,11 +651,11 @@ const ManagerMember = () => {
           }}
         >
           <Col span={6} xs={24} sm={24} md={12} className={styles.search}>
-            <span>
+            {/* <span>
               {hasSelected
                 ? `Đã chọn ${selectedRowKeys.length} bản ghi`
                 : "Tổng số 10 hồ sơ"}
-            </span>
+            </span> */}
           </Col>
           <Col
             span={18}
@@ -680,10 +720,11 @@ const ManagerMember = () => {
         </Row>
         <Spin spinning={isFetching}>
           <Table
-            rowSelection={rowSelection}
+            // rowSelection={rowSelection}
             columns={isMobile ? columnsMobile : columnsDesktop}
             dataSource={dataFind.length > 0 ? dataFind : allMember?.data}
             locale={customLocale}
+            onChange={onChange}
             scroll={{
               x: "max-content",
             }}
@@ -694,7 +735,7 @@ const ManagerMember = () => {
             defaultCurrent={1}
             onChange={onChangePage}
             total={allMember?.total_products}
-            pageSize={10}
+            pageSize={50}
             style={{ margin: "1vh 0", float: "right" }}
           />
         </Spin>

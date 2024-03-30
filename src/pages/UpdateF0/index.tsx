@@ -25,7 +25,7 @@ import Footer from "../../components/Footer";
 import axios from "axios";
 import Cookies from "js-cookie";
 import CryptoJS from "crypto-js";
-import { level, province } from "../../until/until";
+import { OnlyProvince, level, province } from "../../until/until";
 import moment from "moment";
 import { useMutation, useQuery } from "react-query";
 import { addMember } from "../../api/ApiUser";
@@ -68,15 +68,17 @@ const UpdateProfiles = () => {
       form.setFieldValue("achievements", data.data[0].achievements);
       form.setFieldValue("NameClb", data.data[0].NameClb);
       form.setFieldValue("hometown", data.data[0].hometown);
-      form.setFieldValue("address", data.data[0].address);
+      // form.setFieldValue("address", data.data[0].address);
+      const [city, district] = data.data[0].address.split(" - ");
+      form.setFieldValue("city", city);
+      form.setFieldValue("district", district);
       form.setFieldValue("nationality", data.data[0].nationality);
       form.setFieldValue("email", data.data[0].email);
       form.setFieldValue("code", data.data[0].code);
-
+      form.setFieldValue("club", dataDetailF3);
       // form.setFieldValue("birthday",formattedBirthday)
     },
   });
-  console.log("data", dataDetailF3?.data);
   let birthday: any; // Khai báo biến birthday mà không gán giá trị
   useEffect(() => {
     birthday = dataDetailF3?.data[0].birthday;
@@ -116,21 +118,23 @@ const UpdateProfiles = () => {
     async (payload: any) => await updateF3(payload),
     {
       onSuccess: (data) => {
-        if (data.status === "success")
+        if (data.status === "success") {
           message.success("Sửa hội viên thành công!");
-        else {
+          setLoading(false);
+        } else {
           message.error("Có lỗi xảy ra, vui lòng thử lại sau!");
-          setTimeout(() => {
-            window.location.reload();
-          }, 2000);
+          setLoading(false);
+          // setTimeout(() => {
+          //   window.location.reload();
+          // }, 2000);
         }
       },
-      onError(error, variables, context) {
-        message.error("Có lỗi xảy ra, vui lòng thử lại sau!");
-        setTimeout(() => {
-          window.location.reload();
-        }, 2000);
-      },
+      // onError(error, variables, context) {
+      //   message.error("Có lỗi xảy ra , vui lòng thử lại sau!");
+      //   setTimeout(() => {
+      //     window.location.reload();
+      //   }, 2000);
+      // },
     }
   );
   //image avatar
@@ -147,12 +151,20 @@ const UpdateProfiles = () => {
       reader.onload = () => resolve(reader.result);
     });
   };
+  const [uploadedCertificate, setUploadedCertificate] = useState<any>(null);
+  const [uploadedAvatar, setUploadedAvatar] = useState<any>(null);
 
   const onChangeCertificate = ({
     fileList: newFileList,
   }: {
     fileList: UploadFile[];
   }) => {
+    // Nếu người dùng đã upload ảnh, lưu trạng thái ảnh đã upload
+    if (newFileList.length > 0) {
+      setUploadedCertificate(newFileList[0]);
+    } else {
+      setUploadedCertificate(null);
+    }
     setFileListCertificate(newFileList);
   };
   const onPreviewCertificate = async (file: any) => {
@@ -191,6 +203,12 @@ const UpdateProfiles = () => {
   }: {
     fileList: UploadFile[];
   }) => {
+    // Nếu người dùng đã upload ảnh, lưu trạng thái ảnh đã upload
+    if (newFileList.length > 0) {
+      setUploadedAvatar(newFileList[0]);
+    } else {
+      setUploadedAvatar(null);
+    }
     setFileListLevel(newFileList);
   };
   const onPreviewLevel = async (file: any) => {
@@ -226,7 +244,6 @@ const UpdateProfiles = () => {
   const onFinish = (values: any) => {
     const formattedBirthday = moment(values.birthday).format("YYYY-MM-DD");
     setLoading(true);
-    console.log("form", values);
     const randomKey = CryptoJS.lib.WordArray.random(16).toString();
     const formdata = new FormData();
     formdata.append("name", values.name);
@@ -237,27 +254,49 @@ const UpdateProfiles = () => {
     formdata.append("idcard", values.idcard);
     formdata.append("level", values.level);
     formdata.append("note", values.note);
-    formdata.append("detail", values.detail);
-    // formdata.append("achievements", values.achievements);
+    formdata.append("detail", dataDetailF3?.data[0].detail);
+    formdata.append("achievements", dataDetailF3?.data[0].achievements);
     formdata.append("club", decryptedClub);
     formdata.append("hometown", values.hometown);
-    formdata.append("address", values.address);
+    const address = `${values.city} - ${values.district}`;
+    formdata.append("address", address);
     formdata.append("nationality", values.nationality);
     formdata.append("email", values.email);
-    formdata.append(
-      `image_certificate`,
-      values.image_certificate[0].originFileObj as File,
-      CryptoJS.AES.encrypt(
-        values.image_certificate[0].name,
-        randomKey
-      ).toString()
-    );
-    formdata.append(
-      `avatar`,
-      values.avatar[0].originFileObj as File,
-      CryptoJS.AES.encrypt(values.avatar[0].name, randomKey).toString()
-    );
+    formdata.append("club", dataDetailF3?.data[0].club);
+    formdata.append("status", dataDetailF3?.data[0].status);
+    formdata.append("id", dataDetailF3?.data[0].id);
+    formdata.append("code", dataDetailF3?.data[0].code);
+    let certificateFile = null;
+    let avatarFile = null;
 
+    if (uploadedCertificate) {
+      certificateFile = uploadedCertificate.originFileObj as File;
+    } else if (fileListcCertificate && fileListcCertificate.length > 0) {
+      certificateFile = fileListcCertificate[0].originFileObj as File;
+    }
+
+    if (uploadedAvatar) {
+      avatarFile = uploadedAvatar.originFileObj as File;
+    } else if (fileListLevel && fileListLevel.length > 0) {
+      avatarFile = fileListLevel[0].originFileObj as File;
+    }
+
+    if (certificateFile) {
+      formdata.append(
+        `image_certificate`,
+        certificateFile,
+        CryptoJS.AES.encrypt(certificateFile.name, randomKey).toString()
+      );
+    }
+
+    if (avatarFile) {
+      formdata.append(
+        `avatar`,
+        avatarFile,
+        CryptoJS.AES.encrypt(avatarFile.name, randomKey).toString()
+      );
+    }
+    console.log("formdata", formdata.getAll);
     updateMemberMutation.mutate(formdata);
   };
 
@@ -292,9 +331,9 @@ const UpdateProfiles = () => {
                             name="image_certificate"
                             valuePropName="fileListLevel"
                             getValueFromEvent={normFile}
-                            rules={[
-                              { required: true, message: "Vui lòng tải ảnh" },
-                            ]}
+                            // rules={[
+                            //   { required: true, message: "Vui lòng tải ảnh" },
+                            // ]}
                           >
                             {/* <ImgCrop showGrid showReset> */}
                             <Upload
@@ -323,9 +362,9 @@ const UpdateProfiles = () => {
                             name="avatar"
                             valuePropName="fileListLevel"
                             getValueFromEvent={normFile}
-                            rules={[
-                              { required: true, message: "Vui lòng tải ảnh" },
-                            ]}
+                            // rules={[
+                            //   { required: true, message: "Vui lòng tải ảnh" },
+                            // ]}
                           >
                             {/* <ImgCrop showGrid showReset> */}
                             <Upload
@@ -507,8 +546,8 @@ const UpdateProfiles = () => {
                   <Row gutter={16}>
                     <Col span={8} xs={24} sm={12} md={8}>
                       <Form.Item
-                        label="Tỉnh/Thành/Ngành"
-                        name="address"
+                        label="Tỉnh/Thành"
+                        name="city"
                         rules={[
                           {
                             required: true,
@@ -521,7 +560,7 @@ const UpdateProfiles = () => {
                           optionFilterProp="children"
                           showSearch
                         >
-                          {province.map((option) => (
+                          {OnlyProvince.map((option) => (
                             <Select.Option key={option} value={option}>
                               {option}
                             </Select.Option>
@@ -531,8 +570,8 @@ const UpdateProfiles = () => {
                     </Col>
                     <Col span={8} xs={24} sm={12} md={8}>
                       <Form.Item
-                        label="Quê quán"
-                        name="hometown"
+                        label="Quận/Huyện"
+                        name="district"
                         rules={[
                           { required: true, message: "Vui lòng điền quê quán" },
                         ]}
@@ -553,9 +592,20 @@ const UpdateProfiles = () => {
                     </Col>
                   </Row>
                   <Row gutter={16}>
-                    <Col span={8} xs={24} sm={12} md={8}></Col>
+                    <Col span={8} xs={24} sm={12} md={8}>
+                      {" "}
+                      <Form.Item
+                        label="Quê quán"
+                        name="hometown"
+                        rules={[
+                          { required: true, message: "Vui lòng điền quê quán" },
+                        ]}
+                      >
+                        <Input />
+                      </Form.Item>
+                    </Col>
                   </Row>
-                  {decryptedPermission == "0" ? (
+                  {/* {decryptedPermission == "0" ? (
                     <Form.List name="users">
                       {(fields, { add, remove }) => (
                         <>
@@ -632,7 +682,7 @@ const UpdateProfiles = () => {
                     </Form.List>
                   ) : (
                     <Space></Space>
-                  )}
+                  )} */}
                   <Form.Item
                     name="note"
                     label="Ghi chú hiển thị với người dùng"

@@ -25,13 +25,18 @@ import Cookies from "js-cookie";
 import CryptoJS from "crypto-js";
 import { level, province } from "../../until/until";
 import moment from "moment";
-import { useMutation } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { addMember } from "../../api/ApiUser";
 import { addNewF3 } from "../../api/f2";
+import { getListClub } from "../../api/f0";
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
 const { Option } = Select;
 const secretKey = process.env.REACT_APP_SECRET_KEY as string;
+interface Club {
+  id: string;
+  name_club: string;
+}
 
 interface ProfilesProps {}
 const Profiles = () => {
@@ -42,13 +47,19 @@ const Profiles = () => {
     async (payload: any) => await addMember(payload),
     {
       onSuccess: (data) => {
-        if (data.status === "success")
-          message.success("Thêm hội viên thành công!");
-        else {
+        if (data.status === "success") {
+          {
+            decryptedPermission == "0"
+              ? message.success("Thêm hội viên thành công!")
+              : message.success(
+                  "Yêu cầu đã được gửi đến Liên đoàn Võ thuật Cổ truyền Việt Nam"
+                );
+          }
+
+          setLoading(false);
+        } else {
           message.error("Có lỗi xảy ra, vui lòng thử lại sau!");
-          setTimeout(() => {
-            window.location.reload();
-          }, 2000);
+          setLoading(false);
         }
       },
       onError(error, variables, context) {
@@ -59,6 +70,12 @@ const Profiles = () => {
       },
     }
   );
+  const { data: dataClub } = useQuery("dataClub", getListClub);
+
+  const listClub = dataClub?.data.map((item: Club, index: number) => ({
+    text: item.name_club,
+    value: item.name_club,
+  }));
   //image avatar
   const normFile = (e: any) => {
     if (Array.isArray(e)) {
@@ -152,6 +169,11 @@ const Profiles = () => {
   const decryptedPermission = permission.toString(CryptoJS.enc.Utf8);
   const club = CryptoJS.AES.decrypt(Cookies.get("club") as string, secretKey);
   const decryptedClub = club.toString(CryptoJS.enc.Utf8);
+  const NameClb = CryptoJS.AES.decrypt(
+    Cookies.get("NameClb") as string,
+    secretKey
+  );
+  const decryptedNameClb = NameClb.toString(CryptoJS.enc.Utf8);
   // const permission = CryptoJS.AES.decrypt(
   //   Cookies.get("permission") as string,
   //   secretKey
@@ -159,7 +181,7 @@ const Profiles = () => {
   // const decryptedPermission = permission.toString(CryptoJS.enc.Utf8);
   //fill club
   useEffect(() => {
-    form.setFieldValue("club", "CLB Hà Nội");
+    form.setFieldValue("club", decryptedNameClb);
   }, [form]);
   const [loading, setLoading] = useState(false);
   const onFinish = (values: any) => {
@@ -178,9 +200,15 @@ const Profiles = () => {
     formdata.append("note", values.note);
     formdata.append("detail", values.detail);
     // formdata.append("achievements", values.achievements);
-    formdata.append("club", decryptedClub);
+    {
+      decryptedPermission == "0"
+        ? formdata.append("club", values.club)
+        : formdata.append("club", decryptedClub);
+    }
+
     formdata.append("hometown", values.hometown);
-    formdata.append("address", values.address);
+    const address = `${values.city}-${values.district}`;
+    formdata.append("address", address);
     formdata.append("nationality", values.nationality);
     formdata.append("email", values.email);
     formdata.append(
@@ -391,7 +419,17 @@ const Profiles = () => {
                         { required: true, message: "Vui lòng điền câu lạc bộ" },
                       ]}
                     >
-                      <Input disabled />
+                      {decryptedPermission == "0" ? (
+                        <Select>
+                          {listClub?.map((club: any) => (
+                            <Select.Option key={club.value} value={club.value}>
+                              {club.text}
+                            </Select.Option>
+                          ))}
+                        </Select>
+                      ) : (
+                        <Input disabled={true} />
+                      )}
                     </Form.Item>
                   </Col>
                   <Col span={8} xs={24} sm={12} md={8}>
@@ -428,8 +466,8 @@ const Profiles = () => {
                 <Row gutter={16}>
                   <Col span={8} xs={24} sm={12} md={8}>
                     <Form.Item
-                      label="Tỉnh/Thành/Ngành"
-                      name="address"
+                      label="Tỉnh/Thành"
+                      name="city"
                       rules={[
                         { required: true, message: "Vui lòng chọn tỉnh/thành" },
                       ]}
@@ -449,10 +487,10 @@ const Profiles = () => {
                   </Col>
                   <Col span={8} xs={24} sm={12} md={8}>
                     <Form.Item
-                      label="Quê quán"
-                      name="hometown"
+                      label="Quận/Huyện"
+                      name="district"
                       rules={[
-                        { required: true, message: "Vui lòng điền quê quán" },
+                        { required: true, message: "Vui lòng điền quận/huyện" },
                       ]}
                     >
                       <Input />
@@ -471,9 +509,20 @@ const Profiles = () => {
                   </Col>
                 </Row>
                 <Row gutter={16}>
-                  <Col span={8} xs={24} sm={12} md={8}></Col>
+                  <Col span={8} xs={24} sm={12} md={8}>
+                    {" "}
+                    <Form.Item
+                      label="Quê quán"
+                      name="hometown"
+                      rules={[
+                        { required: true, message: "Vui lòng điền quê quán" },
+                      ]}
+                    >
+                      <Input />
+                    </Form.Item>
+                  </Col>
                 </Row>
-                {decryptedPermission == "0" ? (
+                {/* {decryptedPermission == "0" ? (
                   <Form.List name="users">
                     {(fields, { add, remove }) => (
                       <>
@@ -548,7 +597,7 @@ const Profiles = () => {
                   </Form.List>
                 ) : (
                   <Space></Space>
-                )}
+                )} */}
                 <Form.Item
                   name="note"
                   label="Ghi chú hiển thị với người dùng"

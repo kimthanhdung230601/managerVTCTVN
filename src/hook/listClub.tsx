@@ -11,7 +11,7 @@ const ListClub = () => {
 
   const listClub = dataClub?.data.map((item: Club, index: number) => ({
     text: item.name_club,
-    value: item.name_club,
+    value: item.id,
   }));
   return listClub;
 };
