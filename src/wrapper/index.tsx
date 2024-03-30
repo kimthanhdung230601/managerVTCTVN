@@ -1,56 +1,49 @@
-import { Route, Routes } from "react-router-dom";
-import Article from "../pages/Article";
-import Detail from "../pages/Detail";
-import LevelOne from "../pages/f1";
-import Guide from "../pages/Guide";
-import Home from "../pages/Home";
-import JuryMember from "../pages/JuryMember";
-import Login from "../pages/Login";
-import Signup from "../pages/Login/Signup";
-import News from "../pages/News";
-import Post from "../pages/Post";
-import Search from "../pages/Search";
-import Profiles from "../pages/Profiles";
-import Admin from "../pages/Admin0";
-import UpdateMember from "../pages/Admin0/updateMember";
-import AdminTwo from "../pages/Admin2";
-import Account from "../pages/Account";
-import ChangePassword from "../pages/ChangePassword";
-import CryptoJS from "crypto-js";
-const Wrapper = () => {
-  return (
-    <>
-      <Routes>
-        <Route path="/" element={<Home />}></Route>
-        <Route path="/dang-nhap" element={<Login />}></Route>
-        <Route path="/dang-ky" element={<Signup />}></Route>
-        <Route path="/admin1" element={<LevelOne />}></Route>
-        <Route path="/thong-tin-ho-so/:id" element={<Detail />}></Route>
-        <Route path="/thong-tin-ho-so" element={<Detail />}></Route>
-        <Route path="/tra-cuu-hoi-vien" element={<Search />}></Route>
-        <Route path="/tin-tuc" element={<News />}></Route>
-        <Route path="/huong-dan" element={<Guide />}></Route>
-        <Route path="/dang-bai" element={<Post />}></Route>
-        <Route path="/bai-viet/:id" element={<Article />}></Route>
-        <Route
-          path="/hoi-vien-du-tu-cach-giam-khao"
-          element={<JuryMember />}
-        ></Route>
-        <Route
-          path="/thong-tin-tai-khoan/:id"
-          element={<Account />}
-        ></Route>
-        <Route
-          path="/doi-mat-khau"
-          element={<ChangePassword />}
-        ></Route>
-        <Route path="/them-hoi-vien" element={<Profiles />}></Route>
-        <Route path={`Admin0/:key`} element={<Admin />}></Route>
-        <Route path="/Admin0/:key/UpdateMember" element={<UpdateMember />}></Route>
-        <Route path="/Admin2" element={<AdminTwo />}></Route>
-      </Routes>
-    </>
-  );
-};
+import React from 'react'
+import { logout } from '../api/api';
+import {message} from "antd"
+import { useLocation, useNavigate } from 'react-router';
+import { useRoutes } from 'react-router-dom';
+import Cookies from 'js-cookie';
+import Component from './routes';
+import NotFoundPage from "../pages/404";
+import { RouteList } from './configRoute';
+import { isAdmin } from '../api/ApiUser';
 
-export default Wrapper;
+export default function Wrapper() {
+  const navigate = useNavigate()
+  const location = useLocation()
+  const router = useLocation()
+  
+  const permissionAdmin = (): number | undefined => {
+    for (const route of RouteList) {
+      if (router.pathname.includes(route.name)) {
+        return route.permission
+      }
+    }
+      return 404
+  }
+
+
+  const goToLogin = (): null => {
+    if (typeof window !== "undefined") {
+      logout()
+      message.warning( `Bạn cần đăng nhập quyền admin để truy cập trang này!`, 5);
+      setTimeout(()=>{
+          navigate('/dang-nhap')
+      }, 5000)
+    }
+    
+    return null;
+  };
+
+  if(permissionAdmin() === 404) return <NotFoundPage />
+  if(permissionAdmin() !== 3){
+    if(Cookies.get("token")){
+      if(permissionAdmin() === 0 && isAdmin() === "0") return <Component />
+      else if(permissionAdmin() === 1 && parseInt(isAdmin(),10) <= 1) return <Component />
+      else if(permissionAdmin() === 2 && parseInt(isAdmin(),10) <= 2) return <Component />
+      else return goToLogin()
+    } else return goToLogin()
+  } else return <Component />
+  return <Component />
+}

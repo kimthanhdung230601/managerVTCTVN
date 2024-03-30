@@ -25,18 +25,31 @@
     font-weight: 600;
 }
 
-.colImg > div {
+
+.colImgWrap {
     height: 100%;
     width: 100%;
+    text-align: center;
+}
+
+.colImgWrap > div {
+    width: 100%;
+    height: 100%;
 }
 
 .detailImg{
-    width: 100% !important;
-    height: 100% !important;
-    max-width: 200px;
+    width: 200px !important;
+    height: 200px !important;
     object-fit: cover;
     border-radius: 8px;
     
+}
+
+.accImg{
+    width: 220px !important;
+    height: 130px !important;
+    object-fit: cover;
+    border-radius: 8px;
 }
 
 .qrImg{
@@ -48,7 +61,7 @@
 .DetailItem > div {
     font-size: 18px ;
     font-weight: 500;
-    margin-bottom: 18px;
+    margin-bottom: 20px;
 }
 
 .awardList{
@@ -74,4 +87,12 @@
     background-repeat: no-repeat;
     background-size: cover;
     background-image: url("../../assets/image/bg.png");
+}
+
+@media only screen and (max-width: 768px){
+    .detailImg{
+        width: 100px !important;
+        height: 100px !important;
+        object-fit: cover;
+    }
 }

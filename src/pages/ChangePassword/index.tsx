@@ -1,12 +1,42 @@
-import { LockOutlined } from '@ant-design/icons'
-import { Button, Form, Image, Input } from 'antd'
+import { LockOutlined, PhoneOutlined } from '@ant-design/icons'
+import { Button, Form, Image, Input, message } from 'antd'
 import React from 'react'
+import { useMutation } from 'react-query'
+import { changePassword } from '../../api/ApiUser'
 import Footer from '../../components/Footer'
 import Header from '../../components/Header'
 import styles from "./Style.module.scss"
 
 export default function ChangePassword() {
     document.title= "Đổi mật khẩu"
+    const changePasswordMutation = useMutation(
+        async (payload: any) => await changePassword(payload),
+        {
+            onSuccess: (data) => {
+                if(data.status === "success"){
+                   message.success("Đổi mật khẩu thành công, vui lòng đăng nhập lại!") 
+                   setTimeout(()=> {
+                        window.location.replace('/dang-nhap')
+                   }, 2000)
+                } else {
+                    message.success(data.data) 
+                }
+
+            },
+            onError: () => {
+                message.error("Có lỗi xảy ra, vui lòng thử lại sau!") 
+                setTimeout(()=> {
+                    window.location.reload()
+                }, 2000)
+            }
+        }
+    )
+
+    const onFinish = (values: any) => {
+        delete values.confirm
+        console.log(values)
+        changePasswordMutation.mutate(values)
+    }
   return (
     <div className={styles.wrap}>
         <Header />
@@ -23,18 +53,41 @@ export default function ChangePassword() {
                     layout="vertical"
                     autoComplete="off"
                     className={styles.form}
+                    onFinish={onFinish}
                 >
                     <Form.Item
-                    name="oldPassword"
-                    rules={[
-                        {
-                            pattern: /^.{8,}$/,
-                            message: 'Ít nhất 8 ký tự',
-                        },
-                        {
-                            required: true,
-                            message: 'Vui lòng nhập mật khẩu!',
-                        }]}
+                    name="phone"
+                    // rules={[
+                    //     {
+                    //     pattern: /^[0-9]{10}$/,
+                    //     message: 'Số điện thoại không đúng định dạng',
+                    //     },
+                    //     {
+                    //     required: true,
+                    //     message: 'Vui lòng nhập số điện thoại',
+                    //     },
+                    // ]}
+                    wrapperCol={{ span: 24 }}
+                    className={styles.formItem}
+                    >
+                    
+                    <Input
+                        prefix={<PhoneOutlined className={styles.icon} />}
+                        placeholder="Nhập số điện thoại"
+                        className={styles.formInput}/>
+                    </Form.Item>
+                    
+                    <Form.Item
+                    name="password"
+                    // rules={[
+                    //     {
+                    //         pattern: /^.{8,}$/,
+                    //         message: 'Ít nhất 8 ký tự',
+                    //     },
+                    //     {
+                    //         required: true,
+                    //         message: 'Vui lòng nhập mật khẩu!',
+                    //     }]}
                     wrapperCol={{ span: 24 }}
                     className={styles.formItem}
                     >
@@ -46,15 +99,15 @@ export default function ChangePassword() {
                     </Form.Item>
                     <Form.Item
                     name="newPassword"
-                    rules={[
-                        {
-                            pattern: /^.{8,}$/,
-                            message: 'Ít nhất 8 ký tự',
-                        },
-                        {
-                            required: true,
-                            message: 'Vui lòng nhập mật khẩu mới!',
-                        }]}
+                    // rules={[
+                    //     {
+                    //         pattern: /^.{8,}$/,
+                    //         message: 'Ít nhất 8 ký tự',
+                    //     },
+                    //     {
+                    //         required: true,
+                    //         message: 'Vui lòng nhập mật khẩu mới!',
+                    //     }]}
                     wrapperCol={{ span: 24 }}
                     className={styles.formItem}
                     >
@@ -66,7 +119,7 @@ export default function ChangePassword() {
                     </Form.Item>
                     <Form.Item
                         name="confirm"
-                        dependencies={['password']}
+                        dependencies={['newPassword']}
                         wrapperCol={{ span: 24 }}
                         className={styles.formItem}
                         hasFeedback
@@ -77,7 +130,7 @@ export default function ChangePassword() {
                         },
                         ({ getFieldValue }) => ({
                             validator(_, value) {
-                            if (!value || getFieldValue('password') === value) {
+                            if (!value || getFieldValue('newPassword') === value) {
                                 return Promise.resolve();
                             }
                             return Promise.reject(new Error('Mật khẩu không khớp!'));

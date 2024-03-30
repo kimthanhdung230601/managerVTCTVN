@@ -1,6 +1,14 @@
 .wrap{
     padding: 120px 20px;
     overflow-x: hidden;
+    min-height: 100vh;
+}
+
+.fetchWrap{
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .row{

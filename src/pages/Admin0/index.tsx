@@ -19,7 +19,7 @@ const Admin = () => {
 
   const handleTabChange = (key:string) => {
     setSelectedMenuItem(key);
-    navigate(`/Admin0/${key}`); // Thay đổi ở đây
+    navigate(`/lien-doan/${key}`); // Thay đổi ở đây
   };
 
   const items = useMemo(() => [

@@ -25,7 +25,6 @@ const queryClient = new QueryClient({
 root.render(
   <Provider store={store}>
     <PersistGate persistor={persistor}>
-      <React.StrictMode>
         <QueryClientProvider client={queryClient}>
           <ConfigProvider
             locale={vi_VN}
@@ -46,7 +45,6 @@ root.render(
             </QueryClientProvider>
           </ConfigProvider>
         </QueryClientProvider>
-      </React.StrictMode>
     </PersistGate>
   </Provider>
 );

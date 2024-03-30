@@ -6,18 +6,27 @@ import styles from "./Style.module.scss";
 import { useLocation, useNavigate } from 'react-router';
 import { levelFilters } from '../../until/until';
 import { useQuery } from 'react-query';
-import { getListClub, getListMember } from '../../api/f1';
+import { getClubs, getFilterTable, getListClub, getListMember, searchInTable } from '../../api/f1';
+import type { TableColumnsType, TableProps } from 'antd';
 interface DataType_CLB {
     key: React.Key;
     name: string;
-    birth: string;
+    birthday: string;
     phone: string;
-    idcard: string;
+    code: string;
     level: string;
     member_count: string;
     pending: string;
     NameClb: string;
     club: string;
+}
+
+interface data {
+  status: string,
+  total_products: number,
+  total_pages: number,
+  index_page: number,
+  data: DataType_CLB[]
 }
 
 const customLocale = {
@@ -33,22 +42,57 @@ export default function ManageClub() {
     const navigate = useNavigate();
     const location = useLocation()
     const searchURL = new URLSearchParams(useLocation().search)
+    const [key, setKey] = useState("")
     const [currentPage2, setCurrentPage2] = useState(searchURL.get("page") || "1");
+    const [param, setParam] = useState("")
+    const {data: clubs} = useQuery(["clubs"], () =>  getClubs())
+    const [clubList, setClubList] = useState<data>()
     const [selectedRowKeysCLB, setSelectedRowKeysCLB] = useState<React.Key[]>([]);
-    const [clubList, setClubList] = useState<DataType_CLB[]>([])
     const {data: clubListData, isFetching} = useQuery(['club'], () => getListClub(), {
       onSettled: (data) => {
         if(data.status === "failed"){
           message.warning(data.data)
+        } else if(data.status === "success"){
+          setClubList(data)
+        } else {
+          message.error("Có lỗi xảy xa, vui lòng thử lại sau")
+        } 
+      }
+    })
+    const {data: resultFilter} = useQuery(["filters", param], ()=> getFilterTable('/ManageGetUsers', param), {
+      enabled: param !== "",
+      onSettled: (data) => {
+        if(data.status === "success") {
+              setClubList(data)
+        } else if(data.status === "failed"){
+          message.error("Không có dữ liệu.")
           setTimeout(()=> {
-            window.location.replace("/dang-nhap")
+            window.location.reload()
           }, 2000)
         } else {
-          const newData = data.data.map((item: DataType_CLB, index:number)=> {
-              return {...item, key: index}
-          })
-          setClubList(newData)
-        } 
+          message.error("Có lỗi xảy ra, vui lòng thử lại sau")
+          setTimeout(()=> {
+            window.location.reload()
+          }, 2000)
+        }
+      }
+    })
+    const {data: search} = useQuery(["search", key], ()=> searchInTable(key), {
+      enabled: key !== "", 
+      onSettled: (data) => {
+        if(data.status === "success") {
+          setClubList(data)
+        } else if(data.status === "failed"){
+          message.error("Không có dữ liệu.")
+          setTimeout(()=> {
+            window.location.reload()
+          }, 2000)
+        } else {
+          message.error("Có lỗi xảy ra, vui lòng thử lại sau")
+          setTimeout(()=> {
+            window.location.reload()
+          }, 2000)
+        }
       }
     })
     const onSelectChangeCLB = (newSelectedRowKeysCLB: React.Key[]) => {
@@ -66,12 +110,14 @@ export default function ManageClub() {
       setCurrentPage2(page.toString());
 
     };
-    const onSearch: SearchProps["onSearch"] = (value, _e, info) =>console.log(info?.source, value);
+    const onSearch: SearchProps["onSearch"] = (value, _e, info) =>{
+      setKey(value)
+    }
     const columns_CLB: ColumnsType<DataType_CLB> = [
         {
           title: "STT",
           dataIndex: "key",
-          render: (_, __, index) => (parseInt(currentPage2, 10) - 1) * 10 + index + 1,
+          render: (_, __, index) => (parseInt(currentPage2, 10) - 1) * 30 + index + 1,
         },
         {
           title: "Họ tên",
@@ -79,7 +125,8 @@ export default function ManageClub() {
         },
         {
           title: "Ngày sinh",
-          dataIndex: "birth",
+          dataIndex: "birthday",
+          render: (value,record) => <span>{value ? value.split(" ")[0] : value}</span>
         },
         {
           title: "Số điện thoại",
@@ -87,32 +134,27 @@ export default function ManageClub() {
         },
         {
           title: "Số định danh",
-          dataIndex: "idcard",
+          dataIndex: "code",
+          
         },
         {
           title: "Đẳng cấp",
           dataIndex: "level",
-          filters: levelFilters,
+          filterMultiple: false,
           filterMode: 'tree',
+          // filteredValue: [selectedFilterValue ? selectedFilterValue : ""],
           onFilter: (value: any, record) => record.level.indexOf(value) === 0,
         },
         {
           title: "CLB trực thuộc",
           dataIndex: "NameClb",
-          filters: [
-            {
-              text: "CLB Hà Nội",
-              value: "CLB Hà Nội",
-            },
-            {
-              text: "CLB Hải Phòng",
-              value: "CLB Hải Phòng",
-            },
-            {
-              text: "CLB TP HCM",
-              value: "CLB TP HCM",
-            },
-          ],
+          filterMultiple: false,
+          filters: clubs?.status === "success" ? clubs?.data.map((item: any, index: number) => {
+              return {
+                text: item.NameClb,
+                value: item.club
+              }
+          }) : null,
           onFilter: (value: any, record) => record.NameClb.indexOf(value) === 0,
         },
         {
@@ -122,6 +164,7 @@ export default function ManageClub() {
         {
           title: "Tình trạng",
           dataIndex: "pending",
+          filterMultiple: false,
           filters: [
             {
               text: "Hoạt động",
@@ -146,48 +189,58 @@ export default function ManageClub() {
         {
           title: "Chi tiết",
           render: (value, record) => {
-            return <button className={styles.btn} onClick={()=>navigate(`/Admin2?club=${record.club}`)}>Xem</button>;
+            return <button className={styles.btn} onClick={()=>navigate(`/quan-ly-don-vi?club=${record.club}`)}>Xem</button>;
           },
         },
-      ];
-    
+    ];
+    const onChange: TableProps<DataType_CLB>['onChange'] = (pagination, filters, sorter, extra) => {
+      const param = '?page=' + currentPage2  + (filters.NameClb ? '&club=' + filters.NameClb[0] : null) + (filters.level ? '&level=' + encodeURIComponent(filters.level[0].toString())  : null) + (filters.pending ? '&pending=' + filters.pending[0] : null)
+      setParam(param)
+    };
   return (
     <>
     {
         isFetching ? <div className={styles.fetching}><Spin size='large' /></div>
         :
         <>
-        <div className={styles.tableTop}>
-        <div>
-            {hasSelected
-            ? `Đã chọn ${selectedRowKeysCLB.length} hồ sơ`
-            : `Tổng số ${clubListData?.status === "success" ? clubListData?.total_products: "0"} hồ sơ`}
-        </div>
-        <div className={styles.filter}>
-        <Search
-            placeholder="Tìm kiếm tại đây"
-            allowClear
-            onSearch={onSearch}
-            size="large"
-            style={{maxWidth: "300px", marginBottom: "4px", marginRight: "8px"}}
-        />
-        
-        </div>
-        </div>
-        <Table
-        rowSelection={rowSelectionCLB}
-        columns={columns_CLB}
-        dataSource={clubList}
-        locale={customLocale}
-        pagination={{
-            current: parseInt(currentPage2, 10),
-            onChange: onPaginationChange2,
-            pageSize: 10,
-            defaultCurrent: 1,
-            total:clubListData?.status === "success" ? clubListData?.total_products : null,
-        }}
-        className={styles.table}
-        />{" "}
+        {
+          clubList?.status === "failed" ? <div className={styles.fetching}>Không có dữ liệu.</div>
+          :
+          <>
+            <div className={styles.tableTop}>
+            <div>
+                {hasSelected
+                ? `Đã chọn ${selectedRowKeysCLB.length} hồ sơ`
+                : `Tổng số ${clubList?.total_products ? clubList?.total_products: "0"} hồ sơ`}
+            </div>
+            <div className={styles.filter}>
+            <Search
+                placeholder="Tìm kiếm tại đây"
+                allowClear
+                onSearch={onSearch}
+                size="large"
+                style={{maxWidth: "300px", marginBottom: "4px", marginRight: "8px"}}
+            />
+            
+            </div>
+            </div>
+            <Table
+            rowSelection={rowSelectionCLB}
+            columns={columns_CLB}
+            dataSource={clubList?.data}
+            locale={customLocale}
+            onChange={onChange}
+            pagination={{
+                current: parseInt(currentPage2, 10),
+                onChange: onPaginationChange2,
+                pageSize: 30,
+                defaultCurrent: 1,
+                total: clubList?.total_products ? clubListData?.total_products : null,
+            }}
+            className={styles.table}
+            />{" "}
+              </>
+            }
          </>
       }
     </>

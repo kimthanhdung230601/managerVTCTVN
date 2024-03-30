@@ -44,17 +44,17 @@ export default function Login() {
       switch (true) {
         case res?.info_user[0].permission === "0":
           // console.log("Mật khẩu đúng cho accountF0");
-          navigate("/Admin0/quan-ly-hoi-vien");
+          navigate("/lien-doan/quan-ly-hoi-vien");
           break;
 
         case res?.info_user[0].permission === "1":
           // console.log("Mật khẩu đúng cho accountF1");
-          // navigate("/Admin1");
+          navigate("/quan-ly-lien-doan-so-nganh");
           break;
 
         case res?.info_user[0].permission === "2":
           // console.log("Mật khẩu đúng cho accountF2");
-          navigate("/Admin2");
+          navigate("/quan-ly-don-vi");
           break;
         default:
           alert("Nhập sai tài khoản hoặc mật khẩu");
@@ -80,6 +80,10 @@ export default function Login() {
       Cookies.set(
         "email",
         CryptoJS.AES.encrypt(res?.info_user[0].email, secretKey).toString()
+      );
+      Cookies.set(
+        "manage",
+        CryptoJS.AES.encrypt(res?.info_user[0].manage, secretKey).toString()
       );
     } else {
       message.error("Nhập sai tài khoản hoặc mật khẩu");

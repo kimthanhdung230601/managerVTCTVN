@@ -10,14 +10,20 @@ import Search, { SearchProps } from "antd/es/input/Search";
 import ManageClub from "./manageClub";
 import ManageMember from "./manageMember";
 import { useLocation, useNavigate } from "react-router";
+import Cookies from "js-cookie";
+import CryptoJS from "crypto-js";
 
+const secretKey = process.env.REACT_APP_SECRET_KEY || "";
+const manageCookie = Cookies.get("manage") || ""
+const bytes = CryptoJS.AES.decrypt(manageCookie, secretKey);
+const manage = bytes.toString(CryptoJS.enc.Utf8);
 export default function LevelOne() {
   document.title = "Quản lý Liên đoàn, Sở, Ngành";
   const navigate = useNavigate()
   const tab = new URLSearchParams(useLocation().search);
   const  [activeTab, setActiveTab] = useState(tab.get("tab") || "CLB")
   const onChange = (key: string) => {
-    navigate(`/admin1?tab=${key}&page=1`)
+    navigate(`/quan-ly-lien-doan-so-nganh?tab=${key}&page=1`)
   };
   const items: TabsProps["items"] = [
     {
@@ -35,6 +41,7 @@ export default function LevelOne() {
       ),
     },
   ];
+  console.log(manage)
   return (
     <>
       <Header />
@@ -46,7 +53,7 @@ export default function LevelOne() {
             className={styles.img}
           />
           <div className={styles.title}>
-            Đơn vị quản lý: Liên đoàn, Sở, Ngành
+            Đơn vị : {" "}{manage ? manage : 'Đơn vị quản lý: Liên đoàn, Sở, Ngành'}
           </div>
         </div>
         <div className={styles.tableWrap}>
