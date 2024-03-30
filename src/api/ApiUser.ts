@@ -3,7 +3,7 @@ import CryptoJS from "crypto-js";
 import { sendGet, sendPost } from "./api"
 
 const secretKey = process.env.REACT_APP_SECRET_KEY || "";
-const isAdmin = (): string => {
+export const isAdmin = (): string => {
     const isAdminn = Cookies.get("permission") || ""
     const bytes = CryptoJS.AES.decrypt(isAdminn, secretKey);
     const permission = bytes.toString(CryptoJS.enc.Utf8);
@@ -29,3 +29,4 @@ export const getInforF3 = (payload:any, type: string) =>{
         else return sendGet(`/GetMemberID?id=${payload}`)
     }
 } 
+export const changePassword = (params: any) => sendPost("/ChangePass", params)
