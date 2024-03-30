@@ -49,7 +49,7 @@ export default function Login() {
 
         case res?.info_user[0].permission === "1":
           // console.log("Mật khẩu đúng cho accountF1");
-          // navigate("/Admin1");
+          navigate("/admin1");
           break;
 
         case res?.info_user[0].permission === "2":
@@ -70,6 +70,11 @@ export default function Login() {
         CryptoJS.AES.encrypt(res?.info_user[0].club, secretKey).toString()
       );
       Cookies.set(
+        "NameClb",
+        CryptoJS.AES.encrypt(res?.info_user[0].NameClb, secretKey).toString()
+      );
+      // Cookies.set("NameClb", res?.info_user[0].NameClb);
+      Cookies.set(
         "name",
         CryptoJS.AES.encrypt(res?.info_user[0].name, secretKey).toString()
       );
@@ -80,6 +85,10 @@ export default function Login() {
       Cookies.set(
         "email",
         CryptoJS.AES.encrypt(res?.info_user[0].email, secretKey).toString()
+      );
+      Cookies.set(
+        "id",
+        CryptoJS.AES.encrypt(res?.info_user[0].id, secretKey).toString()
       );
     } else {
       message.error("Nhập sai tài khoản hoặc mật khẩu");

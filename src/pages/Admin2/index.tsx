@@ -51,8 +51,11 @@ const rootSubmenuKeys = ["sub1"];
 const AdminTwo = () => {
   document.title = "Đơn vị quản lý";
   const navigate = useNavigate();
-  const idClub = new URLSearchParams(useLocation().search)
-  const { data: listF3, refetch } = useQuery(["listF3", idClub.get("club")], () => getListMemberF3(idClub.get("club")));
+  const idClub = new URLSearchParams(useLocation().search);
+  // const { data: listF3, refetch } = useQuery(
+  //   ["listF3", idClub.get("club")],
+  //   () => getListMemberF3(idClub.get("club"))
+  // );
   // const [openKeys, setOpenKeys] = useState(["sub1"]);
   // const name = Cookies.get("name") as string;
   const name = CryptoJS.AES.decrypt(Cookies.get("name") as string, secretKey);
@@ -61,10 +64,16 @@ const AdminTwo = () => {
   const decryptedPhone = phone.toString(CryptoJS.enc.Utf8);
   const email = CryptoJS.AES.decrypt(Cookies.get("email") as string, secretKey);
   const decryptedEmail = email.toString(CryptoJS.enc.Utf8);
+  const id = CryptoJS.AES.decrypt(Cookies.get("id") as string, secretKey);
+  const decryptedId = id.toString(CryptoJS.enc.Utf8);
+  const NameClb = CryptoJS.AES.decrypt(
+    Cookies.get("NameClb") as string,
+    secretKey
+  );
+  const decryptedNameClb = NameClb.toString(CryptoJS.enc.Utf8);
   const onClick: MenuProps["onClick"] = (e) => {
     console.log("click ", e);
   };
-  console.log(idClub.get("club"))
   return (
     <>
       <Header />
@@ -78,16 +87,22 @@ const AdminTwo = () => {
             />
           </div>
           <div className={styles.titleContent}>
-            <div className={styles.titleText}>Đơn vị:</div>{" "}
+            <div className={styles.titleText}>Đơn vị: {decryptedNameClb}</div>{" "}
             <div className={styles.subTitleText}>
               <div className={`$(styles.boldText)`}>
                 Thông tin người quản lý
               </div>
-              {/* <div className={styles.titleName}>
-                <button className={styles.btnView} style={{marginTop: "8px"}} onClick={() => navigate("/thong-tin-tai-khoan")}>
-                    Chi tiết
+              <div className={styles.titleName}>
+                <button
+                  className={styles.btnView}
+                  style={{ marginTop: "8px" }}
+                  onClick={() =>
+                    navigate(`/thong-tin-tai-khoan/${decryptedId}`)
+                  }
+                >
+                  Chi tiết
                 </button>
-              </div> */}
+              </div>
             </div>
             <div className={styles.subTitleText}>
               <div className={styles.labelTitle}>Họ tên: </div>
