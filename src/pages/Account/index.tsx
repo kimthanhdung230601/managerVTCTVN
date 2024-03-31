@@ -29,7 +29,7 @@ export default function Account() {
             : 
             <>
             {
-                adminInfor?.status === "failed" || !adminInfor ?
+                adminInfor?.status === "failed" ?
                 <div className={styles.searchWrap}>Không có dữ liệu.</div>
                 : 
                 <>
