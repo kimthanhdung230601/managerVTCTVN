@@ -18,7 +18,11 @@ body {
   font-family: "Inter" !important;
   font-family: "Inter" !important;
 }
-
+div,
+span {
+  // background-color: #fff;
+  // color: #0000;
+}
 a {
   color: inherit;
   text-decoration: none;
