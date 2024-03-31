@@ -15,7 +15,7 @@ import CryptoJS from 'crypto-js';
 
   
 const onFinishFailed = (errorInfo: any) => {
-    console.log('Failed:', errorInfo);
+   
 };
 
 
@@ -68,7 +68,6 @@ export default function Post() {
                 const imageURL = await upLoadImage(formdata)
                 const quill = quillRef.current;
                 if (quill) {
-                  console.log(`https://vocotruyen.id.vn/PHP_IMG/${imageURL.status}`)
                   const range = quill.getEditorSelection();
                   range && quill.getEditor().insertEmbed(range.index, "image", `https://vocotruyen.id.vn/PHP_IMG/${imageURL.status}`);
                 }

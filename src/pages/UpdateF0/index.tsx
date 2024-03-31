@@ -296,7 +296,6 @@ const UpdateProfiles = () => {
         CryptoJS.AES.encrypt(avatarFile.name, randomKey).toString()
       );
     }
-    console.log("formdata", formdata.getAll);
     updateMemberMutation.mutate(formdata);
   };
 

@@ -72,7 +72,6 @@ const AdminTwo = () => {
   );
   const decryptedNameClb = NameClb.toString(CryptoJS.enc.Utf8);
   const onClick: MenuProps["onClick"] = (e) => {
-    console.log("click ", e);
   };
   return (
     <div style={{backgroundColor: "#fff"}}>

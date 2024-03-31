@@ -151,7 +151,7 @@ const Profiles = () => {
   };
   // date
   const onChange: DatePickerProps["onChange"] = (date, dateString) => {
-    // console.log(date, dateString);
+
   };
 
   //button
@@ -187,7 +187,6 @@ const Profiles = () => {
   const onFinish = (values: any) => {
     const formattedBirthday = moment(values.birthday).format("YYYY-MM-DD");
     setLoading(true);
-    console.log("form", values);
     const randomKey = CryptoJS.lib.WordArray.random(16).toString();
     const formdata = new FormData();
     formdata.append("name", values.name);

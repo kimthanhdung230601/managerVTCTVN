@@ -90,8 +90,6 @@ const ManagerAccount = () => {
     getListMemberF12Accept(payloadAccept)
   );
   const onChange: TableProps<DataType>["onChange"] = (pagination, filters) => {
-    console.log("filter", filters);
-
     const param =
       currentPageAccount +
       (filters.location
@@ -102,7 +100,6 @@ const ManagerAccount = () => {
         ? "&manage=" + encodeURIComponent(filters.manage[0].toString())
         : "");
     setPayloadAccept(param);
-    console.log("pr accept", param);
     refetchAccept();
   };
 
