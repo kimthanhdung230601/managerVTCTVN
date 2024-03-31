@@ -44,12 +44,12 @@ export default function Account() {
                             <Row gutter={20}>
                                 <Col className={`${styles.colImg} gutter-row`} xxl={24} md={24} xs={12} style={{textAlign: "center", marginBottom: "30px"}}>
                                         <Image src={`https://vocotruyen.id.vn/PHP_IMG/${adminInfor?.data[0].image_certificate}`} preview={true} className={styles.accImg}/>
-                                        <div style={{fontWeight: "500", marginTop: "8px"}}>Ảnh Bằng cấp hiện tại</div>
+                                        <div style={{fontWeight: "500",color: "#000", marginTop: "8px"}}>Ảnh Bằng cấp hiện tại</div>
 
                                 </Col>
                                 <Col className={`${styles.colImg} gutter-row`} xxl={24} md={24} xs={12} style={{textAlign: "center", marginBottom: "30px"}}>
                                         <Image src={`https://vocotruyen.id.vn/PHP_IMG/${adminInfor?.data[0].image_ref}`} preview={true} className={styles.accImg}/>
-                                        <div style={{fontWeight: "500", marginTop: "8px"}}>Ảnh giấy giới thiệu</div>
+                                        <div style={{fontWeight: "500",color: "#000", marginTop: "8px"}}>Ảnh giấy giới thiệu</div>
                                 </Col>
                             </Row>
                         </Col>
@@ -57,64 +57,64 @@ export default function Account() {
                             <Row gutter={40} className={styles.DetailItem}>
                                 <Col className='gutter-row' xxl={9} lg={12} md={12} xs={12} >
                                     <span className={styles.NumberOrders}>1.</span> 
-                                    Họ tên
+                                    <span style={{color: "#000"}}>Họ tên</span>
                                 </Col>
                                 <Col className='gutter-row' xxl={12} lg={12} md={12} xs={12}>
-                                    {adminInfor?.data[0].name}
+                                <span style={{color: "#000"}}>{adminInfor?.data[0].name}</span>
                                 </Col>
                             </Row>
                             <Row gutter={40} className={styles.DetailItem}>
                                 <Col className='gutter-row' xxl={9} lg={12} md={12} xs={12} >
                                     <span className={styles.NumberOrders}>2.</span> 
-                                    Mã định danh
+                                    <span style={{color: "#000"}}>Mã định danh</span>
                                 </Col>
                                 <Col className='gutter-row' xxl={12} lg={12} md={12} xs={12}>
-                                    {adminInfor?.data[0].idcard}
+                                <span style={{color: "#000"}}>{adminInfor?.data[0].idcard}</span>
                                 </Col>
                             </Row>
                             <Row gutter={40} className={styles.DetailItem}>
                                 <Col className='gutter-row' xxl={9} lg={12} md={12} xs={12} >
-                                <span className={styles.NumberOrders}>3.</span> 
-                                    SĐT
+                                    <span className={styles.NumberOrders}>3.</span> 
+                                    <span style={{color: "#000"}}>SĐT</span>
                                 </Col>
                                 <Col className='gutter-row' xxl={12} lg={12} md={12} xs={12}>
-                                    {adminInfor?.data[0].phone}
+                                    <span style={{color: "#000"}}>{adminInfor?.data[0].phone}</span>
                                 </Col>
                             </Row>
                             <Row gutter={40} className={styles.DetailItem}>
                                 <Col className='gutter-row' xxl={9} lg={12} md={12} xs={12} >
-                                <span className={styles.NumberOrders}>4.</span> 
-                                    Email
+                                    <span className={styles.NumberOrders}>4.</span> 
+                                    <span style={{color: "#000"}}>Email</span>
                                 </Col>
                                 <Col className='gutter-row' xxl={12} lg={12} md={12} xs={12}>
-                                    {adminInfor?.data[0].email}
+                                    <span style={{color: "#000"}}>{adminInfor?.data[0].email}</span>
                                 </Col>
                             </Row>
                             <Row gutter={40} className={styles.DetailItem}>
                                 <Col className='gutter-row' xxl={9} lg={12} md={12} xs={12} >
                                     <span className={styles.NumberOrders}>5.</span> 
-                                    Tỉnh/ Thành Phố
+                                    <span style={{color: "#000"}}>Tỉnh/ Thành Phố</span>
                                 </Col>
                                 <Col className='gutter-row' xxl={12} lg={12} md={12} xs={12}>
-                                    {adminInfor?.data[0].location}
+                                    <span style={{color: "#000"}}>{adminInfor?.data[0].location}</span>
                                 </Col>
                             </Row>
                             <Row gutter={40} className={styles.DetailItem}>
                                 <Col className='gutter-row' xxl={9} lg={12} md={12} xs={12} >
                                     <span className={styles.NumberOrders}>6.</span> 
-                                    Đơn vị quản lý
+                                    <span style={{color: "#000"}}>Đơn vị quản lý</span>
                                 </Col>
                                 <Col className='gutter-row' xxl={12} lg={12} md={12} xs={12}>
-                                    {adminInfor?.data[0].manage}
+                                <span style={{color: "#000"}}>{adminInfor?.data[0].manage}</span>
                                 </Col>
                             </Row>
                             <Row gutter={40} className={styles.DetailItem}>
                                 <Col className='gutter-row' xxl={9} lg={12} md={12} xs={12} >
                                     <span className={styles.NumberOrders}>7.</span> 
-                                    CLB(Môn phái/ Võ đường/ Võ phái)
+                                    <span style={{color: "#000"}}>CLB/Môn phái/Võ đường/Võ phái/Trung tâm</span>
                                 </Col>
                                 <Col className='gutter-row' xxl={12} lg={12} md={12} xs={12}>
-                                    {adminInfor?.data[0].NameClb}
+                                    <span style={{color: "#000"}}>{adminInfor?.data[0].NameClb}</span>
                                 </Col>
                             </Row>  
                         </Col>

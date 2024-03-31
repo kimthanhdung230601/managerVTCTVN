@@ -75,7 +75,7 @@ const AdminTwo = () => {
     console.log("click ", e);
   };
   return (
-    <>
+    <div style={{backgroundColor: "#fff"}}>
       <Header />
       <div className={styles.logoWrap}>
         <div className={styles.title}>
@@ -126,7 +126,7 @@ const AdminTwo = () => {
         <ManagerMemberTwo />
       </div>
       <Footer />
-    </>
+    </div>
   );
 };
 

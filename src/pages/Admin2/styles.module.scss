@@ -1,6 +1,7 @@
 .wrap{
   overflow: hidden;
   padding: 0 40px;
+  background-color: #fff;
 }
 
 .logoWrap {
@@ -24,6 +25,7 @@
   .titleContent {
     justify-content: center;
     text-align: center;
+   
   }
   .titleText {
     color: #000;
@@ -39,6 +41,7 @@
     margin: 0.5vh 0;
     font-size: 16px;
     line-height: 22px;
+    color: #000;
 
     .labelTitle {
       line-height: 25px;
