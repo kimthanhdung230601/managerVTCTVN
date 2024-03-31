@@ -1,8 +1,8 @@
 .btnContainer {
-    display: flex;
-    justify-content: flex-end;
-  }
-.formImage{
+  display: flex;
+  justify-content: flex-end;
+}
+.formImage {
   margin-top: 8px;
   display: flex;
   height: 265px;
@@ -11,26 +11,30 @@
 }
 
 .uploadForm {
-    text-align: center;
-    width: 180px;
-    overflow: hidden;
+  text-align: center;
+  width: 180px;
+  overflow: hidden;
 }
 
-
-.uploadImg > div > div{
-    width: 180px !important;
-    height: 180px !important;
-    min-height: 200px;
+.uploadImg > div > div {
+  width: 180px !important;
+  height: 180px !important;
+  min-height: 200px;
 }
-  @media only screen and (max-width: 1200px) and (min-width: 768px) {
-    .wrap .content {
-      padding: 6vh 4vh 0 4vh;
-    }
+@media only screen and (max-width: 1200px) and (min-width: 768px) {
+  .wrap .content {
+    padding: 6vh 4vh 0 4vh;
   }
-  
-  /* Cho các thiết bị có chiều rộng nhỏ hơn 768px (điện thoại) */
-  @media only screen and (max-width: 767px) {
-    .wrap .content {
-      padding: 6vh 4vh 0 4vh;
-    }
+}
+.formItemClass {
+  display: inline-block;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+}
+/* Cho các thiết bị có chiều rộng nhỏ hơn 768px (điện thoại) */
+@media only screen and (max-width: 767px) {
+  .wrap .content {
+    padding: 6vh 4vh 0 4vh;
   }
+}
