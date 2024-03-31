@@ -88,23 +88,25 @@ const ManagerAccount = () => {
     getListMemberF12Accept(payloadAccept)
   );
   const onChange: TableProps<DataType>["onChange"] = (pagination, filters) => {
-    console.log(filters);
+    console.log("filter", filters);
+
     const param =
       currentPageAccount +
       (filters.location
         ? "&location=" + encodeURIComponent(filters.location[0].toString())
         : "") +
+      (filters.club ? "$club=" + filters.club[0] : "") +
       (filters.manage
-        ? "$manage=" + encodeURIComponent(filters.manage[0].toString())
-        : "") +
-      (filters.NameClb ? "$club=" + filters.NameClb[0] : "");
+        ? "&manage=" + encodeURIComponent(filters.manage[0].toString())
+        : "");
     setPayloadAccept(param);
+    console.log("pr accept", param);
     refetchAccept();
   };
 
   const onChangePageAccount = (value: any) => {
     setCurrentPageAccount(value);
-    // refetch();
+    refetchAccept();
   };
   //tài khoản chưa được duyệt
   const [currentPageUnAccept, setCurrentPageUnAccept] = useState(1);
@@ -113,7 +115,6 @@ const ManagerAccount = () => {
     pagination,
     filters
   ) => {
-    console.log(filters);
     const param =
       currentPageUnAccept +
       (filters.location
@@ -122,7 +123,7 @@ const ManagerAccount = () => {
       (filters.manage
         ? "$manage=" + encodeURIComponent(filters.manage[0].toString())
         : "") +
-      (filters.NameClb ? "$club=" + filters.NameClb[0] : "");
+      (filters.nameClub ? "$club=" + filters.nameClub[0] : "");
     setPayloadUnAccept(param);
     refetchUnAccept();
   };
@@ -135,6 +136,7 @@ const ManagerAccount = () => {
   );
   const onChangePageAccept = (value: any) => {
     setCurrentPageUnAccept(value);
+    refetchUnAccept();
   };
   const [unAccept, setUnAccept] = useState([]);
   const [accept, setAccept] = useState([]);
@@ -175,7 +177,6 @@ const ManagerAccount = () => {
     refetchAccept();
   };
   const cancel = (value: any) => {
-    console.log(value);
     // message.error("");
   };
   //modal quản lý thành viên
@@ -229,7 +230,7 @@ const ManagerAccount = () => {
       width: 300,
     },
     {
-      title: "Tỉnh",
+      title: "Tỉnh/Thành/Ngành",
       dataIndex: "location",
       filters: filterProivce,
       onFilter: (value: any, record) => record.location.startsWith(value),
@@ -266,7 +267,7 @@ const ManagerAccount = () => {
           value: "Quân Đội",
         },
       ],
-      onFilter: (value: any, rec) => rec.manage.indexOf(value) === 0,
+      onFilter: (value: any, record) => record.manage.indexOf(value) === 0,
       filterMultiple: false,
 
       width: 200,
@@ -274,12 +275,11 @@ const ManagerAccount = () => {
     {
       title: "Tên câu lạc bộ",
       dataIndex: "NameClub",
-      filters: ListClub(),
-      filterSearch: true,
-      onFilter: (value: any, rec) => rec.club.indexOf(value) === 0,
-      filterMultiple: false,
-
       width: 200,
+      filters: ListClub(),
+      filterMultiple: false,
+      filterSearch: true,
+      onFilter: (value: any, record) => record.club.indexOf(value) === 0,
     },
     // {
     //   title: "Tài khoản",
@@ -420,7 +420,7 @@ const ManagerAccount = () => {
         },
       ],
 
-      onFilter: (value: any, rec) => rec.manage.indexOf(value) === 0,
+      onFilter: (value: any, record) => record.manage.indexOf(value) === 0,
       filterMultiple: false,
       width: 200,
     },
@@ -429,7 +429,7 @@ const ManagerAccount = () => {
       dataIndex: "club",
       filters: ListClub(),
 
-      onFilter: (value: any, rec) => rec.club.indexOf(value) === 0,
+      onFilter: (value: any, record) => record.club.indexOf(value) === 0,
       filterMultiple: false,
       width: 200,
     },
@@ -566,7 +566,7 @@ const ManagerAccount = () => {
           value: "Quân Đội",
         },
       ],
-      onFilter: (value: any, rec) => rec.manage.indexOf(value) === 0,
+      onFilter: (value: any, record) => record.manage.indexOf(value) === 0,
       filterMultiple: false,
     },
     {
@@ -574,8 +574,9 @@ const ManagerAccount = () => {
       dataIndex: "NameClub",
       width: 200,
       filters: ListClub(),
-      onFilter: (value: any, rec) => rec.club.indexOf(value) === 0,
       filterMultiple: false,
+      filterSearch: true,
+      onFilter: (value: any, record) => record.club.indexOf(value) === 0,
     },
     // {
     //   title: "Tài khoản",
@@ -707,7 +708,7 @@ const ManagerAccount = () => {
           value: "Quân Đội",
         },
       ],
-      onFilter: (value: any, rec) => rec.manage.indexOf(value) === 0,
+      onFilter: (value: any, record) => record.manage.indexOf(value) === 0,
       filterMultiple: false,
 
       width: 200,
@@ -717,8 +718,9 @@ const ManagerAccount = () => {
       dataIndex: "NameClub",
       width: 200,
       filters: ListClub(),
-      onFilter: (value: any, rec) => rec.club.indexOf(value) === 0,
       filterMultiple: false,
+      filterSearch: true,
+      onFilter: (value: any, record) => record.club.indexOf(value) === 0,
     },
     // {
     //   title: "Tài khoản",
@@ -793,11 +795,7 @@ const ManagerAccount = () => {
     selectedRowKeys,
     onChange: onSelectChange,
   };
-  const hasSelected = selectedRowKeys.length > 0;
 
-  const onSearch = (value: string) => {
-    console.log("search:", value);
-  };
   const filterOption = (
     input: string,
     option?: { children: React.ReactNode }
@@ -833,24 +831,26 @@ const ManagerAccount = () => {
           </Col>
         </Row>
         <div className={styles.table}>
-          <Table
-            columns={isMobile ? columnsMobileAccount : columnsDesktopAccount}
-            dataSource={dataMemberF12Accept?.data}
-            pagination={false}
-            locale={customLocale}
-            onChange={onChange}
-            scroll={{
-              x: "max-content",
-            }}
-            style={{ overflowX: "auto" }}
-          />
-          <Pagination
-            defaultCurrent={1}
-            onChange={onChangePageAccount}
-            total={accept?.length}
-            pageSize={10}
-            style={{ margin: "1vh 0", float: "right" }}
-          />
+          <Spin spinning={isFetchingAccept}>
+            <Table
+              columns={isMobile ? columnsMobileAccount : columnsDesktopAccount}
+              dataSource={dataMemberF12Accept?.data}
+              pagination={false}
+              locale={customLocale}
+              onChange={onChange}
+              scroll={{
+                x: "max-content",
+              }}
+              style={{ overflowX: "auto" }}
+            />
+            <Pagination
+              defaultCurrent={1}
+              onChange={onChangePageAccount}
+              total={accept?.length}
+              pageSize={10}
+              style={{ margin: "1vh 0", float: "right" }}
+            />
+          </Spin>
         </div>
       </div>
       <div className={styles.managerAccountAccept}>
@@ -883,7 +883,7 @@ const ManagerAccount = () => {
           <span style={{ marginLeft: 8 }}>
             {/* {hasSelected ? `Đã chọn ${selectedRowKeys.length} hồ sơ` : ""} */}
           </span>
-          <Spin spinning={isFetchingAccept || isFetchingUnAccept}>
+          <Spin spinning={isFetchingUnAccept}>
             {" "}
             <Table
               // rowSelection={rowSelection}
