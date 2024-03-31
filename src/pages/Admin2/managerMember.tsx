@@ -328,37 +328,42 @@ const ManagerMemberTwo = () => {
     },
     {
       key: "action",
-      render: (_, record) => (
-        <div style={{ display: "flex" }}>
-          <button
-            className={styles.btnView}
-            onClick={() => navigate(`/thong-tin-ho-so/${record.id}`)}
-          >
-            Xem{" "}
-          </button>
-          <button
-            className={styles.btnTb}
-            onClick={() => showModalUpdateNote(record?.id, record?.note)}
-          >
-            Sửa{" "}
-          </button>
-          {/* <button className={styles.btnHide}>Ẩn</button> */}
-          {record.status == "Chờ duyệt" && (
-            <Popconfirm
-              title="Xóa"
-              description={`Bạn có muốn xóa thành viên ${record.name}`}
-              onConfirm={() => confirmDelete(record?.id)}
-              onCancel={cancel}
-              okText="Có"
-              cancelText="Không"
+      render: (_, record) => {
+        const idEncode = CryptoJS.AES.encrypt(record.id, secretKey).toString()
+        const id = encodeURIComponent(idEncode)
+        return (
+          <div style={{ display: "flex" }}>
+            <button
+              className={styles.btnView}
+              onClick={() => navigate(`/thong-tin-ho-so/${id}`)}
             >
-              <Button danger className={styles.btnTbDanger}>
-                Xóa
-              </Button>
-            </Popconfirm>
-          )}
-        </div>
-      ),
+              Xem{" "}
+            </button>
+            <button
+              className={styles.btnTb}
+              onClick={() => showModalUpdateNote(record?.id, record?.note)}
+            >
+              Sửa{" "}
+            </button>
+            {/* <button className={styles.btnHide}>Ẩn</button> */}
+            {record.status == "Chờ duyệt" && (
+              <Popconfirm
+                title="Xóa"
+                description={`Bạn có muốn xóa thành viên ${record.name}`}
+                onConfirm={() => confirmDelete(record?.id)}
+                onCancel={cancel}
+                okText="Có"
+                cancelText="Không"
+              >
+                <Button danger className={styles.btnTbDanger}>
+                  Xóa
+                </Button>
+              </Popconfirm>
+            )}
+          </div>
+        )
+        
+      },
       width: 230,
     },
   ];

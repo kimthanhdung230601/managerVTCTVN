@@ -22,11 +22,13 @@ export const addMember = (param: any) => sendPost(path.addMember, param)
 export const searchUser = (param: string) => sendGet(path.searchUser+param)
 export const getInforF3 = (payload:any, type: string) =>{
     if(type.includes("keyword")) {
-        console.log(payload)
         return sendGet(`/Find?data=${payload}`)
     } else {
-        if(isAdmin() === "0") return sendGet(`/AdminGetMemberID?id=${payload}`)
-        else return sendGet(`/GetMemberID?id=${payload}`)
+        const idDecode = decodeURIComponent(payload)
+        const bytes = CryptoJS.AES.decrypt(idDecode, secretKey);
+        const id = bytes.toString(CryptoJS.enc.Utf8)
+        if(isAdmin() === "0") return sendGet(`/AdminGetMemberID?id=${id}`)
+        else return sendGet(`/GetMemberID?id=${id}`)
     }
 } 
 export const changePassword = (params: any) => sendPost("/ChangePass", params)

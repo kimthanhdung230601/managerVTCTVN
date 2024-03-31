@@ -7,6 +7,7 @@ import { ColumnsType, TableProps } from 'antd/es/table';
 import { useLocation, useNavigate } from 'react-router';
 import { levelFilters } from '../../until/until';
 import { useQuery } from 'react-query';
+import CryptoJS from 'crypto-js';
 import { getClubs, getFilterTable, getListMember, searchInTable } from '../../api/f1';
 
 const customLocale = {
@@ -41,12 +42,7 @@ interface data {
 }
 
 
-const onChange: TableProps<DataType_CN>["onChange"] = (
-    pagination,
-    filters,
-    sorter,
-    extra
-) => {};
+const secretKey = process.env.REACT_APP_SECRET_KEY || ""
   
 export default function ManageMember() {
     const navigate = useNavigate();
@@ -208,14 +204,14 @@ export default function ManageMember() {
         {
           title: "Chi tiết",
           render: (value, record) => {
-            return <button className={styles.btn} onClick={()=>navigate(`/thong-tin-ho-so/${record.id}`)}>Xem</button>;
+            const idEncode = CryptoJS.AES.encrypt(record.id, secretKey).toString()
+            const id = encodeURIComponent(idEncode)
+            return <button className={styles.btn} onClick={()=>navigate(`/thong-tin-ho-so/${id}`)}>Xem</button>;
           },
         },
       ];
       const onChange: TableProps<DataType_CN>['onChange'] = (pagination, filters, sorter, extra) => {
-        console.log('params', filters);
         const param = '?page=' + currentPage1  + (filters.NameClb ? '&club=' + filters.NameClb[0] : "") + (filters.level ? '&level=' + encodeURIComponent(filters.level[0].toString())  : "") + (filters.status ? '&status=' + encodeURIComponent(filters.status[0].toString()) : "")
-        console.log(param)
         setParam(param)
       };
   return (
@@ -244,7 +240,7 @@ export default function ManageMember() {
           />
               <div className={styles.addBtn} onClick={() => navigate("/them-hoi-vien")}>
               <PlusOutlined className={styles.icon} />
-              Thêm hội viên
+              <span style={{color: "#fff"}}>Thêm hội viên</span>
               </div>
           </div>
           </div>

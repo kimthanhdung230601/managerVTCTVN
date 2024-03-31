@@ -87,11 +87,15 @@ export default function Header() {
                     <UserOutlined className={styles.userIcon} id="user"/>
                 </div>
                 <div className={`animate__zoomIn ${styles.userMenu}`}>
+                {
+                    Cookies.get("token") ? 
                     <li className={styles.menuItem}>
                         <Link to={'/doi-mat-khau'} className={`${styles.menuItemLink}`}>
                             Đổi mật khẩu
                         </Link>
-                    </li>
+                    </li> : null
+                }
+                    
                     <li className={styles.menuItem}>
                         <Link to={'/dang-ky'} className={styles.menuItemLink}>
                             Đăng ký
@@ -153,11 +157,14 @@ export default function Header() {
                 Hướng dẫn
                 </Link>
             </li>
-            <li className={styles.menuResponsiveItem}>
-                <Link to={'/doi-mat-khau'} className={styles.menuResponsiveLink} onClick={handleCloseMenu}>
-                    Đổi mật khẩu
-                </Link>
-            </li>
+            {
+                Cookies.get("token") ? 
+                <li className={styles.menuResponsiveItem}>
+                    <Link to={'/doi-mat-khau'} className={styles.menuResponsiveLink} onClick={handleCloseMenu}>
+                        Đổi mật khẩu
+                    </Link>
+                </li> : null
+            }
             {
                 Cookies.get("token") ? 
                 <li className={styles.menuResponsiveItem}>

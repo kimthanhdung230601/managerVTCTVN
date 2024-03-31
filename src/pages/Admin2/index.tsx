@@ -96,8 +96,11 @@ const AdminTwo = () => {
                 <button
                   className={styles.btnView}
                   style={{ marginTop: "8px" }}
-                  onClick={() =>
-                    navigate(`/thong-tin-tai-khoan/${decryptedId}`)
+                  onClick={() =>{
+                    const idEncode = CryptoJS.AES.encrypt(decryptedId, secretKey).toString()
+                    const id = encodeURIComponent(idEncode)
+                    return navigate(`/thong-tin-tai-khoan/${id}`)
+                  }
                   }
                 >
                   Chi tiết
