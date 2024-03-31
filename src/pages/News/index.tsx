@@ -61,7 +61,7 @@ export default function News() {
                         <>
                             { 
                                 data?.total_products === 0 || data.status === "failed" ? 
-                                    <div style={{width: "100%", marginTop: "40px", textAlign: "center", fontSize: "18px", fontWeight: "500"}}>Chưa có bài viết nào </div>
+                                    <div style={{width: "100%", marginTop: "40px", textAlign: "center", fontSize: "18px", fontWeight: "500", color: "#000"}}>Chưa có bài viết nào </div>
                                 :
                                 <>
                                { 

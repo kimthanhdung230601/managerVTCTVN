@@ -8,6 +8,7 @@ import { useLocation, useParams } from 'react-router-dom';
 import { getInforF3 } from '../../api/ApiUser';
 import Header from '../../components/Header'
 import styles from "./Style.module.scss"
+const secretKey = process.env.REACT_APP_SECRET_KEY as string;
 
 interface Infor {
     name: string,
@@ -137,7 +138,7 @@ export default function Detail() {
                                         <Col className={`${styles.colImg} gutter-row`} xxl={24} md={24} xs={8} style={isMobile ? {} : {marginTop: "20px"}}>
                                             <div style={{textAlign: "center"}}>
                                                 <QRCode 
-                                                    value={`https://vocotruyen.id.vn/thong-tin-ho-so/${userInfor?.data[0].idcard}`} 
+                                                    value={`https://vocotruyen.id.vn/thong-tin-ho-so/${encodeURIComponent(CryptoJS.AES.encrypt(userInfor?.data[0].idcard, secretKey).toString())}`} 
                                                     icon={require("../../assets/image/logo.png")} 
                                                     className={styles.detailImg}
                                                     bgColor="#fff"

@@ -68,7 +68,7 @@
     transform: translateX(10%);
     position: absolute;
     border-radius: 4px;
-    background-color: #ecf8ea;
+    background-color: #fff;
     overflow: hidden;
     z-index: 1;
     .menuItem{
@@ -80,12 +80,13 @@
             color: var(--primary);
             &:hover{
                 color: var(--subPrimary);
+                
             }
         }
-        // &:hover{
-        //     color: #fff !important;
-        //     background-color: var(--primary);
-        // }
+        &:hover{
+            background-color: #ecf8ea;
+            color: var(--subPrimary);
+        }
     }
 
 }
@@ -123,7 +124,7 @@
             font-weight: 500;
             padding: 20px;
             .menuResponsiveLink{
-                
+                color: #000;
                 &:hover{
                     color: var(--primary) !important;
                 }

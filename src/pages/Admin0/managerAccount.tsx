@@ -40,6 +40,8 @@ import {
   updateAccount,
 } from "../../api/f0";
 import ListClub from "../../hook/listClub";
+import CryptoJS from "crypto-js";
+const secretKey = process.env.REACT_APP_SECRET_KEY as string;
 interface ManagerAccountProps {}
 interface DataType {
   key: React.Key;
@@ -322,33 +324,37 @@ const ManagerAccount = () => {
       key: "action",
       width: 200,
       fixed: "right",
-      render: (_, record) => (
-        <span>
-          <button
-            className={styles.btnView}
-            onClick={() => naviagte(`/thong-tin-tai-khoan/${record.id}`)}
-          >
-            Xem
-          </button>
-          <button
-            className={styles.btnTb}
-            onClick={() => showModalMember(record.id)}
-          >
-            Sửa
-          </button>
-          {/* <Popconfirm
-            title="Xóa"
-            description={`Bạn có muốn xóa ${record.name} không`}
-            onConfirm={() => confirm(record.id)}
-            onCancel={cancel}
-            okText="Có"
-            cancelText="Không"
-          >
-            {" "}
-            <button className={styles.btnTbDanger}>Xóa</button>
-          </Popconfirm> */}
-        </span>
-      ),
+      render: (_, record) =>{
+        const idEncode = CryptoJS.AES.encrypt(record.id, secretKey).toString()
+        const id = encodeURIComponent(idEncode)
+        return (
+          <span>
+            <button
+              className={styles.btnView}
+              onClick={() => naviagte(`/thong-tin-tai-khoan/${id}`)}
+            >
+              Xem
+            </button>
+            <button
+              className={styles.btnTb}
+              onClick={() => showModalMember(record.id)}
+            >
+              Sửa
+            </button>
+            {/* <Popconfirm
+              title="Xóa"
+              description={`Bạn có muốn xóa ${record.name} không`}
+              onConfirm={() => confirm(record.id)}
+              onCancel={cancel}
+              okText="Có"
+              cancelText="Không"
+            >
+              {" "}
+              <button className={styles.btnTbDanger}>Xóa</button>
+            </Popconfirm> */}
+          </span>
+        )
+      } 
     },
   ];
   const columnsMobileAccount: ColumnsType<DataType> = [
@@ -470,7 +476,11 @@ const ManagerAccount = () => {
         <span>
           <button
             className={styles.btnView}
-            onClick={() => naviagte(`/thong-tin-tai-khoan/${record.id}`)}
+            onClick={() => {
+              const idEncode = CryptoJS.AES.encrypt(record.id, secretKey).toString()
+              const id = encodeURIComponent(idEncode)
+              return naviagte(`/thong-tin-tai-khoan/${id}`)}
+            } 
           >
             Xem
           </button>

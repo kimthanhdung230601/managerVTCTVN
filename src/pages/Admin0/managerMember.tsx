@@ -44,7 +44,8 @@ import {
 } from "../../api/f0";
 import moment from "moment";
 import ListClub from "../../hook/listClub";
-
+import CryptoJS from "crypto-js";
+const secretKey = process.env.REACT_APP_SECRET_KEY as string;
 interface ManagerMemberProps {}
 interface DataType {
   stt: any;
@@ -377,11 +378,14 @@ const ManagerMember = () => {
       key: "action",
       fixed: "right",
       width: 200,
-      render: (_, record) => (
+      render: (_, record) => {
+        const idEncode = CryptoJS.AES.encrypt(record.id, secretKey).toString()
+        const id = encodeURIComponent(idEncode)
+        return (
         <span>
           <button
             className={styles.btnView}
-            onClick={() => navigate(`/thong-tin-ho-so/${record.id}`)}
+            onClick={() => navigate(`/thong-tin-ho-so/${id}`)}
           >
             Xem
           </button>
@@ -423,7 +427,8 @@ const ManagerMember = () => {
             <></>
           )}
         </span>
-      ),
+      )
+      } 
     },
   ];
   const columnsMobile: ColumnsType<DataType> = [
@@ -596,7 +601,11 @@ const ManagerMember = () => {
         <span>
           <Button
             className={styles.btnView}
-            onClick={() => navigate(`/thong-tin-ho-so/${record.id}`)}
+            onClick={() => {
+              const idEncode = CryptoJS.AES.encrypt(record.id, secretKey).toString()
+              const id = encodeURIComponent(idEncode)
+              return navigate(`/thong-tin-ho-so/${id}`)
+            } }
           >
             Xem
           </Button>
