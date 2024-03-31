@@ -89,14 +89,10 @@ export default function ManageMember() {
     const {data: search} = useQuery(["search", key], ()=> searchInTable(key), {
       enabled: key !== "", 
       onSettled: (data) => {
-        console.log("kết quả tìm kiếm", data)
         if(data.status === "success") {
           setMemberList(data)
         } else if(data.status === "failed"){
           message.error("Không có dữ liệu.")
-          // setTimeout(()=> {
-          //   window.location.reload()
-          // }, 2000)
         } else {
           message.error("Có lỗi xảy ra, vui lòng thử lại sau")
           setTimeout(()=> {
