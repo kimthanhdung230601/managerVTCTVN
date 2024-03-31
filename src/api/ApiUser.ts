@@ -27,7 +27,6 @@ export const getInforF3 = (payload:any, type: string) =>{
         const idDecode = decodeURIComponent(payload)
         const bytes = CryptoJS.AES.decrypt(idDecode, secretKey);
         const id = bytes.toString(CryptoJS.enc.Utf8)
-        alert(id)
         if(isAdmin() === "0") return sendGet(`/AdminGetMemberID?id=${id}`)
         else return sendGet(`/GetMemberID?id=${id}`)
     }
