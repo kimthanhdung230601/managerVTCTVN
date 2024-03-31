@@ -139,7 +139,7 @@ export default function Detail() {
                                         <Col className={`${styles.colImg} gutter-row`} xxl={24} md={24} xs={8} style={isMobile ? {} : {marginTop: "20px"}}>
                                             <div style={{textAlign: "center"}}>
                                                 <QRCode 
-                                                    value={`https://vocotruyen.id.vn/thong-tin-ho-so/?keyword=${encodeURIComponent(CryptoJS.AES.encrypt(userInfor?.data[0].idcard, secretKey).toString())}`} 
+                                                    value={`https://vocotruyen.id.vn/thong-tin-ho-so/${encodeURIComponent(CryptoJS.AES.encrypt(userInfor?.data[0].id, secretKey).toString())}`} 
                                                     icon={require("../../assets/image/logo.png")} 
                                                     className={styles.detailImg}
                                                     bgColor="#fff"
