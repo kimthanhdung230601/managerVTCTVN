@@ -117,7 +117,6 @@ const ManagerMember = () => {
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
     setSelectedRowKeys(newSelectedRowKeys);
   };
-  const hasSelected = selectedRowKeys.length > 0;
 
   const filterProivce = OnlyProvince.map((province) => ({
     text: province,
@@ -353,19 +352,19 @@ const ManagerMember = () => {
         if (
           value === "Có" &&
           record.achievements &&
-          record.achievements.length > 0
+          record.achievements?.length > 0
         ) {
           return true; // Trả về true nếu giá trị là "Có" và có thành tích
         } else if (
           value === "Không" &&
-          (!record.achievements || record.achievements.length === 0)
+          (!record.achievements || record.achievements?.length === 0)
         ) {
           return true;
         }
         return false;
       },
       render: (value, record) => {
-        if (record.achievements && record.achievements.length > 0) {
+        if (record.achievements && record.achievements?.length > 0) {
           return <>Có</>;
         } else {
           return <>Không</>;
@@ -577,15 +576,15 @@ const ManagerMember = () => {
 
       filterMultiple: false,
       onFilter: (value: any, record) => {
-        if (value === "Có" && record.achievements.length > 0) {
+        if (value === "Có" && record.achievements?.length > 0) {
           return true; // Trả về true nếu giá trị là "Có" và có thành tích
-        } else if (value === "Không" && record.achievements.length === 0) {
+        } else if (value === "Không" && record.achievements?.length === 0) {
           return true; // Trả về true nếu giá trị là "Không" và không có thành tích
         }
         return false; // Trả về false nếu không khớp với bất kỳ điều kiện nào
       },
       render: (value, record) => {
-        if (record.achievements.length > 0) {
+        if (record.achievements?.length > 0) {
           return <>Có</>;
         } else {
           return <>Không</>;
@@ -676,7 +675,7 @@ const ManagerMember = () => {
           <Col span={6} xs={24} sm={24} md={12} className={styles.search}>
             {/* <span>
               {hasSelected
-                ? `Đã chọn ${selectedRowKeys.length} bản ghi`
+                ? `Đã chọn ${selectedRowKeys?.length} bản ghi`
                 : "Tổng số 10 hồ sơ"}
             </span> */}
           </Col>
@@ -748,7 +747,7 @@ const ManagerMember = () => {
             dataSource={
               allMember?.status === "failed"
                 ? []
-                : dataFind.length > 0
+                : dataFind?.length > 0
                 ? dataFind
                 : allMember?.data
             }
