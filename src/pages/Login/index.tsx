@@ -96,8 +96,6 @@ export default function Login() {
         "id",
         CryptoJS.AES.encrypt(res?.info_user[0].id, secretKey).toString()
       );
-
-      );
     } else {
       message.error("Nhập sai tài khoản hoặc mật khẩu");
     }

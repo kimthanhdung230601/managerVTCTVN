@@ -82,8 +82,6 @@ const ManagerMember = () => {
     isFetching,
   } = useQuery(["allMember", payload], () => getListMember(payload));
   const onChange: TableProps<DataType>["onChange"] = (pagination, filters) => {
-    console.log("filter", filters);
-
     const param =
       // "?page=" +
       currentPage +
@@ -738,7 +736,13 @@ const ManagerMember = () => {
           <Table
             // rowSelection={rowSelection}
             columns={isMobile ? columnsMobile : columnsDesktop}
-            dataSource={dataFind.length > 0 ? dataFind : allMember?.data}
+            dataSource={
+              allMember?.status === "failed"
+                ? []
+                : dataFind.length > 0
+                ? dataFind
+                : allMember?.data
+            }
             locale={customLocale}
             onChange={onChange}
             scroll={{
