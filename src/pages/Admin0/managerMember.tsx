@@ -87,9 +87,9 @@ const ManagerMember = () => {
       // "?page=" +
       currentPage +
       (filters.DonViQuanLy ? "&DonViQuanLy=" + filters.DonViQuanLy[0] : "") +
-      (filters.NameClb ? "$club=" + filters.NameClb[0] : "") +
+      (filters.club ? "$club=" + filters.club[0] : "") +
       (filters.address
-        ? "$address=" + encodeURIComponent(filters.address[0].toString())
+        ? "&address=" + encodeURIComponent(filters.address[0].toString())
         : "") +
       (filters.level
         ? "&level=" + encodeURIComponent(filters.level[0].toString())
@@ -101,7 +101,6 @@ const ManagerMember = () => {
         ? "&status=" + encodeURIComponent(filters.status[0].toString())
         : "");
     setPayload(param);
-    console.log("param", param);
     refetch();
   };
   const filtersListNote = allMember?.list_note?.map(
@@ -235,14 +234,14 @@ const ManagerMember = () => {
       filters: levelFilters,
 
       filterMultiple: false,
-      onFilter: (value: any, record) => record.level.startsWith(value),
+      onFilter: (value: any, record) => record.level.indexOf(value) === 0,
     },
     {
       title: "Tỉnh",
       dataIndex: "address",
       filters: filterProivce,
       filterMultiple: false,
-      onFilter: (value: any, record) => record.address.startsWith(value),
+      onFilter: (value: any, record) => record.address.indexOf(value) === 0,
       filterSearch: true,
       width: 120,
     },
@@ -475,7 +474,7 @@ const ManagerMember = () => {
       title: "Tỉnh",
       dataIndex: "address",
       filters: filterProivce,
-      onFilter: (value: any, record) => record.address.startsWith(value),
+      onFilter: (value: any, record) => record.address.indexOf(value) === 0,
       filterSearch: true,
       width: 120,
     },
@@ -515,12 +514,12 @@ const ManagerMember = () => {
     },
     {
       title: "CLB trực thuộc F2",
-      dataIndex: "name_club",
+      dataIndex: "NameClb",
       width: 300,
       filters: ListClub(),
 
       filterMultiple: false,
-      onFilter: (value: any, record) => record.NameClb.indexOf(value) === 0,
+      onFilter: (value: any, record) => record.club.indexOf(value) === 0,
     },
     {
       title: "Ghi chú",
@@ -746,7 +745,13 @@ const ManagerMember = () => {
           <Table
             // rowSelection={rowSelection}
             columns={isMobile ? columnsMobile : columnsDesktop}
-            dataSource={dataFind.length > 0 ? dataFind : allMember?.data}
+            dataSource={
+              allMember?.status === "failed"
+                ? []
+                : dataFind.length > 0
+                ? dataFind
+                : allMember?.data
+            }
             locale={customLocale}
             onChange={onChange}
             scroll={{
