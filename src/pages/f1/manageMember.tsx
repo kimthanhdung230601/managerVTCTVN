@@ -144,6 +144,17 @@ export default function ManageMember() {
         {
           title: "Số định danh",
           dataIndex: "code",
+          render: (value, record) => {
+            if (value == "null")
+              return <span style={{ color: "#8D8D8D" }}>Không tồn tại</span>;
+            else {
+              return (
+                <span style={{ color: "#046C39", fontWeight: "bold" }}>
+                  {value}
+                </span>
+              );
+            }
+          },
         },
         {
           title: "Đẳng cấp",

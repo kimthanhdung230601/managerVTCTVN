@@ -135,14 +135,23 @@ export default function ManageClub() {
         {
           title: "Số định danh",
           dataIndex: "code",
-          
+          render: (value, record) => {
+            if (value == "null")
+              return <span style={{ color: "#8D8D8D" }}>Không tồn tại</span>;
+            else {
+              return (
+                <span style={{ color: "#046C39", fontWeight: "bold" }}>
+                  {value}
+                </span>
+              );
+            }
+          },
         },
         {
           title: "Đẳng cấp",
           dataIndex: "level",
           filterMultiple: false,
-          filterMode: 'tree',
-          // filteredValue: [selectedFilterValue ? selectedFilterValue : ""],
+          filters: levelFilters,
           onFilter: (value: any, record) => record.level.indexOf(value) === 0,
         },
         {

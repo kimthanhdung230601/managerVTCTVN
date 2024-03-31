@@ -121,7 +121,6 @@ export default function Post() {
                     label="Nội dung"
                     name="content"
                     rules={[{ required: true, message: 'Vui lòng nhập nội dung bài viết!' }]}
-                    
                     >
                         <ReactQuill 
                           theme="snow" 
@@ -147,7 +146,7 @@ export default function Post() {
                             "video",
                             "code-block",
                           ]}
-                          style={{height: "700px", boxSizing: "border-box"}}
+                          className={styles.quill}
                           />
                     </Form.Item>
                     <Form.Item style={{textAlign: "center"}}>

@@ -57,7 +57,7 @@ const Admin = () => {
   }, [selectedMenuItem]);
 
   return (
-    <>
+    <div style={{backgroundColor: "#fff"}}>
       <Header />
       <div className={styles.logoWrap}>
         <div className={styles.title}>
@@ -81,7 +81,7 @@ const Admin = () => {
         </Tabs>
       </div>
       <Footer />
-    </>
+    </div>
   );
 };
 
