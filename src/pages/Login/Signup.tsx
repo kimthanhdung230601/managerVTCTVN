@@ -185,7 +185,7 @@ export default function Signup() {
                     wrapperCol={{ span: 24 }}
                     className={styles.formItem}
                     >
-                    <Input prefix={<SolutionOutlined  className={styles.icon} />} placeholder="CLB, Môn Phái, Võ Phái, Võ Đường, Trung Tâm)" className={styles.formInput}/>
+                    <Input prefix={<SolutionOutlined  className={styles.icon} />} placeholder="CLB, Môn Phái, Võ Phái, Võ Đường, Trung Tâm" className={styles.formInput}/>
                 
                 </Form.Item>
                 <Form.Item

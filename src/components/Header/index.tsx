@@ -1,13 +1,15 @@
 import { Col, Image, Row } from 'antd'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import styles from "./Style.module.scss"
 import 'animate.css';
 import {MenuOutlined, CloseOutlined, UserOutlined } from "@ant-design/icons";
 import Cookies from 'js-cookie';
 import { logout } from '../../api/api';
+import { isAdmin } from '../../api/ApiUser';
 export default function Header() {
     const [isOpen, setIsOpen] = useState(false)
+    const [manage, setManage] = useState("")
     const handleOpenMenu = () => {
         const menu = document.getElementById('menuResponsive')
         if(isOpen && menu) {
@@ -30,6 +32,14 @@ export default function Header() {
         logout();
         window.location.replace("/dang-nhap")
     }
+    useEffect(()=>{
+        if(Cookies.get("token")){
+            if(isAdmin() === "0") setManage("/lien-doan/quan-ly-hoi-vien")
+            else if(isAdmin() === "1") setManage("/quan-ly-lien-doan-so-nganh")
+            else if(isAdmin() === "2") setManage("/quan-ly-don-vi")
+        }
+        
+    },[Cookies.get("token")])
   return (
     <>
         <Row  justify="space-between" className={styles.wrap}>
@@ -43,16 +53,21 @@ export default function Header() {
                         Trang chủ
                     </Link>
                 </Col>
-                <Col className={styles.headerItem}>
-                    <Link to={"/tra-cuu-hoi-vien"} className={styles.itemLink}>
-                        Tra cứu hội viên
-                    </Link>
-                </Col>
-                <Col className={styles.headerItem}>
+                {
+                    Cookies.get("token") ?
+                    <Col className={styles.headerItem}>
+                        <Link to={manage} className={styles.itemLink}>
+                            Quản lý
+                        </Link>
+                    </Col> 
+                    : null
+                }
+                
+                {/* <Col className={styles.headerItem}>
                     <Link to={"/hoi-vien-du-tu-cach-giam-khao"} className={styles.itemLink}>
                         Hội viên đủ tư cách giám khảo
                     </Link>
-                </Col>
+                </Col> */}
                 <Col className={styles.headerItem}>
                     <Link to={"/tin-tuc"} className={styles.itemLink}>
                         Tin tức
@@ -118,16 +133,16 @@ export default function Header() {
                     Trang chủ
                 </Link>
             </li>
-            <li className={styles.menuResponsiveItem}>
-                <Link to={'/tra-cuu-hoi-vien'} className={styles.menuResponsiveLink} onClick={handleCloseMenu}>
-                    Tra cứu hội viên
-                </Link>
-            </li>
-            <li className={styles.menuResponsiveItem}>
-                <Link to={'/tra-cuu-hoi-vien'} className={styles.menuResponsiveLink} onClick={handleCloseMenu}>
-                Hội viên đủ tư cách giám khảo
-                </Link>
-            </li>
+            {
+                Cookies.get("token") ? 
+                <li className={styles.menuResponsiveItem}>
+                    <Link to={manage} className={styles.menuResponsiveLink} onClick={handleCloseMenu}>
+                        Quản lý
+                    </Link>
+                </li>
+                : 
+                null
+            }
             <li className={styles.menuResponsiveItem}>
                 <Link to={'/tin-tuc'} className={styles.menuResponsiveLink} onClick={handleCloseMenu}>
                 Tin tức
@@ -143,11 +158,21 @@ export default function Header() {
                     Đổi mật khẩu
                 </Link>
             </li>
-            <li className={styles.menuResponsiveItem}>
-                <Link to={'/dang-nhap'} className={styles.menuResponsiveLink} onClick={handleCloseMenu}>
-                    Đăng nhập
-                </Link>
-            </li>
+            {
+                Cookies.get("token") ? 
+                <li className={styles.menuResponsiveItem}>
+                    <span className={styles.menuResponsiveLink} onClick={handleLogout}>
+                        Đăng xuất
+                    </span>
+                </li>
+                : 
+                <li className={styles.menuResponsiveItem}>
+                    <Link to={'/dang-nhap'} className={styles.menuResponsiveLink} onClick={handleCloseMenu}>
+                        Đăng nhập
+                    </Link>
+                </li>
+            }
+            
          </div>
         </div>
     </>

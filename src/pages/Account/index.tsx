@@ -20,7 +20,6 @@ export default function Account() {
             } 
         }
     })
-    console.log(adminInfor)
   return (
     <div>
         <Header />
@@ -41,16 +40,16 @@ export default function Account() {
                         <div className={styles.title}>THÔNG TIN TÀI KHOẢN</div>
                     </div>
                     <Row gutter={40} justify="center" style={{marginTop: "40px"}}>
-                        <Col className='gutter-row' xxl={5} lg={6} md={8} xs={24}>
+                        <Col className='gutter-row' xxl={5} lg={6} md={8} xs={24} style={{marginBottom: "40px"}}>
                             <Row gutter={20}>
-                                <Col className='gutter-row' xxl={24} md={24} xs={12} style={{textAlign: "center", marginBottom: "10px"}}>
-                                        <Image src={`https://vocotruyen.id.vn/PHP_IMG/${adminInfor?.data[0].image_certificate}`} preview={true} className={styles.detailImg}/>
-                                        <div style={{fontWeight: "500"}}>Ảnh Bằng cấp hiện tại</div>
+                                <Col className={`${styles.colImg} gutter-row`} xxl={24} md={24} xs={12} style={{textAlign: "center", marginBottom: "30px"}}>
+                                        <Image src={`https://vocotruyen.id.vn/PHP_IMG/${adminInfor?.data[0].image_certificate}`} preview={true} className={styles.accImg}/>
+                                        <div style={{fontWeight: "500", marginTop: "8px"}}>Ảnh Bằng cấp hiện tại</div>
 
                                 </Col>
-                                <Col className='gutter-row' xxl={24} md={24} xs={12} style={{textAlign: "center", marginBottom: "10px"}}>
-                                        <Image src={`https://vocotruyen.id.vn/PHP_IMG/${adminInfor?.data[0].image_ref}`} preview={true} className={styles.detailImg}/>
-                                        <div style={{fontWeight: "500"}}>Ảnh giấy giới thiệu</div>
+                                <Col className={`${styles.colImg} gutter-row`} xxl={24} md={24} xs={12} style={{textAlign: "center", marginBottom: "30px"}}>
+                                        <Image src={`https://vocotruyen.id.vn/PHP_IMG/${adminInfor?.data[0].image_ref}`} preview={true} className={styles.accImg}/>
+                                        <div style={{fontWeight: "500", marginTop: "8px"}}>Ảnh giấy giới thiệu</div>
                                 </Col>
                             </Row>
                         </Col>
@@ -115,7 +114,7 @@ export default function Account() {
                                     CLB(Môn phái/ Võ đường/ Võ phái)
                                 </Col>
                                 <Col className='gutter-row' xxl={12} lg={12} md={12} xs={12}>
-                                    {adminInfor?.data[0].club}
+                                    {adminInfor?.data[0].NameClb}
                                 </Col>
                             </Row>  
                         </Col>
