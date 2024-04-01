@@ -169,8 +169,8 @@ const UpdateMember = () => {
             </div>
             <p className={styles.note}>
               Lưu ý: Nhập đúng định dạng. Các thành viên viết xuống dòng.{" "}
-              <br></br> Ví dụ:<br></br> VCT00000001|HLV 1 đẳng|24/12/2024{" "}
-              <br></br> VCT00000001|Võ sinh cấp 1|03/07/2024
+              <br></br> Ví dụ:<br></br> VCT00000001|12|24/12/2024 <br></br>{" "}
+              VCT00000001|9|03/07/2024
             </p>
             <Form
               form={form}
