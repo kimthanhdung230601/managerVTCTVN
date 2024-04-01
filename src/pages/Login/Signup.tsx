@@ -35,6 +35,10 @@ export default function Signup() {
     const [previewImage2, setPreviewImage2] = useState('');
     const [previewTitle2, setPreviewTitle2] = useState('');
     const [fileList2, setFileList2] = useState<UploadFile[]>([]);
+    const [previewOpen3, setPreviewOpen3] = useState(false);
+    const [previewImage3, setPreviewImage3] = useState('');
+    const [previewTitle3, setPreviewTitle3] = useState('');
+    const [fileList3, setFileList3] = useState<UploadFile[]>([]);
     const signupMutation = useMutation(
         async (payload: any) => await signup(payload), 
         {
@@ -57,6 +61,7 @@ export default function Signup() {
     )
     const handleCancel1 = () => setPreviewOpen1(false);
     const handleCancel2 = () => setPreviewOpen2(false);
+    const handleCancel3 = () => setPreviewOpen3(false);
     const handlePreview1 = async (file: UploadFile) => {
         if (!file.url && !file.preview) {
         file.preview = await getBase64(file.originFileObj );
@@ -75,6 +80,15 @@ export default function Signup() {
         setPreviewTitle2(file.name || file.url!.substring(file.url!.lastIndexOf('/') + 1));
     };
     const handleChange2: UploadProps['onChange'] = ({ fileList: newFileList }) => setFileList2(newFileList);
+    const handlePreview3 = async (file: UploadFile) => {
+        if (!file.url && !file.preview) {
+        file.preview = await getBase64(file.originFileObj );
+        }
+        setPreviewImage3(file.url || (file.preview as string));
+        setPreviewOpen3(true);
+        setPreviewTitle3(file.name || file.url!.substring(file.url!.lastIndexOf('/') + 1));
+    };
+    const handleChange3: UploadProps['onChange'] = ({ fileList: newFileList }) => setFileList3(newFileList);
     const uploadButton = (
         <button style={{ border: 0, background: 'none' }} type="button">
         <PlusOutlined />
@@ -127,17 +141,16 @@ export default function Signup() {
         signupMutation.mutate(formdata)
     }
     const props = {
-        action: "https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188",
+        // action: "https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188",
         beforeUpload: (file:any) => {
             if (!isImage(file)) {
             message.error('Chỉ cho phép tải lên các file ảnh (JPEG, PNG).');
             return false; 
             }
-            return true; // Cho phép tải lên nếu là file ảnh
+            return true; 
         },
         onChange(info:any) {
             if (info.file.status !== 'uploading') {
-            // console.log(info.file, info.fileList);
             }
             if (info.file.status === 'done') {
             message.success(`${info.file.name} tải ảnh thành công`);
@@ -206,11 +219,11 @@ export default function Signup() {
                 </Form.Item>
                 <Form.Item
                 name="idcard"
-                rules={[{ required: true, message: 'Vui lòng nhập mã định danh!' }]}
+                rules={[{ required: true, message: 'Vui lòng nhập CCCD!' }]}
                 wrapperCol={{ span: 24 }}
                 className={styles.formItem}
                 >
-                <Input prefix={<IdcardOutlined className={styles.icon} />} placeholder="Mã định danh" className={styles.formInput}/>
+                <Input prefix={<IdcardOutlined className={styles.icon} />} placeholder="CCCD" className={styles.formInput}/>
                
                 </Form.Item>
                 <div style={{display: "flex", width: "100%", height: "95%"}}>
@@ -385,6 +398,29 @@ export default function Signup() {
                     className={styles.formInput}/>
                 </Form.Item>
                 <div className={styles.formImage}>
+                <div style={{height: "265px", overflow: "hidden"}}>
+                    <div style={{textAlign: "center", marginBottom: "10px"}}>Ảnh CCCD mặt trước</div>
+                       <Form.Item
+                        name="image_id"
+                        rules={[{ required: true, message: 'Vui lòng tải ảnh lên' }]}
+                        wrapperCol={{ span: 24 }}
+                        className={`${styles.uploadForm} ${styles.formItem}`}
+                        >
+                            <Upload
+                                {...props}
+                                listType="picture-card"
+                                fileList={fileList3}
+                                onPreview={handlePreview3}
+                                onChange={handleChange3}
+                                className={styles.uploadImg}
+                            >
+                                {fileList3.length >= 1 ? null : uploadButton}
+                            </Upload>
+                        </Form.Item>
+                        <Modal open={previewOpen3} title={previewTitle3} footer={null} onCancel={handleCancel3}>
+                            <img alt="degree" style={{ width: '100%' }} src={previewImage3} />
+                        </Modal> 
+                    </div>
                     <div style={{height: "265px", overflow: "hidden"}}>
                     <div style={{textAlign: "center", marginBottom: "10px"}}>Ảnh Bằng cấp hiện tại</div>
                        <Form.Item
@@ -408,7 +444,6 @@ export default function Signup() {
                             <img alt="degree" style={{ width: '100%' }} src={previewImage1} />
                         </Modal> 
                     </div>
-                    
                     <div style={{height: "265px", overflow: "hidden"}}>
                         <div style={{textAlign: "center", marginBottom: "10px"}}>Ảnh giấy giới thiệu</div>
                         <Form.Item
