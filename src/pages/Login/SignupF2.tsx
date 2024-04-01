@@ -20,7 +20,7 @@ const getBase64 = (file: any): Promise<string> =>
     reader.onerror = (error) => reject(error);
 });
 
-export default function Signup() {
+export default function SignupF2() {
     document.title = "Đăng ký tài khoản";
     const dispatch = useDispatch();
     const navigate = useNavigate()
@@ -319,12 +319,15 @@ export default function Signup() {
                        filterOption={filterOption}
                        className={styles.select}
                     >
-                        <Select.Option value="Liên Đoàn">Liên Đoàn</Select.Option>
+                        <Select.Option value="Liên đoàn võ thuật">Liên đoàn võ thuật</Select.Option>
+                        <Select.Option value="Liên đoàn võ thuật cổ truyền">Liên đoàn võ thuật cổ truyền</Select.Option>
                         <Select.Option value="Hội Võ Thuật">Hội Võ Thuật</Select.Option>
+                        <Select.Option value="Hội Võ Thuật Cổ Truyền">Hội Võ Thuật Cổ Truyền</Select.Option>
                         <Select.Option value="Công An">Công An</Select.Option>
                         <Select.Option value="Quân Đội">Quân Đội</Select.Option>
                         <Select.Option value="Giáo Dục">Giáo Dục</Select.Option>
-                        <Select.Option value="Sở VHTT">Sở VHTT</Select.Option>
+                        <Select.Option value="Sở VHTT và Du lịch">Sở VHTT và Du lịch</Select.Option>
+                        <Select.Option value="Trung tâm huấn luyện thể thao">Trung tâm huấn luyện thể thao</Select.Option>
                 </Select>
                 </Form.Item>
                 <LineChartOutlined className={styles.iconSelect}/>

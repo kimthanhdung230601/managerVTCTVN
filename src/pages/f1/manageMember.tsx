@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import Search, { SearchProps } from "antd/es/input/Search";
 import styles from "./Style.module.scss";
-import { PlusOutlined } from "@ant-design/icons";
+import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
 import { message, Table, Spin } from 'antd';
 import { ColumnsType, TableProps } from 'antd/es/table';
 import { useLocation, useNavigate } from 'react-router';
@@ -52,7 +52,6 @@ export default function ManageMember() {
     const [param, setParam] = useState("")
     const [key, setKey] = useState("")
     const {data: clubs} = useQuery(["clubs"], () =>  getClubs())
-    const [selectedRowKeysCLB, setSelectedRowKeysCLB] = useState<React.Key[]>([]);
     const [selectedRowKeysCN, setSelectedRowKeysCN] = useState<React.Key[]>([]);
     const [memberList, setMemberList] = useState<data>()
     const {data: memberListData, isFetching} = useQuery(['member'], () => getListMember(), {
@@ -101,14 +100,16 @@ export default function ManageMember() {
         }
       }
     })
+    const handleDeleteMember = () => console.log('xoá')
+    const handleDeleteMultiRecord = () => console.log('xoá nhiều')
     const onSelectChangeCN = (newSelectedRowKeysCN: React.Key[]) => {
-        setSelectedRowKeysCLB(newSelectedRowKeysCN);
+        setSelectedRowKeysCN(newSelectedRowKeysCN);
     };
     const rowSelectionCN = {
     selectedRowKeysCN,
     onChange: onSelectChangeCN,
     };
-    const hasSelected = selectedRowKeysCLB.length > 0;
+    const hasSelected = selectedRowKeysCN.length > 0;
     const onPaginationChange1 = (page: number) => {
       const newPage = searchURL.get("page")
       searchURL.set("page", page.toString());
@@ -213,7 +214,10 @@ export default function ManageMember() {
           render: (value, record) => {
             const idEncode = CryptoJS.AES.encrypt(record.id, secretKey).toString()
             const id = encodeURIComponent(idEncode)
-            return <button className={styles.btn} onClick={()=>navigate(`/thong-tin-ho-so/${id}`)}>Xem</button>;
+            return <>
+              <button className={styles.btn} onClick={()=>navigate(`/thong-tin-ho-so/${id}`)}>Xem</button>;
+              <button className={`${styles.btn} ${styles.deteleBtn}`} onClick={handleDeleteMember}>Xoá</button>
+            </>
           },
         },
       ];
@@ -234,25 +238,36 @@ export default function ManageMember() {
           <div className={styles.tableTop}>
           <div>
               {hasSelected
-              ? `Đã chọn ${selectedRowKeysCLB.length} hồ sơ`
+              ? `Đã chọn ${selectedRowKeysCN.length} hồ sơ`
               : `Tổng số ${memberList?.total_products ? memberList?.total_products: "0"} hồ sơ`}
           </div>
           <div className={styles.filter}>
-          <Search
-              placeholder="Tìm kiếm tại đây"
-              allowClear
-              onSearch={onSearch}
-              size="large"
-              style={{maxWidth: "300px", marginBottom: "4px", marginRight: "8px"}}
-          />
-              <div className={styles.addBtn} onClick={() => navigate("/them-hoi-vien")}>
-              <PlusOutlined className={styles.icon} />
-              <span style={{color: "#fff"}}>Thêm hội viên</span>
-              </div>
+            <Search
+                placeholder="Tìm kiếm tại đây"
+                allowClear
+                onSearch={onSearch}
+                size="large"
+                className={styles.search}
+            />
+            <div className={styles.btnWrap}>
+                <button className={styles.addBtn} onClick={() => navigate("/them-hoi-vien")}>
+                  <PlusOutlined className={styles.icon} />
+                  <span style={{color: "#fff"}}>Thêm hội viên</span>
+                </button>
+                <button 
+                  className={`${styles.addBtn} ${styles.deleteBtn}`} 
+                  onClick={handleDeleteMultiRecord}
+                  disabled= {selectedRowKeysCN.length === 0 ? true : false}
+                >
+                  <DeleteOutlined className={styles.icon} />
+                  <span style={{color: "#fff"}}>Xoá</span>
+                </button>
+            </div>
+              
           </div>
           </div>
           <Table
-          // rowSelection={rowSelectionCN}
+          rowSelection={rowSelectionCN}
           columns={columns_CN}
           dataSource={memberList?.data}
           locale={customLocale}
