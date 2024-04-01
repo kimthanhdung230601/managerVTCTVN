@@ -17,7 +17,7 @@ export const level: any = [
   'HLV 2 đẳng',
   'HLV 3 đẳng',
   'HLV 4 đẳng',
-  'Võ sư 5 đẳng',
+  'Chuẩn võ sư 5 đẳng',
   'Võ sư 6 đẳng',
   'Võ sư 7 đẳng',
   'Võ sư 8 đẳng',

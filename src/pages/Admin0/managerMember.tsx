@@ -377,39 +377,39 @@ const ManagerMember = () => {
       fixed: "right",
       width: 200,
       render: (_, record) => {
-        const idEncode = CryptoJS.AES.encrypt(record.id, secretKey).toString()
-        const id = encodeURIComponent(idEncode)
+        const idEncode = CryptoJS.AES.encrypt(record.id, secretKey).toString();
+        const id = encodeURIComponent(idEncode);
         return (
-        <span>
-          <button
-            className={styles.btnView}
-            onClick={() => navigate(`/thong-tin-ho-so/${id}`)}
-          >
-            Xem
-          </button>
-
-          <button
-            className={styles.btnTb}
-            onClick={() => navigate(`/chinh-sua-ho-so/${record.id}`)}
-          >
-            Sửa
-          </button>
-          {record.status === "Chờ duyệt" ? (
-            <Popconfirm
-              title="Xóa"
-              description={`Bạn có muốn cập nhật ${record.name} không`}
-              onConfirm={() => confirmUpdate(record.id)}
-              onCancel={cancel}
-              okText="Có"
-              cancelText="Không"
+          <span>
+            <button
+              className={styles.btnView}
+              onClick={() => navigate(`/thong-tin-ho-so/${id}`)}
             >
-              {" "}
-              <button className={styles.btnView}>Duyệt</button>
-            </Popconfirm>
-          ) : (
-            <></>
-          )}
-          {record.status === "Chờ duyệt xoá" ? (
+              Xem
+            </button>
+
+            <button
+              className={styles.btnTb}
+              onClick={() => navigate(`/chinh-sua-ho-so/${record.id}`)}
+            >
+              Sửa
+            </button>
+            {record.status === "Chờ duyệt" ? (
+              <Popconfirm
+                title="Duyệt"
+                description={`Bạn có muốn cập nhật ${record.name} không`}
+                onConfirm={() => confirmUpdate(record.id)}
+                onCancel={cancel}
+                okText="Có"
+                cancelText="Không"
+              >
+                {" "}
+                <button className={styles.btnView}>Duyệt</button>
+              </Popconfirm>
+            ) : (
+              <></>
+            )}
+
             <Popconfirm
               title="Xóa"
               description={`Bạn có muốn xóa ${record.name} không`}
@@ -421,12 +421,9 @@ const ManagerMember = () => {
               {" "}
               <button className={styles.btnTbDanger}>Xóa</button>
             </Popconfirm>
-          ) : (
-            <></>
-          )}
-        </span>
-      )
-      } 
+          </span>
+        );
+      },
     },
   ];
   const columnsMobile: ColumnsType<DataType> = [
@@ -600,10 +597,13 @@ const ManagerMember = () => {
           <Button
             className={styles.btnView}
             onClick={() => {
-              const idEncode = CryptoJS.AES.encrypt(record.id, secretKey).toString()
-              const id = encodeURIComponent(idEncode)
-              return navigate(`/thong-tin-ho-so/${id}`)
-            } }
+              const idEncode = CryptoJS.AES.encrypt(
+                record.id,
+                secretKey
+              ).toString();
+              const id = encodeURIComponent(idEncode);
+              return navigate(`/thong-tin-ho-so/${id}`);
+            }}
           >
             Xem
           </Button>

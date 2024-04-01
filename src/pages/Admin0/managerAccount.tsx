@@ -875,7 +875,7 @@ const ManagerAccount = () => {
           </Col>
           <Col xxl={12} md={24} className="gutter-row">
             <div style={{ display: "flex", justifyContent: "end" }}>
-              {selectedRowKeys.length > 1 ? (
+              {/* {selectedRowKeys.length > 1 ? (
                 <>
                   {" "}
                   <Button className={styles.btn}>
@@ -885,7 +885,7 @@ const ManagerAccount = () => {
                 </>
               ) : (
                 <div></div>
-              )}
+              )} */}
             </div>
           </Col>
         </Row>
@@ -910,7 +910,7 @@ const ManagerAccount = () => {
             <Pagination
               defaultCurrent={1}
               onChange={onChangePageAccept}
-              total={unAccept.length}
+              total={unAccept?.length}
               pageSize={30}
               style={{ margin: "1vh 0", float: "right" }}
             />
