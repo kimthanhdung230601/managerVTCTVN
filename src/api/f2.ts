@@ -14,7 +14,6 @@ export const getInforAdmin= (param:any) => {
   const idDecode = decodeURIComponent(param)
   const bytes = CryptoJS.AES.decrypt(idDecode, secretKey);
   const id = bytes.toString(CryptoJS.enc.Utf8)
-  console.log(id)
   if(isAdmin() === "1") return sendGet(`/ManageGetUserID?id=`+id)
   return sendGet('/AdminGetUserID?id='+id)
 }

@@ -18,13 +18,13 @@ const isAdmin = (): string => {
     return permission;
 }
 export default function Guide() {
-    document.title = "Tin tức";
+    document.title = "Hướng dẫn";
     const navigate = useNavigate()
     const param = new URLSearchParams(useLocation().search)
     const [currentPage, setCurrentPage] = useState(param.get("page") || "1")
     const {data, isFetching} = useQuery(["news", currentPage], () => getListNews(currentPage, "0"))
     const onChange = (page: number) => {
-        navigate(`/tin-tuc?page=${page}`)
+        navigate(`/huong-dan?page=${page}`)
         setCurrentPage(page.toString())
     }
   return (
@@ -73,12 +73,12 @@ export default function Guide() {
                                 return (
                                     <Row gutter={40} className={styles.post} justify="center">
                                         <Col className={`gutter-row`} xxl={8} lg={8} md={8} >
-                                            <Link to={`/huong-dan-admin/${item.id}`} className={styles.imgWrap}>
+                                            <Link to={`/huong-dan/${item.id}`} className={styles.imgWrap}>
                                                 <Image src={imageLink ? imageLink : require("../../assets/image/new.png")} preview={false} className={styles.postImg}/>
                                             </Link>
                                         </Col>
                                         <Col className='gutter-row' xxl={16} lg={16} md={16} style={{padding:"20px 10px"}}>
-                                            <Link to={`/huong-dan-admin/${item.id}`}>
+                                            <Link to={`/huong-dan/${item.id}`}>
                                                 <div className={styles.postTitle}>{item.title}</div>
                                             </Link>
                                             <div className={styles.postContent}>{dataContent}</div>

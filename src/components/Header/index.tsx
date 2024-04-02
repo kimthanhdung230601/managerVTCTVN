@@ -73,15 +73,11 @@ export default function Header() {
                         Tin tức
                     </Link>
                 </Col>
-                {
-                    Cookies.get("token") ? 
-                    <Col className={styles.headerItem}>
-                        <Link to={"/huong-dan"} className={styles.itemLink}>
-                            Hướng dẫn
-                        </Link>
-                    </Col>
-                    : null
-                }
+                <Col className={styles.headerItem}>
+                    <Link to={"/huong-dan"} className={styles.itemLink}>
+                        Hướng dẫn
+                    </Link>
+                </Col>
             </Row>
             </Col>
             <Col className={ `${styles.headerItem} gutter-row`} >
@@ -155,16 +151,11 @@ export default function Header() {
                 Tin tức
                 </Link>
             </li>
-            {
-                Cookies.get("token") ? 
-                <li className={styles.menuResponsiveItem}>
-                    <Link to={'/huong-dan'} className={styles.menuResponsiveLink} onClick={handleCloseMenu}>
-                        Hướng dẫn
-                    </Link>
-                </li>
-                : null
-            }
-            
+            <li className={styles.menuResponsiveItem}>
+                <Link to={'/huong-dan'} className={styles.menuResponsiveLink} onClick={handleCloseMenu}>
+                    Hướng dẫn
+                </Link>
+            </li>
             {
                 Cookies.get("token") ? 
                 <li className={styles.menuResponsiveItem}>
