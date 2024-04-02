@@ -18,6 +18,7 @@ import Account from "../pages/Account";
 import ChangePassword from "../pages/ChangePassword";
 import CryptoJS from "crypto-js";
 import NotFoundPage from "../pages/404";
+import UpdateProfiles from "../pages/UpdateF0";
 import SignupF1 from "../pages/Login/SignupF1";
 const Component = () => {
   return (
@@ -34,6 +35,7 @@ const Component = () => {
         <Route path="/huong-dan" element={<Guide />}></Route>
         <Route path="/dang-bai" element={<Post />}></Route>
         <Route path="/bai-viet/:id" element={<Article />}></Route>
+        <Route path="/chinh-sua-ho-so/:id" element={<UpdateProfiles />}></Route>
         <Route path="/huong-dan/:id" element={<Article />}></Route>
         <Route
           path="/thong-tin-tai-khoan/:id"
@@ -45,7 +47,10 @@ const Component = () => {
         ></Route>
         <Route path="/them-hoi-vien" element={<Profiles />}></Route>
         <Route path={`/lien-doan/:key`} element={<Admin />}></Route>
-        <Route path="/lien-doan/:key/UpdateMember" element={<UpdateMember />}></Route>
+        <Route
+          path="/lien-doan/:key/UpdateMember"
+          element={<UpdateMember />}
+        ></Route>
         <Route path="/quan-ly-don-vi" element={<AdminTwo />}></Route>
         <Route path="*" element={<NotFoundPage />} />
       </Routes>

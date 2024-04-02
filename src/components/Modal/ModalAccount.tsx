@@ -452,7 +452,6 @@ const ModalAccount = ({
                 <Form.Item
                   name="image_certificate"
                   label="Ảnh bằng cấp hiện tại"
-                  className={styles.formItemClass}
                   // rules={[{ required: true, message: "Vui lòng tải ảnh lên" }]}
                 >
                   <Upload
@@ -470,7 +469,6 @@ const ModalAccount = ({
                 <Form.Item
                   name="image_ref"
                   label="Ảnh giấy giới thiệu"
-                  className={styles.formItemClass}
                   // rules={[{ required: true, message: "Vui lòng tải ảnh lên" }]}
                 >
                   <Upload
