@@ -30,30 +30,32 @@ import moment from "moment";
 import { useMutation, useQuery } from "react-query";
 import { addMember } from "../../api/ApiUser";
 import { addNewF3 } from "../../api/f2";
-import { getDetailF3, updateF3 } from "../../api/f0";
+import { getDetailF3, getListClub, updateF3 } from "../../api/f0";
 import { useParams } from "react-router";
 import customParseFormat from "dayjs/plugin/customParseFormat";
+import ListClub from "../../hook/listClub";
 
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
 const { Option } = Select;
 const secretKey = process.env.REACT_APP_SECRET_KEY as string;
-
+interface Club {
+  id: string;
+  name_club: string;
+}
 interface UpdateProfilesProps {}
 const UpdateProfiles = () => {
   dayjs.extend(customParseFormat);
-  const dateFormat = "DD/MM/YYYY";
   document.title = "Chỉnh sửa thành viên";
   const [form] = Form.useForm();
   const param = useParams();
-
   const {
     data: dataDetailF3,
     refetch,
     isLoading,
     isFetched,
     isFetching,
-  } = useQuery("dataDetail", () => getDetailF3(param.key), {
+  } = useQuery("dataDetail", () => getDetailF3(param.id), {
     onSettled: (data) => {
       //  form.setFieldsValue(data.data[0]);
       form.setFieldValue("name", data.data[0].name);
@@ -68,22 +70,27 @@ const UpdateProfiles = () => {
       form.setFieldValue("achievements", data.data[0].achievements);
       form.setFieldValue("NameClb", data.data[0].NameClb);
       form.setFieldValue("hometown", data.data[0].hometown);
-      // form.setFieldValue("address", data.data[0].address);
-      const [city, district] = data.data[0].address.split(" - ");
+      form.setFieldValue("address", data.data[0].address);
+      const [city, district] = data.data[0].address.split("-");
       form.setFieldValue("city", city);
       form.setFieldValue("district", district);
       form.setFieldValue("nationality", data.data[0].nationality);
       form.setFieldValue("email", data.data[0].email);
       form.setFieldValue("code", data.data[0].code);
       form.setFieldValue("club", dataDetailF3);
-      // form.setFieldValue("birthday",formattedBirthday)
+      const formattedBirthday = moment(data.data[0].birthday).format(
+        "DD/MM/YYYY"
+      );
+      form.setFieldValue("birthday", formattedBirthday);
     },
   });
-  let birthday: any; // Khai báo biến birthday mà không gán giá trị
-  useEffect(() => {
-    birthday = dataDetailF3?.data[0].birthday;
-  }, [birthday, dataDetailF3]);
-  const birthdayPart = birthday?.split(" ")[0];
+  const { data: dataClub } = useQuery("dataClubs", getListClub);
+
+  const listClub = dataClub?.data.map((item: Club, index: number) => ({
+    text: item.name_club,
+    value: item.name_club,
+  }));
+
   const [fileListcCertificate, setFileListCertificate] = useState<any>([]);
   const [fileListLevel, setFileListLevel] = useState<any>([]);
   //image
@@ -266,37 +273,25 @@ const UpdateProfiles = () => {
     formdata.append("status", dataDetailF3?.data[0].status);
     formdata.append("id", dataDetailF3?.data[0].id);
     formdata.append("code", dataDetailF3?.data[0].code);
-    let certificateFile = null;
-    let avatarFile = null;
-
-    if (uploadedCertificate) {
-      certificateFile = uploadedCertificate.originFileObj as File;
-    } else if (fileListcCertificate && fileListcCertificate.length > 0) {
-      certificateFile = fileListcCertificate[0].originFileObj as File;
-    }
-
-    if (uploadedAvatar) {
-      avatarFile = uploadedAvatar.originFileObj as File;
-    } else if (fileListLevel && fileListLevel.length > 0) {
-      avatarFile = fileListLevel[0].originFileObj as File;
-    }
-
-    if (certificateFile) {
-      formdata.append(
-        `image_certificate`,
-        certificateFile,
-        CryptoJS.AES.encrypt(certificateFile.name, randomKey).toString()
-      );
-    }
-
-    if (avatarFile) {
+    if (values.avatar && values.avatar.length > 0) {
       formdata.append(
         `avatar`,
-        avatarFile,
-        CryptoJS.AES.encrypt(avatarFile.name, randomKey).toString()
+        values.avatar[0].originFileObj as File,
+        CryptoJS.AES.encrypt(values.avatar[0].name, randomKey).toString()
       );
     }
-    console.log("formdata", formdata.getAll);
+    if (values.image_certificate && values.image_certificate.length > 0) {
+      formdata.append(
+        `image_certificate`,
+        values.image_certificate[0].originFileObj as File,
+        CryptoJS.AES.encrypt(
+          values.image_certificate[0].name,
+          randomKey
+        ).toString()
+      );
+    }
+    // setLoading(false);
+    // new Response(formdata).text().then(console.log)
     updateMemberMutation.mutate(formdata);
   };
 
@@ -390,7 +385,7 @@ const UpdateProfiles = () => {
                         </Col>
                       </Row>{" "}
                       <div className={styles.buttonGroup}>
-                        <span
+                        {/* <span
                           className={`${styles.showBtn} ${
                             selectedButton === "show"
                               ? styles.selectedBtn
@@ -411,7 +406,7 @@ const UpdateProfiles = () => {
                           }}
                         >
                           Ẩn
-                        </span>
+                        </span> */}
                       </div>
                     </Col>
                     <Col span={8} xs={24} sm={12} md={8}>
@@ -468,9 +463,10 @@ const UpdateProfiles = () => {
                               },
                             ]}
                           >
-                            <DatePicker
-                              defaultValue={dayjs(birthdayPart)}
-                              format={"DD/MM/YYYY"}
+                            <Input
+                              type="day"
+                              // addonAfter={<DatePicker format="DD/MM/YYYY" />}
+                              placeholder="DD/MM/YYYY"
                             />
                           </Form.Item>
                         </Col>
@@ -507,7 +503,13 @@ const UpdateProfiles = () => {
                           },
                         ]}
                       >
-                        <Input disabled />
+                      <Select>
+                          {listClub?.map((club: any) => (
+                            <Select.Option key={club.value} value={club.value}>
+                              {club.text}
+                            </Select.Option>
+                          ))}
+                        </Select>
                       </Form.Item>
                     </Col>
                     <Col span={8} xs={24} sm={12} md={8}>

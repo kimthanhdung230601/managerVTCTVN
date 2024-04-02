@@ -18,6 +18,7 @@ import Account from "../pages/Account";
 import ChangePassword from "../pages/ChangePassword";
 import CryptoJS from "crypto-js";
 import NotFoundPage from "../pages/404";
+import UpdateProfiles from "../pages/UpdateF0";
 const Component = () => {
   return (
     <>
@@ -25,7 +26,10 @@ const Component = () => {
         <Route path="/" element={<Home />}></Route>
         <Route path="/dang-nhap" element={<Login />}></Route>
         <Route path="/dang-ky" element={<Signup />}></Route>
-        <Route path="/quan-ly-lien-doan-so-nganh" element={<LevelOne />}></Route>
+        <Route
+          path="/quan-ly-lien-doan-so-nganh"
+          element={<LevelOne />}
+        ></Route>
         <Route path="/thong-tin-ho-so/:id" element={<Detail />}></Route>
         <Route path="/thong-tin-ho-so" element={<Detail />}></Route>
         {/* <Route path="/tra-cuu-hoi-vien" element={<Search />}></Route> */}
@@ -34,17 +38,15 @@ const Component = () => {
         <Route path="/dang-bai" element={<Post />}></Route>
         <Route path="/bai-viet/:id" element={<Article />}></Route>
         <Route path="/huong-dan-admin/:id" element={<Article />}></Route>
-        <Route
-          path="/thong-tin-tai-khoan/:id"
-          element={<Account />}
-        ></Route>
-        <Route
-          path="/doi-mat-khau"
-          element={<ChangePassword />}
-        ></Route>
+        <Route path="/thong-tin-tai-khoan/:id" element={<Account />}></Route>
+        <Route path="/doi-mat-khau" element={<ChangePassword />}></Route>
+        <Route path="/chinh-sua-ho-so/:id" element={<UpdateProfiles />}></Route>
         <Route path="/them-hoi-vien" element={<Profiles />}></Route>
         <Route path={`/lien-doan/:key`} element={<Admin />}></Route>
-        <Route path="/lien-doan/:key/UpdateMember" element={<UpdateMember />}></Route>
+        <Route
+          path="/lien-doan/:key/UpdateMember"
+          element={<UpdateMember />}
+        ></Route>
         <Route path="/quan-ly-don-vi" element={<AdminTwo />}></Route>
         <Route path="*" element={<NotFoundPage />} />
       </Routes>

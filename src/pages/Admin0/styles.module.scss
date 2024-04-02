@@ -2,6 +2,11 @@
   overflow: hidden;
   padding: 0 40px;
 }
+.TitleText {
+  color: var(--primary);
+  font-weight: bold;
+  font-size: 16px;
+}
 .logoWrap {
   display: flex;
   justify-content: center;
@@ -283,11 +288,17 @@
   line-height: 22px; /* 157.143% */
   padding: 5px 17px;
 }
-
+.btnAntd {
+  height: 40px;
+}
+.styleRight {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 8px;
+}
 .btn {
   height: 40px;
   cursor: pointer;
-
   margin-bottom: 4px;
   border-radius: 4px;
   font-size: 16px;

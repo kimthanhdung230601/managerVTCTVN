@@ -24,6 +24,32 @@ export const level: any = [
   'Võ sư 9 đẳng',
   'Đại võ sư'
 ];
+
+export const levelMapping: { [key: string]: string } = {
+  "1": "Võ sinh cấp 1",
+  "2": "Võ sinh cấp 2",
+  "3": "Võ sinh cấp 3",
+  "4": "Võ sinh cấp 4",
+  "5": "Võ sinh cấp 5",
+  "6": "Võ sinh cấp 6",
+  "7": "Võ sinh cấp 7",
+  "8": "Võ sinh cấp 8",
+  "9": "Võ sinh cấp 9",
+  "10": "Võ sinh cấp 10",
+  "11": "Võ sinh cấp 11",
+  "12": "Võ sinh cấp 12",
+  "13": "HLV 1 đẳng",
+  "14": "HLV 2 đẳng",
+  "15": "HLV 3 đẳng",
+  "16": "HLV 4 đẳng",
+  "17": "Chuẩn võ sư 5 đẳng",
+  "18": "Võ sư 6 đẳng",
+  "19": "Võ sư 7 đẳng",
+  "20": "Võ sư 8 đẳng",
+  "21": "Võ sư 9 đẳng",
+  "22": "Đại võ sư"
+};
+
 export const levelFilters = level.map((item:any) => ({ text: item, value: item }));
 
 export const managerf1: any = [
