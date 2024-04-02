@@ -7,6 +7,7 @@ import UpdateMember from "./updateMember";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import styles from "./styles.module.scss";
+import ManagerF1 from "./manageF1";
 
 const { TabPane } = Tabs;
 
@@ -34,7 +35,7 @@ const Admin = () => {
       {
         key: "quan-ly-tai-khoan-F1",
         tab: "Quản lý tài khoản F1",
-        content: <ManagerAccount />,
+        content: <ManagerF1 />,
       },
       {
         key: "quan-ly-tai-khoan",
@@ -70,7 +71,7 @@ const Admin = () => {
   }, [selectedMenuItem]);
 
   return (
-    <>
+    <div style={{backgroundColor: "#fff"}}>
       <Header />
       <div className={styles.logoWrap}>
         <div className={styles.title}>
@@ -99,7 +100,7 @@ const Admin = () => {
         </Tabs>
       </div>
       <Footer />
-    </>
+    </div>
   );
 };
 

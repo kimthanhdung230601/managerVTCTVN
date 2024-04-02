@@ -9,6 +9,10 @@ export const RouteList = [
         permission: 3
     }, 
     {
+        name: "/dang-ky-f1",
+        permission: 0
+    }, 
+    {
         name: "/tin-tuc",
         permission: 3
     }, 
@@ -22,11 +26,7 @@ export const RouteList = [
     },
     {
         name: "/huong-dan",
-        permission: 2
-    }, 
-    {
-        name: "/huong-dan-admin",
-        permission: 2
+        permission: 3
     }, 
     {
         name: "/quan-ly-don-vi",

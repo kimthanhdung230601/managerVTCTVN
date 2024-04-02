@@ -34,7 +34,6 @@ export default function ChangePassword() {
 
     const onFinish = (values: any) => {
         delete values.confirm
-        console.log(values)
         changePasswordMutation.mutate(values)
     }
   return (

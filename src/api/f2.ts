@@ -1,5 +1,6 @@
 import { sendDelete, sendGet, sendPost, sendPut } from "./api";
 import { isAdmin } from "./ApiUser";
+import CryptoJS from "crypto-js";
 const secretKey = process.env.REACT_APP_SECRET_KEY || "";
 export const getListMemberF3 = (payload: any) =>
   sendGet(`/Members?club=${payload}`);

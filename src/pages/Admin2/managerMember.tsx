@@ -167,7 +167,7 @@ const ManagerMemberTwo = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-    console.log("selectedRowKeys changed: ", newSelectedRowKeys);
+
     setSelectedRowKeys(newSelectedRowKeys);
   };
   const rowSelection = {
@@ -177,7 +177,7 @@ const ManagerMemberTwo = () => {
   const hasSelected = selectedRowKeys.length > 0;
 
   const confirmDelete = async (value: any) => {
-    // console.log(e);
+
     const payload = {
       id: value,
     };
@@ -383,7 +383,7 @@ const ManagerMemberTwo = () => {
     (filters.detail ? '&detail=' +  encodeURIComponent(filters.detail[0].toString()) : "") + 
     (filters.status ? '&status=' +  encodeURIComponent(filters.status[0].toString()) : "") + 
     (filters.achievements ? '&achievements=' +  encodeURIComponent(filters.achievements[0].toString()): "")
-    console.log(param)
+
     setParam(param)
   };
   return (

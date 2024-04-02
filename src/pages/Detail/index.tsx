@@ -91,6 +91,7 @@ export default function Detail() {
             }
         }
     })
+
   return (
     <div>
         <Header />
@@ -118,7 +119,7 @@ export default function Detail() {
                                                 userInfor?.data[0].avatar ? 
                                                 <div style={{textAlign: "center", width: "auto"}}>
                                                     <Image src={`https://vocotruyen.id.vn/PHP_IMG/${userInfor?.data[0].avatar}`} preview={true} className={styles.detailImg}/>
-                                                    <div style={{fontWeight: "500", textAlign: "center", marginTop: "8px", fontStyle: "italic"}}>Ảnh đại diện</div>
+                                                    <div style={{fontWeight: "500",color: "#000", textAlign: "center", marginTop: "8px", fontStyle: "italic"}}>Ảnh đại diện</div>
                                                 </div>
                                                 : null
                                             }
@@ -129,7 +130,7 @@ export default function Detail() {
                                                 userInfor?.data[0].image_certificate ? 
                                                 <div style={{textAlign: "center"}}>   
                                                     <Image src={`https://vocotruyen.id.vn/PHP_IMG/${userInfor?.data[0].image_certificate}`} preview={true} className={styles.detailImg}/>
-                                                    <div style={{fontWeight: "500", textAlign: "center", marginTop: "8px", fontStyle: "italic"}} >Bằng cấp</div>
+                                                    <div style={{fontWeight: "500",color: "#000", textAlign: "center", marginTop: "8px", fontStyle: "italic"}} >Bằng cấp</div>
                                                 </div>
                                                 : null
                                             }
@@ -138,13 +139,13 @@ export default function Detail() {
                                         <Col className={`${styles.colImg} gutter-row`} xxl={24} md={24} xs={8} style={isMobile ? {} : {marginTop: "20px"}}>
                                             <div style={{textAlign: "center"}}>
                                                 <QRCode 
-                                                    value={`https://vocotruyen.id.vn/thong-tin-ho-so/${encodeURIComponent(CryptoJS.AES.encrypt(userInfor?.data[0].idcard, secretKey).toString())}`} 
+                                                    value={`https://vocotruyen.id.vn/thong-tin-ho-so?keyword=${userInfor?.data[0].idcard}`} 
                                                     icon={require("../../assets/image/logo.png")} 
                                                     className={styles.detailImg}
                                                     bgColor="#fff"
                                                     style={{margin: "0 auto"}}
                                                 />
-                                                <div style={{fontWeight: "500", textAlign: "center", marginTop: "8px", fontStyle: "italic"}}>Mã QR</div>
+                                                <div style={{fontWeight: "500",color: "#000", textAlign: "center", marginTop: "8px", fontStyle: "italic"}}>Mã QR</div>
                                                </div>
                                         </Col>
                                     </Row>
@@ -155,7 +156,6 @@ export default function Detail() {
                                             if(userData !== null) {
                                                 const keys = Object.keys(userData)
                                                 const key = keys[index] as keyof Infor
-                                                console.log("key of object", keys)
                                                 const data = userData[key]
                                                 if(data) {
                                                     i++
@@ -163,19 +163,17 @@ export default function Detail() {
                                                     <Row gutter={40} className={styles.DetailItem}>
                                                         <Col className='gutter-row' xxl={12} lg={12} md={12} xs={12} >
                                                             <span className={styles.NumberOrders}>{i}.</span> 
-                                                            {item}
+                                                            <span style={{color: "#000"}}>{item}</span>
                                                         </Col>
                                                         <Col className='gutter-row' xxl={12} lg={12} md={12} xs={12}>
-                                                            {key === "birthday" ? data.split(" ")[0] : data}
+                                                            <span style={{color: "#000"}}>{key === "birthday" ? data.split(" ")[0] : data}</span>
                                                         </Col>
                                                     </Row>
                                                     ) 
                                                 }
                                                 
                                             }
-                                            
-                                        
-                                        }, 0)
+                                        })
                                     }
                                 </Col>
                             </Row>

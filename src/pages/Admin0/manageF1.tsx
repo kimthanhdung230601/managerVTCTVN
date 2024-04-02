@@ -1,0 +1,437 @@
+import { useEffect, useState } from "react";
+import {
+  AudioOutlined,
+  PlusOutlined,
+  DownloadOutlined,
+  CheckOutlined,
+  FileTextOutlined,
+} from "@ant-design/icons";
+import {
+  Input,
+  Table,
+  Button,
+  Form,
+  Select,
+  Col,
+  Row,
+  Image,
+  Popconfirm,
+  message,
+  Pagination,
+  Spin,
+} from "antd";
+import { admin, province } from "../../until/until";
+import styles from "./styles.module.scss";
+// import type { TableColumnsType, TableProps } from "antd/es/table";
+import type { TableColumnsType, TableProps } from "antd";
+
+import ModalAccount from "../../components/Modal/ModalAccount";
+import ModalAccept from "../../components/Modal/ModalAccept";
+import { useNavigate } from "react-router";
+import { useMediaQuery } from "react-responsive";
+import { text } from "stream/consumers";
+import type { ColumnsType } from "antd/es/table";
+import { useQuery } from "react-query";
+import {
+  deleteMemberF12,
+  // getListMemberF12,
+  getListMemberF12Accept,
+  getListMemberF12UnAccept,
+  updateAccount,
+} from "../../api/f0";
+import ListClub from "../../hook/listClub";
+import CryptoJS from "crypto-js";
+import ModalF1 from "../../components/Modal/ModalF1";
+const secretKey = process.env.REACT_APP_SECRET_KEY as string;
+interface ManagerAccountProps {}
+interface DataType {
+  key: React.Key;
+  id: string;
+  name: string;
+  birthday: string;
+  phone: any;
+  code: any;
+  idcard: any;
+  level: any;
+  address: any;
+  DonViQuanLy: any;
+  NameClb: any;
+  note: string;
+  status: any;
+  achievements: any;
+  NameClub: string;
+  location: string;
+  manage: string;
+  club: string;
+  image_certificate: any;
+  image_ref: any;
+}
+
+const { Option } = Select;
+const filterProivce = province.map((province) => ({
+  text: province,
+  value: province,
+}));
+const customLocale = {
+  filterConfirm: "OK", // Thay đổi nút xác nhận
+  filterReset: "Xoá", // Thay đổi nút reset
+  filterEmptyText: "No filters", // Thay đổi văn bản khi không có bộ lọc
+  selectAll: "Chọn tất cả", // Thay đổi văn bản "Select All Items" ở đây
+  selectInvert: "Đảo ngược", // Thay đổi văn bản khi chọn ngược
+};
+const ManagerF1 = () => {
+  //tài khoản đã được duyệt
+  const [currentPageAccount, setCurrentPageAccount] = useState(1);
+  const [payloadAccept, setPayloadAccept] = useState<any>(1);
+  const {
+    data: dataMemberF12Accept,
+    refetch: refetchAccept,
+    isFetching: isFetchingAccept,
+  } = useQuery(["dataF12Accept", payloadAccept], () =>
+    getListMemberF12Accept(payloadAccept)
+  );
+  const onChange: TableProps<DataType>["onChange"] = (pagination, filters) => {
+    const param =
+      currentPageAccount +
+      (filters.location
+        ? "&location=" + encodeURIComponent(filters.location[0].toString())
+        : "") +
+      (filters.club ? "$club=" + filters.club[0] : "") +
+      (filters.manage
+        ? "&manage=" + encodeURIComponent(filters.manage[0].toString())
+        : "");
+    setPayloadAccept(param);
+    refetchAccept();
+  };
+
+  const onChangePageAccount = (value: any) => {
+    setCurrentPageAccount(value);
+    refetchAccept();
+  };
+  //tài khoản chưa được duyệt
+
+
+  const naviagte = useNavigate();
+  const isMobile = useMediaQuery({ maxWidth: 768 });
+
+  
+  const [isModalF1, setIsModalF1] = useState(false);
+  const [id, setId] = useState();
+  const showModalMember = (value: any) => {
+    setIsModalF1(true);
+    setId(value);
+  };
+
+  const handleOkMember = () => {
+    setIsModalF1(false);
+  };
+
+  const handleCancelMember = () => {
+    setIsModalF1(false);
+  };
+  const columnsDesktopAccount: ColumnsType<DataType> = [
+    {
+      title: "STT",
+      dataIndex: "key",
+      fixed: "left",
+      width: 20,
+      render: (value, record, index) => {
+        return index + 1 + (currentPageAccount - 1) * 10;
+      },
+    },
+    {
+      title: "Họ và tên",
+      dataIndex: "name",
+      fixed: "left",
+      width: 210,
+    },
+    {
+      title: "Mã định danh",
+      dataIndex: "idcard",
+      width: 250,
+    },
+    {
+      title: "Số điện thoại",
+      dataIndex: "phone",
+      width: 150,
+    },
+   
+    {
+      title: "Tỉnh/Thành",
+      dataIndex: "location",
+      filters: filterProivce,
+      onFilter: (value: any, record) => record.location.startsWith(value),
+      filterSearch: true,
+      filterMultiple: false,
+      width: 120,
+    },
+    {
+      title: "Đơn vị quản lý",
+      dataIndex: "manage",
+      filters: [
+        {
+          text: "Công An",
+          value: "Công An",
+        },
+        {
+            text: "Quân Đội",
+            value: "Quân Đội",
+        },
+        {
+            text: "Giáo Dục",
+            value: "Giáo Dục",
+        },
+        {
+          text: "Hội Võ Thuật",
+          value: "Hội Võ Thuật",
+        },
+        {
+            text: "Hội Võ Thuật Cổ Truyền",
+            value: "Hội Võ Thuật Cổ Truyền",
+        },
+        {
+          text: "Liên đoàn võ thuật",
+          value: "Liên đoàn võ thuật",
+        },
+        {
+            text: "Liên đoàn võ thuật cổ truyền",
+            value: "Liên đoàn võ thuật cổ truyền",
+        },
+        
+        {
+          text: "Sở VHTT và Du lịch",
+          value: "Sở VHTT và Du lịch",
+        },
+        {
+            text: "Trung tâm huấn luyện thể thao",
+            value: "Trung tâm huấn luyện thể thao",
+        },
+        
+      ],
+      onFilter: (value: any, record) => record.manage.indexOf(value) === 0,
+      filterMultiple: false,
+
+      width: 200,
+    },
+    {
+      title: "Chức danh",
+      dataIndex: "title",
+      width: 200,
+      
+      filterMultiple: false,
+    },
+    {
+      title: "Mật khẩu",
+      dataIndex: "password",
+      width: 150,
+    },
+    {
+      key: "action",
+      width: 200,
+      fixed: "right",
+      render: (_, record) =>{
+        const idEncode = CryptoJS.AES.encrypt(record.id, secretKey).toString()
+        const id = encodeURIComponent(idEncode)
+        return (
+          <span>
+            <button
+              className={styles.btnTb}
+              onClick={() => setIsModalF1(true)}
+            >
+              Sửa
+            </button>
+            <button
+              className={styles.btnTb}
+              onClick={() => showModalMember(record.id)}
+              style={{backgroundColor: "#ff0000"}}
+            >
+              Xoá
+            </button>
+          </span>
+        )
+      } 
+    },
+  ];
+  const columnsMobileAccount: ColumnsType<DataType> = [
+    {
+      title: "STT",
+      dataIndex: "key",
+      width: 20,
+      render: (value, record, index) => {
+        return index + 1 + (currentPageAccount - 1) * 10;
+      },
+    },
+    {
+      title: "Họ và tên",
+      dataIndex: "name",
+      width: 210,
+    },
+    {
+      title: "Mã định danh",
+      dataIndex: "idcard",
+      width: 250,
+    },
+    {
+      title: "Số điện thoại",
+      dataIndex: "phone",
+      width: 150,
+    },
+    {
+      title: "Tỉnh",
+      dataIndex: "location",
+      filters: filterProivce,
+      onFilter: (value: any, record) => record.location.startsWith(value),
+      filterMultiple: false,
+
+      filterSearch: true,
+      width: 120,
+    },
+    {
+      title: "Đơn vị quản lý",
+      dataIndex: "manage",
+      filters: [
+        {
+          text: "Công An",
+          value: "Công An",
+        },
+        {
+            text: "Quân Đội",
+            value: "Quân Đội",
+        },
+        {
+            text: "Giáo Dục",
+            value: "Giáo Dục",
+        },
+        {
+          text: "Hội Võ Thuật",
+          value: "Hội Võ Thuật",
+        },
+        {
+            text: "Hội Võ Thuật Cổ Truyền",
+            value: "Hội Võ Thuật Cổ Truyền",
+        },
+        {
+          text: "Liên đoàn võ thuật",
+          value: "Liên đoàn võ thuật",
+        },
+        {
+            text: "Liên đoàn võ thuật cổ truyền",
+            value: "Liên đoàn võ thuật cổ truyền",
+        },
+        
+        {
+          text: "Sở VHTT và Du lịch",
+          value: "Sở VHTT và Du lịch",
+        },
+        {
+            text: "Trung tâm huấn luyện thể thao",
+            value: "Trung tâm huấn luyện thể thao",
+        },
+        
+      ],
+      onFilter: (value: any, record) => record.manage.indexOf(value) === 0,
+      filterMultiple: false,
+      width: 200,
+    },
+    {
+      title: "Chức danh",
+      dataIndex: "level",
+      width: 200,
+    },
+
+    {
+      title: "Mật khẩu",
+      dataIndex: "password",
+      width: 150,
+    },
+    {
+      // title: 'Action',
+      key: "action",
+      width: 200,
+      render: (_, record) => (
+        <span>
+          <button
+            className={styles.btnTb}
+            onClick={() => setIsModalF1(true)}
+          >
+            Sửa
+          </button>
+          <button
+            className={styles.btnTb}
+            onClick={() => showModalMember(record.id)}
+            style={{backgroundColor: "#ff0000"}}
+          >
+            Xoá
+          </button>
+        </span>
+      ),
+    },
+  ];
+
+
+  return (
+    <div className={styles.wrap}>
+      <div className={styles.managerAccount}>
+        <Row gutter={40} justify="end" className={styles.buttonGroup}>
+          {/* <Col xxl={12} md={24} className="gutter-row">
+            <div style={{ width: "180px" }}>
+              <div className={styles.postLabel}>
+                <FileTextOutlined style={{ marginRight: "10px" }} />
+                Quản lý tài khoản
+              </div>
+            </div>
+          </Col> */}
+          <Col
+            xxl={12}
+            md={24}
+            onClick={() => showModalMember(undefined)}
+            className="gutter-row"
+          >
+            <div style={{ display: "flex", justifyContent: "end" }}>
+              <Button
+                className={styles.btn}
+                style={{ paddingRight: "10px" }}
+                onClick={() => naviagte("/dang-ky-f1")}
+              >
+                <PlusOutlined className={styles.icon} />
+                Đăng ký tài khoản mới
+              </Button>
+            </div>
+          </Col>
+        </Row>
+        <div className={styles.table}>
+          <Spin spinning={isFetchingAccept}>
+            <Table
+              columns={isMobile ? columnsMobileAccount : columnsDesktopAccount}
+              dataSource={dataMemberF12Accept?.data}
+              pagination={false}
+              locale={customLocale}
+              onChange={onChange}
+              scroll={{
+                x: "max-content",
+              }}
+              style={{ overflowX: "auto" }}
+            />
+            <Pagination
+              defaultCurrent={1}
+              onChange={onChangePageAccount}
+              total={dataMemberF12Accept?.total_products}
+              pageSize={10}
+              style={{ margin: "1vh 0", float: "right" }}
+            />
+          </Spin>
+        </div>
+      </div>
+      <ModalF1
+        isModalOpen={isModalF1}
+        handleCancel={handleCancelMember}
+        handleOk={handleOkMember}
+        id={id}
+        setId={setId}
+        refetchAccountTable={refetchAccept}
+      />
+    </div>
+  );
+};
+
+export default ManagerF1;

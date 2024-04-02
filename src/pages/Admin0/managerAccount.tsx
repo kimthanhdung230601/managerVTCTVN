@@ -88,7 +88,6 @@ const ManagerAccount = () => {
     getListMemberF12(payload)
   );
   const onChange: TableProps<DataType>["onChange"] = (pagination, filters) => {
-    console.log("filter", filters);
     const param =
       (filters.location
         ? "&location=" + encodeURIComponent(filters.location[0].toString())
@@ -99,6 +98,7 @@ const ManagerAccount = () => {
         : "");
     const updatePayload = initialPayload + param;
     setPayload(updatePayload);
+
     refetchAccept();
   };
 
