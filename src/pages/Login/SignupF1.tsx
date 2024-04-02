@@ -64,10 +64,12 @@ export default function SignupF1() {
         const formdata = new FormData();
         formdata.append("name", value.name);
         formdata.append("phone", value.phone);
-        formdata.append("title", value.email);
+        formdata.append("level", value.level);
         formdata.append("location", value.location);
+        formdata.append("manage", value.location);
         formdata.append("password", value.password);
-        signupMutation.mutate(formdata)
+        console.log("form", value)
+        // signupMutation.mutate(formdata)
     }
     useEffect(() => {
         dispatch({ type: 'INCREMENT_LOAD_COUNT' });
@@ -156,7 +158,7 @@ export default function SignupF1() {
                     </Select>
                 </Form.Item>
                 <Form.Item
-                name="title"
+                name="level"
                 rules={[
                     {
                         required: true,

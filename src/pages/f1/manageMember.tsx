@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import Search, { SearchProps } from "antd/es/input/Search";
 import styles from "./Style.module.scss";
 import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
-import { message, Table, Spin } from 'antd';
+import { message, Table, Spin, Popconfirm, Button } from 'antd';
 import { ColumnsType, TableProps } from 'antd/es/table';
 import { useLocation, useNavigate } from 'react-router';
 import { levelFilters } from '../../until/until';
@@ -31,6 +31,7 @@ interface DataType_CN {
     note: string;
     status: string;
     achievements: string;
+    club:string;
 }
 
 interface data {
@@ -60,8 +61,20 @@ export default function ManageMember() {
           message.warning(data.data)
           
         } else if(data.status === "success") {
-      
-          setMemberList(data)
+          const newData = data.data.map((item:any, index:number) => {
+            return {
+                ...item,
+                key: item.id
+            }
+          })
+            
+          setMemberList({
+            status: data.status,
+            total_products: data.total_products,
+            total_pages: data.total_pages,
+            index_page: data.index_page,
+            data: newData
+          })
         } else {
           message.error("Có lỗi xảy xa, vui lòng thử lại sau")
         }
@@ -71,12 +84,22 @@ export default function ManageMember() {
       enabled: param !== "",
       onSettled: (data) => {
         if(data.status === "success") {
-              setMemberList(data)
+          const newData = data.data.map((item:any, index:number) => {
+            return {
+                ...item,
+                key: item.id
+            }
+          })
+            
+          setMemberList({
+            status: data.status,
+            total_products: data.total_products,
+            total_pages: data.total_pages,
+            index_page: data.index_page,
+            data: newData
+          })
         } else if(data.status === "failed"){
           message.error("Không có dữ liệu.")
-          // setTimeout(()=> {
-          //   window.location.reload()
-          // }, 2000)
         } else {
           message.error("Có lỗi xảy ra, vui lòng thử lại sau")
           setTimeout(()=> {
@@ -100,8 +123,8 @@ export default function ManageMember() {
         }
       }
     })
-    const handleDeleteMember = () => console.log('xoá')
-    const handleDeleteMultiRecord = () => console.log('xoá nhiều')
+    const handleDeleteMember = (id: string) => console.log(id)
+    const handleDeleteMultiRecord = () => console.log("rows",selectedRowKeysCN)
     const onSelectChangeCN = (newSelectedRowKeysCN: React.Key[]) => {
         setSelectedRowKeysCN(newSelectedRowKeysCN);
     };
@@ -122,8 +145,8 @@ export default function ManageMember() {
     const columns_CN: ColumnsType<DataType_CN> = [
         {
           title: "STT",
-          dataIndex: "id",
-          render: (value, __, index) =><span key={value}>{(parseInt(currentPage1, 10) - 1) * 30 + index + 1}</span> ,
+          dataIndex: "key",
+          render: (value, __, index) =><span key={index}>{(parseInt(currentPage1, 10) - 1) * 30 + index + 1}</span> ,
         },
         {
           title: "Họ tên",
@@ -170,7 +193,7 @@ export default function ManageMember() {
               value: item.club
             }
           }) : null,
-          onFilter: (value: any, record) => record.NameClb.indexOf(value) === 0,
+          onFilter: (value: any, record) => record.club.indexOf(value) === 0,
         },
         {
           title: "Ghi chú",
@@ -215,10 +238,19 @@ export default function ManageMember() {
             const idEncode = CryptoJS.AES.encrypt(record.id, secretKey).toString()
             const id = encodeURIComponent(idEncode)
             return <>
-              <button className={styles.btn} onClick={()=>navigate(`/thong-tin-ho-so/${id}`)}>Xem</button>;
-              <button className={`${styles.btn} ${styles.deteleBtn}`} onClick={handleDeleteMember}>Xoá</button>
+              <Button className={styles.btn} onClick={()=>navigate(`/thong-tin-ho-so/${id}`)}>Xem</Button>
+              <Popconfirm
+                title="Xác nhận xoá thành viên"
+                description={`Bạn có chắc chắn muốn xoá thành viên ${record.name} không ? `}
+                onConfirm={() => handleDeleteMember(record.id)}
+                okText="Có"
+                cancelText="Huỷ"
+              >
+                <Button className={`${styles.btn} ${styles.deteleBtn}`}>Xoá</Button>
+              </Popconfirm>
             </>
           },
+          width: 200
         },
       ];
       const onChange: TableProps<DataType_CN>['onChange'] = (pagination, filters, sorter, extra) => {

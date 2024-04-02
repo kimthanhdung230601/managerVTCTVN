@@ -99,8 +99,8 @@ import {
       formdata.append("phone", value.phone);
       formdata.append("location", value.location);
       formdata.append("manage", value.manage);
-      formdata.append("id", id);
-      formdata.append("title", value.title);
+      // formdata.append("id", id);
+      formdata.append("level", value.level);
       formdata.append("password", value.password);
       updateUserMutation.mutate(formdata);
     };
@@ -202,7 +202,7 @@ import {
                 <Col span={12}>
                   <Form.Item
                     label="Chức danh"
-                    name="Title"
+                    name="level"
                     rules={[
                       { required: true, message: "Vui lòng điền chức danh" },
                       

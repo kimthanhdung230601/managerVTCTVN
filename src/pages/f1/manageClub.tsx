@@ -64,6 +64,7 @@ export default function ManageClub() {
       onSettled: (data) => {
         if(data.status === "success") {
               setClubList(data)
+              console.log("club", data)
         } else if(data.status === "failed"){
           message.error("Không có dữ liệu.")
           // setTimeout(()=> {
@@ -164,7 +165,7 @@ export default function ManageClub() {
                 value: item.club
               }
           }) : null,
-          onFilter: (value: any, record) => record.NameClb.indexOf(value) === 0,
+          onFilter: (value: any, record) => record.club.indexOf(value) === 0,
         },
         {
           title: "Số lượng hồ sơ",
@@ -206,6 +207,7 @@ export default function ManageClub() {
       const param = '?page=' + currentPage2  + (filters.NameClb ? '&club=' + filters.NameClb[0] : "") + (filters.level ? '&level=' + encodeURIComponent(filters.level[0].toString())  : "") + (filters.pending ? '&pending=' + filters.pending[0] : "")
       setParam(param)
     };
+   
   return (
     <>
     {
@@ -215,40 +217,38 @@ export default function ManageClub() {
         {
           clubList?.status === "failed" ? <div className={styles.fetching}>Không có dữ liệu.</div>
           :
-          <>
-            <div className={styles.tableTop}>
-            <div>
-                {hasSelected
-                ? `Đã chọn ${selectedRowKeysCLB.length} hồ sơ`
-                : `Tổng số ${clubList?.total_products ? clubList?.total_products: "0"} hồ sơ`}
-            </div>
-            <div className={styles.filter}>
-            <Search
-                placeholder="Tìm kiếm tại đây"
-                allowClear
-                onSearch={onSearch}
-                size="large"
-                style={{maxWidth: "300px", marginBottom: "4px", marginRight: "8px"}}
-            />
-            
-            </div>
-            </div>
-            <Table
-            // rowSelection={rowSelectionCLB}
-            columns={columns_CLB}
-            dataSource={clubList?.data}
-            locale={customLocale}
-            onChange={onChange}
-            pagination={{
-                current: parseInt(currentPage2, 10),
-                onChange: onPaginationChange2,
-                pageSize: 30,
-                defaultCurrent: 1,
-                total: clubList?.total_products ? clubListData?.total_products : null,
-            }}
-            className={styles.table}
-            />{" "}
-              </>
+            <>
+              <div className={styles.tableTop}>
+              <div>
+                  Tổng số {clubList?.total_products ? clubList?.total_products: "0"} hồ sơ
+              </div>
+              <div className={styles.filter}>
+              <Search
+                  placeholder="Tìm kiếm tại đây"
+                  allowClear
+                  onSearch={onSearch}
+                  size="large"
+                  style={{maxWidth: "300px", marginBottom: "4px", marginRight: "8px"}}
+              />
+              
+              </div>
+              </div>
+              <Table
+              // rowSelection={rowSelectionCLB}
+              columns={columns_CLB}
+              dataSource={clubList?.data}
+              locale={customLocale}
+              onChange={onChange}
+              pagination={{
+                  current: parseInt(currentPage2, 10),
+                  onChange: onPaginationChange2,
+                  pageSize: 30,
+                  defaultCurrent: 1,
+                  total: clubList?.total_products ? clubList?.total_products : 0,
+              }}
+              className={styles.table}
+              />{" "}
+            </>
             }
          </>
       }

@@ -335,7 +335,7 @@ const ManagerF1 = () => {
     },
     {
       title: "Chức danh",
-      dataIndex: "title",
+      dataIndex: "level",
       width: 200,
     },
 
