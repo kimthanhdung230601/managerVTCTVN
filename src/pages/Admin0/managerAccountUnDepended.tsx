@@ -433,7 +433,7 @@ const ManagerAccountUnDepended = () => {
   ];
 
   return (
-    <div className={styles.wrap}>
+    <div className={styles.wraps}>
       <div className={styles.managerAccountAccept}>
         <Row gutter={40} justify="space-between" className={styles.buttonGroup}>
           <Col xxl={12} md={24} className="gutter-row">

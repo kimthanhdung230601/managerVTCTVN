@@ -494,17 +494,17 @@ const ManagerAccount = () => {
           </Spin>
         </div>
       </div>
-      <div className={styles.managerAccountAccept}>
-        <ManagerAccountUnDepended />
-      </div>
-      <ModalAccount
-        isModalOpen={isModalOpenMember}
-        handleCancel={handleCancelMember}
-        handleOk={handleOkMember}
-        id={id}
-        setId={setId}
-        refetchAccountTable={refetchAccept}
-      />
+      <div>
+        <ModalAccount
+          isModalOpen={isModalOpenMember}
+          handleCancel={handleCancelMember}
+          handleOk={handleOkMember}
+          id={id}
+          setId={setId}
+          refetchAccountTable={refetchAccept}
+        />
+      </div>{" "}
+      <ManagerAccountUnDepended />
     </div>
   );
 };
