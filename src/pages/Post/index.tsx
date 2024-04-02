@@ -15,7 +15,7 @@ import CryptoJS from 'crypto-js';
 
   
 const onFinishFailed = (errorInfo: any) => {
-    console.log('Failed:', errorInfo);
+   
 };
 
 
@@ -68,7 +68,6 @@ export default function Post() {
                 const imageURL = await upLoadImage(formdata)
                 const quill = quillRef.current;
                 if (quill) {
-                  console.log(`https://vocotruyen.id.vn/PHP_IMG/${imageURL.status}`)
                   const range = quill.getEditorSelection();
                   range && quill.getEditor().insertEmbed(range.index, "image", `https://vocotruyen.id.vn/PHP_IMG/${imageURL.status}`);
                 }
@@ -121,7 +120,6 @@ export default function Post() {
                     label="Nội dung"
                     name="content"
                     rules={[{ required: true, message: 'Vui lòng nhập nội dung bài viết!' }]}
-                    
                     >
                         <ReactQuill 
                           theme="snow" 
@@ -147,7 +145,7 @@ export default function Post() {
                             "video",
                             "code-block",
                           ]}
-                          style={{height: "700px", boxSizing: "border-box"}}
+                          className={styles.quill}
                           />
                     </Form.Item>
                     <Form.Item style={{textAlign: "center"}}>

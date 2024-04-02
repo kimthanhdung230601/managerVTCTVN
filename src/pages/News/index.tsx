@@ -27,7 +27,7 @@ export default function News() {
         navigate(`/tin-tuc?page=${page}`)
         setCurrentPage(page.toString())
     }
-    console.log(data)
+
   return (
     <>
         <Header />

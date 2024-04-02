@@ -151,7 +151,7 @@ const Profiles = () => {
   };
   // date
   const onChange: DatePickerProps["onChange"] = (date, dateString) => {
-    // console.log(date, dateString);
+
   };
 
   //button
@@ -166,7 +166,12 @@ const Profiles = () => {
     Cookies.get("permission") as string,
     secretKey
   );
+  const manage = CryptoJS.AES.decrypt(
+    Cookies.get("manage") as string,
+    secretKey
+  );
   const decryptedPermission = permission.toString(CryptoJS.enc.Utf8);
+  const decryptedManage = manage.toString(CryptoJS.enc.Utf8)
   const club = CryptoJS.AES.decrypt(Cookies.get("club") as string, secretKey);
   const decryptedClub = club.toString(CryptoJS.enc.Utf8);
   const NameClb = CryptoJS.AES.decrypt(
@@ -187,7 +192,6 @@ const Profiles = () => {
   const onFinish = (values: any) => {
     const formattedBirthday = moment(values.birthday).format("YYYY-MM-DD");
     setLoading(true);
-    console.log("form", values);
     const randomKey = CryptoJS.lib.WordArray.random(16).toString();
     const formdata = new FormData();
     formdata.append("name", values.name);
@@ -200,12 +204,9 @@ const Profiles = () => {
     formdata.append("note", values.note);
     formdata.append("detail", values.detail);
     // formdata.append("achievements", values.achievements);
-    {
-      decryptedPermission == "0"
-        ? formdata.append("club", values.club)
-        : formdata.append("club", decryptedClub);
-    }
-
+    if(decryptedPermission == "0") formdata.append("club", values.club ? values.club : "2")
+    else if(decryptedPermission == "1") formdata.append("club", values.club ? values.club : "2")
+    else formdata.append("club", decryptedClub)
     formdata.append("hometown", values.hometown);
     const address = `${values.city} - ${values.district}`;
     formdata.append("address", address);
@@ -224,6 +225,7 @@ const Profiles = () => {
       values.avatar[0].originFileObj as File,
       CryptoJS.AES.encrypt(values.avatar[0].name, randomKey).toString()
     );
+    if(decryptedPermission == "1") formdata.append("manage", decryptedManage)
 
     addMemberMutation.mutate(formdata);
   };

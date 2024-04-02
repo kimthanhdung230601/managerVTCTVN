@@ -79,7 +79,6 @@ export default function Header() {
                     </Link>
                 </Col>
             </Row>
-                
             </Col>
             <Col className={ `${styles.headerItem} gutter-row`} >
             <div className={styles.user}>
@@ -154,7 +153,7 @@ export default function Header() {
             </li>
             <li className={styles.menuResponsiveItem}>
                 <Link to={'/huong-dan'} className={styles.menuResponsiveLink} onClick={handleCloseMenu}>
-                Hướng dẫn
+                    Hướng dẫn
                 </Link>
             </li>
             {

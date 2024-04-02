@@ -290,8 +290,6 @@ const UpdateProfiles = () => {
         ).toString()
       );
     }
-    // setLoading(false);
-    // new Response(formdata).text().then(console.log)
     updateMemberMutation.mutate(formdata);
   };
 
