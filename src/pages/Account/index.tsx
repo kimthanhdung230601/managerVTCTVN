@@ -15,7 +15,7 @@ export default function Account() {
             if(data.status === "failed"){
                 message.error("Có lỗi xảy ra, vui lòng thử lại sau")
                 setTimeout(()=> {
-                    window.history.back()
+                    // window.history.back()
                 },2000)
             } 
         }

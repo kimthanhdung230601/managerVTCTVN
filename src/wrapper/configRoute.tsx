@@ -12,6 +12,10 @@ export const RouteList = [
         name: "/dang-ky",
         permission: 3
     }, 
+    {
+        name: "/dang-ky-tai-khoan",
+        permission: 3
+    }, 
      
     {
         name: "/tin-tuc",

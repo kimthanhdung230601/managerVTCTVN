@@ -169,7 +169,7 @@ export default function Login() {
         </Form>
         <div className={styles.signup}>
           Bạn chưa có tài khoản? Đăng ký thành viên mới{" "}
-          <Link to={"/dang-ky"} style={{ color: "#046C39", fontWeight: "600" }}>
+          <Link to={"/dang-ky-tai-khoan"} style={{ color: "#046C39", fontWeight: "600" }}>
             tại đây!
           </Link>
           <div style={{marginTop:"1vh"}}>

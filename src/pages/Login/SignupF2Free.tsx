@@ -70,39 +70,33 @@ export default function SignupF2() {
   const [previewImage3, setPreviewImage3] = useState("");
   const [previewTitle3, setPreviewTitle3] = useState("");
   const [fileList3, setFileList3] = useState<UploadFile[]>([]);
-  
-  const permission = CryptoJS.AES.decrypt(
-    Cookies.get("permission") as string,
-    secretKey
-  );
-  const decryptedPermission = permission.toString(CryptoJS.enc.Utf8);
+
+  // const permission = CryptoJS.AES.decrypt(
+  //   Cookies.get("permission") as string,
+  //   secretKey
+  // );
+  // const decryptedPermission = permission.toString(CryptoJS.enc.Utf8);
   const signupMutation = useMutation(
     async (payload: any) => await signup(payload),
     {
       onSuccess: (data: any) => {
         if (data.status === "success") {
-          if (decryptedPermission == "0" || decryptedPermission == "1") {
-            message.success("Đăng ký thành công");
-            setTimeout(() => {
-              navigate(-1);
-            }, 2000);
-          } else {
-            message.success(
-              "Đăng ký thành công, tài khoản của bạn đang chờ phê duyệt!"
-            );
-            setTimeout(() => {
-              navigate(`/dang-nhap`);
-            }, 2000);
-          }
-        } else if (data.status === "failed") {
-          message.error(data.data);
-        } else message.error("Có lỗi xảy ra, vui lòng thử lại sau");
+          message.success(
+            "Đăng ký thành công, yêu cầu đã được gửi đến Liên đoàn VTCT Việt Nam"
+          );
+          setTimeout(() => {
+            navigate(`/`);
+          }, 2000);
+        } else {
+          message.error(data.data || "Có lỗi xảy ra, vui lòng thử lại sau");
+        }
       },
       onError: () => {
         message.error("Có lỗi xảy ra, vui lòng thử lại sau");
       },
     }
   );
+
   const handleCancel1 = () => setPreviewOpen1(false);
   const handleCancel2 = () => setPreviewOpen2(false);
   const handleCancel3 = () => setPreviewOpen3(false);

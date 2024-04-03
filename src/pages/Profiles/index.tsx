@@ -23,12 +23,12 @@ import Footer from "../../components/Footer";
 import axios from "axios";
 import Cookies from "js-cookie";
 import CryptoJS from "crypto-js";
-import { level, province } from "../../until/until";
+import { OnlyProvince, level, province } from "../../until/until";
 import moment from "moment";
 import { useMutation, useQuery } from "react-query";
 import { addMember } from "../../api/ApiUser";
 import { addNewF3 } from "../../api/f2";
-import { getListClub } from "../../api/f0";
+import { getInforAdmin, getListClub } from "../../api/f0";
 import { getListClubs } from "../../api/f1";
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
@@ -47,6 +47,7 @@ const Profiles = () => {
   const [form] = Form.useForm();
   const [fileList, setFileList] = useState<any>([]);
   const { compressImage } = useImageCompression();
+  // const {data:getInforManage} = useQuery("",()=>getInforAdmin(id))
   const addMemberMutation = useMutation(
     async (payload: any) => await addMember(payload),
     {
@@ -80,7 +81,7 @@ const Profiles = () => {
     text: item.name_club,
     value: item.name_club,
   }));
-  const listClubs = dataClubF1?.data.map((item: Club, index: number) => ({
+  const listClubs = dataClubF1?.data?.map((item: Club, index: number) => ({
     text: item.NameClb,
     value: item.club,
   }));
@@ -276,7 +277,7 @@ const Profiles = () => {
                                 {" "}
                                 <div>
                                   <PlusOutlined />
-                                  <div style={{ marginTop: 8 }}>Tải ảnh</div>
+                                  <div style={{ marginTop: 8 }}>Tải giấy CN bằng cấp</div>
                                 </div>
                               </>
                             )}
@@ -308,7 +309,7 @@ const Profiles = () => {
                                 <div>
                                   <PlusOutlined />
                                   <div style={{ marginTop: 8 }}>
-                                    Tải giấy CN đẳng cấp
+                                    Tải ảnh chân dung lên
                                   </div>
                                 </div>
                               </>
@@ -444,7 +445,7 @@ const Profiles = () => {
                           ))}
                         </Select>
                       ) : decryptedPermission === "2" ? (
-                        <Input disabled={true} />
+                        <Input disabled={true} defaultValue={decryptedNameClb}/>
                       ) : null}
                     </Form.Item>
                   </Col>
@@ -493,7 +494,7 @@ const Profiles = () => {
                         optionFilterProp="children"
                         showSearch
                       >
-                        {province.map((option) => (
+                        {OnlyProvince.map((option) => (
                           <Select.Option key={option} value={option}>
                             {option}
                           </Select.Option>

@@ -6,9 +6,10 @@ import { message, Table, Spin, Popconfirm, Button } from "antd";
 import { ColumnsType, TableProps } from "antd/es/table";
 import { useLocation, useNavigate } from "react-router";
 import { levelFilters } from "../../until/until";
-import { useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import CryptoJS from "crypto-js";
 import {
+  deleteMember,
   getClubs,
   getFilterTable,
   getListMember,
@@ -135,8 +136,41 @@ export default function ManageMember() {
       }
     },
   });
-  const handleDeleteMember = (id: string) => console.log(id);
-  const handleDeleteMultiRecord = () => console.log("rows", selectedRowKeysCN);
+  const deleteMemberMutation = useMutation(
+    async (payload: any) =>  await deleteMember(payload),{
+      onSuccess: (data) => {
+        if(data.status === "success"){
+          message.success("Xoá thành công, hồ sơ đang chờ duyệt xoá!")
+        setTimeout(()=> {
+          window.location.reload()
+        }, 1500)
+        } else message.success("Có lỗi xảy ra, vui lòng thử lại sau!")
+
+      },
+      onError: (data) => {
+          message.success("Có lỗi xảy ra, vui lòng thử lại sau!")
+      }
+    }
+  )
+  const handleDeleteMember = (id: string) => {
+    deleteMemberMutation.mutate({
+      data: [
+        {
+          id: id
+        }
+      ]
+    })
+  }
+  const handleDeleteMultiRecord = () => {
+    deleteMemberMutation.mutate({
+      data: selectedRowKeysCN.map((item:any, index:number) => {
+        return {
+          id: item
+        }
+      })
+    })
+  
+  }
   const onSelectChangeCN = (newSelectedRowKeysCN: React.Key[]) => {
     setSelectedRowKeysCN(newSelectedRowKeysCN);
   };
