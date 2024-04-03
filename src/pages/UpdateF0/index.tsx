@@ -70,10 +70,9 @@ const UpdateProfiles = () => {
       form.setFieldValue("achievements", data.data[0].achievements);
       form.setFieldValue("NameClb", data.data[0].NameClb);
       form.setFieldValue("hometown", data.data[0].hometown);
-      form.setFieldValue("address", data.data[0].address);
-      const [city, district] = data.data[0].address.split("-");
-      form.setFieldValue("city", city);
-      form.setFieldValue("district", district);
+      // form.setFieldValue("address", data.data[0].address);
+      form.setFieldValue("city", data.data[0].address);
+      // form.setFieldValue("district", district);
       form.setFieldValue("nationality", data.data[0].nationality);
       form.setFieldValue("email", data.data[0].email);
       form.setFieldValue("code", data.data[0].code);
@@ -265,8 +264,7 @@ const UpdateProfiles = () => {
     formdata.append("achievements", dataDetailF3?.data[0].achievements);
     formdata.append("club", decryptedClub);
     formdata.append("hometown", values.hometown);
-    const address = `${values.city} - ${values.district}`;
-    formdata.append("address", address);
+    formdata.append("address", values.city);
     formdata.append("nationality", values.nationality);
     formdata.append("email", values.email);
     formdata.append("club", dataDetailF3?.data[0].club);
@@ -501,7 +499,7 @@ const UpdateProfiles = () => {
                           },
                         ]}
                       >
-                      <Select>
+                        <Select>
                           {listClub?.map((club: any) => (
                             <Select.Option key={club.value} value={club.value}>
                               {club.text}

@@ -70,7 +70,7 @@ export default function SignupF2() {
   const [previewImage3, setPreviewImage3] = useState("");
   const [previewTitle3, setPreviewTitle3] = useState("");
   const [fileList3, setFileList3] = useState<UploadFile[]>([]);
-  
+
   const permission = CryptoJS.AES.decrypt(
     Cookies.get("permission") as string,
     secretKey
@@ -269,20 +269,6 @@ export default function SignupF2() {
             />
           </Form.Item>{" "}
           <Form.Item
-            name="level"
-            rules={[
-              { required: true, message: "Vui lòng nhập tên tài khoản!" },
-            ]}
-            wrapperCol={{ span: 24 }}
-            className={styles.formItem}
-          >
-            <Input
-              prefix={<IdcardOutlined className={styles.icon} />}
-              placeholder="Tài khoản đăng nhập"
-              className={styles.formInput}
-            />
-          </Form.Item>
-          <Form.Item
             name="name"
             rules={[{ required: true, message: "Vui lòng nhập họ tên!" }]}
             wrapperCol={{ span: 24 }}
@@ -479,7 +465,21 @@ export default function SignupF2() {
               prefix={<LineChartOutlined className={styles.icon} />}
               placeholder="Tài khoản đăng nhập"
             />
-          </Form.Item> */}
+          </Form.Item> */}{" "}
+          <Form.Item
+            name="level"
+            rules={[
+              { required: true, message: "Vui lòng nhập tên tài khoản!" },
+            ]}
+            wrapperCol={{ span: 24 }}
+            className={styles.formItem}
+          >
+            <Input
+              prefix={<IdcardOutlined className={styles.icon} />}
+              placeholder="Tài khoản đăng nhập"
+              className={styles.formInput}
+            />
+          </Form.Item>
           <Form.Item
             name="password"
             rules={[

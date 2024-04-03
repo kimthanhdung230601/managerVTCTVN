@@ -28,7 +28,7 @@ interface Infor {
 }
 
 const title = ["Họ tên", "Quốc tịch", "Mã định danh", "Ngày sinh", "Giới tính", 
-"CLB, Môn phái, Võ đường, Võ phái, Trung tâm", "Quận/Huyện - Tỉnh/Thành", "Cấp đai/ đẳng hiện tại", 
+"CLB, Môn phái, Võ đường, Võ phái, Trung tâm", "Tỉnh/Thành", "Cấp đai/ đẳng hiện tại", 
 "Số CCCD", "Địa chỉ thường trú", "SĐT", "Email", "Thành tích cá nhân (cấp quốc gia từ 2020 trở lại đây)", 
 "Ghi chú"]
 

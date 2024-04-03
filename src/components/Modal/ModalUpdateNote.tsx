@@ -38,7 +38,7 @@ const ModalUpdateNote = ({
   return (
     <>
       <Modal
-        title={`Chỉnh sửa note ${id}`}
+        title={`Chỉnh sửa ghi chú`}
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}

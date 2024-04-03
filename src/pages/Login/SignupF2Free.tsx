@@ -263,20 +263,6 @@ export default function SignupF2() {
             />
           </Form.Item>{" "}
           <Form.Item
-            name="level"
-            rules={[
-              { required: true, message: "Vui lòng nhập tên tài khoản!" },
-            ]}
-            wrapperCol={{ span: 24 }}
-            className={styles.formItem}
-          >
-            <Input
-              prefix={<IdcardOutlined className={styles.icon} />}
-              placeholder="Tài khoản đăng nhập"
-              className={styles.formInput}
-            />
-          </Form.Item>
-          <Form.Item
             name="name"
             rules={[{ required: true, message: "Vui lòng nhập họ tên!" }]}
             wrapperCol={{ span: 24 }}
@@ -473,7 +459,21 @@ export default function SignupF2() {
               prefix={<LineChartOutlined className={styles.icon} />}
               placeholder="Tài khoản đăng nhập"
             />
-          </Form.Item> */}
+          </Form.Item> */}{" "}
+          <Form.Item
+            name="level"
+            rules={[
+              { required: true, message: "Vui lòng nhập tên tài khoản!" },
+            ]}
+            wrapperCol={{ span: 24 }}
+            className={styles.formItem}
+          >
+            <Input
+              prefix={<IdcardOutlined className={styles.icon} />}
+              placeholder="Tài khoản đăng nhập"
+              className={styles.formInput}
+            />
+          </Form.Item>
           <Form.Item
             name="password"
             rules={[
