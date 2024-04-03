@@ -29,6 +29,7 @@ import { useMutation, useQuery } from "react-query";
 import { addMember } from "../../api/ApiUser";
 import { addNewF3 } from "../../api/f2";
 import { getListClub } from "../../api/f0";
+import { getListClubs } from "../../api/f1";
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
 const { Option } = Select;
@@ -36,6 +37,9 @@ const secretKey = process.env.REACT_APP_SECRET_KEY as string;
 interface Club {
   id: string;
   name_club: string;
+  club: number;
+  NameClb: string;
+
 }
 
 interface ProfilesProps {}
@@ -71,10 +75,14 @@ const Profiles = () => {
     }
   );
   const { data: dataClub } = useQuery("dataClub", getListClub);
-
+  const { data: dataClubF1 } = useQuery("dataClubs", getListClubs);
   const listClub = dataClub?.data.map((item: Club, index: number) => ({
     text: item.name_club,
     value: item.name_club,
+  }));
+  const listClubs = dataClubF1?.data.map((item: Club, index: number) => ({
+    text: item.NameClb,
+    value: item.club,
   }));
   //image avatar
   const normFile = (e: any) => {
@@ -419,7 +427,7 @@ const Profiles = () => {
                         { required: true, message: "Vui lòng điền câu lạc bộ" },
                       ]}
                     >
-                      {decryptedPermission == "0" ? (
+                      {decryptedPermission === "0" ? (
                         <Select>
                           {listClub?.map((club: any) => (
                             <Select.Option key={club.value} value={club.value}>
@@ -427,9 +435,17 @@ const Profiles = () => {
                             </Select.Option>
                           ))}
                         </Select>
-                      ) : (
+                      ) : decryptedPermission === "1" ? (
+                        <Select>
+                          {listClubs?.map((club: any) => (
+                            <Select.Option key={club.value} value={club.value}>
+                              {club.text}
+                            </Select.Option>
+                          ))}
+                        </Select>
+                      ) : decryptedPermission === "2" ? (
                         <Input disabled={true} />
-                      )}
+                      ) : null}
                     </Form.Item>
                   </Col>
                   <Col span={8} xs={24} sm={12} md={8}>

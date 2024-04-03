@@ -127,6 +127,7 @@ const ManagerAccountUnDepended = ({refetch}:ManagerAccountProps) => {
       ? message.success("Cập nhật thành công")
       : message.error("Cập nhật thất bại");
     refetchUnAccept();
+    refetch();
   };
   const cancel = (value: any) => {
     // message.error("");
