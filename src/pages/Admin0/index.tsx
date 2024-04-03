@@ -34,16 +34,16 @@ const Admin = () => {
       },
       {
         key: "quan-ly-tai-khoan-F1",
-        tab: "Quản lý tài khoản F1",
+        tab: "Tài khoản đơn vị quản lý",
         content: <ManagerF1 />,
       },
       {
         key: "quan-ly-tai-khoan",
-        tab: "Quản lý tài khoản F2",
+        tab: "Tài khoản hội viên",
         content: <ManagerAccount />,
       },
       {
-        key: "cap=nhat-du-lieu",
+        key: "cap-nhat-du-lieu",
         tab: "Cập nhật dữ liệu",
         content: <UpdateMember />,
       },
@@ -56,22 +56,22 @@ const Admin = () => {
       case "quan-ly-hoi-vien":
         setTitleText("Quản lý hội viên");
         break;
-      case "quan-ly-tai-khoan f1":
-        setTitleText("Quản lý tài khoản f1");
+      case "quan-ly-tai-khoan-F1":
+        setTitleText("Tài khoản đơn vị quản lý");
         break;
       case "quan-ly-tai-khoan":
-        setTitleText("Quản lý tài khoản f2");
+        setTitleText("Tài khoản hội viên");
         break;
       case "cap-nhat-du-lieu":
         setTitleText("Cập nhật dữ liệu");
         break;
       default:
-        setTitleText("Quản lý hội viên");
+        setTitleText("Cập nhật dữ liệu");
     }
   }, [selectedMenuItem]);
 
   return (
-    <div style={{backgroundColor: "#fff"}}>
+    <div style={{ backgroundColor: "#fff" }}>
       <Header />
       <div className={styles.logoWrap}>
         <div className={styles.title}>

@@ -37,44 +37,25 @@ export default function Login() {
   //form
   const [form] = useForm();
   const onFinish = async (value: any) => {
-
     const res = await signin(value);
 
     if (res.status === "success") {
       switch (true) {
-        case res?.info_user[0].permission === "0":
+        case res?.info_user[0].permission == "0":
+          Cookies.set(
+            "permission",
+            CryptoJS.AES.encrypt(
+              res?.info_user[0].permission,
+              secretKey
+            ).toString()
+          );
           navigate("/lien-doan/quan-ly-hoi-vien");
           break;
-        case res?.info_user[0].permission === "1":
-          Cookies.set(
-            "manage",
-            CryptoJS.AES.encrypt(res?.info_user[0].manage, secretKey).toString()
-          );
+        case res?.info_user[0].permission == "1":
           navigate("/quan-ly-lien-doan-so-nganh");
           break;
 
         case res?.info_user[0].permission === "2":
-          Cookies.set(
-            "club",
-            CryptoJS.AES.encrypt(res?.info_user[0].club, secretKey).toString()
-          );
-          Cookies.set(
-            "NameClb",
-            CryptoJS.AES.encrypt(res?.info_user[0].NameClb, secretKey).toString()
-          );
-          // Cookies.set("NameClb", res?.info_user[0].NameClb);
-          Cookies.set(
-            "name",
-            CryptoJS.AES.encrypt(res?.info_user[0].name, secretKey).toString()
-          );
-          Cookies.set(
-            "phone",
-            CryptoJS.AES.encrypt(res?.info_user[0].phone, secretKey).toString()
-          );
-          Cookies.set(
-            "email",
-            CryptoJS.AES.encrypt(res?.info_user[0].email, secretKey).toString()
-          );
           navigate("/quan-ly-don-vi");
           break;
         default:
@@ -83,8 +64,33 @@ export default function Login() {
       }
       Cookies.set("token", res.jwt);
       Cookies.set(
+        "club",
+        CryptoJS.AES.encrypt(res?.info_user[0].club, secretKey).toString()
+      );
+      Cookies.set(
+        "NameClb",
+        CryptoJS.AES.encrypt(res?.info_user[0].NameClb, secretKey).toString()
+      );
+      // Cookies.set("NameClb", res?.info_user[0].NameClb);
+      Cookies.set(
+        "name",
+        CryptoJS.AES.encrypt(res?.info_user[0].name, secretKey).toString()
+      );
+      Cookies.set(
+        "phone",
+        CryptoJS.AES.encrypt(res?.info_user[0].phone, secretKey).toString()
+      );
+      Cookies.set(
+        "email",
+        CryptoJS.AES.encrypt(res?.info_user[0].email, secretKey).toString()
+      );
+      Cookies.set(
         "permission",
         CryptoJS.AES.encrypt(res?.info_user[0].permission, secretKey).toString()
+      );
+      Cookies.set(
+        "manage",
+        CryptoJS.AES.encrypt(res?.info_user[0].manage, secretKey).toString()
       );
       Cookies.set(
         "id",
@@ -166,6 +172,11 @@ export default function Login() {
           <Link to={"/dang-ky"} style={{ color: "#046C39", fontWeight: "600" }}>
             tại đây!
           </Link>
+          <div style={{marginTop:"1vh"}}>
+            <Link to={"/"} style={{ color: "#046C39", fontWeight: "600"}}>
+              Quay lại trang chủ
+            </Link>
+          </div>
         </div>
       </div>
     </div>

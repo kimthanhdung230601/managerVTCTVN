@@ -30,7 +30,7 @@ export default function Header() {
     }
     const handleLogout = () => {
         logout();
-        window.location.replace("/dang-nhap")
+        window.location.replace("/")
     }
     useEffect(()=>{
         if(Cookies.get("token")){
