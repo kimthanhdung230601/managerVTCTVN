@@ -116,8 +116,8 @@ const AdminTwo = () => {
               <div className={`$(styles.boldText)`}>
                 Thông tin người quản lý
               </div>
-              {/* <div className={styles.titleName}>
-                <button
+              <div className={styles.titleName}>
+                {/* <button
                   className={styles.btnView}
                   style={{ marginTop: "8px" }}
                   onClick={() => {
@@ -130,8 +130,8 @@ const AdminTwo = () => {
                   }}
                 >
                   Chi tiết
-                </button>
-              </div> */}
+                </button> */}
+              </div>
             </div>
             <div className={styles.subTitleText}>
               <div className={styles.labelTitle}>Họ tên: </div>

@@ -114,6 +114,7 @@ export default function ManageClub() {
     };
     const onSearch: SearchProps["onSearch"] = (value, _e, info) =>{
       setKey(value)
+      console.log("kết quả", value)
     }
     const columns_CLB: ColumnsType<DataType_CLB> = [
         {

@@ -20,6 +20,7 @@ import CryptoJS from "crypto-js";
 import NotFoundPage from "../pages/404";
 import UpdateProfiles from "../pages/UpdateF0";
 import SignupF1 from "../pages/Login/SignupF1";
+import SignupF2Free from "../pages/Login/SignupF2Free";
 const Component = () => {
   return (
     <>
@@ -27,6 +28,7 @@ const Component = () => {
         <Route path="/" element={<Home />}></Route>
         <Route path="/dang-nhap" element={<Login />}></Route>
         <Route path="/dang-ky" element={<SignupF2 />}></Route>
+        <Route path="/dang-ky-tai-khoan" element={<SignupF2Free />}></Route>
         <Route path="/dang-ky-f1" element={<SignupF1 />}></Route>
         <Route path="/quan-ly-lien-doan-so-nganh" element={<LevelOne />}></Route>
         <Route path="/thong-tin-ho-so/:id" element={<Detail />}></Route>

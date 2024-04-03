@@ -92,11 +92,11 @@ export default function Header() {
                         <Link to={'/doi-mat-khau'} className={`${styles.menuItemLink}`}>
                             Đổi mật khẩu
                         </Link>
-                    </li> : null
+                    </li> : <></>
                 }
                     
                     <li className={styles.menuItem}>
-                        <Link to={'/dang-ky'} className={styles.menuItemLink}>
+                        <Link to={'/dang-ky-tai-khoan'} className={styles.menuItemLink}>
                             Đăng ký
                         </Link>
                     </li>

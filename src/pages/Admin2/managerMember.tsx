@@ -25,7 +25,12 @@ import ModalUpdateNote from "../../components/Modal/ModalUpdateNote";
 import ModalMember from "../../components/Modal/ModalAccount";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "react-query";
-import { deleteMemberF3, getFilterTable, getListMemberF3, searchInTable } from "../../api/f2";
+import {
+  deleteMemberF3,
+  getFilterTable,
+  getListMemberF3,
+  searchInTable,
+} from "../../api/f2";
 import moment from "moment";
 import CryptoJS from "crypto-js";
 import Cookies from "js-cookie";
@@ -63,11 +68,11 @@ interface DataType {
 }
 
 interface data {
-  status: string,
-  total_products: number,
-  total_pages: number,
-  index_page: number,
-  data: DataType[]
+  status: string;
+  total_products: number;
+  total_pages: number;
+  index_page: number;
+  data: DataType[];
 }
 
 const customLocale = {
@@ -87,9 +92,9 @@ const ManagerMemberTwo = () => {
   );
   const decryptedPerrmission = permission.toString(CryptoJS.enc.Utf8);
   const currentURL = window.location.href;
-  const [param, setParam] = useState("")
-  const [key, setKey] = useState("")
-  const [memberList, setMemberList] =  useState<data>()
+  const [param, setParam] = useState("");
+  const [key, setKey] = useState("");
+  const [memberList, setMemberList] = useState<data>();
   var urlParams = new URLSearchParams(currentURL.split("?")[1]);
   var clubValue = urlParams.get("club");
   const {
@@ -100,66 +105,69 @@ const ManagerMemberTwo = () => {
     "listF3",
     decryptedPerrmission == "2"
       ? () => getListMemberF3(decryptedClub)
-      : () => getListMemberF3(clubValue)
-    , {
+      : () => getListMemberF3(clubValue),
+    {
       onSettled: (data) => {
-        if(data.status === "success" ){
-          setMemberList(data)
-        } else if(data.status === "failed"){
-          message.warning(data.data)
+        if (data.status === "success") {
+          setMemberList(data);
+        } else if (data.status === "failed") {
+          message.warning(data.data);
         } else {
-          message.error("Có lỗi xảy ra, vui lòng thử lại sau")
+          message.error("Có lỗi xảy ra, vui lòng thử lại sau");
         }
-      }
+      },
     }
   );
-  const {data: resultFilter} = useQuery(["filters", param], ()=> getFilterTable('/Members', param), {
-    enabled: param !== "",
-    onSettled: (data) => {
-      if(data.status === "success") {
-            setMemberList(data)
-      } else if(data.status === "failed"){
-        message.error("Không có dữ liệu.")
-        // setTimeout(()=> {
-        //   window.location.reload()
-        // }, 2000)
-      } else {
-        message.error("Có lỗi xảy ra, vui lòng thử lại sau")
-        setTimeout(()=> {
-          window.location.reload()
-        }, 2000)
-      }
+  const { data: resultFilter } = useQuery(
+    ["filters", param],
+    () => getFilterTable("/Members", param),
+    {
+      enabled: param !== "",
+      onSettled: (data) => {
+        if (data.status === "success") {
+          setMemberList(data);
+        } else if (data.status === "failed") {
+          message.error("Không có dữ liệu.");
+          // setTimeout(()=> {
+          //   window.location.reload()
+          // }, 2000)
+        } else {
+          message.error("Có lỗi xảy ra, vui lòng thử lại sau");
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
+        }
+      },
     }
-  })
-  const {data: search} = useQuery(["search", key], ()=> searchInTable(key), {
-    enabled: key !== "", 
+  );
+  const { data: search } = useQuery(["search", key], () => searchInTable(key), {
+    enabled: key !== "",
     onSettled: (data) => {
-      if(data.status === "success") {
-        setMemberList(data)
-      } else if(data.status === "failed"){
-        message.error("Không có dữ liệu.")
-        setTimeout(()=> {
-          window.location.reload()
-        }, 2000)
+      if (data.status === "success") {
+        setMemberList(data);
+      } else if (data.status === "failed") {
+        message.error("Không có dữ liệu.");
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
       } else {
-        message.error("Có lỗi xảy ra, vui lòng thử lại sau")
-        setTimeout(()=> {
-          window.location.reload()
-        }, 2000)
+        message.error("Có lỗi xảy ra, vui lòng thử lại sau");
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
       }
-    }
-  })
-  var filtersListNote,
-    filtersDetail = "";
+    },
+  });
+  var filtersListNote = "";
   if (listF3?.status === "success") {
     filtersListNote = listF3?.list_note.map((item: any, index: any) => ({
       text: item.note,
       value: item.note,
     }));
-    filtersDetail = listF3?.list_detail.map((item: any, index: any) => ({
-      text: item.detail,
-      value: item.detail,
-    }));
+    // filtersDetail = listF3?.list_detail.map((item: any, index: any) => ({
+    //   text: item.detail,
+    //   value: item.detail,
+    // }));
   }
 
   const [id, setID] = useState();
@@ -167,7 +175,6 @@ const ManagerMemberTwo = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-
     setSelectedRowKeys(newSelectedRowKeys);
   };
   const rowSelection = {
@@ -177,7 +184,6 @@ const ManagerMemberTwo = () => {
   const hasSelected = selectedRowKeys.length > 0;
 
   const confirmDelete = async (value: any) => {
-
     const payload = {
       id: value,
     };
@@ -189,10 +195,9 @@ const ManagerMemberTwo = () => {
   const cancel = (value: any) => {};
   //tìm kiếm
 
-  const onSearch: SearchProps["onSearch"] = (value, _e, info) =>{
-    setKey(value)
-  }
-
+  const onSearch: SearchProps["onSearch"] = (value, _e, info) => {
+    setKey(value);
+  };
 
   //modal
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -258,14 +263,14 @@ const ManagerMemberTwo = () => {
       filterMultiple: false,
       onFilter: (value: any, rec) => rec.note.indexOf(value) === 0,
     },
-    {
-      title: "Chi tiết",
-      dataIndex: "detail",
-      width: 130,
-      filters: filtersDetail,
-      filterMultiple: false,
-      onFilter: (value: any, rec) => rec.detail.indexOf(value) === 0,
-    },
+    // {
+    //   title: "Chi tiết",
+    //   dataIndex: "detail",
+    //   width: 130,
+    //   filters: filtersDetail,
+    //   filterMultiple: false,
+    //   onFilter: (value: any, rec) => rec.detail.indexOf(value) === 0,
+    // },
     {
       title: "Tình trạng",
       dataIndex: "status",
@@ -329,8 +334,8 @@ const ManagerMemberTwo = () => {
     {
       key: "action",
       render: (_, record) => {
-        const idEncode = CryptoJS.AES.encrypt(record.id, secretKey).toString()
-        const id = encodeURIComponent(idEncode)
+        const idEncode = CryptoJS.AES.encrypt(record.id, secretKey).toString();
+        const id = encodeURIComponent(idEncode);
         return (
           <div style={{ display: "flex" }}>
             <button
@@ -361,8 +366,7 @@ const ManagerMemberTwo = () => {
               </Popconfirm>
             )}
           </div>
-        )
-        
+        );
       },
       width: 230,
     },
@@ -374,17 +378,35 @@ const ManagerMemberTwo = () => {
     setCurrentPage(value);
     // refetch();
   };
-  const onChange: TableProps<DataType>['onChange'] = (pagination, filters, sorter, extra) => {
-    const param ='?club' + 
-    (decryptedPerrmission == "2" ? decryptedClub : clubValue ) + 
-    '&page=' + currentPage + 
-    (filters.level ? '&level=' + encodeURIComponent(filters.level[0].toString()) : "") + 
-    (filters.note ? '&note=' + encodeURIComponent(filters.note[0].toString())  : "") + 
-    (filters.detail ? '&detail=' +  encodeURIComponent(filters.detail[0].toString()) : "") + 
-    (filters.status ? '&status=' +  encodeURIComponent(filters.status[0].toString()) : "") + 
-    (filters.achievements ? '&achievements=' +  encodeURIComponent(filters.achievements[0].toString()): "")
+  const onChange: TableProps<DataType>["onChange"] = (
+    pagination,
+    filters,
+    sorter,
+    extra
+  ) => {
+    const param =
+      "?club" +
+      (decryptedPerrmission == "2" ? decryptedClub : clubValue) +
+      "&page=" +
+      currentPage +
+      (filters.level
+        ? "&level=" + encodeURIComponent(filters.level[0].toString())
+        : "") +
+      (filters.note
+        ? "&note=" + encodeURIComponent(filters.note[0].toString())
+        : "") +
+      (filters.detail
+        ? "&detail=" + encodeURIComponent(filters.detail[0].toString())
+        : "") +
+      (filters.status
+        ? "&status=" + encodeURIComponent(filters.status[0].toString())
+        : "") +
+      (filters.achievements
+        ? "&achievements=" +
+          encodeURIComponent(filters.achievements[0].toString())
+        : "");
 
-    setParam(param)
+    setParam(param);
   };
   return (
     <div className={styles.wrap}>
