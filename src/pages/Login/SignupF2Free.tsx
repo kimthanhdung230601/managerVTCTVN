@@ -81,10 +81,11 @@ export default function SignupF2() {
     {
       onSuccess: (data: any) => {
         if (data.status === "success") {
-          message.success("Đăng ký thành công, yêu cầu đã được gửi đến Liên đoàn VTCT Việt Nam");
+          message.success(
+            "Đăng ký thành công, yêu cầu đã được gửi đến Liên đoàn VTCT Việt Nam"
+          );
           setTimeout(() => {
-            navigate(-1);
-            navigate(`/dang-nhap`);
+            navigate(`/`);
           }, 2000);
         } else {
           message.error(data.data || "Có lỗi xảy ra, vui lòng thử lại sau");
