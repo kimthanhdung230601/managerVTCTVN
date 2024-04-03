@@ -32,3 +32,4 @@ export const getInforF3 = (payload:any, type: string) =>{
     }
 } 
 export const changePassword = (params: any) => sendPost("/ChangePass", params)
+export const getListClub = () => sendGet('/GetNameClub')
