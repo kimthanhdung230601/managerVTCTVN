@@ -5,13 +5,14 @@ export const RouteList = [
         permission: 3
     }, 
     {
+        name: "/dang-ky-f1",
+        permission: 0
+    },
+    {
         name: "/dang-ky",
         permission: 3
     }, 
-    {
-        name: "/dang-ky-f1",
-        permission: 0
-    }, 
+     
     {
         name: "/tin-tuc",
         permission: 3
