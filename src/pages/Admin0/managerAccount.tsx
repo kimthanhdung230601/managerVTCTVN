@@ -504,7 +504,7 @@ const ManagerAccount = () => {
           refetchAccountTable={refetchAccept}
         />
       </div>{" "}
-      <ManagerAccountUnDepended />
+      <ManagerAccountUnDepended refetch={refetchAccept}/>
     </div>
   );
 };

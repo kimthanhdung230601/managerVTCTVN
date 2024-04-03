@@ -36,7 +36,9 @@ import { deleteMemberF12, getListMemberF12, updateAccount } from "../../api/f0";
 import ListClub from "../../hook/listClub";
 import CryptoJS from "crypto-js";
 const secretKey = process.env.REACT_APP_SECRET_KEY as string;
-interface ManagerAccountProps {}
+interface ManagerAccountProps {
+  refetch: () => void;
+}
 interface DataType {
   key: React.Key;
   id: string;
@@ -71,7 +73,7 @@ const customLocale = {
   selectAll: "Chọn tất cả", // Thay đổi văn bản "Select All Items" ở đây
   selectInvert: "Đảo ngược", // Thay đổi văn bản khi chọn ngược
 };
-const ManagerAccountUnDepended = () => {
+const ManagerAccountUnDepended = ({refetch}:ManagerAccountProps) => {
   //tài khoản đã được duyệt
   const [currentPage, setCurrentPage] = useState(1);
   const initialPayload = `page=${currentPage}&pending=0`;
