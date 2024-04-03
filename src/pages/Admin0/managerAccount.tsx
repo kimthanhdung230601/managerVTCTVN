@@ -36,6 +36,7 @@ import {
   deleteMemberF12,
   // getListMemberF12,
   getListMemberF12,
+  updateAccount,
 } from "../../api/f0";
 import ListClub from "../../hook/listClub";
 import CryptoJS from "crypto-js";
@@ -125,7 +126,18 @@ const ManagerAccount = () => {
   const handleCancelMember = () => {
     setIsModalOpenMember(false);
   };
+  const confirm = async (value: any) => {
+    const payload = {
+      id: value,
+    };
+    const res = await deleteMemberF12(payload);
+    refetchAccept();
 
+    message.success("Xóa thành công");
+  };
+  const cancel = (value: any) => {
+    // message.error("");
+  };
   const columnsDesktopAccount: ColumnsType<DataType> = [
     {
       title: "STT",
@@ -141,6 +153,11 @@ const ManagerAccount = () => {
       dataIndex: "name",
       fixed: "left",
       width: 210,
+    },
+    {
+      title: "Tài khoản",
+      dataIndex: "level",
+      width: 150,
     },
     {
       title: "Mã định danh",
@@ -214,6 +231,7 @@ const ManagerAccount = () => {
     //   dataIndex: "account",
     //   width: 200,
     // },
+
     {
       title: "Mật khẩu",
       dataIndex: "password",
@@ -267,7 +285,7 @@ const ManagerAccount = () => {
             >
               Sửa
             </button>
-            {/* <Popconfirm
+            <Popconfirm
               title="Xóa"
               description={`Bạn có muốn xóa ${record.name} không`}
               onConfirm={() => confirm(record.id)}
@@ -277,7 +295,7 @@ const ManagerAccount = () => {
             >
               {" "}
               <button className={styles.btnTbDanger}>Xóa</button>
-            </Popconfirm> */}
+            </Popconfirm>
           </span>
         );
       },
@@ -424,7 +442,7 @@ const ManagerAccount = () => {
             >
               Sửa
             </button>
-            {/* <Popconfirm
+            <Popconfirm
               title="Xóa"
               description={`Bạn có muốn xóa ${record.name} không`}
               onConfirm={() => confirm(record.id)}
@@ -434,7 +452,7 @@ const ManagerAccount = () => {
             >
               {" "}
               <button className={styles.btnTbDanger}>Xóa</button>
-            </Popconfirm> */}
+            </Popconfirm>
           </span>
         );
       },
@@ -504,7 +522,7 @@ const ManagerAccount = () => {
           refetchAccountTable={refetchAccept}
         />
       </div>{" "}
-      <ManagerAccountUnDepended />
+      <ManagerAccountUnDepended refetch={refetchAccept} />
     </div>
   );
 };

@@ -37,6 +37,9 @@ const secretKey = process.env.REACT_APP_SECRET_KEY as string;
 interface Club {
   id: string;
   name_club: string;
+  club: number;
+  NameClb: string;
+
 }
 
 interface ProfilesProps {}
@@ -72,14 +75,14 @@ const Profiles = () => {
     }
   );
   const { data: dataClub } = useQuery("dataClub", getListClub);
-  const { data: dataClubF1 } = useQuery("dataClub", getListClubs);
+  const { data: dataClubF1 } = useQuery("dataClubs", getListClubs);
   const listClub = dataClub?.data.map((item: Club, index: number) => ({
     text: item.name_club,
     value: item.name_club,
   }));
-  const listClubF1 = dataClubF1?.data.map((item: Club, index: number) => ({
-    text: item.name_club,
-    value: item.name_club,
+  const listClubs = dataClubF1?.data.map((item: Club, index: number) => ({
+    text: item.NameClb,
+    value: item.club,
   }));
   //image avatar
   const normFile = (e: any) => {
@@ -155,7 +158,9 @@ const Profiles = () => {
     }
   };
   // date
-  const onChange: DatePickerProps["onChange"] = (date, dateString) => {};
+  const onChange: DatePickerProps["onChange"] = (date, dateString) => {
+    // console.log(date, dateString);
+  };
 
   //button
   const [selectedButton, setSelectedButton] = useState("show");
@@ -169,19 +174,7 @@ const Profiles = () => {
     Cookies.get("permission") as string,
     secretKey
   );
-  const idManage = CryptoJS.AES.decrypt(
-    Cookies.get("idManage") as string,
-
-    secretKey
-  );
-  const manage = CryptoJS.AES.decrypt(
-    Cookies.get("manage") as string,
-    secretKey
-  );
   const decryptedPermission = permission.toString(CryptoJS.enc.Utf8);
-  const decryptedManageid = idManage.toString(CryptoJS.enc.Utf8);
-  const decryptedManage = manage.toString(CryptoJS.enc.Utf8)
-
   const club = CryptoJS.AES.decrypt(Cookies.get("club") as string, secretKey);
   const decryptedClub = club.toString(CryptoJS.enc.Utf8);
   const NameClb = CryptoJS.AES.decrypt(
@@ -202,6 +195,7 @@ const Profiles = () => {
   const onFinish = (values: any) => {
     const formattedBirthday = moment(values.birthday).format("YYYY-MM-DD");
     setLoading(true);
+    console.log("form", values);
     const randomKey = CryptoJS.lib.WordArray.random(16).toString();
     const formdata = new FormData();
     formdata.append("name", values.name);
@@ -214,13 +208,12 @@ const Profiles = () => {
     formdata.append("note", values.note);
     formdata.append("detail", values.detail);
     // formdata.append("achievements", values.achievements);
-    if(decryptedPermission == "1") formdata.append("club", values.club ? values.club : decryptedManageid)
-    else formdata.append("club", decryptedClub)
-    if (decryptedPermission == "1")
-      formdata.append("club", values.club ? values.club : decryptedManageid);
-    else formdata.append("club", decryptedClub);
-    if (decryptedPermission == "2") formdata.append("club", decryptedClub);
-    if (decryptedPermission == "0") formdata.append("club", values.club);
+    {
+      decryptedPermission == "0"
+        ? formdata.append("club", values.club)
+        : formdata.append("club", decryptedClub);
+    }
+
     formdata.append("hometown", values.hometown);
     const address = `${values.city} - ${values.district}`;
     formdata.append("address", address);
@@ -242,7 +235,6 @@ const Profiles = () => {
 
     addMemberMutation.mutate(formdata);
   };
-
   return (
     <>
       <div className={styles.wrap}>
@@ -326,7 +318,7 @@ const Profiles = () => {
                         </Form.Item>
                       </Col>
                     </Row>{" "}
-                    <div className={styles.buttonGroup}>
+                    {/* <div className={styles.buttonGroup}>
                       <span
                         className={`${styles.showBtn} ${
                           selectedButton === "show"
@@ -349,7 +341,7 @@ const Profiles = () => {
                       >
                         Ẩn
                       </span>
-                    </div>
+                    </div> */}
                   </Col>
                   <Col span={8} xs={24} sm={12} md={8}>
                     <Form.Item
@@ -445,7 +437,7 @@ const Profiles = () => {
                         </Select>
                       ) : decryptedPermission === "1" ? (
                         <Select>
-                          {listClubF1?.map((club: any) => (
+                          {listClubs?.map((club: any) => (
                             <Select.Option key={club.value} value={club.value}>
                               {club.text}
                             </Select.Option>

@@ -37,25 +37,25 @@ export default function Login() {
   //form
   const [form] = useForm();
   const onFinish = async (value: any) => {
-    // console.log(value);
     const res = await signin(value);
 
     if (res.status === "success") {
       switch (true) {
-        case res?.info_user[0].permission === "0":
-          // console.log("Mật khẩu đúng cho accountF0");
+        case res?.info_user[0].permission == "0":
+          Cookies.set(
+            "permission",
+            CryptoJS.AES.encrypt(
+              res?.info_user[0].permission,
+              secretKey
+            ).toString()
+          );
           navigate("/lien-doan/quan-ly-hoi-vien");
           break;
-
-        case res?.info_user[0].permission === "1":
-          // console.log("Mật khẩu đúng cho accountF1");
-
+        case res?.info_user[0].permission == "1":
           navigate("/quan-ly-lien-doan-so-nganh");
-
           break;
 
         case res?.info_user[0].permission === "2":
-          // console.log("Mật khẩu đúng cho accountF2");
           navigate("/quan-ly-don-vi");
           break;
         default:
@@ -63,10 +63,6 @@ export default function Login() {
           break;
       }
       Cookies.set("token", res.jwt);
-      Cookies.set(
-        "permission",
-        CryptoJS.AES.encrypt(res?.info_user[0].permission, secretKey).toString()
-      );
       Cookies.set(
         "club",
         CryptoJS.AES.encrypt(res?.info_user[0].club, secretKey).toString()
@@ -87,6 +83,10 @@ export default function Login() {
       Cookies.set(
         "email",
         CryptoJS.AES.encrypt(res?.info_user[0].email, secretKey).toString()
+      );
+      Cookies.set(
+        "permission",
+        CryptoJS.AES.encrypt(res?.info_user[0].permission, secretKey).toString()
       );
       Cookies.set(
         "manage",
@@ -172,6 +172,11 @@ export default function Login() {
           <Link to={"/dang-ky"} style={{ color: "#046C39", fontWeight: "600" }}>
             tại đây!
           </Link>
+          <div style={{marginTop:"1vh"}}>
+            <Link to={"/"} style={{ color: "#046C39", fontWeight: "600"}}>
+              Quay lại trang chủ
+            </Link>
+          </div>
         </div>
       </div>
     </div>

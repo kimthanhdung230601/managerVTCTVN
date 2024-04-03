@@ -110,11 +110,9 @@ const ManagerF1 = () => {
   };
   //tài khoản chưa được duyệt
 
-
   const naviagte = useNavigate();
   const isMobile = useMediaQuery({ maxWidth: 768 });
 
-  
   const [isModalF1, setIsModalF1] = useState(false);
   const [id, setId] = useState();
   const showModalMember = (value: any) => {
@@ -128,6 +126,18 @@ const ManagerF1 = () => {
 
   const handleCancelMember = () => {
     setIsModalF1(false);
+  };
+  const confirm = async (value: any) => {
+    const payload = {
+      id: value,
+    };
+    const res = await deleteMemberF12(payload);
+    refetchAccept();
+
+    message.success("Xóa thành công");
+  };
+  const cancel = (value: any) => {
+    // message.error("");
   };
   const columnsDesktopAccount: ColumnsType<DataType> = [
     {
@@ -155,7 +165,7 @@ const ManagerF1 = () => {
       dataIndex: "phone",
       width: 150,
     },
-   
+
     {
       title: "Tỉnh/Thành",
       dataIndex: "location",
@@ -174,39 +184,38 @@ const ManagerF1 = () => {
           value: "Công An",
         },
         {
-            text: "Quân Đội",
-            value: "Quân Đội",
+          text: "Quân Đội",
+          value: "Quân Đội",
         },
         {
-            text: "Giáo Dục",
-            value: "Giáo Dục",
+          text: "Giáo Dục",
+          value: "Giáo Dục",
         },
         {
           text: "Hội Võ Thuật",
           value: "Hội Võ Thuật",
         },
         {
-            text: "Hội Võ Thuật Cổ Truyền",
-            value: "Hội Võ Thuật Cổ Truyền",
+          text: "Hội Võ Thuật Cổ Truyền",
+          value: "Hội Võ Thuật Cổ Truyền",
         },
         {
           text: "Liên đoàn võ thuật",
           value: "Liên đoàn võ thuật",
         },
         {
-            text: "Liên đoàn võ thuật cổ truyền",
-            value: "Liên đoàn võ thuật cổ truyền",
+          text: "Liên đoàn võ thuật cổ truyền",
+          value: "Liên đoàn võ thuật cổ truyền",
         },
-        
+
         {
           text: "Sở VHTT và Du lịch",
           value: "Sở VHTT và Du lịch",
         },
         {
-            text: "Trung tâm huấn luyện thể thao",
-            value: "Trung tâm huấn luyện thể thao",
+          text: "Trung tâm huấn luyện thể thao",
+          value: "Trung tâm huấn luyện thể thao",
         },
-        
       ],
       onFilter: (value: any, record) => record.manage.indexOf(value) === 0,
       filterMultiple: false,
@@ -215,9 +224,9 @@ const ManagerF1 = () => {
     },
     {
       title: "Chức danh",
-      dataIndex: "title",
+      dataIndex: "level",
       width: 200,
-      
+
       filterMultiple: false,
     },
     {
@@ -229,27 +238,28 @@ const ManagerF1 = () => {
       key: "action",
       width: 200,
       fixed: "right",
-      render: (_, record) =>{
-        const idEncode = CryptoJS.AES.encrypt(record.id, secretKey).toString()
-        const id = encodeURIComponent(idEncode)
+      render: (_, record) => {
+        const idEncode = CryptoJS.AES.encrypt(record.id, secretKey).toString();
+        const id = encodeURIComponent(idEncode);
         return (
           <span>
-            <button
-              className={styles.btnTb}
-              onClick={() => setIsModalF1(true)}
-            >
+            <button className={styles.btnTb} onClick={() => setIsModalF1(true)}>
               Sửa
             </button>
-            <button
-              className={styles.btnTb}
-              onClick={() => showModalMember(record.id)}
-              style={{backgroundColor: "#ff0000"}}
+            <Popconfirm
+              title="Xóa"
+              description={`Bạn có muốn xóa ${record.name} không`}
+              onConfirm={() => confirm(record.id)}
+              onCancel={cancel}
+              okText="Có"
+              cancelText="Không"
             >
-              Xoá
-            </button>
+              {" "}
+              <button className={styles.btnTbDanger}>Xóa</button>
+            </Popconfirm>
           </span>
-        )
-      } 
+        );
+      },
     },
   ];
   const columnsMobileAccount: ColumnsType<DataType> = [
@@ -295,39 +305,38 @@ const ManagerF1 = () => {
           value: "Công An",
         },
         {
-            text: "Quân Đội",
-            value: "Quân Đội",
+          text: "Quân Đội",
+          value: "Quân Đội",
         },
         {
-            text: "Giáo Dục",
-            value: "Giáo Dục",
+          text: "Giáo Dục",
+          value: "Giáo Dục",
         },
         {
           text: "Hội Võ Thuật",
           value: "Hội Võ Thuật",
         },
         {
-            text: "Hội Võ Thuật Cổ Truyền",
-            value: "Hội Võ Thuật Cổ Truyền",
+          text: "Hội Võ Thuật Cổ Truyền",
+          value: "Hội Võ Thuật Cổ Truyền",
         },
         {
           text: "Liên đoàn võ thuật",
           value: "Liên đoàn võ thuật",
         },
         {
-            text: "Liên đoàn võ thuật cổ truyền",
-            value: "Liên đoàn võ thuật cổ truyền",
+          text: "Liên đoàn võ thuật cổ truyền",
+          value: "Liên đoàn võ thuật cổ truyền",
         },
-        
+
         {
           text: "Sở VHTT và Du lịch",
           value: "Sở VHTT và Du lịch",
         },
         {
-            text: "Trung tâm huấn luyện thể thao",
-            value: "Trung tâm huấn luyện thể thao",
+          text: "Trung tâm huấn luyện thể thao",
+          value: "Trung tâm huấn luyện thể thao",
         },
-        
       ],
       onFilter: (value: any, record) => record.manage.indexOf(value) === 0,
       filterMultiple: false,
@@ -350,24 +359,24 @@ const ManagerF1 = () => {
       width: 200,
       render: (_, record) => (
         <span>
-          <button
-            className={styles.btnTb}
-            onClick={() => setIsModalF1(true)}
-          >
+          <button className={styles.btnTb} onClick={() => setIsModalF1(true)}>
             Sửa
           </button>
-          <button
-            className={styles.btnTb}
-            onClick={() => showModalMember(record.id)}
-            style={{backgroundColor: "#ff0000"}}
+          <Popconfirm
+            title="Xóa"
+            description={`Bạn có muốn xóa ${record.name} không`}
+            onConfirm={() => confirm(record.id)}
+            onCancel={cancel}
+            okText="Có"
+            cancelText="Không"
           >
-            Xoá
-          </button>
+            {" "}
+            <button className={styles.btnTbDanger}>Xóa</button>
+          </Popconfirm>
         </span>
       ),
     },
   ];
-
 
   return (
     <div className={styles.wrap}>
@@ -416,7 +425,7 @@ const ManagerF1 = () => {
               defaultCurrent={1}
               onChange={onChangePageAccount}
               total={dataMemberF12Accept?.total_products}
-              pageSize={10}
+              pageSize={30}
               style={{ margin: "1vh 0", float: "right" }}
             />
           </Spin>
