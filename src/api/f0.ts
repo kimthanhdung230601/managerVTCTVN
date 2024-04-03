@@ -1,16 +1,17 @@
 import { sendDelete, sendGet, sendPost, sendPut } from "./api";
 
-
 export const getListMember = (payload: any) =>
-  sendGet(`/AdminGetMembers?page=${payload}`);
+  sendGet(`/AdminGetMembers?${payload}`);
 export const deleteMemberF3 = (payload: any) =>
   sendPost(`/AdminDeleteMember`, payload);
 //acount member
-export const getListMemberF12Accept = (payload: any) =>
+export const getListMemberF12 = (payload: any) =>
+  sendGet(`/AdminGetUsers?${payload}`);
+  export const getListMemberF12Accept = (payload: any) =>
   sendGet(`/AdminGetUsers?page=${payload}`);
 export const getListMemberF12UnAccept = (payload: any) =>
   sendGet(`/AdminGetUsers?page=${payload}`);
-
+  /////
 export const deleteMemberF12 = (payload: any) =>
   sendPost(`/AdminDeleteUser`, payload);
 export const updateAccount = (payload: any) =>
@@ -33,6 +34,11 @@ export const updateUser = (payload: any) =>
 const path = {
   accountAdmin: "/AdminGetUserID?id=",
 };
+export const F0findF3ForCode = (payload: any) =>
+  sendPost(`/AdminGetListNameMembers`, payload);
+export const getInforAdmin = (param: any) =>
+  sendGet("/AdminGetUserID?id=" + param);
+
 
 export const getInforAdmin= (param:any) => sendGet('/AdminGetUserID?id='+param)
 
@@ -41,4 +47,5 @@ export const addNews = (param: any) =>  sendPost ("/AdminAddNews", param)
 export const getListNews = (page: string, category: string) => sendGet("/GetListNews?page="+ page + "&category=" + category)
 export const getNewsbyID = (param: any) =>  sendGet(`/GetNewsID?id=${param}`)
 export const adminSignupf1 = (param: any) => sendPost('/AdminSignUpManage', param)
+
 

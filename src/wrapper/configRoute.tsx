@@ -58,6 +58,10 @@ export const RouteList = [
         permission: 0
     },
     {
+        name: "/chinh-sua-ho-so",
+        permission: 0
+    },
+    {
         name: "/",
         permission: 3
     },

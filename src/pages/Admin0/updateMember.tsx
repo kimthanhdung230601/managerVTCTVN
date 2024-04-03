@@ -15,12 +15,13 @@ import styles from "./styles.module.scss";
 import type { TableProps } from "antd";
 import { FileTextOutlined } from "@ant-design/icons";
 import TextArea from "antd/es/input/TextArea";
-import { updateMultiAchie } from "../../api/f0";
+import { F0findF3ForCode, updateMultiAchie } from "../../api/f0";
 import moment from "moment";
+import { levelMapping } from "../../until/until";
 
 interface DataType {
   key: any;
-  code: number;
+  code: any;
   level?: string;
   name?: string;
   achie?: string;
@@ -34,15 +35,34 @@ const columnsLevel: TableProps<DataType>["columns"] = [
     dataIndex: "code",
     key: "code",
   },
-  // {
-  //   title: "Họ tên",
-  //   dataIndex: "name",
-  //   key: "name",
-  // },
+  {
+    title: "Họ tên",
+    dataIndex: "name",
+    key: "name",
+    render: (value: any, record) => {
+      if (value === "Không xác định")
+        return <span style={{ color: "#ff0000" }}>{value}</span>;
+      else {
+        return <span style={{ color: "#046C39" }}>{value}</span>;
+      }
+    },
+  },
+  {
+    title: "Mã đẳng cấp",
+    dataIndex: "level_id",
+    key: "level_id",
+  },
   {
     title: "Đẳng cấp",
     dataIndex: "level",
     key: "level",
+    render: (value: any, record) => {
+      if (value === "Không xác định")
+        return <span style={{ color: "#ff0000" }}>{value}</span>;
+      else {
+        return <span style={{ color: "#046C39" }}>{value}</span>;
+      }
+    },
   },
   {
     title: "Ngày cấp",
@@ -56,12 +76,18 @@ const columnsAchie: TableProps<DataType>["columns"] = [
     dataIndex: "code",
     key: "code",
   },
-  // {
-  //   title: "Họ tên",
-  //   dataIndex: "name",
-  //   key: "name",
-  //   render: (text) => <a>{text}</a>,
-  // },
+  {
+    title: "Họ tên",
+    dataIndex: "name",
+    key: "name",
+    render: (value: any, record) => {
+      if (value === "Không xác định")
+        return <span style={{ color: "#ff0000" }}>{value}</span>;
+      else {
+        return <span style={{ color: "#046C39" }}>{value}</span>;
+      }
+    },
+  },
   {
     title: "Thành tích",
     dataIndex: "name_achievements",
@@ -83,26 +109,62 @@ const UpdateMember = () => {
   const [formAchie] = Form.useForm();
   const [dataLevel, setDataLevel] = useState<any[]>();
   const [loading, setLoading] = useState(false);
+  const [disableLevel, setDisableLevel] = useState(true);
+  const [disableAchie, setDisableAchie] = useState(true);
   //level
-  const onFinish = (values: any) => {
+  const onFinish = async (values: any) => {
     setLoading(true);
     const inputData = values.dataLevel;
-    const separatedData = inputData.split("\n").map((item: any) => {
-      const [code, level, time] = item
-        .split("|")
-        .map((str: string) => str.trim());
-      return {
-        // key: code,
-        code,
-        level,
-        time: moment(time, "DD/MM/YYYY").format("YYYY/MM/DD"),
-      };
-    });
-    setTimeout(() => {
+    const separatedData = inputData
+      .split("\n")
+      .map((item: any, index: number) => {
+        const [code, level_id, time] = item
+          .split("|")
+          .map((str: string) => str.trim());
+        const normalizedLevelId = parseInt(level_id, 10).toString();
+        const level = levelMapping[normalizedLevelId] || "Không xác định";
+
+        return {
+          level_id,
+          code,
+          level,
+          time: moment(time, "DD/MM/YYYY").format("YYYY/MM/DD"),
+        };
+      });
+    const payload = {
+      data: separatedData.map((item: any) => ({
+        code: item.code,
+      })),
+    };
+
+    try {
+      const res = await F0findF3ForCode(payload);
+
+      res &&
+        res.data &&
+        res.data.forEach((item: any, index: number) => {
+          separatedData.forEach((dataItem: any) => {
+            if (dataItem.code === item.code) {
+              dataItem.name = item.name;
+            } else {
+              dataItem.name = "Không xác định";
+              setDisableLevel(true);
+            }
+          });
+        });
+      const hasUndefinedName = separatedData.some(
+        (dataItem: any) => dataItem.name === "Không xác định"
+      );
+
+      if (!hasUndefinedName) setDisableLevel(false);
       setDataLevel(separatedData);
       setLoading(false);
-    }, 500);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setLoading(false);
+    }
   };
+
   const handleConfirmLevel = async () => {
     const payload = {
       type: "members",
@@ -134,11 +196,41 @@ const UpdateMember = () => {
         time: moment(time, "DD/MM/YYYY").format("YYYY/MM/DD"),
       };
     });
-    setTimeout(() => {
+
+    try {
+      const payload = {
+        data: separatedData.map((item: any) => ({
+          code: item.code,
+        })),
+      };
+
+      const res = await F0findF3ForCode(payload);
+
+      res &&
+        res.data &&
+        res.data.forEach((item: any, index: number) => {
+          separatedData.forEach((dataItem: any) => {
+            if (dataItem.code === item.code) {
+              dataItem.name = item.name;
+            } else {
+              dataItem.name = "Không xác định";
+              setDisableAchie(true);
+            }
+          });
+        });
+      const hasUndefinedName = separatedData.some(
+        (dataItem: any) => dataItem.name === "Không xác định"
+      );
+
+      if (!hasUndefinedName) setDisableAchie(false);
       setDataAchie(separatedData);
       setLoadingAchie(false);
-    }, 500);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setLoadingAchie(false);
+    }
   };
+
   const handleConfirm = async () => {
     const payload = {
       type: "achievements",
@@ -199,7 +291,7 @@ const UpdateMember = () => {
                 loading={loading}
               />
               <Button
-                disabled={dataLevel === undefined}
+                disabled={dataLevel === undefined || disableLevel}
                 className={styles.btnUpdate}
                 onClick={() => handleConfirmLevel()}
               >
@@ -249,7 +341,11 @@ const UpdateMember = () => {
                 pagination={{ pageSize: 10 }}
               />
               <Button
-                disabled={dataAchie === undefined || dataAchie.length === 0}
+                disabled={
+                  dataAchie === undefined ||
+                  dataAchie.length === 0 ||
+                  disableAchie
+                }
                 onClick={() => {
                   handleConfirm();
                 }}
