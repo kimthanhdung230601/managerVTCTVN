@@ -32,14 +32,15 @@ import {
   AimOutlined,
 } from "@ant-design/icons";
 import ReCAPTCHA from "react-google-recaptcha";
-<
-import { useDispatch, useSelector } from "react-redux";
+// <
+// import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { useMutation, useQuery } from "react-query";
 import { signup } from "../../api/ApiUser";
 import { level, province } from "../../until/until";
 import Cookies from "js-cookie";
 import { signUpF1 } from "../../api/f0";
+import { useDispatch, useSelector } from "react-redux";
 const secretKey = process.env.REACT_APP_SECRET_KEY as string;
 
 const getBase64 = (file: any): Promise<string> =>
