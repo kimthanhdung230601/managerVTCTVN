@@ -32,6 +32,7 @@ import {
   AimOutlined,
 } from "@ant-design/icons";
 import ReCAPTCHA from "react-google-recaptcha";
+<
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { useMutation, useQuery } from "react-query";
@@ -40,6 +41,7 @@ import { level, province } from "../../until/until";
 import Cookies from "js-cookie";
 import { signUpF1 } from "../../api/f0";
 const secretKey = process.env.REACT_APP_SECRET_KEY as string;
+
 const getBase64 = (file: any): Promise<string> =>
   new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -118,6 +120,7 @@ export default function SignupF1() {
     dispatch({ type: "INCREMENT_LOAD_COUNT" });
     if (reloadCount.loadCount >= 18) {
       setShowCaptcha(true);
+
     }
     if (reloadCount.loadCount < 18 && !showCaptcha) {
       setTimeout(() => {
