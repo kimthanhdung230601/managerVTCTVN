@@ -19,6 +19,7 @@ interface DataType_CLB {
     pending: string;
     NameClb: string;
     club: string;
+    id:string;
 }
 
 interface data {
@@ -199,7 +200,7 @@ export default function ManageClub() {
         {
           title: "Chi tiết",
           render: (value, record) => {
-            return <button className={styles.btn} onClick={()=>navigate(`/quan-ly-don-vi?club=${record.club}`)}>Xem</button>;
+            return <button className={styles.btn} onClick={()=>navigate(`/quan-ly-don-vi?club=${record.club}&id=${record.club}`)}>Xem</button>;
           },
         },
     ];

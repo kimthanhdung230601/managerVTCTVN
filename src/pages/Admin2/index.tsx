@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useId, useState } from "react";
 import ManagerMemberTwo from "./managerMember";
 import {
   AudioOutlined,
@@ -17,7 +17,7 @@ import { useLocation, useNavigate, useParams } from "react-router";
 import Cookies from "js-cookie";
 import CryptoJS from "crypto-js";
 import { useQuery } from "react-query";
-import { getListMemberF3 } from "../../api/f2";
+import { getInforAdmin, getListMemberF3 } from "../../api/f2";
 const secretKey = process.env.REACT_APP_SECRET_KEY as string;
 
 type MenuItem = Required<MenuProps>["items"][number];
@@ -71,10 +71,35 @@ const AdminTwo = () => {
     secretKey
   );
   const decryptedNameClb = NameClb.toString(CryptoJS.enc.Utf8);
-  const onClick: MenuProps["onClick"] = (e) => {
-  };
+
+  const onClick: MenuProps["onClick"] = (e) => {};
+  const urlParams = new URLSearchParams(window.location.search);
+  const [userId, setUserId] = useState<any>({
+    name: decryptedName,
+    phone: decryptedPhone,
+    email: decryptedEmail,
+    clb: decryptedNameClb,
+  });
+
+  var idValue: any = 0;
+  if (urlParams.has("id")) {
+    idValue = urlParams.get("id");
+  }
+  const { data: getInforId } = useQuery(["getInfor", idValue], () =>
+    getInforAdmin(1)
+  );
+  if (getInforId?.data?.status == "success") {
+    setUserId({
+      name: getInforId?.data[0].name,
+      phone: getInforId?.data[0].phone,
+      email: getInforId?.data[0].email,
+      // clb: data?.data[0].,
+    });
+  }
+  // console.log(userId);
+
   return (
-    <div style={{backgroundColor: "#fff"}}>
+    <div style={{ backgroundColor: "#fff" }}>
       <Header />
       <div className={styles.logoWrap}>
         <div className={styles.title}>
@@ -86,37 +111,39 @@ const AdminTwo = () => {
             />
           </div>
           <div className={styles.titleContent}>
-            <div className={styles.titleText}>Đơn vị: {decryptedNameClb}</div>{" "}
+            <div className={styles.titleText}>Đơn vị: {userId.clb}</div>{" "}
             <div className={styles.subTitleText}>
               <div className={`$(styles.boldText)`}>
                 Thông tin người quản lý
               </div>
-              <div className={styles.titleName}>
+              {/* <div className={styles.titleName}>
                 <button
                   className={styles.btnView}
                   style={{ marginTop: "8px" }}
-                  onClick={() =>{
-                    const idEncode = CryptoJS.AES.encrypt(decryptedId, secretKey).toString()
-                    const id = encodeURIComponent(idEncode)
-                    return navigate(`/thong-tin-tai-khoan/${id}`)
-                  }
-                  }
+                  onClick={() => {
+                    const idEncode = CryptoJS.AES.encrypt(
+                      decryptedId,
+                      secretKey
+                    ).toString();
+                    const id = encodeURIComponent(idEncode);
+                    return navigate(`/thong-tin-tai-khoan/${id}`);
+                  }}
                 >
                   Chi tiết
                 </button>
-              </div>
+              </div> */}
             </div>
             <div className={styles.subTitleText}>
               <div className={styles.labelTitle}>Họ tên: </div>
-              <div className={styles.titleName}>{decryptedName}</div>
+              <div className={styles.titleName}>{userId.name}</div>
             </div>
             <div className={styles.subTitleText}>
               <div className={styles.labelTitle}>Số điện thoại:</div>
-              <div className={styles.titleName}>{decryptedPhone}</div>
+              <div className={styles.titleName}>{userId.phone}</div>
             </div>
             <div className={styles.subTitleText}>
               <div className={styles.labelTitle}>Email: </div>
-              <div className={styles.titleName}>{decryptedEmail}</div>
+              <div className={styles.titleName}>{userId.email}</div>
             </div>
           </div>
         </div>

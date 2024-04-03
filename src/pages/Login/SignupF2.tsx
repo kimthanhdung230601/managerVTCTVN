@@ -70,6 +70,7 @@ export default function SignupF2() {
   const [previewImage3, setPreviewImage3] = useState("");
   const [previewTitle3, setPreviewTitle3] = useState("");
   const [fileList3, setFileList3] = useState<UploadFile[]>([]);
+  
   const permission = CryptoJS.AES.decrypt(
     Cookies.get("permission") as string,
     secretKey
