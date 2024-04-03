@@ -171,6 +171,7 @@ const Profiles = () => {
   );
   const idManage = CryptoJS.AES.decrypt(
     Cookies.get("idManage") as string,
+
     secretKey
   );
   const manage = CryptoJS.AES.decrypt(
@@ -180,6 +181,7 @@ const Profiles = () => {
   const decryptedPermission = permission.toString(CryptoJS.enc.Utf8);
   const decryptedManageid = idManage.toString(CryptoJS.enc.Utf8);
   const decryptedManage = manage.toString(CryptoJS.enc.Utf8)
+
   const club = CryptoJS.AES.decrypt(Cookies.get("club") as string, secretKey);
   const decryptedClub = club.toString(CryptoJS.enc.Utf8);
   const NameClb = CryptoJS.AES.decrypt(
@@ -212,8 +214,7 @@ const Profiles = () => {
     formdata.append("note", values.note);
     formdata.append("detail", values.detail);
     // formdata.append("achievements", values.achievements);
-    if(decryptedPermission == "0") formdata.append("club", values.club ? values.club : "2")
-    else if(decryptedPermission == "1") formdata.append("club", values.club ? values.club : "2")
+    if(decryptedPermission == "1") formdata.append("club", values.club ? values.club : decryptedManageid)
     else formdata.append("club", decryptedClub)
     if (decryptedPermission == "1")
       formdata.append("club", values.club ? values.club : decryptedManageid);
@@ -238,11 +239,10 @@ const Profiles = () => {
       values.avatar[0].originFileObj as File,
       CryptoJS.AES.encrypt(values.avatar[0].name, randomKey).toString()
     );
-    if(decryptedPermission == "1") formdata.append("manage", decryptedManage)
 
     addMemberMutation.mutate(formdata);
   };
-  console.log(decryptedClub);
+
   return (
     <>
       <div className={styles.wrap}>

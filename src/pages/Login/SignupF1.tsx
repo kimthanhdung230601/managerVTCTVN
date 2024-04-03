@@ -8,6 +8,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useMutation, useQuery } from 'react-query';
 import { signup } from '../../api/ApiUser';
 import { level, province } from '../../until/until';
+import { adminSignupf1 } from '../../api/f0';
 
 const getBase64 = (file: any): Promise<string> =>
   new Promise((resolve, reject) => {
@@ -25,17 +26,18 @@ export default function SignupF1() {
     const [showCaptcha, setShowCaptcha] = useState(false);
     const [isVerify, setIsVerify] = useState(false);
     const signupMutation = useMutation(
-        async (payload: any) => await signup(payload), 
+        async (payload: any) => await adminSignupf1(payload), 
         {
             
             onSuccess: (data: any) => {
+                console.log(data)
                 if(data.status === "success") {
                     message.success("Đăng ký thành công!")
                     setTimeout(()=> {
                         navigate(`/dang-nhap`)
                     },2000)
                 } else if(data.status === "failed") {
-                   message.error(data.data)
+                   message.error("Có lỗi xảy ra, vui lòng thử lại sau")
                 } else message.error("Có lỗi xảy ra, vui lòng thử lại sau")
             },
             onError: () => {
@@ -66,10 +68,10 @@ export default function SignupF1() {
         formdata.append("phone", value.phone);
         formdata.append("level", value.level);
         formdata.append("location", value.location);
-        formdata.append("manage", value.location);
+        formdata.append("manage", value.manage);
         formdata.append("password", value.password);
         console.log("form", value)
-        // signupMutation.mutate(formdata)
+        signupMutation.mutate(value)
     }
     useEffect(() => {
         dispatch({ type: 'INCREMENT_LOAD_COUNT' });

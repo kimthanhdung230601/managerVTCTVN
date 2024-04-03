@@ -6,9 +6,9 @@ import { message, Table, Spin, Popconfirm, Button } from 'antd';
 import { ColumnsType, TableProps } from 'antd/es/table';
 import { useLocation, useNavigate } from 'react-router';
 import { levelFilters } from '../../until/until';
-import { useQuery } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import CryptoJS from 'crypto-js';
-import { getClubs, getFilterTable, getListMember, searchInTable } from '../../api/f1';
+import { deleteMember, getClubs, getFilterTable, getListMember, searchInTable } from '../../api/f1';
 
 const customLocale = {
     filterConfirm: 'OK',  // Thay đổi nút xác nhận
@@ -55,6 +55,20 @@ export default function ManageMember() {
     const {data: clubs} = useQuery(["clubs"], () =>  getClubs())
     const [selectedRowKeysCN, setSelectedRowKeysCN] = useState<React.Key[]>([]);
     const [memberList, setMemberList] = useState<data>()
+    const deleteMemberMutation = useMutation(
+      async (payload: any) =>  await deleteMember(payload),{
+        onSuccess: (data) => {
+          if(data.status === "success"){
+            message.success("Xoá thành công!")
+            
+          }
+
+        },
+        onError: (data) => {
+            message.success("Có lỗi xảy ra, vui lòng thử lại sau!")
+        }
+      }
+    )
     const {data: memberListData, isFetching} = useQuery(['member'], () => getListMember(), {
       onSettled: (data) => {
         if(data.status === "failed"){
@@ -123,8 +137,20 @@ export default function ManageMember() {
         }
       }
     })
-    const handleDeleteMember = (id: string) => console.log(id)
-    const handleDeleteMultiRecord = () => console.log("rows",selectedRowKeysCN)
+    const handleDeleteMember = (id: string) => {
+      deleteMemberMutation.mutate({
+        data: [
+          {
+            id: id
+          }
+        ]
+      })
+    }
+    const handleDeleteMultiRecord = () => {
+      deleteMemberMutation.mutate({
+        data: selectedRowKeysCN
+      })
+    }
     const onSelectChangeCN = (newSelectedRowKeysCN: React.Key[]) => {
         setSelectedRowKeysCN(newSelectedRowKeysCN);
     };
