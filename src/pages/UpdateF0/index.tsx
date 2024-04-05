@@ -40,7 +40,7 @@ const { TextArea } = Input;
 const { Option } = Select;
 const secretKey = process.env.REACT_APP_SECRET_KEY as string;
 interface Club {
-  id: string;
+  id: any;
   name_club: string;
 }
 interface UpdateProfilesProps {}
@@ -49,6 +49,12 @@ const UpdateProfiles = () => {
   document.title = "Chỉnh sửa thành viên";
   const [form] = Form.useForm();
   const param = useParams();
+  const { data: dataClub } = useQuery("dataClubs", getListClub);
+
+  const listClub = dataClub?.data?.map((item: Club, index: number) => ({
+    text: item.name_club,
+    value: item.id,
+  }));
   const {
     data: dataDetailF3,
     refetch,
@@ -68,7 +74,7 @@ const UpdateProfiles = () => {
       form.setFieldValue("detail", data.data[0].detail);
       form.setFieldValue("status", data.data[0].status);
       form.setFieldValue("achievements", data.data[0].achievements);
-      form.setFieldValue("NameClb", data.data[0].NameClb);
+      form.setFieldValue("club", data.data[0].NameClb);
       form.setFieldValue("hometown", data.data[0].hometown);
       // form.setFieldValue("address", data.data[0].address);
       form.setFieldValue("city", data.data[0].address);
@@ -76,19 +82,13 @@ const UpdateProfiles = () => {
       form.setFieldValue("nationality", data.data[0].nationality);
       form.setFieldValue("email", data.data[0].email);
       form.setFieldValue("code", data.data[0].code);
-      form.setFieldValue("club", dataDetailF3);
+
       const formattedBirthday = moment(data.data[0].birthday).format(
         "DD/MM/YYYY"
       );
       form.setFieldValue("birthday", formattedBirthday);
     },
   });
-  const { data: dataClub } = useQuery("dataClubs", getListClub);
-
-  const listClub = dataClub?.data.map((item: Club, index: number) => ({
-    text: item.name_club,
-    value: item.name_club,
-  }));
 
   const [fileListcCertificate, setFileListCertificate] = useState<any>([]);
   const [fileListLevel, setFileListLevel] = useState<any>([]);
@@ -248,7 +248,9 @@ const UpdateProfiles = () => {
   const [loading, setLoading] = useState(false);
 
   const onFinish = (values: any) => {
-    const formattedBirthday = moment(values.birthday).format("YYYY-MM-DD");
+    const formattedBirthday = moment(new Date(values.birthday)).format(
+      "YYYY-MM-DD"
+    );
     setLoading(true);
     const randomKey = CryptoJS.lib.WordArray.random(16).toString();
     const formdata = new FormData();
@@ -262,12 +264,11 @@ const UpdateProfiles = () => {
     formdata.append("note", values.note);
     formdata.append("detail", dataDetailF3?.data[0].detail);
     formdata.append("achievements", dataDetailF3?.data[0].achievements);
-    formdata.append("club", decryptedClub);
+    formdata.append("club", values.club);
     formdata.append("hometown", values.hometown);
     formdata.append("address", values.city);
     formdata.append("nationality", values.nationality);
     formdata.append("email", values.email);
-    formdata.append("club", dataDetailF3?.data[0].club);
     formdata.append("status", dataDetailF3?.data[0].status);
     formdata.append("id", dataDetailF3?.data[0].id);
     formdata.append("code", dataDetailF3?.data[0].code);
@@ -491,7 +492,7 @@ const UpdateProfiles = () => {
                     <Col span={8} xs={24} sm={12} md={8}>
                       <Form.Item
                         label="Câu lạc bộ "
-                        name="NameClb"
+                        name="club"
                         rules={[
                           {
                             required: true,
@@ -567,9 +568,18 @@ const UpdateProfiles = () => {
                       </Form.Item>
                     </Col>
                     <Col span={8} xs={24} sm={12} md={8}>
-                      <Form.Item
+                      {/* <Form.Item
                         label="Quận/Huyện"
                         name="district"
+                        rules={[
+                          { required: true, message: "Vui lòng điền quê quán" },
+                        ]}
+                      >
+                        <Input />
+                      </Form.Item> */}{" "}
+                      <Form.Item
+                        label="Quê quán"
+                        name="hometown"
                         rules={[
                           { required: true, message: "Vui lòng điền quê quán" },
                         ]}
@@ -592,15 +602,6 @@ const UpdateProfiles = () => {
                   <Row gutter={16}>
                     <Col span={8} xs={24} sm={12} md={8}>
                       {" "}
-                      <Form.Item
-                        label="Quê quán"
-                        name="hometown"
-                        rules={[
-                          { required: true, message: "Vui lòng điền quê quán" },
-                        ]}
-                      >
-                        <Input />
-                      </Form.Item>
                     </Col>
                   </Row>
                   {/* {decryptedPermission == "0" ? (

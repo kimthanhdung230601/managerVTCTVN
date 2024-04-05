@@ -162,9 +162,12 @@ export default function SignupF2() {
   const onFinish = (value: any) => {
     delete value.confirm;
     const randomKey = CryptoJS.lib.WordArray.random(32).toString();
-    const formattedBirthday = moment(value.birthday).format("YYYY-MM-DD");
-    const formattedIdday = moment(value.idday).format("YYYY-MM-DD");
-    const formdata = new FormData();
+    const formattedBirthday = moment(new Date(value.birthday)).format(
+      "YYYY-MM-DD"
+    );
+    const formattedIdday = moment(new Date(value.idday)).format(
+      "YYYY-MM-DD"
+    );    const formdata = new FormData();
     formdata.append("name", value.name);
     formdata.append("club", value.club);
     formdata.append("idcard", value.idcard);
@@ -258,7 +261,7 @@ export default function SignupF2() {
           >
             <Input
               prefix={<SolutionOutlined className={styles.icon} />}
-              placeholder="CLB, Môn Phái, Võ Phái, Võ Đường, Trung Tâm"
+              placeholder="Môn phái/Võ phái/Võ đường/Trung tâm/CLB"
               className={styles.formInput}
             />
           </Form.Item>{" "}
@@ -284,6 +287,7 @@ export default function SignupF2() {
               size="large"
               placeholder="Ngày sinh"
               className={styles.formDate}
+              format={"DD/MM/YYYY"}
             />
           </Form.Item>
           <Form.Item
@@ -310,6 +314,7 @@ export default function SignupF2() {
                 size="large"
                 placeholder="Ngày cấp"
                 className={styles.formDate}
+                format={"DD/MM/YYYY"}
               />
             </Form.Item>
             <Form.Item

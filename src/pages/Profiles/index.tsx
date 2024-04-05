@@ -80,7 +80,7 @@ const Profiles = () => {
   const { data: dataClubF1 } = useQuery("dataClubs", getListClubs);
   const listClub = dataClub?.data.map((item: Club, index: number) => ({
     text: item.name_club,
-    value: item.name_club,
+    value: item.id,
   }));
   const listClubs = dataClubF1?.data?.map((item: Club, index: number) => ({
     text: item.NameClb,
@@ -199,7 +199,9 @@ const Profiles = () => {
   console.log("decryptedClub", decryptedClub);
   const [loading, setLoading] = useState(false);
   const onFinish = (values: any) => {
-    const formattedBirthday = moment(values.birthday).format("YYYY-MM-DD");
+    const formattedBirthday = moment(new Date(values.birthday)).format(
+      "YYYY-MM-DD"
+    );
     setLoading(true);
     console.log("form", values);
     const randomKey = CryptoJS.lib.WordArray.random(16).toString();
@@ -411,7 +413,7 @@ const Profiles = () => {
                             },
                           ]}
                         >
-                          <DatePicker />
+                          <DatePicker format="DD/MM/YYYY" />
                           {/* <Input type="date" /> */}
                         </Form.Item>
                       </Col>
@@ -442,7 +444,7 @@ const Profiles = () => {
                       label={
                         param.key
                           ? "Đơn vị quản lý"
-                          : "Clb/Môn phái/Võ phái/Võ đường/Trung tâm "
+                          : "Môn phái/Võ phái/Võ đường/Trung tâm/CLB"
                       }
                       name="club"
                       rules={[
@@ -452,11 +454,11 @@ const Profiles = () => {
                               required: true,
                               message: param.key
                                 ? "Đơn vị quản lý"
-                                : "Vui lòng điền clb/môn phái/võ phái/võ đường/ trung tâm",
+                                : "Vui lòng điền Môn phái/Võ phái/Võ đường/Trung tâm/CLB",
                             },
                       ]}
                     >
-                      {decryptedPermission === "0" ? (
+                      {decryptedPermission == "0" ? (
                         <Select>
                           {listClub?.map((club: any) => (
                             <Select.Option key={club.value} value={club.value}>
