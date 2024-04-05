@@ -160,7 +160,7 @@ const ManagerAccount = () => {
       width: 150,
     },
     {
-      title: "Mã định danh",
+      title: "CCCD",
       dataIndex: "idcard",
       width: 250,
     },
@@ -318,7 +318,7 @@ const ManagerAccount = () => {
       width: 210,
     },
     {
-      title: "Mã định danh",
+      title: "CCCD",
       dataIndex: "idcard",
       width: 250,
     },

@@ -109,26 +109,26 @@ const ModalAccount = ({
     const acceptedImageTypes = ["image/jpeg", "image/png"];
     return acceptedImageTypes.includes(file.type);
   };
-  const props = {
-    action: "https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188",
-    beforeUpload: (file: any) => {
-      if (!isImage(file)) {
-        message.error("Chỉ cho phép tải lên các file ảnh (JPEG, PNG).");
-        return false;
-      }
-      return true; // Cho phép tải lên nếu là file ảnh
-    },
-    onChange(info: any) {
-      if (info.file.status !== "uploading") {
-        console.log(info.file, info.fileList);
-      }
-      if (info.file.status === "done") {
-        message.success(`${info.file.name} tải ảnh thành công`);
-      } else if (info.file.status === "error") {
-        message.error(`${info.file.name} tải ảnh thất bại.`);
-      }
-    },
-  };
+  // const props = {
+  //   action: "https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188",
+  //   beforeUpload: (file: any) => {
+  //     if (!isImage(file)) {
+  //       message.error("Chỉ cho phép tải lên các file ảnh (JPEG, PNG).");
+  //       return false;
+  //     }
+  //     return true; // Cho phép tải lên nếu là file ảnh
+  //   },
+  //   onChange(info: any) {
+  //     if (info.file.status !== "uploading") {
+  //       console.log(info.file, info.fileList);
+  //     }
+  //     if (info.file.status === "done") {
+  //       message.success(`${info.file.name} tải ảnh thành công`);
+  //     } else if (info.file.status === "error") {
+  //       message.error(`${info.file.name} tải ảnh thất bại.`);
+  //     }
+  //   },
+  // };
 
   //fetchData
   // const [fileListcCertificate, setFileListCertificate] = useState<any>([]);
@@ -143,7 +143,7 @@ const ModalAccount = ({
   } = useQuery("getDetailF2", () => getDetailF2(id), {
     onSettled: (data) => {
       form.setFieldValue("name", data.data[0].name);
-      form.setFieldValue("code", data.data[0].code);
+      form.setFieldValue("password", data.data[0].password);
       form.setFieldValue("location", data.data[0].location);
       form.setFieldValue("NameClb", data.data[0].NameClb);
       form.setFieldValue("manage", data.data[0].manage);
@@ -328,7 +328,7 @@ const ModalAccount = ({
   return (
     <>
       <Modal
-        title={`Quản lý tài khoản`}
+        title={`Chỉnh sửa tài khoản hội viên`}
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
@@ -349,16 +349,7 @@ const ModalAccount = ({
                   <Input />
                 </Form.Item>
                 {/* CCCD */}{" "}
-                <Form.Item
-                  label="Căn cước công dân"
-                  name="idcard"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Vui lòng điền mật khẩu",
-                    },
-                  ]}
-                >
+                <Form.Item label="Căn cước công dân" name="idcard">
                   <Input disabled />
                 </Form.Item>{" "}
                 <Form.Item
@@ -386,12 +377,9 @@ const ModalAccount = ({
               </Col>
               <Col span={12}>
                 {" "}
-                <Form.Item
-                  label="Mã định danh"
-                  name="code"
-                  // rules={[{ required: true, message: "Vui lòng điền account" }]}
-                >
-                  <Input disabled={true} />
+                <Form.Item label="Mật khẩu" name="password">
+
+                  <Input.Password disabled={true} />
                 </Form.Item>{" "}
                 <Form.Item
                   label="Đơn vị quản lý "

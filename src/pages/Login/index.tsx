@@ -68,6 +68,10 @@ export default function Login() {
         CryptoJS.AES.encrypt(res?.info_user[0].club, secretKey).toString()
       );
       Cookies.set(
+        "location",
+        CryptoJS.AES.encrypt(res?.info_user[0].location, secretKey).toString()
+      );
+      Cookies.set(
         "NameClb",
         CryptoJS.AES.encrypt(res?.info_user[0].NameClb, secretKey).toString()
       );

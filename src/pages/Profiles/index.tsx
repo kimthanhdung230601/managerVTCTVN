@@ -30,6 +30,7 @@ import { addMember } from "../../api/ApiUser";
 import { addNewF3 } from "../../api/f2";
 import { getInforAdmin, getListClub } from "../../api/f0";
 import { getListClubs } from "../../api/f1";
+import { useLocation, useParams } from "react-router-dom";
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
 const { Option } = Select;
@@ -39,11 +40,11 @@ interface Club {
   name_club: string;
   club: number;
   NameClb: string;
-
 }
 
 interface ProfilesProps {}
 const Profiles = () => {
+  const param = useParams();
   const [form] = Form.useForm();
   const [fileList, setFileList] = useState<any>([]);
   const { compressImage } = useImageCompression();
@@ -79,7 +80,7 @@ const Profiles = () => {
   const { data: dataClubF1 } = useQuery("dataClubs", getListClubs);
   const listClub = dataClub?.data.map((item: Club, index: number) => ({
     text: item.name_club,
-    value: item.name_club,
+    value: item.id,
   }));
   const listClubs = dataClubF1?.data?.map((item: Club, index: number) => ({
     text: item.NameClb,
@@ -159,9 +160,7 @@ const Profiles = () => {
     }
   };
   // date
-  const onChange: DatePickerProps["onChange"] = (date, dateString) => {
-    // console.log(date, dateString);
-  };
+  const onChange: DatePickerProps["onChange"] = (date, dateString) => {};
 
   //button
   const [selectedButton, setSelectedButton] = useState("show");
@@ -175,9 +174,14 @@ const Profiles = () => {
     Cookies.get("permission") as string,
     secretKey
   );
+  const manage = CryptoJS.AES.decrypt(
+    Cookies.get("manage") as string,
+    secretKey
+  );
   const decryptedPermission = permission.toString(CryptoJS.enc.Utf8);
   const club = CryptoJS.AES.decrypt(Cookies.get("club") as string, secretKey);
   const decryptedClub = club.toString(CryptoJS.enc.Utf8);
+  const permissionManage = manage.toString(CryptoJS.enc.Utf8);
   const NameClb = CryptoJS.AES.decrypt(
     Cookies.get("NameClb") as string,
     secretKey
@@ -189,15 +193,19 @@ const Profiles = () => {
   // );
   // const decryptedPermission = permission.toString(CryptoJS.enc.Utf8);
   //fill club
-  useEffect(() => {
-    form.setFieldValue("club", decryptedNameClb);
-  }, [form]);
+  // useEffect(() => {
+  //   form.setFieldValue("club", decryptedNameClb);
+  // }, [form]);
+  console.log("decryptedClub", decryptedClub);
   const [loading, setLoading] = useState(false);
   const onFinish = (values: any) => {
-    const formattedBirthday = moment(values.birthday).format("YYYY-MM-DD");
+    const formattedBirthday = moment(new Date(values.birthday)).format(
+      "YYYY-MM-DD"
+    );
     setLoading(true);
     console.log("form", values);
     const randomKey = CryptoJS.lib.WordArray.random(16).toString();
+
     const formdata = new FormData();
     formdata.append("name", values.name);
     formdata.append("birthday", formattedBirthday);
@@ -208,16 +216,17 @@ const Profiles = () => {
     formdata.append("level", values.level);
     formdata.append("note", values.note);
     formdata.append("detail", values.detail);
-    // formdata.append("achievements", values.achievements);
-    {
-      decryptedPermission == "0"
-        ? formdata.append("club", values.club)
-        : formdata.append("club", decryptedClub);
-    }
-
+    formdata.append("achievements", values.achievements);
+    if (decryptedPermission == "0") formdata.append("club", values.club);
+    else if (decryptedPermission == "2") formdata.append("club", decryptedClub);
+    else if (decryptedPermission == "1" && !param.key)
+      formdata.append("club", values.club);
+    else if (decryptedPermission == "1" && param.key)
+      formdata.append("club", decryptedClub);
     formdata.append("hometown", values.hometown);
-    const address = `${values.city} - ${values.district}`;
-    formdata.append("address", address);
+
+    // const address = `${values.city} - ${values.district}`;
+    formdata.append("address", values.city);
     formdata.append("nationality", values.nationality);
     formdata.append("email", values.email);
     formdata.append(
@@ -233,9 +242,17 @@ const Profiles = () => {
       values.avatar[0].originFileObj as File,
       CryptoJS.AES.encrypt(values.avatar[0].name, randomKey).toString()
     );
-
+    // formdata.forEach((value, key) => {
+    //   console.log(key, value);
+    // });
+    // setLoading(false);
     addMemberMutation.mutate(formdata);
   };
+  const previousPageUrl = document.referrer;
+
+  const location = useLocation();
+  const previousPathname = location.state?.prevPathname;
+  console.log("Tên router của trang trước là:", previousPathname);
   return (
     <>
       <div className={styles.wrap}>
@@ -277,7 +294,9 @@ const Profiles = () => {
                                 {" "}
                                 <div>
                                   <PlusOutlined />
-                                  <div style={{ marginTop: 8 }}>Tải giấy CN bằng cấp</div>
+                                  <div style={{ marginTop: 8 }}>
+                                    Tải giấy CN bằng cấp
+                                  </div>
                                 </div>
                               </>
                             )}
@@ -394,7 +413,7 @@ const Profiles = () => {
                             },
                           ]}
                         >
-                          <DatePicker />
+                          <DatePicker format="DD/MM/YYYY" />
                           {/* <Input type="date" /> */}
                         </Form.Item>
                       </Col>
@@ -422,13 +441,24 @@ const Profiles = () => {
                 <Row gutter={16}>
                   <Col span={8} xs={24} sm={12} md={8}>
                     <Form.Item
-                      label="Câu lạc bộ "
+                      label={
+                        param.key
+                          ? "Đơn vị quản lý"
+                          : "Môn phái/Võ phái/Võ đường/Trung tâm/CLB"
+                      }
                       name="club"
                       rules={[
-                        { required: true, message: "Vui lòng điền câu lạc bộ" },
+                        param.key || decryptedPermission == "2"
+                          ? { required: false }
+                          : {
+                              required: true,
+                              message: param.key
+                                ? "Đơn vị quản lý"
+                                : "Vui lòng điền Môn phái/Võ phái/Võ đường/Trung tâm/CLB",
+                            },
                       ]}
                     >
-                      {decryptedPermission === "0" ? (
+                      {decryptedPermission == "0" ? (
                         <Select>
                           {listClub?.map((club: any) => (
                             <Select.Option key={club.value} value={club.value}>
@@ -436,16 +466,24 @@ const Profiles = () => {
                             </Select.Option>
                           ))}
                         </Select>
-                      ) : decryptedPermission === "1" ? (
-                        <Select>
+                      ) : !param.key && decryptedPermission == "1" ? (
+                        <Select defaultValue={null}>
                           {listClubs?.map((club: any) => (
                             <Select.Option key={club.value} value={club.value}>
                               {club.text}
                             </Select.Option>
                           ))}
                         </Select>
+                      ) : param.key && decryptedPermission == "1" ? (
+                        <Input
+                          disabled={true}
+                          defaultValue={permissionManage}
+                        />
                       ) : decryptedPermission === "2" ? (
-                        <Input disabled={true} defaultValue={decryptedNameClb}/>
+                        <Input
+                          disabled={true}
+                          defaultValue={decryptedNameClb}
+                        />
                       ) : null}
                     </Form.Item>
                   </Col>
@@ -503,11 +541,20 @@ const Profiles = () => {
                     </Form.Item>
                   </Col>
                   <Col span={8} xs={24} sm={12} md={8}>
-                    <Form.Item
+                    {/* <Form.Item
                       label="Quận/Huyện"
                       name="district"
                       rules={[
                         { required: true, message: "Vui lòng điền quận/huyện" },
+                      ]}
+                    >
+                      <Input />
+                    </Form.Item> */}{" "}
+                    <Form.Item
+                      label="Quê quán"
+                      name="hometown"
+                      rules={[
+                        { required: true, message: "Vui lòng điền quê quán" },
                       ]}
                     >
                       <Input />
@@ -528,15 +575,6 @@ const Profiles = () => {
                 <Row gutter={16}>
                   <Col span={8} xs={24} sm={12} md={8}>
                     {" "}
-                    <Form.Item
-                      label="Quê quán"
-                      name="hometown"
-                      rules={[
-                        { required: true, message: "Vui lòng điền quê quán" },
-                      ]}
-                    >
-                      <Input />
-                    </Form.Item>
                   </Col>
                 </Row>
                 {/* {decryptedPermission == "0" ? (

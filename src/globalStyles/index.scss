@@ -170,7 +170,11 @@ h3 {
 .ant-space-item {
   width: 100% !important;
 }
-
+.ant-form-item-label{
+  white-space: nowrap !important;
+  width: auto !important;
+  // padding-right: 1vh !important;
+}
 // .ant-table-row-selected {
 //   z-index: 1;
 //   background-color: rgba(4, 108, 57, 0.2) !important;

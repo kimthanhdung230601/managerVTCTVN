@@ -161,7 +161,7 @@ const ManagerAccountUnDepended = ({refetch}:ManagerAccountProps) => {
       width: 250,
     },
     {
-      title: "Mã định danh",
+      title: "CCCD",
       dataIndex: "idcard",
       width: 250,
     },
@@ -304,7 +304,7 @@ const ManagerAccountUnDepended = ({refetch}:ManagerAccountProps) => {
       width: 250,
     },
     {
-      title: "Mã định danh",
+      title: "CCCD",
       dataIndex: "idcard",
       width: 250,
     },

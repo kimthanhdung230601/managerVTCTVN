@@ -137,40 +137,39 @@ export default function ManageMember() {
     },
   });
   const deleteMemberMutation = useMutation(
-    async (payload: any) =>  await deleteMember(payload),{
+    async (payload: any) => await deleteMember(payload),
+    {
       onSuccess: (data) => {
-        if(data.status === "success"){
-          message.success("Xoá thành công, hồ sơ đang chờ duyệt xoá!")
-        setTimeout(()=> {
-          window.location.reload()
-        }, 1500)
-        } else message.success("Có lỗi xảy ra, vui lòng thử lại sau!")
-
+        if (data.status === "success") {
+          message.success("Xoá thành công, hồ sơ đang chờ duyệt xoá!");
+          setTimeout(() => {
+            window.location.reload();
+          }, 1500);
+        } else message.success("Có lỗi xảy ra, vui lòng thử lại sau!");
       },
       onError: (data) => {
-          message.success("Có lỗi xảy ra, vui lòng thử lại sau!")
-      }
+        message.success("Có lỗi xảy ra, vui lòng thử lại sau!");
+      },
     }
-  )
+  );
   const handleDeleteMember = (id: string) => {
     deleteMemberMutation.mutate({
       data: [
         {
-          id: id
-        }
-      ]
-    })
-  }
+          id: id,
+        },
+      ],
+    });
+  };
   const handleDeleteMultiRecord = () => {
     deleteMemberMutation.mutate({
-      data: selectedRowKeysCN.map((item:any, index:number) => {
+      data: selectedRowKeysCN.map((item: any, index: number) => {
         return {
-          id: item
-        }
-      })
-    })
-  
-  }
+          id: item,
+        };
+      }),
+    });
+  };
   const onSelectChangeCN = (newSelectedRowKeysCN: React.Key[]) => {
     setSelectedRowKeysCN(newSelectedRowKeysCN);
   };
@@ -240,7 +239,7 @@ export default function ManageMember() {
       onFilter: (value: any, record) => record.level.indexOf(value) === 0,
     },
     {
-      title: "CLB trực thuộc",
+      title: "Đơn vị quản lý",
       dataIndex: "NameClb",
       filterMultiple: false,
       filters:
@@ -306,17 +305,21 @@ export default function ManageMember() {
             >
               Xem
             </Button>
-            <Popconfirm
-              title="Xác nhận xoá thành viên"
-              description={`Bạn có chắc chắn muốn xoá thành viên ${record.name} không ? `}
-              onConfirm={() => handleDeleteMember(record.id)}
-              okText="Có"
-              cancelText="Huỷ"
-            >
-              <Button className={`${styles.btn} ${styles.deteleBtn}`}>
-                Xoá
-              </Button>
-            </Popconfirm>
+            {record.status !== "Đã duyệt" ? (
+              <Popconfirm
+                title="Xác nhận xoá thành viên"
+                description={`Bạn có chắc chắn muốn xoá thành viên ${record.name} không ? `}
+                onConfirm={() => handleDeleteMember(record.id)}
+                okText="Có"
+                cancelText="Huỷ"
+              >
+                <Button className={`${styles.btn} ${styles.deteleBtn}`}>
+                  Xoá
+                </Button>
+              </Popconfirm>
+            ) : (
+              <> </>
+            )}
           </>
         );
       },
@@ -374,7 +377,9 @@ export default function ManageMember() {
                   <div className={styles.btnWrap}>
                     <Button
                       className={styles.addBtn}
-                      onClick={() => navigate("/them-hoi-vien")}
+                      onClick={() => {
+                        return navigate(`/them-hoi-vien/f1`)
+                      }}
                     >
                       <PlusOutlined className={styles.icon} />
                       <span style={{ color: "#fff" }}>Thêm hội viên</span>

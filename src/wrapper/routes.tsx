@@ -48,6 +48,7 @@ const Component = () => {
           element={<ChangePassword />}
         ></Route>
         <Route path="/them-hoi-vien" element={<Profiles />}></Route>
+        <Route path="/them-hoi-vien/:key" element={<Profiles />}></Route>
         <Route path={`/lien-doan/:key`} element={<Admin />}></Route>
         <Route
           path="/lien-doan/:key/UpdateMember"

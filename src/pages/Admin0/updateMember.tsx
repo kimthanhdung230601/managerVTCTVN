@@ -129,6 +129,7 @@ const UpdateMember = () => {
           code,
           level,
           time: moment(time, "DD/MM/YYYY").format("YYYY/MM/DD"),
+          name: "Không xác định",
         };
       });
     const payload = {
@@ -146,19 +147,13 @@ const UpdateMember = () => {
           separatedData.forEach((dataItem: any) => {
             if (dataItem.code === item.code) {
               dataItem.name = item.name;
-            } else {
-              dataItem.name = "Không xác định";
-              setDisableLevel(true);
             }
           });
         });
-      const hasUndefinedName = separatedData.some(
-        (dataItem: any) => dataItem.name === "Không xác định"
-      );
 
-      if (!hasUndefinedName) setDisableLevel(false);
-      setDataLevel(separatedData);
+      setDataLevel([...separatedData]); // Cập nhật dữ liệu trên bảng
       setLoading(false);
+      setDisableLevel(false);
     } catch (error) {
       console.error("Error fetching data:", error);
       setLoading(false);
@@ -194,6 +189,7 @@ const UpdateMember = () => {
         name_achievements,
         prize,
         time: moment(time, "DD/MM/YYYY").format("YYYY/MM/DD"),
+        name: "Không xác định",
       };
     });
 
@@ -212,18 +208,12 @@ const UpdateMember = () => {
           separatedData.forEach((dataItem: any) => {
             if (dataItem.code === item.code) {
               dataItem.name = item.name;
-            } else {
-              dataItem.name = "Không xác định";
-              setDisableAchie(true);
             }
           });
         });
-      const hasUndefinedName = separatedData.some(
-        (dataItem: any) => dataItem.name === "Không xác định"
-      );
 
-      if (!hasUndefinedName) setDisableAchie(false);
-      setDataAchie(separatedData);
+      setDataAchie([...separatedData]); // Cập nhật dữ liệu trên bảng
+      setDisableAchie(false);
       setLoadingAchie(false);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -291,7 +281,7 @@ const UpdateMember = () => {
                 loading={loading}
               />
               <Button
-                disabled={dataLevel === undefined || disableLevel}
+                disabled={disableLevel}
                 className={styles.btnUpdate}
                 onClick={() => handleConfirmLevel()}
               >
@@ -341,11 +331,7 @@ const UpdateMember = () => {
                 pagination={{ pageSize: 10 }}
               />
               <Button
-                disabled={
-                  dataAchie === undefined ||
-                  dataAchie.length === 0 ||
-                  disableAchie
-                }
+                disabled={disableAchie}
                 onClick={() => {
                   handleConfirm();
                 }}

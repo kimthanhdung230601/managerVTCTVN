@@ -114,7 +114,7 @@ const ManagerF1 = () => {
   const isMobile = useMediaQuery({ maxWidth: 768 });
 
   const [isModalF1, setIsModalF1] = useState(false);
-  const [id, setId] = useState();
+  const [idF1, setId] = useState();
   const showModalMember = (value: any) => {
     setIsModalF1(true);
     setId(value);
@@ -156,7 +156,7 @@ const ManagerF1 = () => {
       width: 210,
     },
     {
-      title: "Mã định danh",
+      title: "CCCD",
       dataIndex: "idcard",
       width: 250,
     },
@@ -243,7 +243,7 @@ const ManagerF1 = () => {
         const id = encodeURIComponent(idEncode);
         return (
           <span>
-            <button className={styles.btnTb} onClick={() => setIsModalF1(true)}>
+            <button className={styles.btnTb} onClick={() => showModalMember(record.id)}>
               Sửa
             </button>
             <Popconfirm
@@ -359,7 +359,7 @@ const ManagerF1 = () => {
       width: 200,
       render: (_, record) => (
         <span>
-          <button className={styles.btnTb} onClick={() => setIsModalF1(true)}>
+          <button className={styles.btnTb} onClick={() => showModalMember(record.id)}>
             Sửa
           </button>
           <Popconfirm
@@ -435,7 +435,7 @@ const ManagerF1 = () => {
         isModalOpen={isModalF1}
         handleCancel={handleCancelMember}
         handleOk={handleOkMember}
-        id={id}
+        id={idF1}
         setId={setId}
         refetchAccountTable={refetchAccept}
       />

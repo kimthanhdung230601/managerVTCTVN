@@ -185,7 +185,7 @@ const ManagerMemberTwo = () => {
 
   const confirmDelete = async (value: any) => {
     const payload = {
-      id: value,
+      data: [{ id: value }],
     };
     const res = await deleteMemberF3(payload);
     message.success("Yêu câù đã được gửi đến LDVTCT Việt Nam");
@@ -220,6 +220,7 @@ const ManagerMemberTwo = () => {
     {
       title: "STT",
       dataIndex: "STT",
+      width: 30,
       render: (value, record, index) => {
         return index + 1 + (currentPage - 1) * 10;
       },
@@ -227,11 +228,12 @@ const ManagerMemberTwo = () => {
     {
       title: "Họ tên",
       dataIndex: "name",
-      width: 130,
+      width: 230,
     },
     {
       title: "Ngày sinh",
       dataIndex: "birthday",
+      width: 120,
       render: (value, record) => {
         return moment(value).format("DD/MM/YYYY");
       },
@@ -242,9 +244,20 @@ const ManagerMemberTwo = () => {
       width: 130,
     },
     {
-      title: "Số định danh",
-      dataIndex: "idcard",
+      title: "Mã định danh",
+      dataIndex: "code",
       width: 130,
+      render: (value, record) => {
+        if (value == null || value == undefined || value == "")
+          return <span style={{ color: "#8D8D8D" }}>Chưa duyệt HS</span>;
+        else {
+          return (
+            <span style={{ color: "#046C39", fontWeight: "bold" }}>
+              {value}
+            </span>
+          );
+        }
+      },
     },
     {
       title: "Đẳng cấp",
@@ -338,19 +351,19 @@ const ManagerMemberTwo = () => {
         const id = encodeURIComponent(idEncode);
         return (
           <div style={{ display: "flex" }}>
-            <button
+            <Button
               className={styles.btnView}
               onClick={() => navigate(`/thong-tin-ho-so/${id}`)}
             >
               Xem{" "}
-            </button>
-            <button
+            </Button>
+            <Button
               className={styles.btnTb}
               onClick={() => showModalUpdateNote(record?.id, record?.note)}
             >
               Sửa{" "}
-            </button>
-            {/* <button className={styles.btnHide}>Ẩn</button> */}
+            </Button>
+            {/* <Button className={styles.btnHide}>Ẩn</Button> */}
             {record.status == "Chờ duyệt" && (
               <Popconfirm
                 title="Xóa"
@@ -368,7 +381,7 @@ const ManagerMemberTwo = () => {
           </div>
         );
       },
-      width: 230,
+      width: 170,
     },
   ];
   useEffect(() => {
