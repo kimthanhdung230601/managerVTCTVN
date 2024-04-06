@@ -86,7 +86,7 @@ const ManagerAccount = () => {
     data: dataMemberF12Accept,
     refetch: refetchAccept,
     isFetching: isFetchingAccept,
-  } = useQuery(["dataF12Accept", initialPayload], () =>
+  } = useQuery(["dataF12Accept", payload], () =>
     getListMemberF12(payload)
   );
   const onChange: TableProps<DataType>["onChange"] = (pagination, filters) => {
