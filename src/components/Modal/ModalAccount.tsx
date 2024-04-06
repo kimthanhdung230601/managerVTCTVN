@@ -58,27 +58,27 @@ const ModalAccount = ({
   // const [fileList2, setFileList2] = useState<UploadFile[]>([]);
   const handleCancel1 = () => setPreviewOpen1(false);
   const handleCancel2 = () => setPreviewOpen2(false);
-  const handlePreviewCertificate = async (file: UploadFile) => {
-    if (!file.url && !file.preview) {
-      file.preview = await getBase64(file.originFileObj);
-    }
-    setPreviewImage1(file.url || (file.preview as string));
-    setPreviewOpen1(true);
-    setPreviewTitle1(
-      file.name || file.url!.substring(file.url!.lastIndexOf("/") + 1)
-    );
-  };
+  // const handlePreviewCertificate = async (file: UploadFile) => {
+  //   if (!file.url && !file.preview) {
+  //     file.preview = await getBase64(file.originFileObj);
+  //   }
+  //   setPreviewImage1(file.url || (file.preview as string));
+  //   setPreviewOpen1(true);
+  //   setPreviewTitle1(
+  //     file.name || file.url!.substring(file.url!.lastIndexOf("/") + 1)
+  //   );
+  // };
 
-  const handlePreviewRef = async (file: UploadFile) => {
-    if (!file.url && !file.preview) {
-      file.preview = await getBase64(file.originFileObj);
-    }
-    setPreviewImage2(file.url || (file.preview as string));
-    setPreviewOpen2(true);
-    setPreviewTitle2(
-      file.name || file.url!.substring(file.url!.lastIndexOf("/") + 1)
-    );
-  };
+  // const handlePreviewRef = async (file: UploadFile) => {
+  //   if (!file.url && !file.preview) {
+  //     file.preview = await getBase64(file.originFileObj);
+  //   }
+  //   setPreviewImage2(file.url || (file.preview as string));
+  //   setPreviewOpen2(true);
+  //   setPreviewTitle2(
+  //     file.name || file.url!.substring(file.url!.lastIndexOf("/") + 1)
+  //   );
+  // };
   // const handleChangeCertificate: UploadProps["onChange"] = ({
   //   fileList: newFileList,
   // }) => setFileListCertificate(newFileList);
@@ -135,6 +135,7 @@ const ModalAccount = ({
   // const [fileListRef, setFileListRef] = useState<any>([]);
   const [fileListCertificate, setFileListCertificate] = useState<any>([]);
   const [fileListRef, setFileListRef] = useState<any>([]);
+  const [fileListCmnd, setFileListCmnd] = useState<any>([]);
   //image
   const {
     data: dataDetailF2,
@@ -182,6 +183,7 @@ const ModalAccount = ({
   };
   const [uploadedCertificate, setUploadedCertificate] = useState<any>(null);
   const [uploadedRef, setUploadedARef] = useState<any>(null);
+  const [uploadedCmnd, setUploadedACmnd] = useState<any>(null);
   //image ref
   const onChangeRef = ({
     fileList: newFileList,
@@ -196,7 +198,32 @@ const ModalAccount = ({
     }
     setFileListRef(newFileList);
   };
+  //cmnd
+  const onChangeCmnd = ({
+    fileList: newFileList,
+  }: {
+    fileList: UploadFile[];
+  }) => {
+    // Nếu người dùng đã upload ảnh, lưu trạng thái ảnh đã upload
+    if (newFileList.length > 0) {
+      setUploadedACmnd(newFileList[0]);
+    } else {
+      setUploadedACmnd(null);
+    }
+    setFileListCmnd(newFileList);
+  };
   const onPreviewRef = async (file: any) => {
+    const src = file.url || (await getSrcFromFile(file));
+    const imgWindow = window.open(src);
+    if (imgWindow) {
+      const image = new Image();
+      image.src = src;
+      imgWindow.document.write(image.outerHTML);
+    } else {
+      window.location.href = src;
+    }
+  };
+  const onPreviewCmnd = async (file: any) => {
     const src = file.url || (await getSrcFromFile(file));
     const imgWindow = window.open(src);
     if (imgWindow) {
@@ -254,7 +281,7 @@ const ModalAccount = ({
     formdata.append("permission", dataDetailF2?.data[0].permission);
     formdata.append("pending", dataDetailF2?.data[0].pending);
     let certificateFile = null;
-    let avatarFile = null;
+    let refFile = null;
 
     if (uploadedCertificate) {
       certificateFile = uploadedCertificate.originFileObj as File;
@@ -263,9 +290,9 @@ const ModalAccount = ({
     }
 
     if (uploadedRef) {
-      avatarFile = uploadedRef.originFileObj as File;
+      refFile = uploadedRef.originFileObj as File;
     } else if (fileListRef && fileListRef.length > 0) {
-      avatarFile = fileListRef[0].originFileObj as File;
+      refFile = fileListRef[0].originFileObj as File;
     }
 
     if (certificateFile) {
@@ -276,11 +303,11 @@ const ModalAccount = ({
       );
     }
 
-    if (avatarFile) {
+    if (refFile) {
       formdata.append(
-        `avatar`,
-        avatarFile,
-        CryptoJS.AES.encrypt(avatarFile.name, randomKey).toString()
+        `ref`,
+        refFile,
+        CryptoJS.AES.encrypt(refFile.name, randomKey).toString()
       );
     }
     // const res = await updateUser(formdata);
@@ -294,28 +321,38 @@ const ModalAccount = ({
     refetch();
     //reload img
     const imageCertificateFileName = dataDetailF2?.data[0].image_certificate;
-    const avatarFileName = dataDetailF2?.data[0].image_ref;
+    const refFileName = dataDetailF2?.data[0].image_ref;
+    const CmndFileName = dataDetailF2?.data[0].image_cmnd;
     // Nếu tên file tồn tại, tạo đối tượng fileList từ tên file
-    if (imageCertificateFileName && avatarFileName) {
-      const CertificateFileList = [
-        {
-          uid: "-1",
-          name: imageCertificateFileName,
-          status: "done",
-          url: `https://vocotruyen.id.vn/PHP_IMG/${imageCertificateFileName}`,
-        },
-      ];
-      setFileListCertificate(CertificateFileList);
+    if (imageCertificateFileName && refFileName && CmndFileName) {
     }
-    const avatarFileList = [
+    const CertificateFileList = [
       {
         uid: "-1",
-        name: avatarFileName,
+        name: imageCertificateFileName,
         status: "done",
-        url: `https://vocotruyen.id.vn/PHP_IMG/${avatarFileName}`,
+        url: `https://vocotruyen.id.vn/PHP_IMG/${imageCertificateFileName}`,
       },
     ];
-    setFileListRef(avatarFileList);
+    setFileListCertificate(CertificateFileList);
+    const refFileList = [
+      {
+        uid: "-1",
+        name: refFileName,
+        status: "done",
+        url: `https://vocotruyen.id.vn/PHP_IMG/${refFileName}`,
+      },
+    ];
+    setFileListRef(refFileList);
+    const CmndFileList = [
+      {
+        uid: "-1",
+        name: CmndFileName,
+        status: "done",
+        url: `https://vocotruyen.id.vn/PHP_IMG/${CmndFileName}`,
+      },
+    ];
+    setFileListCmnd(CmndFileList);
   }, [id, dataDetailF2?.data[0]]);
 
   //select
@@ -378,7 +415,6 @@ const ModalAccount = ({
               <Col span={12}>
                 {" "}
                 <Form.Item label="Mật khẩu" name="password">
-
                   <Input.Password disabled={true} />
                 </Form.Item>{" "}
                 <Form.Item
@@ -435,7 +471,7 @@ const ModalAccount = ({
               </Col>
             </Row>
             <Row>
-              <Col span={12}>
+              <Col span={8}>
                 {" "}
                 <Form.Item
                   name="image_certificate"
@@ -447,13 +483,13 @@ const ModalAccount = ({
                     fileList={fileListCertificate}
                     onChange={onChangeCertificate}
                     onPreview={onPreviewCertificate}
-                    className="avatar-uploader"
+                    className="ref-uploader"
                   >
                     {fileListCertificate.length >= 1 ? null : uploadButton}
                   </Upload>
                 </Form.Item>
               </Col>
-              <Col span={12}>
+              <Col span={8}>
                 <Form.Item
                   name="image_ref"
                   label="Ảnh giấy giới thiệu"
@@ -464,9 +500,26 @@ const ModalAccount = ({
                     onPreview={onPreviewRef}
                     listType="picture-card"
                     fileList={fileListRef}
-                    className="avatar-uploader"
+                    className="ref-uploader"
                   >
                     {fileListRef.length >= 1 ? null : uploadButton}
+                  </Upload>
+                </Form.Item>
+              </Col>
+              <Col span={8}>
+                <Form.Item
+                  name="image_cmnd"
+                  label="Ảnh CCCD"
+                  // rules={[{ required: true, message: "Vui lòng tải ảnh lên" }]}
+                >
+                  <Upload
+                    onChange={onChangeCmnd}
+                    onPreview={onPreviewCmnd}
+                    listType="picture-card"
+                    fileList={fileListCmnd}
+                    className="ref-uploader"
+                  >
+                    {fileListCmnd.length >= 1 ? null : uploadButton}
                   </Upload>
                 </Form.Item>
               </Col>

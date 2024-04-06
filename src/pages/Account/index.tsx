@@ -51,6 +51,10 @@ export default function Account() {
                                         <Image src={`https://vocotruyen.id.vn/PHP_IMG/${adminInfor?.data[0].image_ref}`} preview={true} className={styles.accImg}/>
                                         <div style={{fontWeight: "500",color: "#000", marginTop: "8px"}}>Ảnh giấy giới thiệu</div>
                                 </Col>
+                                <Col className={`${styles.colImg} gutter-row`} xxl={24} md={24} xs={12} style={{textAlign: "center", marginBottom: "30px"}}>
+                                        <Image src={`https://vocotruyen.id.vn/PHP_IMG/${adminInfor?.data[0].image_cmnd}`} preview={true} className={styles.accImg}/>
+                                        <div style={{fontWeight: "500",color: "#000", marginTop: "8px"}}>Ảnh CCCD</div>
+                                </Col>
                             </Row>
                         </Col>
                         <Col className='gutter-row' xxl={9} lg={16} md={16} xs={24}>
@@ -111,7 +115,7 @@ export default function Account() {
                             <Row gutter={40} className={styles.DetailItem}>
                                 <Col className='gutter-row' xxl={9} lg={12} md={12} xs={12} >
                                     <span className={styles.NumberOrders}>7.</span> 
-                                    <span style={{color: "#000"}}>CLB/Môn phái/Võ đường/Võ phái/Trung tâm</span>
+                                    <span style={{color: "#000"}}>Môn phái/Võ phái/Võ đường/Trung tâm/CLB</span>
                                 </Col>
                                 <Col className='gutter-row' xxl={12} lg={12} md={12} xs={12}>
                                     <span style={{color: "#000"}}>{adminInfor?.data[0].NameClb}</span>

@@ -72,7 +72,11 @@ const customLocale = {
   selectAll: "Chọn tất cả", // Thay đổi văn bản "Select All Items" ở đây
   selectInvert: "Đảo ngược", // Thay đổi văn bản khi chọn ngược
 };
-const ManagerMemberDeleted = () => {
+interface fetchingProp {
+  // fetching: any;
+  setFetching: (value: boolean) => void;
+}
+const ManagerMemberDeleted = ({ setFetching }: fetchingProp) => {
   //filter
   const [currentPage, setCurrentPage] = useState(1);
   const status = "Chờ duyệt xóa";
@@ -148,6 +152,7 @@ const ManagerMemberDeleted = () => {
     const res = await deleteMemberF3(payload);
     refetch();
     message.success("Xóa thành công");
+    setFetching(false)
   };
   const confirmUpdate = async (value: any) => {
     const payload = {

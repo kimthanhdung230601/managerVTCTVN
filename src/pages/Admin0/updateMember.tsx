@@ -68,6 +68,9 @@ const columnsLevel: TableProps<DataType>["columns"] = [
     title: "Ngày cấp",
     dataIndex: "time",
     key: "time",
+    render(value, record, index) {
+      return <>{moment(value).format("DD/MM/YYYY")}</>;
+    },
   },
 ];
 const columnsAchie: TableProps<DataType>["columns"] = [
@@ -102,6 +105,9 @@ const columnsAchie: TableProps<DataType>["columns"] = [
     title: "Thời gian",
     dataIndex: "time",
     key: "time",
+    render(value, record, index) {
+      return <>{moment(value).format("DD/MM/YYYY")}</>;
+    },
   },
 ];
 const UpdateMember = () => {

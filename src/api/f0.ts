@@ -7,10 +7,10 @@ export const deleteMemberF3 = (payload: any) =>
 //acount member
 export const getListMemberF12 = (payload: any) =>
   sendGet(`/AdminGetUsers?${payload}`);
-export const getListMemberF12Accept = (payload: any) =>
-  sendGet(`/AdminGetUsers?page=${payload}`);
-export const getListMemberF12UnAccept = (payload: any) =>
-  sendGet(`/AdminGetUsers?page=${payload}`);
+// export const getListMemberF12Accept = (payload: any) =>
+//   sendGet(`/AdminGetUsers?page=${payload}`);
+// export const getListMemberF12UnAccept = (payload: any) =>
+//   sendGet(`/AdminGetUsers?page=${payload}`);
 /////
 export const deleteMemberF12 = (payload: any) =>
   sendPost(`/AdminDeleteUser`, payload);

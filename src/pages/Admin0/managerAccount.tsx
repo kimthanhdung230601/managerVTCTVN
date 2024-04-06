@@ -63,6 +63,7 @@ interface DataType {
   club: string;
   image_certificate: any;
   image_ref: any;
+  image_cmnd:any;
 }
 
 const filterProivce = province.map((province) => ({
@@ -79,7 +80,7 @@ const customLocale = {
 const ManagerAccount = () => {
   //tài khoản đã được duyệt
   const [currentPageAccount, setCurrentPageAccount] = useState(1);
-  const initialPayload = `page=${currentPageAccount}&pending=1`;
+  const initialPayload = `page=${currentPageAccount}&pending=1&permission=2`;
   const [payload, setPayload] = useState<any>(initialPayload);
   const {
     data: dataMemberF12Accept,
@@ -248,7 +249,7 @@ const ManagerAccount = () => {
             <Image
               src={`https://vocotruyen.id.vn/PHP_IMG/${record.image_ref}`}
               preview={true}
-              // alt="no image"
+              // alt="Không có ảnh"
               className={styles.img}
             />
           </div>
@@ -256,7 +257,15 @@ const ManagerAccount = () => {
             <Image
               src={`https://vocotruyen.id.vn/PHP_IMG/${record.image_certificate}`}
               preview={true}
-              // alt="no image"
+              // alt="Không có ảnh"
+              className={styles.img}
+            />
+          </div>
+          <div className={styles.imgWrapItem}>
+            <Image
+              src={`https://vocotruyen.id.vn/PHP_IMG/${record.image_cmnd}`}
+              preview={true}
+               alt="Không có ảnh"
               className={styles.img}
             />
           </div>
@@ -405,7 +414,7 @@ const ManagerAccount = () => {
             <Image
               src={`https://vocotruyen.id.vn/PHP_IMG/${record.image_ref}`}
               preview={true}
-              // alt="no image"
+              // alt="Không có ảnh"
               className={styles.img}
             />
           </div>
@@ -413,7 +422,15 @@ const ManagerAccount = () => {
             <Image
               src={`https://vocotruyen.id.vn/PHP_IMG/${record.image_certificate}`}
               preview={true}
-              // alt="no image"
+              // alt="Không có ảnh"
+              className={styles.img}
+            />
+          </div>
+          <div className={styles.imgWrapItem}>
+            <Image
+              src={`https://vocotruyen.id.vn/PHP_IMG/${record.image_cmnd}`}
+              preview={true}
+              alt="Không có ảnh"
               className={styles.img}
             />
           </div>

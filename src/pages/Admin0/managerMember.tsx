@@ -64,25 +64,27 @@ interface DataType {
 }
 
 const ManagerMember = () => {
+  // const [payload,setPayload] = useState()
+  const [fetching,setFetching] = useState(true);
   const items: CollapseProps["items"] = [
     {
       key: "1",
       label: <span className={styles.TitleText}>Quản lý hội viên</span>,
       children: (
         <>
-          <ManagerMemberAll />
+          <ManagerMemberAll fetching={fetching} setFetching={setFetching}/>
         </>
       ),
     },
     {
       key: "2",
       label: <span className={styles.TitleText}>Xét duyệt hồ sơ thành viên</span>,
-      children: <ManagerMemberUnAccept />,
+      children: <ManagerMemberUnAccept setFetching={setFetching}/>,
     },
     {
       key: "3",
       label: <span className={styles.TitleText}>Xét duyệt xóa thành viên</span>,
-      children: <ManagerMemberDeleted />,
+      children: <ManagerMemberDeleted setFetching={setFetching}/>,
     },
   ];
   return (
