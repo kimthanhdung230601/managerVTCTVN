@@ -107,14 +107,6 @@ export default function SignupF1() {
       location: value.location,
       password: value.password,
     };
-    // const formdata = new FormData();
-    // formdata.append("name", value.name);
-    // formdata.append("phone", value.phone);
-    // formdata.append("level", value.level);
-    // formdata.append("location", value.location);
-    // formdata.append("manage", value.location);
-    // formdata.append("password", value.password);
-    // console.log("form", value);
     signupMutation.mutate(payload);
   };
   useEffect(() => {
