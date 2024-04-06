@@ -99,17 +99,11 @@ const AdminTwo = () => {
       // clb: data?.data[0].,
     });
   }
-  // console.log(userId);
-  const dispatch = useDispatch();
-  dispatch({
-    club: decryptedClub,
-    NameClub: decryptedNameClb,
-    type: "status_infor"
-  });
   return (
-    <div style={{ backgroundColor: "#fff" }}>
+    <div style={{ backgroundColor: "#fff"}}>
       <Header />
-      <div className={styles.logoWrap}>
+    
+        <div className={styles.logoWrap}>
         <div className={styles.title}>
           <div className={styles.logoContainer}>
             <img
@@ -160,6 +154,8 @@ const AdminTwo = () => {
         <ManagerMemberTwo />
       </div>
       <Footer />
+    
+      
     </div>
   );
 };

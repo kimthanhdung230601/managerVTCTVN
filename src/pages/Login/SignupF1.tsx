@@ -106,6 +106,7 @@ export default function SignupF1() {
       level: value.level,
       location: value.location,
       password: value.password,
+      username: value.username
     };
     signupMutation.mutate(payload);
   };
@@ -268,6 +269,18 @@ export default function SignupF1() {
                   );
               })}
             </Select>
+          </Form.Item>
+          <Form.Item
+            name="username"
+            rules={[{ required: true, message: "Vui lòng nhập tài khoản đăng nhập!" }]}
+            wrapperCol={{ span: 24 }}
+            className={styles.formItem}
+          >
+            <Input
+              prefix={<UserOutlined className={styles.icon} />}
+              placeholder="Tài khoản đăng nhập"
+              className={styles.formInput}
+            />
           </Form.Item>
           <Form.Item
             name="password"

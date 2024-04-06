@@ -9,11 +9,11 @@ import ClubReducer from "./ClubReducer";
 export const PersistConfig = {
   key: "root",
   storage: localStorage,
-  whitelist: ["loadCount"],
+  whitelist: ["loadCount", "clubInfor"],
 };
 
 const rootReducer = combineReducers({
-  reloadCount: persistReducer(PersistConfig, loadCountReducer, ClubReducer),
+  reloadCount: persistReducer(PersistConfig, loadCountReducer),
 });
 
 export default rootReducer;
