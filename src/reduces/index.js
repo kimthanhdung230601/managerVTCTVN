@@ -5,7 +5,7 @@ import localStorage from "redux-persist/es/storage";
 import persistReducer from "redux-persist/es/persistReducer";
 
 import loadCountReducer from "./ReloadReducer";
-
+import ClubReducer from "./ClubReducer";
 export const PersistConfig = {
   key: "root",
   storage: localStorage,
@@ -13,7 +13,7 @@ export const PersistConfig = {
 };
 
 const rootReducer = combineReducers({
-  reloadCount: persistReducer(PersistConfig, loadCountReducer),
+  reloadCount: persistReducer(PersistConfig, loadCountReducer, ClubReducer),
 });
 
 export default rootReducer;

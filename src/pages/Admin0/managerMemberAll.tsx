@@ -211,7 +211,7 @@ const ManagerMemberAll = () => {
       dataIndex: "code",
       width: 160,
       render: (value, record) => {
-        if (value == null|| value == undefined ||value=="")
+        if (value == "null"|| value == undefined ||value=="")
           return <span style={{ color: "#8D8D8D" }}>Chưa duyệt HS</span>;
         else {
           return (
