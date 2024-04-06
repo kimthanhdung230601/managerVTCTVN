@@ -18,6 +18,7 @@ import Cookies from "js-cookie";
 import CryptoJS from "crypto-js";
 import { useQuery } from "react-query";
 import { getInforAdmin, getListMemberF3 } from "../../api/f2";
+import { useDispatch, useSelector } from "react-redux";
 const secretKey = process.env.REACT_APP_SECRET_KEY as string;
 
 type MenuItem = Required<MenuProps>["items"][number];
@@ -66,6 +67,8 @@ const AdminTwo = () => {
   const decryptedEmail = email.toString(CryptoJS.enc.Utf8);
   const id = CryptoJS.AES.decrypt(Cookies.get("id") as string, secretKey);
   const decryptedId = id.toString(CryptoJS.enc.Utf8);
+  const club = CryptoJS.AES.decrypt(Cookies.get("club") as string, secretKey);
+  const decryptedClub = club.toString(CryptoJS.enc.Utf8);
   const NameClb = CryptoJS.AES.decrypt(
     Cookies.get("NameClb") as string,
     secretKey
@@ -97,7 +100,12 @@ const AdminTwo = () => {
     });
   }
   // console.log(userId);
-
+  const dispatch = useDispatch();
+  dispatch({
+    club: decryptedClub,
+    NameClub: decryptedNameClb,
+    type: "status_infor"
+  });
   return (
     <div style={{ backgroundColor: "#fff" }}>
       <Header />

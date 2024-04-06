@@ -15,6 +15,7 @@ import {
   getListMember,
   searchInTable,
 } from "../../api/f1";
+import moment from "moment";
 
 const customLocale = {
   filterConfirm: "OK", // Thay đổi nút xác nhận
@@ -61,34 +62,34 @@ export default function ManageMember() {
   const { data: clubs } = useQuery(["clubs"], () => getClubs());
   const [selectedRowKeysCN, setSelectedRowKeysCN] = useState<React.Key[]>([]);
   const [memberList, setMemberList] = useState<data>();
-  const { data: memberListData, isFetching } = useQuery(
-    ["member"],
-    () => getListMember(),
-    {
-      onSettled: (data) => {
-        if (data.status === "failed") {
-          message.warning("Chưa có thành viên");
-        } else if (data.status === "success") {
-          const newData = data.data.map((item: any, index: number) => {
-            return {
-              ...item,
-              key: item.id,
-            };
-          });
+  const {
+    data: memberListData,
+    isFetching,
+    refetch,
+  } = useQuery(["member"], () => getListMember(), {
+    onSettled: (data) => {
+      if (data.status === "failed") {
+        message.warning("Chưa có thành viên");
+      } else if (data.status === "success") {
+        const newData = data.data.map((item: any, index: number) => {
+          return {
+            ...item,
+            key: item.id,
+          };
+        });
 
-          setMemberList({
-            status: data.status,
-            total_products: data.total_products,
-            total_pages: data.total_pages,
-            index_page: data.index_page,
-            data: newData,
-          });
-        } else {
-          message.error("Có lỗi xảy xa, vui lòng thử lại sau");
-        }
-      },
-    }
-  );
+        setMemberList({
+          status: data.status,
+          total_products: data.total_products,
+          total_pages: data.total_pages,
+          index_page: data.index_page,
+          data: newData,
+        });
+      } else {
+        message.error("Có lỗi xảy xa, vui lòng thử lại sau");
+      }
+    },
+  });
   const { data: resultFilter } = useQuery(
     ["filters", param],
     () => getFilterTable("/ManageGetMembers", param),
@@ -142,9 +143,7 @@ export default function ManageMember() {
       onSuccess: (data) => {
         if (data.status === "success") {
           message.success("Xoá thành công, hồ sơ đang chờ duyệt xoá!");
-          setTimeout(() => {
-            window.location.reload();
-          }, 1500);
+          refetch();
         } else message.success("Có lỗi xảy ra, vui lòng thử lại sau!");
       },
       onError: (data) => {
@@ -169,6 +168,7 @@ export default function ManageMember() {
         };
       }),
     });
+    refetch();
   };
   const onSelectChangeCN = (newSelectedRowKeysCN: React.Key[]) => {
     setSelectedRowKeysCN(newSelectedRowKeysCN);
@@ -209,7 +209,7 @@ export default function ManageMember() {
       title: "Ngày sinh",
       dataIndex: "birthday",
       render: (value, record) => (
-        <span>{value ? value.split(" ")[0] : value}</span>
+        <span>{moment(value).format("DD/MM/YYYY")}</span>
       ),
     },
     {
@@ -237,21 +237,24 @@ export default function ManageMember() {
       filterMultiple: false,
       filters: levelFilters,
       onFilter: (value: any, record) => record.level.indexOf(value) === 0,
+      render(value, record, index) {
+        return <>{value.split("-")[0]}</>;
+      },
     },
     {
       title: "Đơn vị quản lý",
       dataIndex: "NameClb",
-      filterMultiple: false,
-      filters:
-        clubs?.status === "success"
-          ? clubs?.data.map((item: any, index: number) => {
-              return {
-                text: item.NameClb,
-                value: item.club,
-              };
-            })
-          : null,
-      onFilter: (value: any, record) => record.club.indexOf(value) === 0,
+      // filterMultiple: false,
+      // filters:
+      //   clubs?.status === "success"
+      //     ? clubs?.data.map((item: any, index: number) => {
+      //         return {
+      //           text: item.NameClb,
+      //           value: item.club,
+      //         };
+      //       })
+      //     : null,
+      // onFilter: (value: any, record) => record.club.indexOf(value) === 0,
     },
     {
       title: "Ghi chú",
@@ -289,11 +292,14 @@ export default function ManageMember() {
       title: "Thành tích",
       dataIndex: "achievements",
       render: (value, record) => (
-        <span>{value === "Chưa xác định" ? "Không" : "Có"}</span>
+        <span>
+          {value === "null" || value == "undefined" || value == ""
+            ? "Không"
+            : "Có"}
+        </span>
       ),
     },
     {
-      title: "Chi tiết",
       render: (value, record) => {
         const idEncode = CryptoJS.AES.encrypt(record.id, secretKey).toString();
         const id = encodeURIComponent(idEncode);
@@ -305,7 +311,7 @@ export default function ManageMember() {
             >
               Xem
             </Button>
-            {record.status !== "Đã duyệt" ? (
+            {record.status == "Chờ duyệt" ? (
               <Popconfirm
                 title="Xác nhận xoá thành viên"
                 description={`Bạn có chắc chắn muốn xoá thành viên ${record.name} không ? `}
@@ -378,7 +384,7 @@ export default function ManageMember() {
                     <Button
                       className={styles.addBtn}
                       onClick={() => {
-                        return navigate(`/them-hoi-vien/f1`)
+                        return navigate(`/them-hoi-vien/f1`);
                       }}
                     >
                       <PlusOutlined className={styles.icon} />
