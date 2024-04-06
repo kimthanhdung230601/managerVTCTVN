@@ -82,10 +82,7 @@ const Profiles = () => {
     text: item.name_club,
     value: item.id,
   }));
-  const listClubs = dataClubF1?.data?.map((item: Club, index: number) => ({
-    text: item.NameClb,
-    value: item.club,
-  }));
+
   //image avatar
   const normFile = (e: any) => {
     if (Array.isArray(e)) {
@@ -205,7 +202,6 @@ const Profiles = () => {
     setLoading(true);
     console.log("form", values);
     const randomKey = CryptoJS.lib.WordArray.random(16).toString();
-
     const formdata = new FormData();
     formdata.append("name", values.name);
     formdata.append("birthday", formattedBirthday);
@@ -467,13 +463,16 @@ const Profiles = () => {
                           ))}
                         </Select>
                       ) : !param.key && decryptedPermission == "1" ? (
-                        <Select defaultValue={null}>
-                          {listClubs?.map((club: any) => (
-                            <Select.Option key={club.value} value={club.value}>
-                              {club.text}
-                            </Select.Option>
-                          ))}
-                        </Select>
+                        (
+                          dataClubF1?.status === "sucess" && <Select defaultValue={null}>
+                            {dataClubF1?.data.map((club: any) => (
+                              <Select.Option key={club.value} value={club.club}>
+                                {club.NameClb}
+                              </Select.Option>
+                            ))}
+                          </Select>
+                        )
+                        
                       ) : param.key && decryptedPermission == "1" ? (
                         <Input
                           disabled={true}

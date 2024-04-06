@@ -8,6 +8,7 @@ import { levelFilters } from '../../until/until';
 import { useQuery } from 'react-query';
 import { getClubs, getFilterTable, getListClub, getListMember, searchInTable } from '../../api/f1';
 import type { TableColumnsType, TableProps } from 'antd';
+import moment from 'moment';
 interface DataType_CLB {
     key: React.Key;
     name: string;
@@ -49,10 +50,10 @@ export default function ManageClub() {
     const {data: clubs} = useQuery(["clubs"], () =>  getClubs())
     const [clubList, setClubList] = useState<data>()
     const [selectedRowKeysCLB, setSelectedRowKeysCLB] = useState<React.Key[]>([]);
-    const {data: clubListData, isFetching} = useQuery(['club'], () => getListClub(), {
+    const {data: clubListData, isFetching} = useQuery(['club', currentPage2], () => getListClub(currentPage2), {
       onSettled: (data) => {
         if(data.status === "failed"){
-          message.warning(data.data)
+          message.warning("Chưa có thành viên!")
         } else if(data.status === "success"){
           setClubList(data)
         } else {
@@ -68,9 +69,6 @@ export default function ManageClub() {
               console.log("club", data)
         } else if(data.status === "failed"){
           message.error("Không có dữ liệu.")
-          // setTimeout(()=> {
-          //   window.location.reload()
-          // }, 2000)
         } else {
           message.error("Có lỗi xảy ra, vui lòng thử lại sau")
           setTimeout(()=> {
@@ -129,18 +127,18 @@ export default function ManageClub() {
         {
           title: "Ngày sinh",
           dataIndex: "birthday",
-          render: (value,record) => <span>{value ? value.split(" ")[0] : value}</span>
+          render: (value,record) => <span>{moment(value).format("DD/MM/YYYY")}</span>
         },
         {
           title: "Số điện thoại",
           dataIndex: "phone",
         },
         {
-          title: "Số định danh",
+          title: "Mã định danh",
           dataIndex: "code",
           render: (value, record) => {
-            if (value == "null")
-              return <span style={{ color: "#8D8D8D" }}>Không tồn tại</span>;
+            if (value == null)
+              return <span style={{ color: "#8D8D8D" }}>Chưa duyệt HS</span>;
             else {
               return (
                 <span style={{ color: "#046C39", fontWeight: "bold" }}>
@@ -149,13 +147,6 @@ export default function ManageClub() {
               );
             }
           },
-        },
-        {
-          title: "Đẳng cấp",
-          dataIndex: "level",
-          filterMultiple: false,
-          filters: levelFilters,
-          onFilter: (value: any, record) => record.level.indexOf(value) === 0,
         },
         {
           title: "CLB trực thuộc",
@@ -201,7 +192,7 @@ export default function ManageClub() {
         {
           title: "Chi tiết",
           render: (value, record) => {
-            return <button className={styles.btn} onClick={()=>navigate(`/quan-ly-don-vi?club=${record.club}&id=${record.club}`)}>Xem</button>;
+            return (record.pending != "0" && <button className={styles.btn} onClick={()=>navigate(`/quan-ly-don-vi?club=${record.club}&id=${record.club}`)}>Xem</button>)
           },
         },
     ];

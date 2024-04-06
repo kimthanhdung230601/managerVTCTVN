@@ -10,11 +10,11 @@ import { useMutation, useQuery } from "react-query";
 import CryptoJS from "crypto-js";
 import {
   deleteMember,
-  getClubs,
   getFilterTable,
   getListMember,
   searchInTable,
 } from "../../api/f1";
+import moment from "moment";
 
 const customLocale = {
   filterConfirm: "OK", // Thay đổi nút xác nhận
@@ -58,16 +58,15 @@ export default function ManageMember() {
   );
   const [param, setParam] = useState("");
   const [key, setKey] = useState("");
-  const { data: clubs } = useQuery(["clubs"], () => getClubs());
   const [selectedRowKeysCN, setSelectedRowKeysCN] = useState<React.Key[]>([]);
   const [memberList, setMemberList] = useState<data>();
   const { data: memberListData, isFetching } = useQuery(
-    ["member"],
-    () => getListMember(),
+    ["member", currentPage1],
+    () => getListMember(currentPage1),
     {
       onSettled: (data) => {
         if (data.status === "failed") {
-          message.warning("Chưa có thành viên");
+          message.warning("Chưa có thành viên!");
         } else if (data.status === "success") {
           const newData = data.data.map((item: any, index: number) => {
             return {
@@ -176,6 +175,10 @@ export default function ManageMember() {
   const rowSelectionCN = {
     selectedRowKeysCN,
     onChange: onSelectChangeCN,
+    getCheckboxProps: (record: DataType_CN) => ({
+      disabled: record.status === 'Chờ duyệt xoá', 
+      status: record.status,
+    }),
   };
   const hasSelected = selectedRowKeysCN.length > 0;
   const onPaginationChange1 = (page: number) => {
@@ -209,7 +212,7 @@ export default function ManageMember() {
       title: "Ngày sinh",
       dataIndex: "birthday",
       render: (value, record) => (
-        <span>{value ? value.split(" ")[0] : value}</span>
+        <span>{moment(value).format("DD/MM/YYYY")}</span>
       ),
     },
     {
@@ -217,11 +220,11 @@ export default function ManageMember() {
       dataIndex: "phone",
     },
     {
-      title: "Số định danh",
+      title: "Mã định danh",
       dataIndex: "code",
       render: (value, record) => {
-        if (value == "null")
-          return <span style={{ color: "#8D8D8D" }}>Không tồn tại</span>;
+        if (value == null)
+          return <span style={{ color: "#8D8D8D" }}>Chưa duyệt HS</span>;
         else {
           return (
             <span style={{ color: "#046C39", fontWeight: "bold" }}>
@@ -241,17 +244,6 @@ export default function ManageMember() {
     {
       title: "Đơn vị quản lý",
       dataIndex: "NameClb",
-      filterMultiple: false,
-      filters:
-        clubs?.status === "success"
-          ? clubs?.data.map((item: any, index: number) => {
-              return {
-                text: item.NameClb,
-                value: item.club,
-              };
-            })
-          : null,
-      onFilter: (value: any, record) => record.club.indexOf(value) === 0,
     },
     {
       title: "Ghi chú",
@@ -305,7 +297,8 @@ export default function ManageMember() {
             >
               Xem
             </Button>
-            {record.status !== "Đã duyệt" ? (
+
+            {record.status !== "Chờ duyệt xoá" ? (
               <Popconfirm
                 title="Xác nhận xoá thành viên"
                 description={`Bạn có chắc chắn muốn xoá thành viên ${record.name} không ? `}
