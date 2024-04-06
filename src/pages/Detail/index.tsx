@@ -94,7 +94,7 @@ export default function Detail() {
             sex: data.data[0].sex,
             NameClb: data.data[0].NameClb,
             hometown: data.data[0].hometown,
-            level: data.data[0].level,
+            level: data.data[0].level.split("-")[0],
             idcard: data.data[0].idcard,
             address: data.data[0].address,
             phone: data.data[0].phone,
