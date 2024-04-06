@@ -72,7 +72,11 @@ const customLocale = {
   selectAll: "Chọn tất cả", // Thay đổi văn bản "Select All Items" ở đây
   selectInvert: "Đảo ngược", // Thay đổi văn bản khi chọn ngược
 };
-const ManagerMemberUnAccept = () => {
+interface fetchingProp {
+  // fetching: any;
+  setFetching: (value:boolean) => void;
+}
+const ManagerMemberUnAccept = ({setFetching}:fetchingProp) => {
   //filter
   const [currentPage, setCurrentPage] = useState(1);
   const status = "Chờ duyệt";
@@ -156,6 +160,7 @@ const ManagerMemberUnAccept = () => {
       ? message.success("Cập nhật thông tin thành công")
       : message.error(res?.data);
     refetch();
+    setFetching(false);
   };
   const cancel = (value: any) => {
     // message.error("");

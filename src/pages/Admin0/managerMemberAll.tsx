@@ -65,6 +65,10 @@ interface DataType {
   level: string;
   achievements: string;
 }
+interface fetchingProp {
+  fetching: any;
+  setFetching: (value:boolean) => void;
+}
 const customLocale = {
   filterConfirm: "OK", // Thay đổi nút xác nhận
   filterReset: "Xoá", // Thay đổi nút reset
@@ -72,13 +76,11 @@ const customLocale = {
   selectAll: "Chọn tất cả", // Thay đổi văn bản "Select All Items" ở đây
   selectInvert: "Đảo ngược", // Thay đổi văn bản khi chọn ngược
 };
-const ManagerMemberAll = () => {
+const ManagerMemberAll = ({ fetching,setFetching }: fetchingProp) => {
   //filter
   const [currentPage, setCurrentPage] = useState(1);
-  const status = "Đã duyệt";
   const initialPayload = `page=${currentPage}`;
   const [payload, setPayload] = useState<any>(initialPayload);
-
   const {
     data: allMember,
     refetch,
@@ -112,12 +114,8 @@ const ManagerMemberAll = () => {
   );
 
   const navigate = useNavigate();
-  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
 
   const isMobile = useMediaQuery({ maxWidth: 768 });
-  const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-    setSelectedRowKeys(newSelectedRowKeys);
-  };
 
   const filterProivce = OnlyProvince.map((province) => ({
     text: province,
@@ -132,7 +130,8 @@ const ManagerMemberAll = () => {
 
   useEffect(() => {
     refetch();
-  }, [currentPage, allMember?.total_products]);
+    setFetching(true);
+  }, [currentPage, allMember?.total_products, fetching]);
   const onChangePage = (value: any) => {
     setCurrentPage(value);
     refetch();
@@ -211,7 +210,7 @@ const ManagerMemberAll = () => {
       dataIndex: "code",
       width: 160,
       render: (value, record) => {
-        if (value == "null"|| value == undefined ||value=="")
+        if (value == "null" || value == undefined || value == "")
           return <span style={{ color: "#8D8D8D" }}>Chưa duyệt HS</span>;
         else {
           return (

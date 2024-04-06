@@ -34,9 +34,9 @@ import type { ColumnsType } from "antd/es/table";
 import { useQuery } from "react-query";
 import {
   deleteMemberF12,
-  // getListMemberF12,
-  getListMemberF12Accept,
-  getListMemberF12UnAccept,
+  getListMemberF12,
+  // getListMemberF12Accept,
+  // getListMemberF12UnAccept,
   updateAccount,
 } from "../../api/f0";
 import ListClub from "../../hook/listClub";
@@ -82,17 +82,17 @@ const customLocale = {
 const ManagerF1 = () => {
   //tài khoản đã được duyệt
   const [currentPageAccount, setCurrentPageAccount] = useState(1);
-  const [payloadAccept, setPayloadAccept] = useState<any>(1);
+  const initialPayload = `page=${currentPageAccount}&permission=1}`;
+  const [payloadAccept, setPayloadAccept] = useState<any>(initialPayload);
   const {
     data: dataMemberF12Accept,
     refetch: refetchAccept,
     isFetching: isFetchingAccept,
   } = useQuery(["dataF12Accept", payloadAccept], () =>
-    getListMemberF12Accept(payloadAccept)
+    getListMemberF12(payloadAccept)
   );
   const onChange: TableProps<DataType>["onChange"] = (pagination, filters) => {
     const param =
-      currentPageAccount +
       (filters.location
         ? "&location=" + encodeURIComponent(filters.location[0].toString())
         : "") +
@@ -155,11 +155,11 @@ const ManagerF1 = () => {
       fixed: "left",
       width: 210,
     },
-    {
-      title: "CCCD",
-      dataIndex: "idcard",
-      width: 250,
-    },
+    // {
+    //   title: "CCCD",
+    //   dataIndex: "idcard",
+    //   width: 250,
+    // },
     {
       title: "Số điện thoại",
       dataIndex: "phone",
@@ -243,7 +243,10 @@ const ManagerF1 = () => {
         const id = encodeURIComponent(idEncode);
         return (
           <span>
-            <button className={styles.btnTb} onClick={() => showModalMember(record.id)}>
+            <button
+              className={styles.btnTb}
+              onClick={() => showModalMember(record.id)}
+            >
               Sửa
             </button>
             <Popconfirm
@@ -359,7 +362,10 @@ const ManagerF1 = () => {
       width: 200,
       render: (_, record) => (
         <span>
-          <button className={styles.btnTb} onClick={() => showModalMember(record.id)}>
+          <button
+            className={styles.btnTb}
+            onClick={() => showModalMember(record.id)}
+          >
             Sửa
           </button>
           <Popconfirm

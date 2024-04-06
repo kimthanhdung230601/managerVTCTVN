@@ -22,6 +22,9 @@ export default function Login() {
   const handleRecaptchaChange = (value: any) => {
     setIsVerify(true);
   };
+  //club
+  const NameClb = useSelector((state: any) => state.NameClb);
+  const club = useSelector((state: any) => state.club);
   useEffect(() => {
     dispatch({ type: "INCREMENT_LOAD_COUNT" });
     if (reloadCount.loadCount >= 18) {
@@ -100,6 +103,7 @@ export default function Login() {
         "id",
         CryptoJS.AES.encrypt(res?.info_user[0].id, secretKey).toString()
       );
+    
     } else {
       message.error("Nhập sai tài khoản hoặc mật khẩu");
     }

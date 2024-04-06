@@ -59,6 +59,7 @@ interface DataType {
   club: string;
   image_certificate: any;
   image_ref: any;
+  image_cmnd:any;
 }
 
 const { Option } = Select;
@@ -73,10 +74,10 @@ const customLocale = {
   selectAll: "Chọn tất cả", // Thay đổi văn bản "Select All Items" ở đây
   selectInvert: "Đảo ngược", // Thay đổi văn bản khi chọn ngược
 };
-const ManagerAccountUnDepended = ({refetch}:ManagerAccountProps) => {
+const ManagerAccountUnDepended = ({ refetch }: ManagerAccountProps) => {
   //tài khoản đã được duyệt
   const [currentPage, setCurrentPage] = useState(1);
-  const initialPayload = `page=${currentPage}&pending=0`;
+  const initialPayload = `page=${currentPage}&pending=0&permission=2`;
   const [payload, setPayload] = useState(initialPayload);
   //tài khoản chưa được duyệt
   const {
@@ -253,6 +254,11 @@ const ManagerAccountUnDepended = ({refetch}:ManagerAccountProps) => {
             preview={true}
             className={styles.img}
           />
+          <Image
+            src={`https://vocotruyen.id.vn/PHP_IMG/${record.image_cmnd}`}
+            preview={true}
+            className={styles.img}
+          />
         </div>
       ),
     },
@@ -394,6 +400,11 @@ const ManagerAccountUnDepended = ({refetch}:ManagerAccountProps) => {
           />
           <Image
             src={`https://vocotruyen.id.vn/PHP_IMG/${record.image_certificate}`}
+            preview={true}
+            className={styles.img}
+          />
+             <Image
+            src={`https://vocotruyen.id.vn/PHP_IMG/${record.image_cmnd}`}
             preview={true}
             className={styles.img}
           />
