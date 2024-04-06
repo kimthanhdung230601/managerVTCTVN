@@ -9,6 +9,7 @@ import { useQuery } from 'react-query';
 import { getClubs, getFilterTable, getListClub, getListMember, searchInTable } from '../../api/f1';
 import type { TableColumnsType, TableProps } from 'antd';
 import moment from 'moment';
+import { useDispatch } from 'react-redux';
 interface DataType_CLB {
     key: React.Key;
     name: string;
@@ -192,9 +193,13 @@ export default function ManageClub() {
         {
           title: "Chi tiết",
           render: (value, record) => {
-            return (record.pending != "0" && <button className={styles.btn} onClick={()=>navigate(`/quan-ly-don-vi?club=${record.club}&id=${record.club}`)}>Xem</button>)
+            return (record.pending != "0" && <button className={styles.btn} onClick={()=>
+              navigate(`/quan-ly-don-vi?club=${record.club}&id=${record.club}`)
+            }
+            >Xem</button>)
+            }
+            
           },
-        },
     ];
     const onChange: TableProps<DataType_CLB>['onChange'] = (pagination, filters, sorter, extra) => {
       const param = '?page=' + currentPage2  + (filters.NameClb ? '&club=' + filters.NameClb[0] : "") + (filters.level ? '&level=' + encodeURIComponent(filters.level[0].toString())  : "") + (filters.pending ? '&pending=' + filters.pending[0] : "")

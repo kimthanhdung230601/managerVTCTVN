@@ -31,6 +31,7 @@ import { addNewF3 } from "../../api/f2";
 import { getInforAdmin, getListClub } from "../../api/f0";
 import { getListClubs } from "../../api/f1";
 import { useLocation, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
 const { Option } = Select;
@@ -93,7 +94,7 @@ const Profiles = () => {
   const getSrcFromFile = (file: any) => {
     return new Promise((resolve) => {
       const reader = new FileReader();
-      reader.readAsDataURL(file.originFileObj);
+reader.readAsDataURL(file.originFileObj);
       reader.onload = () => resolve(reader.result);
     });
   };
@@ -129,6 +130,8 @@ const Profiles = () => {
     }
     return e && e.fileListLevel;
   };
+  const NameClbState = useSelector((state: any) => state.NameClb);
+  const clubState = useSelector((state: any) => state.club);
   const getSrcFromFileLevel = (file: any) => {
     return new Promise((resolve) => {
       const reader = new FileReader();
@@ -191,7 +194,7 @@ const Profiles = () => {
   // const decryptedPermission = permission.toString(CryptoJS.enc.Utf8);
   //fill club
   // useEffect(() => {
-  //   form.setFieldValue("club", decryptedNameClb);
+//   form.setFieldValue("club", decryptedNameClb);
   // }, [form]);
   console.log("decryptedClub", decryptedClub);
   const [loading, setLoading] = useState(false);
@@ -202,6 +205,7 @@ const Profiles = () => {
     setLoading(true);
     console.log("form", values);
     const randomKey = CryptoJS.lib.WordArray.random(16).toString();
+
     const formdata = new FormData();
     formdata.append("name", values.name);
     formdata.append("birthday", formattedBirthday);
@@ -248,7 +252,7 @@ const Profiles = () => {
 
   const location = useLocation();
   const previousPathname = location.state?.prevPathname;
-  console.log("Tên router của trang trước là:", previousPathname);
+  console.log(dataClubF1);
   return (
     <>
       <div className={styles.wrap}>
@@ -337,7 +341,7 @@ const Profiles = () => {
                     {/* <div className={styles.buttonGroup}>
                       <span
                         className={`${styles.showBtn} ${
-                          selectedButton === "show"
+selectedButton === "show"
                             ? styles.selectedBtn
                             : styles.noneSelectedBtn
                         }`}
@@ -409,11 +413,11 @@ const Profiles = () => {
                             },
                           ]}
                         >
-                          <DatePicker format="DD/MM/YYYY" />
+                          <DatePicker format="DD/MM/YYYY" style={{width:"100%"}}/>
                           {/* <Input type="date" /> */}
                         </Form.Item>
                       </Col>
-                      <Col span={12}>
+<Col span={12}>
                         <Form.Item
                           label="Giới tính"
                           name="sex"
@@ -464,15 +468,15 @@ const Profiles = () => {
                         </Select>
                       ) : !param.key && decryptedPermission == "1" ? (
                         (
-                          dataClubF1?.status === "sucess" && <Select defaultValue={null}>
+                          dataClubF1?.status === "success" && <Select defaultValue={null}>
                             {dataClubF1?.data.map((club: any) => (
                               <Select.Option key={club.value} value={club.club}>
                                 {club.NameClb}
-                              </Select.Option>
-                            ))}
-                          </Select>
+                            </Select.Option>
+                          ))}
+                        </Select>
                         )
-                        
+
                       ) : param.key && decryptedPermission == "1" ? (
                         <Input
                           disabled={true}
@@ -557,7 +561,7 @@ const Profiles = () => {
                       ]}
                     >
                       <Input />
-                    </Form.Item>
+</Form.Item>
                   </Col>
                   <Col span={8} xs={24} sm={12} md={8}>
                     <Form.Item
@@ -628,7 +632,7 @@ const Profiles = () => {
                                 ]}
                               >
                                 <Input placeholder="Giải" />
-                              </Form.Item>
+</Form.Item>
                               <Form.Item
                                 {...restField}
                                 name={[name, "last"]}
