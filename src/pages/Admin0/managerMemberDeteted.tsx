@@ -109,7 +109,7 @@ const ManagerMemberDeleted = ({ setFetching }: fetchingProp) => {
         : "");
     const updatedPayload = initialPayload + param;
     setPayload(updatedPayload);
-    refetch();
+   
   };
   const filtersListNote = allMember?.list_note?.map(
     (item: any, index: any) => ({
@@ -130,16 +130,7 @@ const ManagerMemberDeleted = ({ setFetching }: fetchingProp) => {
     text: province,
     value: province,
   }));
-  // const rowSelection = {
-  //   selectedRowKeys,
-  //   onChange: onSelectChange,
-  // };
 
-  //page
-
-  useEffect(() => {
-    refetch();
-  }, [currentPage, allMember?.total_products]);
   const onChangePage = (value: any) => {
     setCurrentPage(value);
     refetch();

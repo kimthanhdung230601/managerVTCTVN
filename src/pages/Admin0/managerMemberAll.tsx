@@ -67,7 +67,7 @@ interface DataType {
 }
 interface fetchingProp {
   fetching: any;
-  setFetching: (value:boolean) => void;
+  setFetching: (value: boolean) => void;
 }
 const customLocale = {
   filterConfirm: "OK", // Thay đổi nút xác nhận
@@ -76,7 +76,7 @@ const customLocale = {
   selectAll: "Chọn tất cả", // Thay đổi văn bản "Select All Items" ở đây
   selectInvert: "Đảo ngược", // Thay đổi văn bản khi chọn ngược
 };
-const ManagerMemberAll = ({ fetching,setFetching }: fetchingProp) => {
+const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
   //filter
   const [currentPage, setCurrentPage] = useState(1);
   const initialPayload = `page=${currentPage}`;
@@ -104,7 +104,6 @@ const ManagerMemberAll = ({ fetching,setFetching }: fetchingProp) => {
         : "");
     const updatedPayload = initialPayload + param;
     setPayload(updatedPayload);
-    refetch();
   };
   const filtersListNote = allMember?.list_note?.map(
     (item: any, index: any) => ({
@@ -121,17 +120,10 @@ const ManagerMemberAll = ({ fetching,setFetching }: fetchingProp) => {
     text: province,
     value: province,
   }));
-  // const rowSelection = {
-  //   selectedRowKeys,
-  //   onChange: onSelectChange,
-  // };
-
-  //page
-
   useEffect(() => {
     refetch();
     setFetching(true);
-  }, [currentPage, allMember?.total_products, fetching]);
+  }, [fetching]);
   const onChangePage = (value: any) => {
     setCurrentPage(value);
     refetch();
@@ -672,13 +664,7 @@ const ManagerMemberAll = ({ fetching,setFetching }: fetchingProp) => {
             marginBottom: "20px",
           }}
         >
-          <Col span={6} xs={24} sm={24} md={12} className={styles.search}>
-            {/* <span>
-              {hasSelected
-                ? `Đã chọn ${selectedRowKeys?.length} bản ghi`
-                : "Tổng số 10 hồ sơ"}
-            </span> */}
-          </Col>
+          <Col span={6} xs={24} sm={24} md={12} className={styles.search}></Col>
           <Col
             span={18}
             xs={24}

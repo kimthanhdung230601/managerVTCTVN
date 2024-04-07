@@ -51,14 +51,6 @@ const rootSubmenuKeys = ["sub1"];
 
 const AdminTwo = () => {
   document.title = "Đơn vị quản lý";
-  const navigate = useNavigate();
-  const idClub = new URLSearchParams(useLocation().search);
-  // const { data: listF3, refetch } = useQuery(
-  //   ["listF3", idClub.get("club")],
-  //   () => getListMemberF3(idClub.get("club"))
-  // );
-  // const [openKeys, setOpenKeys] = useState(["sub1"]);
-  // const name = Cookies.get("name") as string;
   const name = CryptoJS.AES.decrypt(Cookies.get("name") as string, secretKey);
   const decryptedName = name.toString(CryptoJS.enc.Utf8);
   const phone = CryptoJS.AES.decrypt(Cookies.get("phone") as string, secretKey);
@@ -75,7 +67,6 @@ const AdminTwo = () => {
   );
   const decryptedNameClb = NameClb.toString(CryptoJS.enc.Utf8);
 
-  const onClick: MenuProps["onClick"] = (e) => {};
   const urlParams = new URLSearchParams(window.location.search);
   const [userId, setUserId] = useState<any>({
     name: decryptedName,
@@ -88,9 +79,9 @@ const AdminTwo = () => {
   if (urlParams.has("id")) {
     idValue = urlParams.get("id");
   }
-  const { data: getInforId } = useQuery(["getInfor", idValue], () =>
-    getInforAdmin(1)
-  );
+  const { data: getInforId } = useQuery(['getInfor'], () => getInforAdmin(1), {
+    enabled: false,
+  });
   if (getInforId?.data?.status == "success") {
     setUserId({
       name: getInforId?.data[0].name,
