@@ -42,29 +42,7 @@ import ManagerMemberAll from "./managerMemberAll";
 import ManagerMemberUnAccept from "./managerMemberUnAccept";
 import ManagerMemberDeleted from "./managerMemberDeteted";
 
-const secretKey = process.env.REACT_APP_SECRET_KEY as string;
-interface ManagerMemberProps {}
-interface DataType {
-  stt: any;
-  birthday: any;
-  phone: string;
-  id: any;
-  idCard: number;
-  address: string;
-  key: React.Key;
-  name: string;
-  DonViQuanLy: string;
-  NameClb: string;
-  club: string;
-  note: string;
-  status: string;
-  achie: string;
-  level: string;
-  achievements: string;
-}
-
 const ManagerMember = () => {
-  // const [payload,setPayload] = useState()
   const [fetching,setFetching] = useState(true);
   const items: CollapseProps["items"] = [
     {

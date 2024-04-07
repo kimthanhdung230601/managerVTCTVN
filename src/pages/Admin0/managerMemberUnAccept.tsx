@@ -107,7 +107,7 @@ const ManagerMemberUnAccept = ({setFetching}:fetchingProp) => {
         : "");
     const updatedPayload = initialPayload + param;
     setPayload(updatedPayload);
-    refetch();
+
   };
   const filtersListNote = allMember?.list_note?.map(
     (item: any, index: any) => ({
@@ -134,10 +134,6 @@ const ManagerMemberUnAccept = ({setFetching}:fetchingProp) => {
   // };
 
   //page
-
-  useEffect(() => {
-    refetch();
-  }, [currentPage, allMember?.total_products]);
   const onChangePage = (value: any) => {
     setCurrentPage(value);
     refetch();

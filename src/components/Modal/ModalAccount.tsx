@@ -58,81 +58,12 @@ const ModalAccount = ({
   // const [fileList2, setFileList2] = useState<UploadFile[]>([]);
   const handleCancel1 = () => setPreviewOpen1(false);
   const handleCancel2 = () => setPreviewOpen2(false);
-  // const handlePreviewCertificate = async (file: UploadFile) => {
-  //   if (!file.url && !file.preview) {
-  //     file.preview = await getBase64(file.originFileObj);
-  //   }
-  //   setPreviewImage1(file.url || (file.preview as string));
-  //   setPreviewOpen1(true);
-  //   setPreviewTitle1(
-  //     file.name || file.url!.substring(file.url!.lastIndexOf("/") + 1)
-  //   );
-  // };
-
-  // const handlePreviewRef = async (file: UploadFile) => {
-  //   if (!file.url && !file.preview) {
-  //     file.preview = await getBase64(file.originFileObj);
-  //   }
-  //   setPreviewImage2(file.url || (file.preview as string));
-  //   setPreviewOpen2(true);
-  //   setPreviewTitle2(
-  //     file.name || file.url!.substring(file.url!.lastIndexOf("/") + 1)
-  //   );
-  // };
-  // const handleChangeCertificate: UploadProps["onChange"] = ({
-  //   fileList: newFileList,
-  // }) => setFileListCertificate(newFileList);
-  // const handleChangeListRef: UploadProps["onChange"] = ({
-  //   fileList: newFileList,
-  // }) => setFileListRef(newFileList);
-  // const onChangeCertificate = ({
-  //   fileList: newFileList,
-  // }: {
-  //   fileList: UploadFile[];
-  // }) => {
-  //   setFileListCertificate(newFileList);
-  // };
-  // const onChangeRef = ({
-  //   fileList: newFileList,
-  // }: {
-  //   fileList: UploadFile[];
-  // }) => {
-  //   setFileListRef(newFileList);
-  // };
   const uploadButton = (
     <button style={{ border: 0, background: "none" }} type="button">
       <PlusOutlined />
       <div style={{ marginTop: 8 }}>Tải ảnh lên</div>
     </button>
   );
-  const isImage = (file: any) => {
-    const acceptedImageTypes = ["image/jpeg", "image/png"];
-    return acceptedImageTypes.includes(file.type);
-  };
-  // const props = {
-  //   action: "https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188",
-  //   beforeUpload: (file: any) => {
-  //     if (!isImage(file)) {
-  //       message.error("Chỉ cho phép tải lên các file ảnh (JPEG, PNG).");
-  //       return false;
-  //     }
-  //     return true; // Cho phép tải lên nếu là file ảnh
-  //   },
-  //   onChange(info: any) {
-  //     if (info.file.status !== "uploading") {
-  //       console.log(info.file, info.fileList);
-  //     }
-  //     if (info.file.status === "done") {
-  //       message.success(`${info.file.name} tải ảnh thành công`);
-  //     } else if (info.file.status === "error") {
-  //       message.error(`${info.file.name} tải ảnh thất bại.`);
-  //     }
-  //   },
-  // };
-
-  //fetchData
-  // const [fileListcCertificate, setFileListCertificate] = useState<any>([]);
-  // const [fileListRef, setFileListRef] = useState<any>([]);
   const [fileListCertificate, setFileListCertificate] = useState<any>([]);
   const [fileListRef, setFileListRef] = useState<any>([]);
   const [fileListCmnd, setFileListCmnd] = useState<any>([]);
@@ -141,7 +72,7 @@ const ModalAccount = ({
     data: dataDetailF2,
     isFetching,
     refetch,
-  } = useQuery("getDetailF2", () => getDetailF2(id), {
+  } = useQuery(["getDetailF2"], () => getDetailF2(id), {
     onSettled: (data) => {
       form.setFieldValue("name", data.data[0].name);
       form.setFieldValue("password", data.data[0].password);

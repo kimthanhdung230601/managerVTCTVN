@@ -63,7 +63,7 @@ interface DataType {
   club: string;
   image_certificate: any;
   image_ref: any;
-  image_cmnd:any;
+  image_cmnd: any;
 }
 
 const filterProivce = province.map((province) => ({
@@ -86,9 +86,9 @@ const ManagerAccount = () => {
     data: dataMemberF12Accept,
     refetch: refetchAccept,
     isFetching: isFetchingAccept,
-  } = useQuery(["dataF12Accept", payload], () =>
-    getListMemberF12(payload)
-  );
+  } = useQuery(["dataF12Accept", payload], () => getListMemberF12(payload), {
+    enabled: false,
+  });
   const onChange: TableProps<DataType>["onChange"] = (pagination, filters) => {
     const param =
       (filters.location
@@ -265,7 +265,7 @@ const ManagerAccount = () => {
             <Image
               src={`https://vocotruyen.id.vn/PHP_IMG/${record.image_cmnd}`}
               preview={true}
-               alt="Không có ảnh"
+              alt="Không có ảnh"
               className={styles.img}
             />
           </div>
