@@ -1,6 +1,8 @@
 const initialClinic = {
-  club: undefined,
-  NameClb: undefined,
+  clubInfor: {
+    club: "",
+    NameClb: "",
+  },
 };
 
 const ClubReducer = (state = initialClinic, action) => {
@@ -8,8 +10,10 @@ const ClubReducer = (state = initialClinic, action) => {
     case "status_infor":
       return {
         ...state,
-        NameClb: action.payload.NameClb,
-        club: action.payload.club,
+        clubInfor: {
+          club: action.payload.club,
+          NameClb: action.payload.NameClb,
+        },
       };
 
     default:

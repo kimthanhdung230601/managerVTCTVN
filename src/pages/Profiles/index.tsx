@@ -94,7 +94,7 @@ const Profiles = () => {
   const getSrcFromFile = (file: any) => {
     return new Promise((resolve) => {
       const reader = new FileReader();
-      reader.readAsDataURL(file.originFileObj);
+reader.readAsDataURL(file.originFileObj);
       reader.onload = () => resolve(reader.result);
     });
   };
@@ -194,7 +194,7 @@ const Profiles = () => {
   // const decryptedPermission = permission.toString(CryptoJS.enc.Utf8);
   //fill club
   // useEffect(() => {
-  //   form.setFieldValue("club", decryptedNameClb);
+//   form.setFieldValue("club", decryptedNameClb);
   // }, [form]);
   console.log("decryptedClub", decryptedClub);
   const [loading, setLoading] = useState(false);
@@ -252,7 +252,7 @@ const Profiles = () => {
 
   const location = useLocation();
   const previousPathname = location.state?.prevPathname;
-  console.log("Tên router của trang trước là:", previousPathname);
+  console.log(dataClubF1);
   return (
     <>
       <div className={styles.wrap}>
@@ -341,7 +341,7 @@ const Profiles = () => {
                     {/* <div className={styles.buttonGroup}>
                       <span
                         className={`${styles.showBtn} ${
-                          selectedButton === "show"
+selectedButton === "show"
                             ? styles.selectedBtn
                             : styles.noneSelectedBtn
                         }`}
@@ -417,7 +417,7 @@ const Profiles = () => {
                           {/* <Input type="date" /> */}
                         </Form.Item>
                       </Col>
-                      <Col span={12}>
+<Col span={12}>
                         <Form.Item
                           label="Giới tính"
                           name="sex"
@@ -468,7 +468,7 @@ const Profiles = () => {
                         </Select>
                       ) : !param.key && decryptedPermission == "1" ? (
                         (
-                          dataClubF1?.status === "sucess" && <Select defaultValue={null}>
+                          dataClubF1?.status === "success" && <Select defaultValue={null}>
                             {dataClubF1?.data.map((club: any) => (
                               <Select.Option key={club.value} value={club.club}>
                                 {club.NameClb}
@@ -561,7 +561,7 @@ const Profiles = () => {
                       ]}
                     >
                       <Input />
-                    </Form.Item>
+</Form.Item>
                   </Col>
                   <Col span={8} xs={24} sm={12} md={8}>
                     <Form.Item
@@ -632,7 +632,7 @@ const Profiles = () => {
                                 ]}
                               >
                                 <Input placeholder="Giải" />
-                              </Form.Item>
+</Form.Item>
                               <Form.Item
                                 {...restField}
                                 name={[name, "last"]}

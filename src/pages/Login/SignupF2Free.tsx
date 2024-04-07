@@ -168,6 +168,7 @@ export default function SignupF2() {
     const formattedIdday = moment(new Date(value.idday)).format(
       "YYYY-MM-DD"
     );    const formdata = new FormData();
+    
     formdata.append("name", value.name);
     formdata.append("club", value.club);
     formdata.append("idcard", value.idcard);
@@ -181,6 +182,14 @@ export default function SignupF2() {
     formdata.append("level", value.level);
     formdata.append("password", value.password);
     formdata.append(
+      `image_cmnd`,
+      value.image_cmnd.file.originFileObj as File,
+      CryptoJS.AES.encrypt(
+        value.image_cmnd.file.name,
+        randomKey
+      ).toString()
+    );
+    formdata.append(
       `image_certificate`,
       value.image_certificate.file.originFileObj as File,
       CryptoJS.AES.encrypt(
@@ -193,9 +202,10 @@ export default function SignupF2() {
       value.image_ref.file.originFileObj as File,
       CryptoJS.AES.encrypt(value.image_ref.file.name, randomKey).toString()
     );
-    // console.log( value.image_certificate.file)
+    console.log("ảnh",value)
     signupMutation.mutate(formdata);
   };
+  
   const props = {
     // action: "https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188",
     beforeUpload: (file: any) => {
@@ -533,7 +543,7 @@ export default function SignupF2() {
                 Ảnh CCCD mặt trước
               </div>
               <Form.Item
-                name="image_id"
+                name="image_cmnd"
                 rules={[{ required: true, message: "Vui lòng tải ảnh lên" }]}
                 wrapperCol={{ span: 24 }}
                 className={`${styles.uploadForm} ${styles.formItem}`}

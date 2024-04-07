@@ -129,9 +129,6 @@ export default function ManageMember() {
         message.error("Không có dữ liệu.");
       } else {
         message.error("Có lỗi xảy ra, vui lòng thử lại sau");
-        setTimeout(() => {
-          window.location.reload();
-        }, 2000);
       }
     },
   });
@@ -176,7 +173,7 @@ export default function ManageMember() {
     selectedRowKeysCN,
     onChange: onSelectChangeCN,
     getCheckboxProps: (record: DataType_CN) => ({
-      disabled: record.status === 'Chờ duyệt xoá', 
+      disabled: record.status != "Chờ duyệt", 
       status: record.status,
     }),
   };
@@ -223,7 +220,7 @@ export default function ManageMember() {
       title: "Mã định danh",
       dataIndex: "code",
       render: (value, record) => {
-        if (value == null)
+        if (value == null || value == "")
           return <span style={{ color: "#8D8D8D" }}>Chưa duyệt HS</span>;
         else {
           return (
@@ -298,7 +295,7 @@ export default function ManageMember() {
               Xem
             </Button>
 
-            {record.status !== "Chờ duyệt xoá" ? (
+            {record.status == "Chờ duyệt"   ? (
               <Popconfirm
                 title="Xác nhận xoá thành viên"
                 description={`Bạn có chắc chắn muốn xoá thành viên ${record.name} không ? `}
