@@ -133,7 +133,7 @@ export default function Login() {
         >
           <Form.Item
             name="phone"
-            rules={[{ required: true, message: "Hãy nhập số điện thoại!" }]}
+            rules={[{ required: true, message: "Hãy nhập số điện thoại hoặc tên đăng nhập!" }]}
             wrapperCol={{ span: 24 }}
             className={styles.formItem}
           >
