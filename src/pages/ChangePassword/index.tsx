@@ -2,6 +2,7 @@ import { LockOutlined, PhoneOutlined } from '@ant-design/icons'
 import { Button, Form, Image, Input, message } from 'antd'
 import React from 'react'
 import { useMutation } from 'react-query'
+import { logout } from '../../api/api'
 import { changePassword } from '../../api/ApiUser'
 import Footer from '../../components/Footer'
 import Header from '../../components/Header'
@@ -16,7 +17,7 @@ export default function ChangePassword() {
                 if(data.status === "success"){
                    message.success("Đổi mật khẩu thành công, vui lòng đăng nhập lại!") 
                    setTimeout(()=> {
-                        window.location.replace('/dang-nhap')
+                        logout()
                    }, 2000)
                 } else {
                     message.success(data.data) 

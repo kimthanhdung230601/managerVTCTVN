@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Search, { SearchProps } from "antd/es/input/Search";
 import styles from "./Style.module.scss";
 import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
-import { message, Table, Spin, Popconfirm, Button } from "antd";
+import { message, Table, Spin, Popconfirm, Button, Modal } from "antd";
 import { ColumnsType, TableProps } from "antd/es/table";
 import { useLocation, useNavigate } from "react-router";
 import { levelFilters } from "../../until/until";
@@ -60,6 +60,8 @@ export default function ManageMember() {
   const [key, setKey] = useState("");
   const [selectedRowKeysCN, setSelectedRowKeysCN] = useState<React.Key[]>([]);
   const [memberList, setMemberList] = useState<data>();
+  const [open, setOpen] = useState(false);
+
   const { data: memberListData, isFetching } = useQuery(
     ["member", currentPage1],
     () => getListMember(currentPage1),
@@ -84,6 +86,9 @@ export default function ManageMember() {
           });
         } else {
           message.error("Có lỗi xảy xa, vui lòng thử lại sau");
+          setTimeout(()=> {
+            window.location.reload()
+          }, 2000)
         }
       },
     }
@@ -129,6 +134,9 @@ export default function ManageMember() {
         message.error("Không có dữ liệu.");
       } else {
         message.error("Có lỗi xảy ra, vui lòng thử lại sau");
+        setTimeout(()=> {
+          window.location.reload()
+        }, 2000)
       }
     },
   });
@@ -165,6 +173,15 @@ export default function ManageMember() {
         };
       }),
     });
+    setOpen(false)
+  };
+  
+  const showModal = () => {
+    setOpen(true);
+  };
+
+  const hideModal = () => {
+    setOpen(false);
   };
   const onSelectChangeCN = (newSelectedRowKeysCN: React.Key[]) => {
     setSelectedRowKeysCN(newSelectedRowKeysCN);
@@ -377,7 +394,7 @@ export default function ManageMember() {
                     <Button
                       className={`${styles.addBtn} ${styles.deleteBtn}`}
                       icon={<DeleteOutlined className={styles.icon} />}
-                      onClick={handleDeleteMultiRecord}
+                      onClick={showModal}
                       disabled={selectedRowKeysCN.length === 0 ? true : false}
                     >
                       <span style={{ color: "#fff" }}>Xóa</span>
@@ -403,6 +420,16 @@ export default function ManageMember() {
                 }}
                 className={styles.table}
               />
+              <Modal
+                title="Xác nhận"
+                open={open}
+                onOk={handleDeleteMultiRecord}
+                onCancel={hideModal}
+                okText="Đồng ý"
+                cancelText="Huỷ"
+              >
+                <p>Bạn có chắc chắn muốn xoá các thành viên đã chọn không?</p>
+              </Modal>
             </>
           )}
         </>
