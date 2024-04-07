@@ -133,13 +133,13 @@ export default function Login() {
         >
           <Form.Item
             name="phone"
-            rules={[{ required: true, message: "Hãy nhập số điện thoại hoặc tên đăng nhập!" }]}
+            rules={[{ required: true, message: "Hãy nhập số điện thoại hoặc tên tài khoản!" }]}
             wrapperCol={{ span: 24 }}
             className={styles.formItem}
           >
             <Input
               prefix={<UserOutlined className={styles.icon} />}
-              placeholder="Số điện thoại"
+              placeholder="Số điện thoại hoặc tài khoản"
               className={styles.formInput}
             />
           </Form.Item>
