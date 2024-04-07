@@ -219,13 +219,16 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
       width: 170,
     },
     {
-      title: "Đằng cấp",
+      title: "Đẳng cấp",
       dataIndex: "level",
       width: 130,
       filters: levelFilters,
 
       filterMultiple: false,
       onFilter: (value: any, record) => record.level.indexOf(value) === 0,
+      // render(value, record, index) {
+      //   return <span> {value.split('-').parts}</span>
+      // },
     },
     {
       title: "Tỉnh",
@@ -450,13 +453,16 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
       width: 160,
     },
     {
-      title: "Đằng cấp",
+      title: "Đẳng cấp",
       dataIndex: "level",
       width: 130,
       filters: levelFilters,
 
       filterMultiple: false,
       onFilter: (value: any, record) => record.level.indexOf(value) === 0,
+      render(value, record, index) {
+        return <span> {value.split(' - ').parts}</span>
+      },
     },
     {
       title: "Tỉnh",

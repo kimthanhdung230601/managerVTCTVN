@@ -314,7 +314,7 @@ const UpdateProfiles = () => {
                   form={form}
                 >
                   <Row gutter={16}>
-                    <Col span={8} xs={24} sm={12} md={8}>
+                    <Col span={8} xs={24} sm={24} md={8}>
                       <Row>
                         <Col span={12}>
                           {" "}
@@ -406,7 +406,7 @@ const UpdateProfiles = () => {
                         </span> */}
                       </div>
                     </Col>
-                    <Col span={8} xs={24} sm={12} md={8}>
+                    <Col span={8} xs={24} sm={24} md={8}>
                       <Form.Item
                         label="Họ tên"
                         name="name"
@@ -434,7 +434,7 @@ const UpdateProfiles = () => {
                         <Input />
                       </Form.Item>
                     </Col>
-                    <Col span={8} xs={24} sm={12} md={8}>
+                    <Col span={8} xs={24} sm={24} md={8}>
                       {" "}
                       <Form.Item
                         label="Quốc tịch"
@@ -489,7 +489,7 @@ const UpdateProfiles = () => {
                     </Col>
                   </Row>{" "}
                   <Row gutter={16}>
-                    <Col span={8} xs={24} sm={12} md={8}>
+                    <Col span={8} xs={24} sm={24} md={8}>
                       <Form.Item
                         label="Câu lạc bộ "
                         name="club"
@@ -509,7 +509,7 @@ const UpdateProfiles = () => {
                         </Select>
                       </Form.Item>
                     </Col>
-                    <Col span={8} xs={24} sm={12} md={8}>
+                    <Col span={8} xs={24} sm={24} md={8}>
                       <Form.Item
                         label="Cấp/đai đẳng hiện tại"
                         name="level"
@@ -526,7 +526,7 @@ const UpdateProfiles = () => {
                         </Select>
                       </Form.Item>
                     </Col>
-                    <Col span={8} xs={24} sm={12} md={8}>
+                    <Col span={8} xs={24} sm={24} md={8}>
                       <Form.Item
                         label="Email"
                         name="email"
@@ -543,7 +543,7 @@ const UpdateProfiles = () => {
                     </Col>
                   </Row>
                   <Row gutter={16}>
-                    <Col span={8} xs={24} sm={12} md={8}>
+                    <Col span={8} xs={24} sm={24} md={8}>
                       <Form.Item
                         label="Tỉnh/Thành"
                         name="city"
@@ -567,7 +567,7 @@ const UpdateProfiles = () => {
                         </Select>
                       </Form.Item>
                     </Col>
-                    <Col span={8} xs={24} sm={12} md={8}>
+                    <Col span={8} xs={24} sm={24} md={8}>
                       {/* <Form.Item
                         label="Quận/Huyện"
                         name="district"
@@ -587,7 +587,7 @@ const UpdateProfiles = () => {
                         <Input />
                       </Form.Item>
                     </Col>
-                    <Col span={8} xs={24} sm={12} md={8}>
+                    <Col span={8} xs={24} sm={24} md={8}>
                       <Form.Item
                         label="Số CCCD "
                         name="idcard"
@@ -600,7 +600,7 @@ const UpdateProfiles = () => {
                     </Col>
                   </Row>
                   <Row gutter={16}>
-                    <Col span={8} xs={24} sm={12} md={8}>
+                    <Col span={8} xs={24} sm={24} md={8}>
                       {" "}
                     </Col>
                   </Row>
