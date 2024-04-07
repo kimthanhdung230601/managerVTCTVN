@@ -94,7 +94,7 @@ const Profiles = () => {
   const getSrcFromFile = (file: any) => {
     return new Promise((resolve) => {
       const reader = new FileReader();
-reader.readAsDataURL(file.originFileObj);
+      reader.readAsDataURL(file.originFileObj);
       reader.onload = () => resolve(reader.result);
     });
   };
@@ -194,7 +194,7 @@ reader.readAsDataURL(file.originFileObj);
   // const decryptedPermission = permission.toString(CryptoJS.enc.Utf8);
   //fill club
   // useEffect(() => {
-//   form.setFieldValue("club", decryptedNameClb);
+  //   form.setFieldValue("club", decryptedNameClb);
   // }, [form]);
   console.log("decryptedClub", decryptedClub);
   const [loading, setLoading] = useState(false);
@@ -269,7 +269,7 @@ reader.readAsDataURL(file.originFileObj);
                 form={form}
               >
                 <Row gutter={16}>
-                  <Col span={8} xs={24} sm={12} md={8}>
+                  <Col span={8} xs={24} sm={24} md={8}>
                     <Row>
                       <Col span={12}>
                         {" "}
@@ -337,33 +337,9 @@ reader.readAsDataURL(file.originFileObj);
                           {/* </ImgCrop> */}
                         </Form.Item>
                       </Col>
-                    </Row>{" "}
-                    {/* <div className={styles.buttonGroup}>
-                      <span
-                        className={`${styles.showBtn} ${
-selectedButton === "show"
-                            ? styles.selectedBtn
-                            : styles.noneSelectedBtn
-                        }`}
-                        onClick={() => handleButtonClick("show")}
-                      >
-                        Hiển thị
-                      </span>
-                      <span
-                        className={`${styles.showBtn} ${
-                          selectedButton === "hide"
-                            ? styles.selectedBtn
-                            : styles.noneSelectedBtn
-                        }`}
-                        onClick={() => {
-                          handleButtonClick("hide");
-                        }}
-                      >
-                        Ẩn
-                      </span>
-                    </div> */}
+                    </Row>
                   </Col>
-                  <Col span={8} xs={24} sm={12} md={8}>
+                  <Col span={8} xs={24} sm={24} md={8}>
                     <Form.Item
                       label="Họ tên"
                       name="name"
@@ -390,7 +366,7 @@ selectedButton === "show"
                       <Input />
                     </Form.Item>
                   </Col>
-                  <Col span={8} xs={24} sm={12} md={8}>
+                  <Col span={8} xs={24} sm={24} md={8}>
                     {" "}
                     <Form.Item
                       label="Quốc tịch"
@@ -399,7 +375,7 @@ selectedButton === "show"
                         { required: true, message: "Vui lòng điền quốc tịch" },
                       ]}
                     >
-                      <Input />
+                      <Input style={{width:"100%"}}/>
                     </Form.Item>
                     <Row gutter={16}>
                       <Col span={12}>
@@ -413,11 +389,14 @@ selectedButton === "show"
                             },
                           ]}
                         >
-                          <DatePicker format="DD/MM/YYYY" style={{width:"100%"}}/>
+                          <DatePicker
+                            format="DD/MM/YYYY"
+                            style={{ width: "100%" }}
+                          />
                           {/* <Input type="date" /> */}
                         </Form.Item>
                       </Col>
-<Col span={12}>
+                      <Col span={12}>
                         <Form.Item
                           label="Giới tính"
                           name="sex"
@@ -437,9 +416,10 @@ selectedButton === "show"
                       </Col>
                     </Row>
                   </Col>
+                  <Col span={8} xs={24} sm={24} md={8}></Col>
                 </Row>{" "}
                 <Row gutter={16}>
-                  <Col span={8} xs={24} sm={12} md={8}>
+                  <Col span={8} xs={24} sm={24} md={8}>
                     <Form.Item
                       label={
                         param.key
@@ -467,16 +447,15 @@ selectedButton === "show"
                           ))}
                         </Select>
                       ) : !param.key && decryptedPermission == "1" ? (
-                        (
-                          dataClubF1?.status === "success" && <Select defaultValue={null}>
+                        dataClubF1?.status === "success" && (
+                          <Select defaultValue={null}>
                             {dataClubF1?.data.map((club: any) => (
                               <Select.Option key={club.value} value={club.club}>
                                 {club.NameClb}
-                            </Select.Option>
-                          ))}
-                        </Select>
+                              </Select.Option>
+                            ))}
+                          </Select>
                         )
-
                       ) : param.key && decryptedPermission == "1" ? (
                         <Input
                           disabled={true}
@@ -490,7 +469,7 @@ selectedButton === "show"
                       ) : null}
                     </Form.Item>
                   </Col>
-                  <Col span={8} xs={24} sm={12} md={8}>
+                  <Col span={8} xs={24} sm={24} md={8}>
                     <Form.Item
                       label="Cấp/đai đẳng hiện tại"
                       name="level"
@@ -505,7 +484,7 @@ selectedButton === "show"
                       </Select>
                     </Form.Item>
                   </Col>
-                  <Col span={8} xs={24} sm={12} md={8}>
+                  <Col span={8} xs={24} sm={24} md={8}>
                     <Form.Item
                       label="Email"
                       name="email"
@@ -522,7 +501,7 @@ selectedButton === "show"
                   </Col>
                 </Row>
                 <Row gutter={16}>
-                  <Col span={8} xs={24} sm={12} md={8}>
+                  <Col span={8} xs={24} sm={24} md={8}>
                     <Form.Item
                       label="Tỉnh/Thành"
                       name="city"
@@ -543,7 +522,7 @@ selectedButton === "show"
                       </Select>
                     </Form.Item>
                   </Col>
-                  <Col span={8} xs={24} sm={12} md={8}>
+                  <Col span={8} xs={24} sm={24} md={8}>
                     {/* <Form.Item
                       label="Quận/Huyện"
                       name="district"
@@ -561,9 +540,9 @@ selectedButton === "show"
                       ]}
                     >
                       <Input />
-</Form.Item>
+                    </Form.Item>
                   </Col>
-                  <Col span={8} xs={24} sm={12} md={8}>
+                  <Col span={8} xs={24} sm={24} md={8}>
                     <Form.Item
                       label="Số CCCD "
                       name="idcard"
@@ -576,7 +555,7 @@ selectedButton === "show"
                   </Col>
                 </Row>
                 <Row gutter={16}>
-                  <Col span={8} xs={24} sm={12} md={8}>
+                  <Col span={8} xs={24} sm={24} md={8}>
                     {" "}
                   </Col>
                 </Row>
