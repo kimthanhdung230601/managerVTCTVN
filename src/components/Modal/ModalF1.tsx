@@ -54,7 +54,7 @@ const ModalF1 = ({
     data: dataDetailF2,
     isFetching,
     refetch,
-  } = useQuery("getDetailF2", () => getDetailF2(id), {
+  } = useQuery(['getDetailF2',id], () => getDetailF2(id), {
     onSettled: (data) => {
       form.setFieldValue("name", data.data[0].name);
       form.setFieldValue("code", data.data[0].code);
@@ -67,9 +67,9 @@ const ModalF1 = ({
       form.setFieldValue("level", data.data[0].level);
     },
   });
-  useEffect(() => {
-    refetch();
-  }, [id]);
+  // useEffect(() => {
+  //   refetch();
+  // }, [id]);
   //update
   const [loading, setLoading] = useState(false);
   const updateUserMutation = useMutation(
@@ -116,7 +116,7 @@ const ModalF1 = ({
   return (
     <>
       <Modal
-        title={`Chỉnh sửa tài khoản đơn vị quản lý ${id}`}
+        title={`Chỉnh sửa tài khoản đơn vị quản lý`}
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
