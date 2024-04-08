@@ -358,7 +358,7 @@ const ModalAccount = ({
               <Col span={12}>
                 {" "}
                 <Form.Item label="Mật khẩu" name="password">
-                  <Input.Password disabled={true} />
+                  <Input disabled={true} />
                 </Form.Item>{" "}
                 <Form.Item
                   label="Đơn vị quản lý "
