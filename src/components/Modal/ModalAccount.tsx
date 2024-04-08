@@ -72,7 +72,7 @@ const ModalAccount = ({
     data: dataDetailF2,
     isFetching,
     refetch,
-  } = useQuery(["getDetailF2"], () => getDetailF2(id), {
+  } = useQuery(["getDetailF2",id], () => getDetailF2(id), {
     onSettled: (data) => {
       form.setFieldValue("name", data.data[0].name);
       form.setFieldValue("password", data.data[0].password);
@@ -213,7 +213,7 @@ const ModalAccount = ({
     formdata.append("pending", dataDetailF2?.data[0].pending);
     let certificateFile = null;
     let refFile = null;
-
+    let cmndFile = null;
     if (uploadedCertificate) {
       certificateFile = uploadedCertificate.originFileObj as File;
     } else if (fileListCertificate && fileListCertificate.length > 0) {
@@ -224,6 +224,11 @@ const ModalAccount = ({
       refFile = uploadedRef.originFileObj as File;
     } else if (fileListRef && fileListRef.length > 0) {
       refFile = fileListRef[0].originFileObj as File;
+    }
+    if (uploadedCmnd) {
+      cmndFile = uploadedCmnd.originFileObj as File;
+    } else if (fileListCmnd && fileListCmnd.length > 0) {
+      cmndFile = fileListRef[0].originFileObj as File;
     }
 
     if (certificateFile) {
@@ -236,9 +241,16 @@ const ModalAccount = ({
 
     if (refFile) {
       formdata.append(
-        `ref`,
+        `image_ref`,
         refFile,
         CryptoJS.AES.encrypt(refFile.name, randomKey).toString()
+      );
+    }
+    if (cmndFile) {
+      formdata.append(
+        `image_cmnd`,
+        cmndFile,
+        CryptoJS.AES.encrypt(cmndFile.name, randomKey).toString()
       );
     }
     // const res = await updateUser(formdata);
@@ -249,7 +261,7 @@ const ModalAccount = ({
   };
 
   useEffect(() => {
-    refetch();
+
     //reload img
     const imageCertificateFileName = dataDetailF2?.data[0].image_certificate;
     const refFileName = dataDetailF2?.data[0].image_ref;
@@ -284,7 +296,7 @@ const ModalAccount = ({
       },
     ];
     setFileListCmnd(CmndFileList);
-  }, [id, dataDetailF2?.data[0]]);
+  }, [dataDetailF2?.data[0]]);
 
   //select
   const onChangeSelect = (value: string) => {
