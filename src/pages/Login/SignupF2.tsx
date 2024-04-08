@@ -230,10 +230,10 @@ export default function SignupF2() {
   };
   useEffect(() => {
     dispatch({ type: "INCREMENT_LOAD_COUNT" });
-    if (reloadCount.loadCount >= 18) {
+    if (reloadCount.loadCount >= 9) {
       setShowCaptcha(true);
     }
-    if (reloadCount.loadCount < 18 && !showCaptcha) {
+    if (reloadCount.loadCount < 9 && !showCaptcha) {
       setTimeout(() => {
         dispatch({ type: "RESET_LOAD_COUNT" });
       }, 120000);
