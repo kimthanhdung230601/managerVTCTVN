@@ -38,7 +38,6 @@ export default function Wrapper() {
 
   if(permissionAdmin() === 404) return <NotFoundPage />
   if(permissionAdmin() !== 3){
-    console.log(permissionAdmin())
     if(Cookies.get("token")){
       if(permissionAdmin() === 0 && isAdmin() === "0") return <Component />
       else if(permissionAdmin() === 1 && parseInt(isAdmin(),10) <= 1) return <Component />

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Search, { SearchProps } from "antd/es/input/Search";
 import styles from "./Style.module.scss";
 import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
-import { message, Table, Spin, Popconfirm, Button, Modal } from "antd";
+import { message, Table, Spin, Popconfirm, Button, Modal, Pagination } from "antd";
 import { ColumnsType, TableProps } from "antd/es/table";
 import { useLocation, useNavigate } from "react-router";
 import { levelFilters } from "../../until/until";
@@ -63,12 +63,19 @@ export default function ManageMember() {
   const [open, setOpen] = useState(false);
 
   const { data: memberListData, isFetching } = useQuery(
-    ["member", currentPage1],
-    () => getListMember(currentPage1),
+    ["member", currentPage1, param],
+    () => getListMember(currentPage1, param),
     {
       onSettled: (data) => {
         if (data.status === "failed") {
           message.warning("Chưa có thành viên!");
+          setMemberList({
+            status: "",
+            total_products: 0,
+            total_pages: 0,
+            index_page: 0,
+            data: [],
+          });
         } else if (data.status === "success") {
           const newData = data.data.map((item: any, index: number) => {
             return {
@@ -76,7 +83,6 @@ export default function ManageMember() {
               key: item.id,
             };
           });
-
           setMemberList({
             status: data.status,
             total_products: data.total_products,
@@ -93,38 +99,7 @@ export default function ManageMember() {
       },
     }
   );
-  const { data: resultFilter } = useQuery(
-    ["filters", param],
-    () => getFilterTable("/ManageGetMembers", param),
-    {
-      enabled: param !== "",
-      onSettled: (data) => {
-        if (data.status === "success") {
-          const newData = data.data.map((item: any, index: number) => {
-            return {
-              ...item,
-              key: item.id,
-            };
-          });
-
-          setMemberList({
-            status: data.status,
-            total_products: data.total_products,
-            total_pages: data.total_pages,
-            index_page: data.index_page,
-            data: newData,
-          });
-        } else if (data.status === "failed") {
-          message.error("Chưa có thành viên");
-        } else {
-          message.error("Có lỗi xảy ra, vui lòng thử lại sau");
-          setTimeout(() => {
-            window.location.reload();
-          }, 2000);
-        }
-      },
-    }
-  );
+  
   const { data: search } = useQuery(["search", key], () => searchInTable(key), {
     enabled: key !== "",
     onSettled: (data) => {
@@ -340,9 +315,8 @@ export default function ManageMember() {
     extra
   ) => {
     const param =
-      "?page=" +
-      currentPage1 +
-      (filters.NameClb ? "&club=" + filters.NameClb[0] : "") +
+    
+      (filters.NameClb ? "?club=" + filters.NameClb[0] : "") +
       (filters.level
         ? "&level=" + encodeURIComponent(filters.level[0].toString())
         : "") +
@@ -350,6 +324,7 @@ export default function ManageMember() {
         ? "&status=" + encodeURIComponent(filters.status[0].toString())
         : "");
     setParam(param);
+   
   };
   return (
     <>
@@ -408,18 +383,16 @@ export default function ManageMember() {
                 dataSource={memberList?.data}
                 locale={customLocale}
                 onChange={onChange}
-                pagination={{
-                  current: parseInt(currentPage1, 10),
-                  onChange: onPaginationChange1,
-                  pageSize: 30,
-                  defaultCurrent: 1,
-                  total:
-                    memberList?.status === "success"
-                      ? memberList.total_products
-                      : 0,
-                }}
+    
+                pagination={false}
                 className={styles.table}
               />
+              <Pagination 
+                current={parseInt(currentPage1, 10)} 
+                defaultCurrent={1}
+                onChange={onPaginationChange1} 
+                pageSize={30} 
+                total={memberList?.status === "success" ? memberList.total_products : 0} />
               <Modal
                 title="Xác nhận"
                 open={open}
