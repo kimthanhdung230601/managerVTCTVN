@@ -523,15 +523,6 @@ const Profiles = () => {
                     </Form.Item>
                   </Col>
                   <Col span={8} xs={24} sm={24} md={8}>
-                    {/* <Form.Item
-                      label="Quận/Huyện"
-                      name="district"
-                      rules={[
-                        { required: true, message: "Vui lòng điền quận/huyện" },
-                      ]}
-                    >
-                      <Input />
-                    </Form.Item> */}{" "}
                     <Form.Item
                       label="Quê quán"
                       name="hometown"
@@ -559,82 +550,6 @@ const Profiles = () => {
                     {" "}
                   </Col>
                 </Row>
-                {/* {decryptedPermission == "0" ? (
-                  <Form.List name="users">
-                    {(fields, { add, remove }) => (
-                      <>
-                        {" "}
-                        <Form.Item>
-                          <Button
-                            type="dashed"
-                            onClick={() => add()}
-                            style={{ float: "left" }}
-                            icon={<PlusOutlined />}
-                          >
-                            Thành tích cá nhân
-                          </Button>
-                        </Form.Item>
-                        {fields.map(({ key, name, ...restField }) => (
-                          <div
-                            style={{
-                              display: "flex",
-                              justifyContent: "space-between",
-                            }}
-                          >
-                            <Space
-                              key={key}
-                              style={{ display: "flex", width: "97%" }}
-                              // align="baseline"
-                            >
-                              <Form.Item
-                                {...restField}
-                                label={"Thành tích"}
-                                name={[name, "achievements"]}
-                                rules={[
-                                  {
-                                    required: true,
-                                    message: "Vui lòng điền thành tích",
-                                  },
-                                ]}
-                              >
-                                <Input style={{ width: "100%" }} />
-                              </Form.Item>
-                              <Form.Item
-                                {...restField}
-                                name={[name, "prize"]}
-                                label={"Giải"}
-                                rules={[
-                                  {
-                                    required: true,
-                                    message: "Vui lòng điền giải",
-                                  },
-                                ]}
-                              >
-                                <Input placeholder="Giải" />
-</Form.Item>
-                              <Form.Item
-                                {...restField}
-                                name={[name, "last"]}
-                                label={"Thời gian"}
-                                rules={[
-                                  {
-                                    required: true,
-                                    message: "Vui lòng thời gian",
-                                  },
-                                ]}
-                              >
-                                <DatePicker style={{ width: "100%" }} />
-                              </Form.Item>
-                            </Space>{" "}
-                            <MinusCircleOutlined onClick={() => remove(name)} />
-                          </div>
-                        ))}
-                      </>
-                    )}
-                  </Form.List>
-                ) : (
-                  <Space></Space>
-                )} */}
                 <Form.Item
                   name="note"
                   label="Ghi chú hiển thị với người dùng"

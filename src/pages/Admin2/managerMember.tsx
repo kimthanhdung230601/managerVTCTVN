@@ -92,20 +92,35 @@ const ManagerMemberTwo = () => {
   );
   const decryptedPerrmission = permission.toString(CryptoJS.enc.Utf8);
   const currentURL = window.location.href;
+  var urlParams = new URLSearchParams(currentURL.split("?")[1]);
+  var clubValue = urlParams.get("club");
+  const initialClubName =
+    decryptedPerrmission == "2" ? decryptedClub : clubValue;
+  const [clubName, setClubName] = useState<any>(initialClubName);
+  useEffect(() => {
+    if (decryptedPerrmission !== "2") {
+      setClubName(clubValue);
+    }
+  }, [decryptedPerrmission, clubValue]);
   const [param, setParam] = useState("");
   const [key, setKey] = useState("");
   const [memberList, setMemberList] = useState<data>();
-  var urlParams = new URLSearchParams(currentURL.split("?")[1]);
-  var clubValue = urlParams.get("club");
+
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const initialPayload = `club=${clubName}&page=${currentPage}`;
+  const [payload, setPayload] = useState<any>(
+    `club=${clubName}&page=${currentPage}`
+  );
+
   const {
     data: listF3,
     refetch: refetchListF3,
     isFetching,
   } = useQuery(
-    "listF3",
-    decryptedPerrmission == "2"
-      ? () => getListMemberF3(decryptedClub)
-      : () => getListMemberF3(clubValue),
+    ["listF3", payload],
+    () => getListMemberF3(payload),
+
     {
       onSettled: (data) => {
         if (data.status === "success") {
@@ -118,28 +133,7 @@ const ManagerMemberTwo = () => {
       },
     }
   );
-  const { data: resultFilter } = useQuery(
-    ["filters", param],
-    () => getFilterTable("/Members", param),
-    {
-      enabled: param !== "",
-      onSettled: (data) => {
-        if (data.status === "success") {
-          setMemberList(data);
-        } else if (data.status === "failed") {
-          message.error("Không có dữ liệu.");
-          // setTimeout(()=> {
-          //   window.location.reload()
-          // }, 2000)
-        } else {
-          message.error("Có lỗi xảy ra, vui lòng thử lại sau");
-          setTimeout(() => {
-            window.location.reload();
-          }, 2000);
-        }
-      },
-    }
-  );
+
   const { data: search } = useQuery(["search", key], () => searchInTable(key), {
     enabled: key !== "",
     onSettled: (data) => {
@@ -172,17 +166,6 @@ const ManagerMemberTwo = () => {
 
   const [id, setID] = useState();
   const [note, setNote] = useState("");
-  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-    setSelectedRowKeys(newSelectedRowKeys);
-  };
-  const rowSelection = {
-    selectedRowKeys,
-    onChangePage: onSelectChange,
-  };
-  const hasSelected = selectedRowKeys.length > 0;
-
   const confirmDelete = async (value: any) => {
     const payload = {
       data: [{ id: value }],
@@ -384,12 +367,11 @@ const ManagerMemberTwo = () => {
       width: 170,
     },
   ];
-  useEffect(() => {
-    refetchListF3();
-  }, [currentPage, listF3?.total_products]);
+
   const onChangePage = (value: any) => {
     setCurrentPage(value);
-    // refetch();
+    const updatedPayload = `club=${clubName}&page=${value}` + param;
+    setPayload(updatedPayload);
   };
   const onChange: TableProps<DataType>["onChange"] = (
     pagination,
@@ -398,10 +380,8 @@ const ManagerMemberTwo = () => {
     extra
   ) => {
     const param =
-      "?club" +
-      (decryptedPerrmission == "2" ? decryptedClub : clubValue) +
-      "&page=" +
-      currentPage +
+      // "?club" +
+      // (decryptedPerrmission == "2" ? clubName : clubName) +
       (filters.level
         ? "&level=" + encodeURIComponent(filters.level[0].toString())
         : "") +
@@ -418,8 +398,9 @@ const ManagerMemberTwo = () => {
         ? "&achievements=" +
           encodeURIComponent(filters.achievements[0].toString())
         : "");
-
     setParam(param);
+    const updatedPayload = initialPayload + param;
+    setPayload(updatedPayload);
   };
   return (
     <div className={styles.wrap}>
@@ -472,7 +453,8 @@ const ManagerMemberTwo = () => {
               <Pagination
                 defaultCurrent={1}
                 onChange={onChangePage}
-                total={listF3?.total_products}
+                // total={listF3?.total_products}
+                total={50}
                 pageSize={30}
                 style={{ margin: "1vh 0", float: "right" }}
               />
@@ -481,13 +463,21 @@ const ManagerMemberTwo = () => {
             <>
               {" "}
               <Table
-                rowSelection={rowSelection}
+                // rowSelection={rowSelection}
                 columns={columns}
-                dataSource={[]}
+                dataSource={listF3?.data}
                 locale={customLocale}
                 scroll={{ x: 1300 }}
                 style={{ overflowX: "auto" }}
                 pagination={false}
+              />
+              <Pagination
+                defaultCurrent={currentPage}
+                onChange={onChangePage}
+                // total={listF3?.total_products}
+                total={50}
+                pageSize={30}
+                style={{ margin: "1vh 0", float: "right" }}
               />
             </>
           )}
