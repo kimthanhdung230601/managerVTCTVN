@@ -75,11 +75,11 @@ const customLocale = {
   selectInvert: "Đảo ngược", // Thay đổi văn bản khi chọn ngược
 };
 const ManagerAccountUnDepended = ({ refetch }: ManagerAccountProps) => {
-  //tài khoản đã được duyệt
+ //tài khoản chưa được duyệt
   const [currentPage, setCurrentPage] = useState(1);
   const initialPayload = `page=${currentPage}&pending=0&permission=2`;
   const [payload, setPayload] = useState(initialPayload);
-  //tài khoản chưa được duyệt
+  const [param, setParam] = useState("");
   const {
     data,
     refetch: refetchUnAccept,
@@ -97,16 +97,16 @@ const ManagerAccountUnDepended = ({ refetch }: ManagerAccountProps) => {
         ? "$manage=" + encodeURIComponent(filters.manage[0].toString())
         : "") +
       (filters.nameClub ? "$club=" + filters.nameClub[0] : "");
-    console.log("prr", param);
 
     const updatePayload = initialPayload + param;
     setPayload(updatePayload);
-    refetchUnAccept();
+    setParam(param);
   };
 
   const onChangePageAccept = (value: any) => {
     setCurrentPage(value);
-    refetchUnAccept();
+    const updatedPayload = `page=${value}&pending=0&permission=2` + param;
+    setPayload(updatedPayload);
   };
   const isMobile = useMediaQuery({ maxWidth: 768 });
 
@@ -233,11 +233,11 @@ const ManagerAccountUnDepended = ({ refetch }: ManagerAccountProps) => {
     //   dataIndex: "account",
     //   width: 200,
     // },
-    {
-      title: "Mật khẩu",
-      dataIndex: "password",
-      width: 150,
-    },
+    // {
+    //   title: "Mật khẩu",
+    //   dataIndex: "password",
+    //   width: 150,
+    // },
     {
       title: "Ảnh",
       dataIndex: "image",
@@ -382,11 +382,11 @@ const ManagerAccountUnDepended = ({ refetch }: ManagerAccountProps) => {
     //   dataIndex: "account",
     //   width: 200,
     // },
-    {
-      title: "Mật khẩu",
-      dataIndex: "password",
-      width: 150,
-    },
+    // {
+    //   title: "Mật khẩu",
+    //   dataIndex: "password",
+    //   width: 150,
+    // },
     {
       title: "Ảnh",
       dataIndex: "image",

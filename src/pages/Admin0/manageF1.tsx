@@ -229,11 +229,11 @@ const ManagerF1 = () => {
 
       filterMultiple: false,
     },
-    {
-      title: "Mật khẩu",
-      dataIndex: "password",
-      width: 150,
-    },
+    // {
+    //   title: "Mật khẩu",
+    //   dataIndex: "password",
+    //   width: 150,
+    // },
     {
       key: "action",
       width: 200,
@@ -351,11 +351,11 @@ const ManagerF1 = () => {
       width: 200,
     },
 
-    {
-      title: "Mật khẩu",
-      dataIndex: "password",
-      width: 150,
-    },
+    // {
+    //   title: "Mật khẩu",
+    //   dataIndex: "password",
+    //   width: 150,
+    // },
     {
       // title: 'Action',
       key: "action",

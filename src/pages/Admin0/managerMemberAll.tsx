@@ -80,7 +80,8 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
   //filter
   const [currentPage, setCurrentPage] = useState(1);
   const initialPayload = `page=${currentPage}`;
-  const [payload, setPayload] = useState<any>(initialPayload);
+  const [param, setParam] = useState("");
+  const [payload, setPayload] = useState<any>(`page=${currentPage}`);
   const {
     data: allMember,
     refetch,
@@ -102,6 +103,7 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
       (filters.status
         ? "&status=" + encodeURIComponent(filters.status[0].toString())
         : "");
+    setParam(param);
     const updatedPayload = initialPayload + param;
     setPayload(updatedPayload);
   };
@@ -126,7 +128,8 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
   }, [fetching]);
   const onChangePage = (value: any) => {
     setCurrentPage(value);
-    refetch();
+    const updatedPayload = `page=${value}` + param;
+    setPayload(updatedPayload);
   };
   //btn xóa
   const confirm = async (value: any) => {
@@ -461,7 +464,7 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
       filterMultiple: false,
       onFilter: (value: any, record) => record.level.indexOf(value) === 0,
       render(value, record, index) {
-        return <span> {value.split(' - ').parts}</span>
+        return <span> {value.split(" - ").parts}</span>;
       },
     },
     {
@@ -755,7 +758,7 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
             pagination={false}
           />
           <Pagination
-            defaultCurrent={1}
+            defaultCurrent={currentPage}
             onChange={onChangePage}
             total={allMember?.total_products}
             pageSize={50}

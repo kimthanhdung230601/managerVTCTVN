@@ -21,9 +21,14 @@ import { Option } from "antd/es/mentions";
 import { useEffect, useState } from "react";
 import { province } from "../../until/until";
 import { useMutation, useQuery } from "react-query";
-import { getDetailF2, getDetailF3, updateUser } from "../../api/f0";
+import { getDetailF2, getDetailF3, getListClub, updateUser } from "../../api/f0";
 import CryptoJS from "crypto-js";
-
+interface Club {
+  id: string;
+  name_club: string;
+  club: number;
+  NameClb: string;
+}
 interface ModalAccountProps {
   isModalOpen: any;
   handleOk: () => void;
@@ -67,12 +72,17 @@ const ModalAccount = ({
   const [fileListCertificate, setFileListCertificate] = useState<any>([]);
   const [fileListRef, setFileListRef] = useState<any>([]);
   const [fileListCmnd, setFileListCmnd] = useState<any>([]);
+  const { data: dataClub } = useQuery(["dataClub",id], getListClub);
+  const listClub = dataClub?.data?.map((item: Club, index: number) => ({
+    text: item.name_club,
+    value: item.id,
+  }));
   //image
   const {
     data: dataDetailF2,
     isFetching,
     refetch,
-  } = useQuery(["getDetailF2",id], () => getDetailF2(id), {
+  } = useQuery(["getDetailF2", id], () => getDetailF2(id), {
     onSettled: (data) => {
       form.setFieldValue("name", data.data[0].name);
       form.setFieldValue("password", data.data[0].password);
@@ -261,7 +271,6 @@ const ModalAccount = ({
   };
 
   useEffect(() => {
-
     //reload img
     const imageCertificateFileName = dataDetailF2?.data[0].image_certificate;
     const refFileName = dataDetailF2?.data[0].image_ref;
@@ -357,9 +366,6 @@ const ModalAccount = ({
               </Col>
               <Col span={12}>
                 {" "}
-                <Form.Item label="Mật khẩu" name="password">
-                  <Input disabled={true} />
-                </Form.Item>{" "}
                 <Form.Item
                   label="Đơn vị quản lý "
                   name="manage"
@@ -371,6 +377,16 @@ const ModalAccount = ({
                     <Option value="Công An">Công An</Option>
                     <Option value="Quân đội">Quân đội</Option>
                     <Option value="Sở VHTT">Sở VHTT</Option>
+                  </Select>
+                </Form.Item>
+                <Form.Item label="Câu lạc bộ" name="NameClb">
+                  {/* <Input disabled={true} /> */}
+                  <Select>
+                    {listClub?.map((club: any) => (
+                      <Select.Option key={club.value} value={club.value}>
+                        {club.text}
+                      </Select.Option>
+                    ))}
                   </Select>
                 </Form.Item>
                 <Form.Item
@@ -407,11 +423,7 @@ const ModalAccount = ({
                   <Input />
                 </Form.Item>
               </Col>
-              <Col span={12}>
-                <Form.Item label="Câu lạc bộ" name="NameClb">
-                  <Input disabled={true} />
-                </Form.Item>
-              </Col>
+              <Col span={12}></Col>
             </Row>
             <Row>
               <Col span={8}>

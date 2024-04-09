@@ -79,10 +79,13 @@ interface fetchingProp {
 const ManagerMemberDeleted = ({ setFetching }: fetchingProp) => {
   //filter
   const [currentPage, setCurrentPage] = useState(1);
+  const [param, setParam] = useState("");
   const status = "Chờ duyệt xóa";
   const initialPayload =
     `page=${currentPage}&status=` + encodeURIComponent(status.toString());
-  const [payload, setPayload] = useState<any>(initialPayload);
+  const [payload, setPayload] = useState<any>(
+    `page=${currentPage}&status=` + encodeURIComponent(status.toString())
+  );
 
   const {
     data: allMember,
@@ -108,8 +111,8 @@ const ManagerMemberDeleted = ({ setFetching }: fetchingProp) => {
         ? "&status=" + encodeURIComponent(filters.status[0].toString())
         : "");
     const updatedPayload = initialPayload + param;
+    setParam(param);
     setPayload(updatedPayload);
-   
   };
   const filtersListNote = allMember?.list_note?.map(
     (item: any, index: any) => ({
@@ -119,13 +122,7 @@ const ManagerMemberDeleted = ({ setFetching }: fetchingProp) => {
   );
 
   const navigate = useNavigate();
-  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
-
   const isMobile = useMediaQuery({ maxWidth: 768 });
-  const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-    setSelectedRowKeys(newSelectedRowKeys);
-  };
-
   const filterProivce = OnlyProvince.map((province) => ({
     text: province,
     value: province,
@@ -133,7 +130,9 @@ const ManagerMemberDeleted = ({ setFetching }: fetchingProp) => {
 
   const onChangePage = (value: any) => {
     setCurrentPage(value);
-    refetch();
+    const updatedPayload =
+      `page=${value}&status=` + encodeURIComponent(status.toString()) + param;
+    setPayload(updatedPayload);
   };
   //btn xóa
   const confirm = async (value: any) => {
@@ -143,7 +142,7 @@ const ManagerMemberDeleted = ({ setFetching }: fetchingProp) => {
     const res = await deleteMemberF3(payload);
     refetch();
     message.success("Xóa thành công");
-    setFetching(false)
+    setFetching(false);
   };
   const confirmUpdate = async (value: any) => {
     const payload = {
