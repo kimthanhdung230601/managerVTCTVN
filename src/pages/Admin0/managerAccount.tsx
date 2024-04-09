@@ -81,12 +81,13 @@ const ManagerAccount = () => {
   //tài khoản đã được duyệt
   const [currentPageAccount, setCurrentPageAccount] = useState(1);
   const initialPayload = `page=${currentPageAccount}&pending=1&permission=2`;
+  const [param, setParam] = useState("");
   const [payload, setPayload] = useState<any>(initialPayload);
   const {
     data: dataMemberF12Accept,
     refetch: refetchAccept,
     isFetching: isFetchingAccept,
-  } = useQuery(["dataF12Accept", payload], () => getListMemberF12(payload),);
+  } = useQuery(["dataF12Accept", payload], () => getListMemberF12(payload));
   const onChange: TableProps<DataType>["onChange"] = (pagination, filters) => {
     const param =
       (filters.location
@@ -98,13 +99,14 @@ const ManagerAccount = () => {
         : "");
     const updatePayload = initialPayload + param;
     setPayload(updatePayload);
-
+    setParam(param);
     refetchAccept();
   };
 
   const onChangePageAccount = (value: any) => {
     setCurrentPageAccount(value);
-    refetchAccept();
+    const updatedPayload = `page=${value}&pending=1&permission=2` + param;
+    setPayload(updatedPayload);
   };
   //tài khoản chưa được duyệt
 
@@ -231,11 +233,11 @@ const ManagerAccount = () => {
     //   width: 200,
     // },
 
-    {
-      title: "Mật khẩu",
-      dataIndex: "password",
-      width: 150,
-    },
+    // {
+    //   title: "Mật khẩu",
+    //   dataIndex: "password",
+    //   width: 150,
+    // },
     {
       title: "Ảnh",
       dataIndex: "image",
@@ -396,11 +398,11 @@ const ManagerAccount = () => {
     //   dataIndex: "account",
     //   width: 200,
     // },
-    {
-      title: "Mật khẩu",
-      dataIndex: "password",
-      width: 150,
-    },
+    // {
+    //   title: "Mật khẩu",
+    //   dataIndex: "password",
+    //   width: 150,
+    // },
     {
       title: "Ảnh",
       dataIndex: "image",

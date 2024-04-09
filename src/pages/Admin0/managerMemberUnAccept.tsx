@@ -74,15 +74,18 @@ const customLocale = {
 };
 interface fetchingProp {
   // fetching: any;
-  setFetching: (value:boolean) => void;
+  setFetching: (value: boolean) => void;
 }
-const ManagerMemberUnAccept = ({setFetching}:fetchingProp) => {
+const ManagerMemberUnAccept = ({ setFetching }: fetchingProp) => {
   //filter
   const [currentPage, setCurrentPage] = useState(1);
   const status = "Chờ duyệt";
   const initialPayload =
     `page=${currentPage}&status=` + encodeURIComponent(status.toString());
-  const [payload, setPayload] = useState<any>(initialPayload);
+  const [payload, setPayload] = useState<any>(
+    `page=${currentPage}&status=` + encodeURIComponent(status.toString())
+  );
+  const [param, setParam] = useState("");
 
   const {
     data: allMember,
@@ -106,8 +109,8 @@ const ManagerMemberUnAccept = ({setFetching}:fetchingProp) => {
         ? "&status=" + encodeURIComponent(filters.status[0].toString())
         : "");
     const updatedPayload = initialPayload + param;
+    setParam(param);
     setPayload(updatedPayload);
-
   };
   const filtersListNote = allMember?.list_note?.map(
     (item: any, index: any) => ({
@@ -136,7 +139,9 @@ const ManagerMemberUnAccept = ({setFetching}:fetchingProp) => {
   //page
   const onChangePage = (value: any) => {
     setCurrentPage(value);
-    refetch();
+    const updatedPayload =
+      `page=${value}&status=` + encodeURIComponent(status.toString()) + param;
+    setPayload(updatedPayload);
   };
   //btn xóa
   const confirm = async (value: any) => {
