@@ -340,26 +340,32 @@ const ManagerMemberTwo = () => {
             >
               Xem{" "}
             </Button>
-            <Button
-              className={styles.btnTb}
-              onClick={() => showModalUpdateNote(record?.id, record?.note)}
-            >
-              Sửa{" "}
-            </Button>
-            {/* <Button className={styles.btnHide}>Ẩn</Button> */}
-            {record.status == "Chờ duyệt" && (
-              <Popconfirm
-                title="Xóa"
-                description={`Bạn có muốn xóa thành viên ${record.name}`}
-                onConfirm={() => confirmDelete(record?.id)}
-                onCancel={cancel}
-                okText="Có"
-                cancelText="Không"
-              >
-                <Button danger className={styles.btnTbDanger}>
-                  Xóa
+            {decryptedPerrmission == "2" ? (
+              <>
+                {" "}
+                <Button
+                  className={styles.btnTb}
+                  onClick={() => showModalUpdateNote(record?.id, record?.note)}
+                >
+                  Sửa{" "}
                 </Button>
-              </Popconfirm>
+                {record.status == "Chờ duyệt" && (
+                  <Popconfirm
+                    title="Xóa"
+                    description={`Bạn có muốn xóa thành viên ${record.name}`}
+                    onConfirm={() => confirmDelete(record?.id)}
+                    onCancel={cancel}
+                    okText="Có"
+                    cancelText="Không"
+                  >
+                    <Button danger className={styles.btnTbDanger}>
+                      Xóa
+                    </Button>
+                  </Popconfirm>
+                )}
+              </>
+            ) : (
+              <></>
             )}
           </div>
         );
@@ -453,8 +459,8 @@ const ManagerMemberTwo = () => {
               <Pagination
                 defaultCurrent={1}
                 onChange={onChangePage}
-                // total={listF3?.total_products}
-                total={50}
+                total={listF3?.total_products}
+                // total={50}
                 pageSize={30}
                 style={{ margin: "1vh 0", float: "right" }}
               />
@@ -474,8 +480,8 @@ const ManagerMemberTwo = () => {
               <Pagination
                 defaultCurrent={currentPage}
                 onChange={onChangePage}
-                // total={listF3?.total_products}
-                total={50}
+                total={listF3?.total_products}
+                // total={50}
                 pageSize={30}
                 style={{ margin: "1vh 0", float: "right" }}
               />
