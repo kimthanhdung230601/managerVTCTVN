@@ -26,7 +26,7 @@ export default function SearchId() {
                         Tra cứu dữ liệu hội viên (Nhập mã hội viên):
                         <br />
                         <Search
-                            placeholder="Nhập số mã định danh hoặc CCCD để tra cứu"
+                            placeholder="Nhập mã định danh hoặc số CCCD để tra cứu"
                             allowClear
                             onSearch={onSearch}
                             size="large"
