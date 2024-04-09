@@ -79,7 +79,7 @@ export default function News() {
                                                 <Image src={imageLink ? imageLink : require("../../assets/image/new.png")} preview={false} className={styles.postImg}/>
                                             </Link>
                                         </Col>
-                                        <Col className='gutter-row' xxl={16} lg={16} md={16} style={{padding:"20px 10px"}}>
+                                        <Col className='gutter-row' xxl={16} lg={16} md={16} style={{padding:"20px 20px"}}>
                                             <Link to={`/bai-viet/${item.id}`}>
                                                 <div className={styles.postTitle}>{item.title}</div>
                                             </Link>

@@ -1,6 +1,6 @@
 import Search, { SearchProps } from 'antd/es/input/Search';
 import { ColumnsType } from 'antd/es/table';
-import { message, Table, Spin } from "antd";
+import { message, Table, Spin, Pagination } from "antd";
 import React, { useState } from 'react'
 import styles from "./Style.module.scss";
 import { useLocation, useNavigate } from 'react-router';
@@ -51,31 +51,23 @@ export default function ManageClub() {
     const {data: clubs} = useQuery(["clubs"], () =>  getClubs())
     const [clubList, setClubList] = useState<data>()
     const [selectedRowKeysCLB, setSelectedRowKeysCLB] = useState<React.Key[]>([]);
-    const {data: clubListData, isFetching} = useQuery(['club', currentPage2], () => getListClub(currentPage2), {
+    const {data: clubListData, isFetching} = useQuery(['club', currentPage2, param], () => getListClub(currentPage2, param), {
+
       onSettled: (data) => {
         if(data.status === "failed"){
           message.warning("Chưa có thành viên!")
+          setClubList({
+            status: "",
+            total_products: 0,
+            total_pages: 0,
+            index_page: 0,
+            data: [],
+          });
         } else if(data.status === "success"){
           setClubList(data)
         } else {
           message.error("Có lỗi xảy xa, vui lòng thử lại sau")
         } 
-      }
-    })
-    const {data: resultFilter} = useQuery(["filters", param], ()=> getFilterTable('/ManageGetUsers', param), {
-      enabled: param !== "",
-      onSettled: (data) => {
-        if(data.status === "success") {
-              setClubList(data)
-              console.log("club", data)
-        } else if(data.status === "failed"){
-          message.error("Không có dữ liệu.")
-        } else {
-          message.error("Có lỗi xảy ra, vui lòng thử lại sau")
-          setTimeout(()=> {
-            window.location.reload()
-          }, 2000)
-        }
       }
     })
     const {data: search} = useQuery(["search", key], ()=> searchInTable(key), {
@@ -85,9 +77,7 @@ export default function ManageClub() {
           setClubList(data)
         } else if(data.status === "failed"){
           message.error("Không có dữ liệu.")
-          setTimeout(()=> {
-            window.location.reload()
-          }, 2000)
+          setClubList(data)
         } else {
           message.error("Có lỗi xảy ra, vui lòng thử lại sau")
           setTimeout(()=> {
@@ -113,7 +103,7 @@ export default function ManageClub() {
     };
     const onSearch: SearchProps["onSearch"] = (value, _e, info) =>{
       setKey(value)
-      console.log("kết quả", value)
+      setCurrentPage2("1")
     }
     const columns_CLB: ColumnsType<DataType_CLB> = [
         {
@@ -202,10 +192,9 @@ export default function ManageClub() {
           },
     ];
     const onChange: TableProps<DataType_CLB>['onChange'] = (pagination, filters, sorter, extra) => {
-      const param = '?page=' + currentPage2  + (filters.NameClb ? '&club=' + filters.NameClb[0] : "") + (filters.level ? '&level=' + encodeURIComponent(filters.level[0].toString())  : "") + (filters.pending ? '&pending=' + filters.pending[0] : "")
+      const param =  (filters.NameClb ? '?club=' + filters.NameClb[0] : "") + (filters.pending ? '&pending=' + filters.pending[0] : "")
       setParam(param)
     };
-   
   return (
     <>
     {
@@ -237,15 +226,16 @@ export default function ManageClub() {
               dataSource={clubList?.data}
               locale={customLocale}
               onChange={onChange}
-              pagination={{
-                  current: parseInt(currentPage2, 10),
-                  onChange: onPaginationChange2,
-                  pageSize: 30,
-                  defaultCurrent: 1,
-                  total: clubList?.total_products ? clubList?.total_products : 0,
-              }}
               className={styles.table}
-              />{" "}
+              pagination={false}
+              />
+              <Pagination 
+                current={parseInt(currentPage2, 10)} 
+                onChange={ onPaginationChange2}
+                pageSize={30}
+                defaultCurrent={1}
+                total={clubList?.total_products ? clubList?.total_products : 0}
+              />
             </>
             }
          </>

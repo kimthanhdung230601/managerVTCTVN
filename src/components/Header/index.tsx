@@ -156,6 +156,11 @@ export default function Header() {
                     Hướng dẫn
                 </Link>
             </li>
+            <li className={styles.menuResponsiveItem}>
+                <Link to={'/dang-ky-tai-khoan'} className={styles.menuResponsiveLink} onClick={handleCloseMenu}>
+                    Đăng ký tài khoản
+                </Link>
+            </li>
             {
                 Cookies.get("token") ? 
                 <li className={styles.menuResponsiveItem}>
