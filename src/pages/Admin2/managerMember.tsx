@@ -188,7 +188,7 @@ const ManagerMemberTwo = () => {
       data: [{ id: value }],
     };
     const res = await deleteMemberF3(payload);
-    message.success("Yêu câù đã được gửi đến LDVTCT Việt Nam");
+    message.success("Yêu cầu đã được gửi đến LDVTCT Việt Nam");
     refetchListF3();
   };
 

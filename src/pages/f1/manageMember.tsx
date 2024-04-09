@@ -316,7 +316,7 @@ export default function ManageMember() {
   ) => {
     const param =
     
-      (filters.NameClb ? "?club=" + filters.NameClb[0] : "") +
+      (filters.NameClb ? "&club=" + filters.NameClb[0] : "") +
       (filters.level
         ? "&level=" + encodeURIComponent(filters.level[0].toString())
         : "") +
@@ -328,12 +328,7 @@ export default function ManageMember() {
   };
   return (
     <>
-      {isFetching ? (
-        <div className={styles.fetching}>
-          <Spin size="large" />
-        </div>
-      ) : (
-        <>
+      
           {memberList?.status === "failed" ? (
             <div className={styles.fetching}>Không có dữ liệu.</div>
           ) : (
@@ -377,22 +372,23 @@ export default function ManageMember() {
                   </div>
                 </div>
               </div>
-              <Table
-                rowSelection={rowSelectionCN}
-                columns={columns_CN}
-                dataSource={memberList?.data}
-                locale={customLocale}
-                onChange={onChange}
-    
-                pagination={false}
-                className={styles.table}
-              />
-              <Pagination 
-                current={parseInt(currentPage1, 10)} 
-                defaultCurrent={1}
-                onChange={onPaginationChange1} 
-                pageSize={30} 
-                total={memberList?.status === "success" ? memberList.total_products : 0} />
+              <Spin size='large' spinning={isFetching}>
+                <Table
+                  rowSelection={rowSelectionCN}
+                  columns={columns_CN}
+                  dataSource={memberList?.data}
+                  locale={customLocale}
+                  onChange={onChange}
+                  pagination={false}
+                  className={styles.table}
+                />
+                <Pagination 
+                  current={parseInt(currentPage1, 10)} 
+                  defaultCurrent={1}
+                  onChange={onPaginationChange1} 
+                  pageSize={30} 
+                  total={memberList?.status === "success" ? memberList.total_products : 0} />
+                </Spin>
               <Modal
                 title="Xác nhận"
                 open={open}
@@ -405,8 +401,7 @@ export default function ManageMember() {
               </Modal>
             </>
           )}
-        </>
-      )}
+        
     </>
   );
 }

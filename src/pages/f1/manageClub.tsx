@@ -192,15 +192,12 @@ export default function ManageClub() {
           },
     ];
     const onChange: TableProps<DataType_CLB>['onChange'] = (pagination, filters, sorter, extra) => {
-      const param =  (filters.NameClb ? '?club=' + filters.NameClb[0] : "") + (filters.pending ? '&pending=' + filters.pending[0] : "")
+      const param =  (filters.NameClb ? '&club=' + filters.NameClb[0] : "") + (filters.pending ? '&pending=' + filters.pending[0] : "")
       setParam(param)
     };
   return (
     <>
-    {
-        isFetching ? <div className={styles.fetching}><Spin size='large' /></div>
-        :
-        <>
+   
         {
           clubList?.status === "failed" ? <div className={styles.fetching}>Không có dữ liệu.</div>
           :
@@ -217,29 +214,28 @@ export default function ManageClub() {
                   size="large"
                   style={{maxWidth: "300px", marginBottom: "4px", marginRight: "8px"}}
               />
-              
               </div>
               </div>
-              <Table
-              // rowSelection={rowSelectionCLB}
-              columns={columns_CLB}
-              dataSource={clubList?.data}
-              locale={customLocale}
-              onChange={onChange}
-              className={styles.table}
-              pagination={false}
-              />
-              <Pagination 
-                current={parseInt(currentPage2, 10)} 
-                onChange={ onPaginationChange2}
-                pageSize={30}
-                defaultCurrent={1}
-                total={clubList?.total_products ? clubList?.total_products : 0}
-              />
+              <Spin size='large' spinning={isFetching}>
+                <Table
+                // rowSelection={rowSelectionCLB}
+                columns={columns_CLB}
+                dataSource={clubList?.data}
+                locale={customLocale}
+                onChange={onChange}
+                className={styles.table}
+                pagination={false}
+                />
+                <Pagination 
+                  current={parseInt(currentPage2, 10)} 
+                  onChange={ onPaginationChange2}
+                  pageSize={30}
+                  defaultCurrent={1}
+                  total={clubList?.total_products ? clubList?.total_products : 0}
+                />
+              </Spin>
             </>
             }
-         </>
-      }
     </>
   )
 }
