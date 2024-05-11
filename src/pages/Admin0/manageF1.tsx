@@ -1,49 +1,27 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { PlusOutlined } from "@ant-design/icons";
 import {
-  AudioOutlined,
-  PlusOutlined,
-  DownloadOutlined,
-  CheckOutlined,
-  FileTextOutlined,
-} from "@ant-design/icons";
-import {
-  Input,
   Table,
   Button,
-  Form,
-  Select,
   Col,
   Row,
-  Image,
   Popconfirm,
   message,
   Pagination,
   Spin,
 } from "antd";
-import { admin, province } from "../../until/until";
+import { province } from "../../until/until";
 import styles from "./styles.module.scss";
-// import type { TableColumnsType, TableProps } from "antd/es/table";
-import type { TableColumnsType, TableProps } from "antd";
+import type { TableProps } from "antd";
 
-import ModalAccount from "../../components/Modal/ModalAccount";
-import ModalAccept from "../../components/Modal/ModalAccept";
 import { useNavigate } from "react-router";
 import { useMediaQuery } from "react-responsive";
-import { text } from "stream/consumers";
 import type { ColumnsType } from "antd/es/table";
 import { useQuery } from "react-query";
-import {
-  deleteMemberF12,
-  getListMemberF12,
-  // getListMemberF12Accept,
-  // getListMemberF12UnAccept,
-  updateAccount,
-} from "../../api/f0";
-import ListClub from "../../hook/listClub";
+import { deleteMemberF12, getListMemberF12 } from "../../api/f0";
 import CryptoJS from "crypto-js";
 import ModalF1 from "../../components/Modal/ModalF1";
 const secretKey = process.env.REACT_APP_SECRET_KEY as string;
-interface ManagerAccountProps {}
 interface DataType {
   key: React.Key;
   id: string;
@@ -67,28 +45,26 @@ interface DataType {
   image_ref: any;
 }
 
-const { Option } = Select;
 const filterProivce = province.map((province) => ({
   text: province,
   value: province,
 }));
 const customLocale = {
-  filterConfirm: "OK", // Thay đổi nút xác nhận
-  filterReset: "Xoá", // Thay đổi nút reset
-  filterEmptyText: "No filters", // Thay đổi văn bản khi không có bộ lọc
-  selectAll: "Chọn tất cả", // Thay đổi văn bản "Select All Items" ở đây
-  selectInvert: "Đảo ngược", // Thay đổi văn bản khi chọn ngược
+  filterConfirm: "OK",
+  filterReset: "Xoá",
+  filterEmptyText: "No filters",
+  selectAll: "Chọn tất cả",
+  selectInvert: "Đảo ngược",
 };
 const ManagerF1 = () => {
-  //tài khoản đã được duyệt
   const [currentPageAccount, setCurrentPageAccount] = useState(1);
-  const initialPayload = `page=${currentPageAccount}&permission=1}`;
+  const initialPayload = `page=${currentPageAccount}&permission=1`;
   const [payloadAccept, setPayloadAccept] = useState<any>(initialPayload);
   const {
     data: dataMemberF12Accept,
     refetch: refetchAccept,
     isFetching: isFetchingAccept,
-  } = useQuery(['dataF12Accept', payloadAccept], () =>
+  } = useQuery(["dataF12Accept", payloadAccept], () =>
     getListMemberF12(payloadAccept)
   );
   const onChange: TableProps<DataType>["onChange"] = (pagination, filters) => {

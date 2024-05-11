@@ -5,24 +5,16 @@ import {
   Modal,
   Row,
   Col,
-  Upload,
-  DatePicker,
   Select,
-  UploadFile,
-  UploadProps,
   message,
   Spin,
 } from "antd";
 import styles from "./styles.module.scss";
 import { useForm } from "antd/es/form/Form";
-import type { DatePickerProps } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
-import { Option } from "antd/es/mentions";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { province } from "../../until/until";
 import { useMutation, useQuery } from "react-query";
-import { getDetailF2, getDetailF3, updateUser } from "../../api/f0";
-import CryptoJS from "crypto-js";
+import { getDetailF2, updateUser } from "../../api/f0";
 
 interface ModalAccountProps {
   isModalOpen: any;
@@ -32,14 +24,6 @@ interface ModalAccountProps {
   setId: Function;
   refetchAccountTable: () => void;
 }
-const { TextArea } = Input;
-const getBase64 = (file: any): Promise<string> =>
-  new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result as string);
-    reader.onerror = (error) => reject(error);
-  });
 const ModalF1 = ({
   isModalOpen,
   handleCancel,
@@ -50,26 +34,23 @@ const ModalF1 = ({
   const [form] = useForm();
 
   //image
-  const {
-    data: dataDetailF2,
-    isFetching,
-    refetch,
-  } = useQuery(['getDetailF2',id], () => getDetailF2(id), {
-    onSettled: (data) => {
-      form.setFieldValue("name", data.data[0].name);
-      form.setFieldValue("code", data.data[0].code);
-      form.setFieldValue("location", data.data[0].location);
-      // form.setFieldValue("NameClb", data.data[0].NameClb);
-      form.setFieldValue("manage", data.data[0].manage);
-      form.setFieldValue("phone", data.data[0].phone);
-      form.setFieldValue("email", data.data[0].email);
-      form.setFieldValue("idcard", data?.data[0].idcard);
-      form.setFieldValue("level", data.data[0].level);
-    },
-  });
-  // useEffect(() => {
-  //   refetch();
-  // }, [id]);
+  const { data: dataDetailF2, isFetching } = useQuery(
+    ["getDetailF2", id],
+    () => getDetailF2(id),
+    {
+      onSettled: (data) => {
+        form.setFieldValue("name", data.data[0].name);
+        form.setFieldValue("code", data.data[0].code);
+        form.setFieldValue("location", data.data[0].location);
+        form.setFieldValue("manage", data.data[0].manage);
+        form.setFieldValue("phone", data.data[0].phone);
+        form.setFieldValue("email", data.data[0].email);
+        form.setFieldValue("idcard", data?.data[0].idcard);
+        form.setFieldValue("level", data.data[0].level);
+        form.setFieldValue("password", data.data[0].password);
+      },
+    }
+  );
   //update
   const [loading, setLoading] = useState(false);
   const updateUserMutation = useMutation(
@@ -99,11 +80,9 @@ const ModalF1 = ({
     formdata.append("phone", value.phone);
     formdata.append("location", value.location);
     formdata.append("manage", value.manage);
-
+    formdata.append("password", value.password);
     formdata.append("level", value.level);
-    // formdata.append("password", value.password);
     updateUserMutation.mutate(formdata);
-    // setLoading(true);
   };
 
   //select
@@ -143,13 +122,11 @@ const ModalF1 = ({
                   rules={[{ required: true, message: "Vui lòng chọn tỉnh" }]}
                 >
                   <Select
-                    //  menuItemSelectedIcon={<CheckOutlined />}
                     showSearch
                     placeholder={"Tỉnh/Thành"}
                     optionFilterProp="children"
                     onChange={onChangeSelect}
                     onSearch={onSearchSelect}
-                    //  filterOption={filterOption}
                     className={styles.select}
                   >
                     {province.map((option) => (
@@ -231,7 +208,19 @@ const ModalF1 = ({
                 </Form.Item>
               </Col>
             </Row>
-
+            <Row gutter={16}>
+              <Col span={12}>
+                <Form.Item
+                  label="Mật khẩu"
+                  name="password"
+                  rules={[
+                    { required: true, message: "Vui lòng điền password" },
+                  ]}
+                >
+                  <Input />
+                </Form.Item>
+              </Col>
+            </Row>
             <Form.Item className={styles.btn}>
               <div className={styles.btnContainer}>
                 <Button htmlType="submit" loading={loading}>
