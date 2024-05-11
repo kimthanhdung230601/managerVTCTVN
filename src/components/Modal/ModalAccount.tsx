@@ -21,7 +21,12 @@ import { Option } from "antd/es/mentions";
 import { useEffect, useState } from "react";
 import { province } from "../../until/until";
 import { useMutation, useQuery } from "react-query";
-import { getDetailF2, getDetailF3, getListClub, updateUser } from "../../api/f0";
+import {
+  getDetailF2,
+  getDetailF3,
+  getListClub,
+  updateUser,
+} from "../../api/f0";
 import CryptoJS from "crypto-js";
 interface Club {
   id: string;
@@ -72,7 +77,7 @@ const ModalAccount = ({
   const [fileListCertificate, setFileListCertificate] = useState<any>([]);
   const [fileListRef, setFileListRef] = useState<any>([]);
   const [fileListCmnd, setFileListCmnd] = useState<any>([]);
-  const { data: dataClub } = useQuery(["dataClub",id], getListClub);
+  const { data: dataClub } = useQuery(["dataClub", id], getListClub);
   const listClub = dataClub?.data?.map((item: Club, index: number) => ({
     text: item.name_club,
     value: item.id,
@@ -211,11 +216,12 @@ const ModalAccount = ({
     formdata.append("email", value.email);
     formdata.append("location", value.location);
     formdata.append("manage", value.manage);
+    formdata.append("password", value.password);
     //
     formdata.append("club", dataDetailF2?.data[0].club);
     formdata.append("id", id);
     formdata.append("level", dataDetailF2?.data[0].level);
-    formdata.append("idcard", dataDetailF2?.data[0].idcard);
+    formdata.append("idcard", value.idcard);
     formdata.append("idday", dataDetailF2?.data[0].idday);
     formdata.append("idlocation", dataDetailF2?.data[0].idlocation);
     formdata.append("birthday", dataDetailF2?.data[0].birthday);
@@ -337,9 +343,8 @@ const ModalAccount = ({
                 >
                   <Input />
                 </Form.Item>
-                {/* CCCD */}{" "}
                 <Form.Item label="Căn cước công dân" name="idcard">
-                  <Input disabled />
+                  <Input />
                 </Form.Item>{" "}
                 <Form.Item
                   label="Tỉnh/Thành/Ngành"
@@ -347,13 +352,11 @@ const ModalAccount = ({
                   rules={[{ required: true, message: "Vui lòng chọn tỉnh" }]}
                 >
                   <Select
-                    //  menuItemSelectedIcon={<CheckOutlined />}
                     showSearch
                     placeholder={"Tỉnh/Thành/Ngành"}
                     optionFilterProp="children"
                     onChange={onChangeSelect}
                     onSearch={onSearchSelect}
-                    //  filterOption={filterOption}
                     className={styles.select}
                   >
                     {province.map((option) => (
@@ -380,7 +383,6 @@ const ModalAccount = ({
                   </Select>
                 </Form.Item>
                 <Form.Item label="Câu lạc bộ" name="NameClb">
-                  {/* <Input disabled={true} /> */}
                   <Select>
                     {listClub?.map((club: any) => (
                       <Select.Option key={club.value} value={club.value}>
@@ -423,7 +425,17 @@ const ModalAccount = ({
                   <Input />
                 </Form.Item>
               </Col>
-              <Col span={12}></Col>
+              <Col span={12}>
+                <Form.Item
+                  label="Mật khẩu"
+                  name="password"
+                  rules={[
+                    { required: true, message: "Vui lòng điền password" },
+                  ]}
+                >
+                  <Input />
+                </Form.Item>
+              </Col>
             </Row>
             <Row>
               <Col span={8}>
@@ -431,48 +443,39 @@ const ModalAccount = ({
                 <Form.Item
                   name="image_certificate"
                   label="Ảnh bằng cấp hiện tại"
-                  // rules={[{ required: true, message: "Vui lòng tải ảnh lên" }]}
                 >
                   <Upload
                     listType="picture-card"
                     fileList={fileListCertificate}
-                    onChange={onChangeCertificate}
                     onPreview={onPreviewCertificate}
                     className="ref-uploader"
+                    disabled
                   >
                     {fileListCertificate.length >= 1 ? null : uploadButton}
                   </Upload>
                 </Form.Item>
               </Col>
               <Col span={8}>
-                <Form.Item
-                  name="image_ref"
-                  label="Ảnh giấy giới thiệu"
-                  // rules={[{ required: true, message: "Vui lòng tải ảnh lên" }]}
-                >
+                <Form.Item name="image_ref" label="Ảnh giấy giới thiệu">
                   <Upload
-                    onChange={onChangeRef}
                     onPreview={onPreviewRef}
                     listType="picture-card"
                     fileList={fileListRef}
                     className="ref-uploader"
+                    disabled
                   >
                     {fileListRef.length >= 1 ? null : uploadButton}
                   </Upload>
                 </Form.Item>
               </Col>
               <Col span={8}>
-                <Form.Item
-                  name="image_cmnd"
-                  label="Ảnh CCCD"
-                  // rules={[{ required: true, message: "Vui lòng tải ảnh lên" }]}
-                >
+                <Form.Item name="image_cmnd" label="Ảnh CCCD">
                   <Upload
-                    onChange={onChangeCmnd}
                     onPreview={onPreviewCmnd}
                     listType="picture-card"
                     fileList={fileListCmnd}
                     className="ref-uploader"
+                    disabled
                   >
                     {fileListCmnd.length >= 1 ? null : uploadButton}
                   </Upload>
