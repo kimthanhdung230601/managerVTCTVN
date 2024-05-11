@@ -11,11 +11,10 @@ export const getListMember = (page:string, param: string) =>{
     if(param !== "") return sendGet(path.member +page+ param)
     return sendGet(path.member + page)
 } 
-// export const getListClub = (page: string, param: string) => {
-//     if(param !== "") return sendGet(path.club +page+param)
-//     else return sendGet(path.club +page)
-// }
-export const getListClub = (payload:any)=>sendGet(`/ManageGetUsers?${payload}`);
+export const getListClub = (page: string, param: string) => {
+    if(param !== "") return sendGet(path.club +page+param)
+    else return sendGet(path.club +page)
+}
 export const getClubs = () => sendGet(path.clubList)
 export const getFilterTable = (path: string, param:string, page: string) => sendGet(path+param+ "&page="+page)
 export const searchInTable = (param: any) => sendGet(path.search+param)
