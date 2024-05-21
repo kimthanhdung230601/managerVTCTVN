@@ -246,7 +246,7 @@ const ManagerF1 = () => {
       title: "STT",
       dataIndex: "key",
       width: 20,
-      render: (value, record, index) => {
+      render: (index) => {
         return index + 1 + (currentPageAccount - 1) * 10;
       },
     },
@@ -364,14 +364,6 @@ const ManagerF1 = () => {
     <div className={styles.wrap}>
       <div className={styles.managerAccount}>
         <Row gutter={40} justify="end" className={styles.buttonGroup}>
-          {/* <Col xxl={12} md={24} className="gutter-row">
-            <div style={{ width: "180px" }}>
-              <div className={styles.postLabel}>
-                <FileTextOutlined style={{ marginRight: "10px" }} />
-                Quản lý tài khoản
-              </div>
-            </div>
-          </Col> */}
           <Col
             xxl={12}
             md={24}
@@ -394,7 +386,11 @@ const ManagerF1 = () => {
           <Spin spinning={isFetchingAccept}>
             <Table
               columns={isMobile ? columnsMobileAccount : columnsDesktopAccount}
-              dataSource={dataMemberF12Accept?.data}
+              dataSource={
+                dataMemberF12Accept?.status === "success"
+                  ? dataMemberF12Accept?.data
+                  : []
+              }
               pagination={false}
               locale={customLocale}
               onChange={onChange}
