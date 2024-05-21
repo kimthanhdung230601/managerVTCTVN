@@ -510,7 +510,11 @@ const ManagerAccount = () => {
           <Spin spinning={isFetchingAccept}>
             <Table
               columns={isMobile ? columnsMobileAccount : columnsDesktopAccount}
-              dataSource={dataMemberF12Accept?.data}
+              dataSource={
+                dataMemberF12Accept?.status === "success"
+                  ? dataMemberF12Accept?.data
+                  : []
+              }
               pagination={false}
               locale={customLocale}
               onChange={onChange}
@@ -522,7 +526,11 @@ const ManagerAccount = () => {
             <Pagination
               defaultCurrent={1}
               onChange={onChangePageAccount}
-              total={dataMemberF12Accept?.total_products}
+              total={
+                dataMemberF12Accept?.status === "success"
+                  ? dataMemberF12Accept?.data
+                  : []
+              }
               pageSize={30}
               style={{ margin: "1vh 0", float: "right" }}
             />
