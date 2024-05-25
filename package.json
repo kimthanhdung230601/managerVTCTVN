@@ -41,7 +41,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "jest",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -67,6 +67,7 @@
     "@types/js-cookie": "^3.0.6",
     "@types/react": "^18.2.46",
     "@types/react-google-recaptcha": "^2.1.8",
+    "jest": "^27.5.1",
     "sass": "^1.69.7"
   }
 }

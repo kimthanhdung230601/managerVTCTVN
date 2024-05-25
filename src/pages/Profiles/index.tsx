@@ -187,23 +187,12 @@ const Profiles = () => {
     secretKey
   );
   const decryptedNameClb = NameClb.toString(CryptoJS.enc.Utf8);
-  // const permission = CryptoJS.AES.decrypt(
-  //   Cookies.get("permission") as string,
-  //   secretKey
-  // );
-  // const decryptedPermission = permission.toString(CryptoJS.enc.Utf8);
-  //fill club
-  // useEffect(() => {
-  //   form.setFieldValue("club", decryptedNameClb);
-  // }, [form]);
-  console.log("decryptedClub", decryptedClub);
   const [loading, setLoading] = useState(false);
   const onFinish = (values: any) => {
     const formattedBirthday = moment(new Date(values.birthday)).format(
       "YYYY-MM-DD"
     );
     setLoading(true);
-    console.log("form", values);
     const randomKey = CryptoJS.lib.WordArray.random(16).toString();
 
     const formdata = new FormData();
@@ -242,10 +231,6 @@ const Profiles = () => {
       values.avatar[0].originFileObj as File,
       CryptoJS.AES.encrypt(values.avatar[0].name, randomKey).toString()
     );
-    // formdata.forEach((value, key) => {
-    //   console.log(key, value);
-    // });
-    // setLoading(false);
     addMemberMutation.mutate(formdata);
   };
   const previousPageUrl = document.referrer;
@@ -374,7 +359,7 @@ const Profiles = () => {
                         { required: true, message: "Vui lòng điền quốc tịch" },
                       ]}
                     >
-                      <Input style={{width:"100%"}}/>
+                      <Input style={{ width: "100%" }} />
                     </Form.Item>
                     <Row gutter={16}>
                       <Col span={12}>

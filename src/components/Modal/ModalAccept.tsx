@@ -1,28 +1,24 @@
-import React, { useState } from "react";
-import { Button, Modal } from "antd";
+import { useState } from "react";
+import { Modal } from "antd";
 
 interface ModalAcceptProp {
   selectedRowKeys?: any;
   isModalOpen: any;
   handleOk: () => void;
   handleCancel: () => void;
-  id:string;
+  id: string;
 }
 const ModalAccept = ({
   selectedRowKeys,
   isModalOpen,
   handleCancel,
   handleOk,
-  id
+  id,
 }: ModalAcceptProp) => {
-  const [open, setOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
-  const [modalText, setModalText] = useState("Content of the modal");
 
-  
   return (
     <>
-
       <Modal
         title="Xét duyệt tài khoản"
         open={isModalOpen}
@@ -34,9 +30,10 @@ const ModalAccept = ({
         // footer={null}
       >
         <>
-        {selectedRowKeys.length != 0 ? `Xét duyệt ${selectedRowKeys.length} tài khoản ` : `Bạn có muốn duyệt tài khoản này`}
+          {selectedRowKeys.length != 0
+            ? `Xét duyệt ${selectedRowKeys.length} tài khoản `
+            : `Bạn có muốn duyệt tài khoản này`}
         </>
-       
       </Modal>
     </>
   );

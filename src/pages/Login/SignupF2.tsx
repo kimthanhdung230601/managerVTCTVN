@@ -22,13 +22,9 @@ import {
   PlusOutlined,
   MailOutlined,
   CheckOutlined,
-  BankOutlined,
-  HomeOutlined,
   EnvironmentOutlined,
   DeploymentUnitOutlined,
   SolutionOutlined,
-  ProfileOutlined,
-  CalendarOutlined,
   AimOutlined,
 } from "@ant-design/icons";
 import ReCAPTCHA from "react-google-recaptcha";
@@ -36,7 +32,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { useMutation, useQuery } from "react-query";
 import { signup } from "../../api/ApiUser";
-import { level, province } from "../../until/until";
+import { province } from "../../until/until";
 import CryptoJS from "crypto-js";
 import moment from "moment";
 import Cookies from "js-cookie";
@@ -155,12 +151,10 @@ export default function SignupF2() {
     const acceptedImageTypes = ["image/jpeg", "image/png"];
     return acceptedImageTypes.includes(file.type);
   };
-  const onChange = (value: string) => {
-    // console.log(`selected ${value}`);
-  };
-  const onSearch = (value: string) => {
-    // console.log('search:', value);
-  };
+  // const onChange = (value: string) => {
+  // };
+  // const onSearch = (value: string) => {
+  // };
   const filterOption = (
     input: string,
     option?: { children: React.ReactNode }
@@ -188,10 +182,7 @@ export default function SignupF2() {
     formdata.append(
       `image_cmnd`,
       value.image_cmnd.file.originFileObj as File,
-      CryptoJS.AES.encrypt(
-        value.image_cmnd.file.name,
-        randomKey
-      ).toString()
+      CryptoJS.AES.encrypt(value.image_cmnd.file.name, randomKey).toString()
     );
     formdata.append(
       `image_certificate`,
@@ -206,7 +197,6 @@ export default function SignupF2() {
       value.image_ref.file.originFileObj as File,
       CryptoJS.AES.encrypt(value.image_ref.file.name, randomKey).toString()
     );
-    // console.log( value.image_certificate.file)
     signupMutation.mutate(formdata);
   };
   const props = {
@@ -397,8 +387,6 @@ export default function SignupF2() {
               showSearch
               placeholder={"Tỉnh/Thành/Ngành"}
               optionFilterProp="children"
-              onChange={onChange}
-              onSearch={onSearch}
               filterOption={filterOption}
               className={styles.select}
             >
@@ -423,8 +411,6 @@ export default function SignupF2() {
               showSearch
               placeholder={"Đơn vị quản lý"}
               optionFilterProp="children"
-              onChange={onChange}
-              onSearch={onSearch}
               filterOption={filterOption}
               className={styles.select}
             >
@@ -450,34 +436,6 @@ export default function SignupF2() {
             </Select>
           </Form.Item>
           <LineChartOutlined className={styles.iconSelect} />
-          {/* <Form.Item
-            name="level"
-            rules={[{ required: true, message: "Vui lòng chọn đẳng cấp!" }]}
-            wrapperCol={{ span: 24 }}
-            className={styles.formSelect}
-          > */}
-          {/* <Select
-              menuItemSelectedIcon={<LineChartOutlined />}
-              showSearch
-              placeholder={"Tài khoản đăng nhập"}
-              optionFilterProp="children"
-              onChange={onChange}
-              onSearch={onSearch}
-              filterOption={filterOption}
-              className={styles.select}
-            >
-              {level.map((option: string) => (
-                <Select.Option key={option} value={option}>
-                  {option}
-                </Select.Option>
-              ))}
-            </Select> */}
-          {/* <Input
-              className={styles.select}
-              prefix={<LineChartOutlined className={styles.icon} />}
-              placeholder="Tài khoản đăng nhập"
-            />
-          </Form.Item> */}{" "}
           <Form.Item
             name="level"
             rules={[
@@ -662,7 +620,12 @@ export default function SignupF2() {
             </Form.Item>
           ) : null}
           <Form.Item className={styles.formItem} wrapperCol={{ span: 24 }}>
-            <Button type="primary" htmlType="submit" className={styles.button} disabled={signupMutation.isLoading}>
+            <Button
+              type="primary"
+              htmlType="submit"
+              className={styles.button}
+              disabled={signupMutation.isLoading}
+            >
               Đăng ký
             </Button>
           </Form.Item>

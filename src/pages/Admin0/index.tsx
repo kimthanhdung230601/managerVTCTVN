@@ -71,7 +71,7 @@ const Admin = () => {
   }, [selectedMenuItem]);
 
   return (
-    <div style={{ backgroundColor: "#fff", minHeight:"100vh" }} >
+    <div style={{ backgroundColor: "#fff", minHeight: "100vh" }}>
       <Header />
       <div className={styles.logoWrap}>
         <div className={styles.title}>

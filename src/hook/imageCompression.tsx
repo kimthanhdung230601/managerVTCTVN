@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 interface CompressedFile extends File {
   compressed: boolean;
 }
@@ -17,8 +15,8 @@ const useImageCompression = (): UseImageCompression => {
         const img = new Image();
         img.src = event.target?.result as string;
         img.onload = () => {
-          const canvas = document.createElement('canvas');
-          const ctx = canvas.getContext('2d');
+          const canvas = document.createElement("canvas");
+          const ctx = canvas.getContext("2d");
           canvas.width = img.width;
           canvas.height = img.height;
 
@@ -32,7 +30,7 @@ const useImageCompression = (): UseImageCompression => {
               resolve(compressedFile);
             },
             file.type,
-            0.7 
+            0.7
           );
         };
       };

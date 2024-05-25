@@ -320,8 +320,6 @@ const ManagerF1 = () => {
       key: "action",
       width: 200,
       render: (_, record) => {
-        const idEncode = CryptoJS.AES.encrypt(record.id, secretKey).toString();
-        const id = encodeURIComponent(idEncode);
         return (
           <span>
             <button

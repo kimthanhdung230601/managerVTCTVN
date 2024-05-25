@@ -380,16 +380,6 @@ const ManagerAccountUnDepended = ({ refetch }: ManagerAccountProps) => {
       filterSearch: true,
       onFilter: (value: any, record) => record.club.indexOf(value) === 0,
     },
-    // {
-    //   title: "Tài khoản",
-    //   dataIndex: "account",
-    //   width: 200,
-    // },
-    // {
-    //   title: "Mật khẩu",
-    //   dataIndex: "password",
-    //   width: 150,
-    // },
     {
       title: "Ảnh",
       dataIndex: "image",

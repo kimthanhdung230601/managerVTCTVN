@@ -1,5 +1,4 @@
 import { useQuery } from "react-query";
-import { getListClub } from "../api/f0";
 import { getListClubs } from "../api/f1";
 
 interface Club {
@@ -8,7 +7,7 @@ interface Club {
 }
 
 const ListClubF1 = () => {
-  const { data: dataClub } = useQuery("dataClub",()=> getListClubs());
+  const { data: dataClub } = useQuery("dataClub", () => getListClubs());
 
   const listClub = dataClub?.data.map((item: Club, index: number) => ({
     text: item.name_club,

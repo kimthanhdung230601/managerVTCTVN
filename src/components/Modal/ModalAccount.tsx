@@ -6,27 +6,19 @@ import {
   Row,
   Col,
   Upload,
-  DatePicker,
   Select,
   UploadFile,
-  UploadProps,
   message,
   Spin,
 } from "antd";
 import styles from "./styles.module.scss";
 import { useForm } from "antd/es/form/Form";
-import type { DatePickerProps } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { Option } from "antd/es/mentions";
 import { useEffect, useState } from "react";
 import { province } from "../../until/until";
 import { useMutation, useQuery } from "react-query";
-import {
-  getDetailF2,
-  getDetailF3,
-  getListClub,
-  updateUser,
-} from "../../api/f0";
+import { getDetailF2, getListClub, updateUser } from "../../api/f0";
 import CryptoJS from "crypto-js";
 interface Club {
   id: string;
@@ -42,14 +34,7 @@ interface ModalAccountProps {
   setId: Function;
   refetchAccountTable: () => void;
 }
-const { TextArea } = Input;
-const getBase64 = (file: any): Promise<string> =>
-  new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result as string);
-    reader.onerror = (error) => reject(error);
-  });
+
 const ModalAccount = ({
   isModalOpen,
   handleCancel,
@@ -58,16 +43,6 @@ const ModalAccount = ({
   id,
 }: ModalAccountProps) => {
   const [form] = useForm();
-  const [previewOpen1, setPreviewOpen1] = useState(false);
-  const [previewImage1, setPreviewImage1] = useState("");
-  const [previewTitle1, setPreviewTitle1] = useState("");
-  // const [fileList1, setFileList1] = useState<UploadFile[]>([]);
-  const [previewOpen2, setPreviewOpen2] = useState(false);
-  const [previewImage2, setPreviewImage2] = useState("");
-  const [previewTitle2, setPreviewTitle2] = useState("");
-  // const [fileList2, setFileList2] = useState<UploadFile[]>([]);
-  const handleCancel1 = () => setPreviewOpen1(false);
-  const handleCancel2 = () => setPreviewOpen2(false);
   const uploadButton = (
     <button style={{ border: 0, background: "none" }} type="button">
       <PlusOutlined />
@@ -83,22 +58,22 @@ const ModalAccount = ({
     value: item.id,
   }));
   //image
-  const {
-    data: dataDetailF2,
-    isFetching,
-    refetch,
-  } = useQuery(["getDetailF2", id], () => getDetailF2(id), {
-    onSettled: (data) => {
-      form.setFieldValue("name", data.data[0].name);
-      form.setFieldValue("password", data.data[0].password);
-      form.setFieldValue("location", data.data[0].location);
-      form.setFieldValue("NameClb", data.data[0].NameClb);
-      form.setFieldValue("manage", data.data[0].manage);
-      form.setFieldValue("phone", data.data[0].phone);
-      form.setFieldValue("email", data.data[0].email);
-      form.setFieldValue("idcard", data?.data[0].idcard);
-    },
-  });
+  const { data: dataDetailF2, isFetching } = useQuery(
+    ["getDetailF2", id],
+    () => getDetailF2(id),
+    {
+      onSettled: (data) => {
+        form.setFieldValue("name", data.data[0].name);
+        form.setFieldValue("password", data.data[0].password);
+        form.setFieldValue("location", data.data[0].location);
+        form.setFieldValue("NameClb", data.data[0].NameClb);
+        form.setFieldValue("manage", data.data[0].manage);
+        form.setFieldValue("phone", data.data[0].phone);
+        form.setFieldValue("email", data.data[0].email);
+        form.setFieldValue("idcard", data?.data[0].idcard);
+      },
+    }
+  );
   //update
   const [loading, setLoading] = useState(false);
   const updateUserMutation = useMutation(
