@@ -345,7 +345,7 @@ export default function SignupF1() {
             </Form.Item>
           ) : null}
           <Form.Item className={styles.formItem} wrapperCol={{ span: 24 }}>
-            <Button type="primary" htmlType="submit" className={styles.button}>
+            <Button type="primary" htmlType="submit" className={styles.button} disabled={signupMutation.isLoading}>
               Đăng ký
             </Button>
           </Form.Item>

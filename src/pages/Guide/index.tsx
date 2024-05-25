@@ -17,6 +17,34 @@ const isAdmin = (): string => {
     const permission = bytes.toString(CryptoJS.enc.Utf8);
     return permission;
 }
+
+const extractContent = (html: string) =>  {
+    const pTags = html.match(/<p>(.*?)<\/p>/g);
+  
+    let paragraphs: string[] = [];
+    let images: string[] = [];
+
+    if (pTags) {
+      pTags.forEach(pTag => {
+       
+        const imgMatch = pTag.match(/<img.*?src="(.*?)".*?>/);
+        if (imgMatch) {
+          images.push(imgMatch[1]);
+        } else {
+          const textMatch = pTag.match(/<p>(.*?)<\/p>/);
+          if (textMatch) {
+            paragraphs.push(textMatch[1]);
+          }
+        }
+      });
+    }
+  
+    return {
+      paragraphs: paragraphs,
+      images: images
+    };
+}
+
 export default function Guide() {
     document.title = "Hướng dẫn";
     const navigate = useNavigate()
@@ -64,31 +92,25 @@ export default function Guide() {
                                 <>
                                { 
                                 data?.data.map((item: any, index: number) => {
-                                const img = /<img.*?src="(.*?)".*?>/;
-                                const match = img.exec(item.content)
-                                const imageLink = match ? match[1] : null;
-                                const p = /<p>(.*?)<\/p>/;
-                                const graph = p.exec(item.content)
-                                const dataContent = graph ? graph[1]: null
+                                const result = extractContent(item.content)
                                 return (
                                     <Row gutter={40} className={styles.post} justify="center">
                                         <Col className={`gutter-row`} xxl={8} lg={8} md={8} >
-                                            <Link to={`/huong-dan/${item.id}`} className={styles.imgWrap}>
-                                                <Image src={imageLink ? imageLink : require("../../assets/image/new.png")} preview={false} className={styles.postImg}/>
+                                            <Link to={`/bai-viet/${item.id}`} className={styles.imgWrap}>
+                                                <Image src={result.images[0] ? result.images[0] : require("../../assets/image/new.png")} preview={false} className={styles.postImg}/>
                                             </Link>
                                         </Col>
-                                        <Col className='gutter-row' xxl={16} lg={16} md={16} style={{padding:"20px 10px"}}>
-                                            <Link to={`/huong-dan/${item.id}`}>
+                                        <Col className='gutter-row' xxl={16} lg={16} md={16} style={{padding:"20px 20px"}}>
+                                            <Link to={`/bai-viet/${item.id}`}>
                                                 <div className={styles.postTitle}>{item.title}</div>
                                             </Link>
-                                            <div className={styles.postContent}>{dataContent}</div>
+                                            <div className={styles.postContent}>{result.paragraphs}</div>
                                             <div className={styles.time}>Đăng ngày {" "} {item.time}</div>
                                         </Col>
                                     </Row>
                                 )   
                                 })
                                 }
-    
                             <Pagination 
                                 defaultCurrent={parseInt(currentPage, 10)}
                                 total={data?.total_products} 
