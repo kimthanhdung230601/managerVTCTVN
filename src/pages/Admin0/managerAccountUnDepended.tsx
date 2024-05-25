@@ -300,8 +300,11 @@ const ManagerAccountUnDepended = ({ refetch }: ManagerAccountProps) => {
     {
       title: "STT",
       dataIndex: "key",
-
+      fixed: "left",
       width: 70,
+      render: (value, record, index) => {
+        return index + 1 + (currentPage - 1) * 10;
+      },
     },
     {
       title: "Họ và tên",
