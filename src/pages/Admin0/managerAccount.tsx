@@ -314,7 +314,7 @@ const ManagerAccount = () => {
     {
       title: "STT",
       dataIndex: "key",
-
+      fixed: "left",
       width: 20,
       render: (value, record, index) => {
         return index + 1 + (currentPageAccount - 1) * 10;
@@ -441,7 +441,6 @@ const ManagerAccount = () => {
       // title: 'Action',
       key: "action",
       width: 200,
-      fixed: "right",
       render: (_, record) => {
         const idEncode = CryptoJS.AES.encrypt(record.id, secretKey).toString();
         const id = encodeURIComponent(idEncode);
@@ -526,11 +525,7 @@ const ManagerAccount = () => {
             <Pagination
               defaultCurrent={1}
               onChange={onChangePageAccount}
-              total={
-                dataMemberF12Accept?.status === "success"
-                  ? dataMemberF12Accept?.data
-                  : []
-              }
+              total={dataMemberF12Accept?.total_products}
               pageSize={30}
               style={{ margin: "1vh 0", float: "right" }}
             />

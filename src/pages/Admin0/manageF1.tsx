@@ -131,11 +131,6 @@ const ManagerF1 = () => {
       fixed: "left",
       width: 210,
     },
-    // {
-    //   title: "CCCD",
-    //   dataIndex: "idcard",
-    //   width: 250,
-    // },
     {
       title: "Số điện thoại",
       dataIndex: "phone",
@@ -205,11 +200,6 @@ const ManagerF1 = () => {
 
       filterMultiple: false,
     },
-    // {
-    //   title: "Mật khẩu",
-    //   dataIndex: "password",
-    //   width: 150,
-    // },
     {
       key: "action",
       width: 200,
@@ -245,34 +235,31 @@ const ManagerF1 = () => {
     {
       title: "STT",
       dataIndex: "key",
+
       width: 20,
-      render: (index) => {
+      render: (value, record, index) => {
         return index + 1 + (currentPageAccount - 1) * 10;
       },
     },
     {
       title: "Họ và tên",
       dataIndex: "name",
+
       width: 210,
-    },
-    {
-      title: "Mã định danh",
-      dataIndex: "idcard",
-      width: 250,
     },
     {
       title: "Số điện thoại",
       dataIndex: "phone",
       width: 150,
     },
+
     {
-      title: "Tỉnh",
+      title: "Tỉnh/Thành",
       dataIndex: "location",
       filters: filterProivce,
       onFilter: (value: any, record) => record.location.startsWith(value),
-      filterMultiple: false,
-
       filterSearch: true,
+      filterMultiple: false,
       width: 120,
     },
     {
@@ -319,44 +306,44 @@ const ManagerF1 = () => {
       ],
       onFilter: (value: any, record) => record.manage.indexOf(value) === 0,
       filterMultiple: false,
+
       width: 200,
     },
     {
       title: "Chức danh",
       dataIndex: "level",
       width: 200,
-    },
 
-    // {
-    //   title: "Mật khẩu",
-    //   dataIndex: "password",
-    //   width: 150,
-    // },
+      filterMultiple: false,
+    },
     {
-      // title: 'Action',
       key: "action",
       width: 200,
-      render: (_, record) => (
-        <span>
-          <button
-            className={styles.btnTb}
-            onClick={() => showModalMember(record.id)}
-          >
-            Sửa
-          </button>
-          <Popconfirm
-            title="Xóa"
-            description={`Bạn có muốn xóa ${record.name} không`}
-            onConfirm={() => confirm(record.id)}
-            onCancel={cancel}
-            okText="Có"
-            cancelText="Không"
-          >
-            {" "}
-            <button className={styles.btnTbDanger}>Xóa</button>
-          </Popconfirm>
-        </span>
-      ),
+      render: (_, record) => {
+        const idEncode = CryptoJS.AES.encrypt(record.id, secretKey).toString();
+        const id = encodeURIComponent(idEncode);
+        return (
+          <span>
+            <button
+              className={styles.btnTb}
+              onClick={() => showModalMember(record.id)}
+            >
+              Sửa
+            </button>
+            <Popconfirm
+              title="Xóa"
+              description={`Bạn có muốn xóa ${record.name} không`}
+              onConfirm={() => confirm(record.id)}
+              onCancel={cancel}
+              okText="Có"
+              cancelText="Không"
+            >
+              {" "}
+              <button className={styles.btnTbDanger}>Xóa</button>
+            </Popconfirm>
+          </span>
+        );
+      },
     },
   ];
 
