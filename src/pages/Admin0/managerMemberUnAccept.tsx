@@ -438,6 +438,7 @@ const ManagerMemberUnAccept = ({ setFetching }: fetchingProp) => {
     {
       title: "STT",
       dataIndex: "stt",
+      width: 70,
       render: (value, record, index) => {
         return index + 1 + (currentPage - 1) * 10;
       },
