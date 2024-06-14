@@ -80,11 +80,6 @@ export default function Detail() {
     },
     {
       onSettled: (data) => {
-        if (data.status === "failed") {
-          setTimeout(() => {
-            window.history.back();
-          }, 1200);
-        }
         if (data.status === "success") {
           setUserData({
             name: data.data[0].name,
