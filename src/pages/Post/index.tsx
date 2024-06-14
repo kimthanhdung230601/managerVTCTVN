@@ -186,13 +186,17 @@ export default function Post() {
                 className={styles.quill}
               />
             </Form.Item>
-          </Spin>
 
-          <Form.Item style={{ textAlign: "center" }}>
-            <Button htmlType="submit" className={styles.btn}>
-              Đăng bài
-            </Button>
-          </Form.Item>
+            <Form.Item style={{ textAlign: "center" }}>
+              <Button
+                htmlType="submit"
+                className={styles.btn}
+                disabled={addNewsMutation.isLoading}
+              >
+                Đăng bài
+              </Button>
+            </Form.Item>
+          </Spin>
         </Form>
       </div>
       <Footer />
