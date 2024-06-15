@@ -1,17 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { PlusOutlined, FileTextOutlined } from "@ant-design/icons";
 import {
-  AudioOutlined,
-  PlusOutlined,
-  DownloadOutlined,
-  CheckOutlined,
-  FileTextOutlined,
-} from "@ant-design/icons";
-import {
-  Input,
   Table,
   Button,
-  Form,
-  Select,
   Col,
   Row,
   Image,
@@ -20,24 +11,17 @@ import {
   Pagination,
   Spin,
 } from "antd";
-import { admin, province } from "../../until/until";
+import { province } from "../../until/until";
 import styles from "./styles.module.scss";
-// import type { TableColumnsType, TableProps } from "antd/es/table";
-import type { TableColumnsType, TableProps } from "antd";
+import type { TableProps } from "antd";
 
 import ModalAccount from "../../components/Modal/ModalAccount";
 import ModalAccept from "../../components/Modal/ModalAccept";
 import { useNavigate } from "react-router";
 import { useMediaQuery } from "react-responsive";
-import { text } from "stream/consumers";
 import type { ColumnsType } from "antd/es/table";
 import { useQuery } from "react-query";
-import {
-  deleteMemberF12,
-  // getListMemberF12,
-  getListMemberF12,
-  updateAccount,
-} from "../../api/f0";
+import { deleteMemberF12, getListMemberF12 } from "../../api/f0";
 import ListClub from "../../hook/listClub";
 import CryptoJS from "crypto-js";
 import ManagerAccountUnDepended from "./managerAccountUnDepended";
@@ -100,7 +84,6 @@ const ManagerAccount = () => {
     const updatePayload = initialPayload + param;
     setPayload(updatePayload);
     setParam(param);
-    refetchAccept();
   };
 
   const onChangePageAccount = (value: any) => {
@@ -132,7 +115,7 @@ const ManagerAccount = () => {
       id: value,
     };
     const res = await deleteMemberF12(payload);
-    refetchAccept();
+    // refetchAccept();
 
     message.success("Xóa thành công");
   };
@@ -227,17 +210,6 @@ const ManagerAccount = () => {
       filterSearch: true,
       onFilter: (value: any, record) => record.club.indexOf(value) === 0,
     },
-    // {
-    //   title: "Tài khoản",
-    //   dataIndex: "account",
-    //   width: 200,
-    // },
-
-    // {
-    //   title: "Mật khẩu",
-    //   dataIndex: "password",
-    //   width: 150,
-    // },
     {
       title: "Ảnh",
       dataIndex: "image",
@@ -393,16 +365,6 @@ const ManagerAccount = () => {
       filterSearch: true,
       onFilter: (value: any, record) => record.club.indexOf(value) === 0,
     },
-    // {
-    //   title: "Tài khoản",
-    //   dataIndex: "account",
-    //   width: 200,
-    // },
-    // {
-    //   title: "Mật khẩu",
-    //   dataIndex: "password",
-    //   width: 150,
-    // },
     {
       title: "Ảnh",
       dataIndex: "image",

@@ -58,16 +58,6 @@ const ModalAccount = ({
   id,
 }: ModalAccountProps) => {
   const [form] = useForm();
-  const [previewOpen1, setPreviewOpen1] = useState(false);
-  const [previewImage1, setPreviewImage1] = useState("");
-  const [previewTitle1, setPreviewTitle1] = useState("");
-  // const [fileList1, setFileList1] = useState<UploadFile[]>([]);
-  const [previewOpen2, setPreviewOpen2] = useState(false);
-  const [previewImage2, setPreviewImage2] = useState("");
-  const [previewTitle2, setPreviewTitle2] = useState("");
-  // const [fileList2, setFileList2] = useState<UploadFile[]>([]);
-  const handleCancel1 = () => setPreviewOpen1(false);
-  const handleCancel2 = () => setPreviewOpen2(false);
   const uploadButton = (
     <button style={{ border: 0, background: "none" }} type="button">
       <PlusOutlined />
@@ -83,22 +73,29 @@ const ModalAccount = ({
     value: item.id,
   }));
   //image
-  const {
-    data: dataDetailF2,
-    isFetching,
-    refetch,
-  } = useQuery(["getDetailF2", id], () => getDetailF2(id), {
-    onSettled: (data) => {
-      form.setFieldValue("name", data.data[0].name);
-      form.setFieldValue("password", data.data[0].password);
-      form.setFieldValue("location", data.data[0].location);
-      form.setFieldValue("NameClb", data.data[0].NameClb);
-      form.setFieldValue("manage", data.data[0].manage);
-      form.setFieldValue("phone", data.data[0].phone);
-      form.setFieldValue("email", data.data[0].email);
-      form.setFieldValue("idcard", data?.data[0].idcard);
-    },
-  });
+  const { data: dataDetailF2, isFetching } = useQuery(
+    ["getDetailF2", id],
+    () => getDetailF2(id),
+    {
+      enabled: id !== undefined,
+      onSettled: (data) => {
+        if (data) {
+          form.setFieldsValue({
+            name: data.data[0].name,
+            password: data.data[0].password,
+            location: data.data[0].location,
+            NameClb: data.data[0].NameClb,
+            manage: data.data[0].manage,
+            phone: data.data[0].phone,
+            email: data.data[0].email,
+            idcard: data.data[0].idcard,
+            level: data.data[0].level,
+          });
+        }
+      },
+    }
+  );
+
   //update
   const [loading, setLoading] = useState(false);
   const updateUserMutation = useMutation(
@@ -216,12 +213,12 @@ const ModalAccount = ({
     formdata.append("email", value.email);
     formdata.append("location", value.location);
     formdata.append("manage", value.manage);
+    formdata.append("idcard", value.idcard);
     formdata.append("password", value.password);
+    formdata.append("level", value.level);
     //
     formdata.append("club", dataDetailF2?.data[0].club);
     formdata.append("id", id);
-    formdata.append("level", dataDetailF2?.data[0].level);
-    formdata.append("idcard", value.idcard);
     formdata.append("idday", dataDetailF2?.data[0].idday);
     formdata.append("idlocation", dataDetailF2?.data[0].idlocation);
     formdata.append("birthday", dataDetailF2?.data[0].birthday);
@@ -343,9 +340,10 @@ const ModalAccount = ({
                 >
                   <Input />
                 </Form.Item>
+                {/* CCCD */}
                 <Form.Item label="Căn cước công dân" name="idcard">
                   <Input />
-                </Form.Item>{" "}
+                </Form.Item>
                 <Form.Item
                   label="Tỉnh/Thành/Ngành"
                   name="location"
@@ -368,7 +366,6 @@ const ModalAccount = ({
                 </Form.Item>
               </Col>
               <Col span={12}>
-                {" "}
                 <Form.Item
                   label="Đơn vị quản lý "
                   name="manage"
@@ -430,7 +427,21 @@ const ModalAccount = ({
                   label="Mật khẩu"
                   name="password"
                   rules={[
-                    { required: true, message: "Vui lòng điền password" },
+                    { required: true, message: "Vui lòng điền mật khẩu" },
+                  ]}
+                >
+                  <Input />
+                </Form.Item>
+              </Col>
+            </Row>
+            <Row gutter={16}>
+              <Col span={12}>
+                {" "}
+                <Form.Item
+                  label="Tài khoản"
+                  name="level"
+                  rules={[
+                    { required: true, message: "Vui lòng điền tài khoản" },
                   ]}
                 >
                   <Input />
@@ -439,43 +450,51 @@ const ModalAccount = ({
             </Row>
             <Row>
               <Col span={8}>
-                {" "}
                 <Form.Item
                   name="image_certificate"
                   label="Ảnh bằng cấp hiện tại"
+                  // rules={[{ required: true, message: "Vui lòng tải ảnh lên" }]}
                 >
                   <Upload
                     listType="picture-card"
                     fileList={fileListCertificate}
+                    onChange={onChangeCertificate}
                     onPreview={onPreviewCertificate}
                     className="ref-uploader"
-                    disabled
                   >
                     {fileListCertificate.length >= 1 ? null : uploadButton}
                   </Upload>
                 </Form.Item>
               </Col>
               <Col span={8}>
-                <Form.Item name="image_ref" label="Ảnh giấy giới thiệu">
+                <Form.Item
+                  name="image_ref"
+                  label="Ảnh giấy giới thiệu"
+                  // rules={[{ required: true, message: "Vui lòng tải ảnh lên" }]}
+                >
                   <Upload
+                    onChange={onChangeRef}
                     onPreview={onPreviewRef}
                     listType="picture-card"
                     fileList={fileListRef}
                     className="ref-uploader"
-                    disabled
                   >
                     {fileListRef.length >= 1 ? null : uploadButton}
                   </Upload>
                 </Form.Item>
               </Col>
               <Col span={8}>
-                <Form.Item name="image_cmnd" label="Ảnh CCCD">
+                <Form.Item
+                  name="image_cmnd"
+                  label="Ảnh CCCD"
+                  // rules={[{ required: true, message: "Vui lòng tải ảnh lên" }]}
+                >
                   <Upload
+                    onChange={onChangeCmnd}
                     onPreview={onPreviewCmnd}
                     listType="picture-card"
                     fileList={fileListCmnd}
                     className="ref-uploader"
-                    disabled
                   >
                     {fileListCmnd.length >= 1 ? null : uploadButton}
                   </Upload>
