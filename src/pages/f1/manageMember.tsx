@@ -75,29 +75,31 @@ export default function ManageMember() {
     () => getListMember(currentPage1, param),
     {
       onSettled: (data) => {
-        if (data.status === "failed") {
-          message.warning("Chưa có thành viên!");
-          setMemberList({
-            status: "",
-            total_products: 0,
-            total_pages: 0,
-            index_page: 0,
-            data: [],
-          });
-        } else if (data.status === "success") {
-          const newData = data.data.map((item: any, index: number) => {
-            return {
-              ...item,
-              key: item.id,
-            };
-          });
-          setMemberList({
-            status: data.status,
-            total_products: data.total_products,
-            total_pages: data.total_pages,
-            index_page: data.index_page,
-            data: newData,
-          });
+        if (data) {
+          if (data.status === "failed") {
+            message.warning("Chưa có thành viên!");
+            setMemberList({
+              status: "",
+              total_products: 0,
+              total_pages: 0,
+              index_page: 0,
+              data: [],
+            });
+          } else if (data.status === "success") {
+            const newData = data?.data?.map((item: any, index: number) => {
+              return {
+                ...item,
+                key: item?.id,
+              };
+            });
+            setMemberList({
+              status: data?.status,
+              total_products: data?.total_products,
+              total_pages: data?.total_pages,
+              index_page: data?.index_page,
+              data: newData,
+            });
+          }
         } else {
           message.error("Có lỗi xảy xa, vui lòng thử lại sau");
           setTimeout(() => {
@@ -111,9 +113,9 @@ export default function ManageMember() {
   const { data: search } = useQuery(["search", key], () => searchInTable(key), {
     enabled: key !== "",
     onSettled: (data) => {
-      if (data.status === "success") {
+      if (data?.status === "success") {
         setMemberList(data);
-      } else if (data.status === "failed") {
+      } else if (data?.status === "failed") {
         message.error("Không có dữ liệu.");
         setMemberList({
           status: "",
@@ -134,7 +136,7 @@ export default function ManageMember() {
     async (payload: any) => await deleteMember(payload),
     {
       onSuccess: (data) => {
-        if (data.status === "success") {
+        if (data?.status === "success") {
           message.success("Xoá thành công, hồ sơ đang chờ duyệt xoá!");
           setTimeout(() => {
             window.location.reload();
@@ -180,8 +182,8 @@ export default function ManageMember() {
     selectedRowKeysCN,
     onChange: onSelectChangeCN,
     getCheckboxProps: (record: DataType_CN) => ({
-      disabled: record.status != "Chờ duyệt",
-      status: record.status,
+      disabled: record?.status != "Chờ duyệt",
+      status: record?.status,
     }),
   };
   const hasSelected = selectedRowKeysCN.length > 0;
@@ -243,7 +245,7 @@ export default function ManageMember() {
       dataIndex: "level",
       filterMultiple: false,
       filters: levelFilters,
-      onFilter: (value: any, record) => record.level.indexOf(value) === 0,
+      onFilter: (value: any, record) => record?.level.indexOf(value) === 0,
     },
     {
       title: "Đơn vị quản lý",
@@ -271,7 +273,7 @@ export default function ManageMember() {
           value: "Chờ duyệt xoá",
         },
       ],
-      onFilter: (value: any, record) => record.status.indexOf(value) === 0,
+      onFilter: (value: any, record) => record?.status.indexOf(value) === 0,
       render: (value, record) => {
         if (value === "Đã duyệt")
           return <span style={{ color: "#046C39" }}>Hoạt động</span>;
@@ -291,7 +293,7 @@ export default function ManageMember() {
     {
       title: "Chi tiết",
       render: (value, record) => {
-        const idEncode = CryptoJS.AES.encrypt(record.id, secretKey).toString();
+        const idEncode = CryptoJS.AES.encrypt(record?.id, secretKey).toString();
         const id = encodeURIComponent(idEncode);
         return (
           <>

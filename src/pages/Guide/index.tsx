@@ -68,10 +68,10 @@ export default function Guide() {
                     {data?.data.map((item: any, index: number) => {
                       return (
                         <NewCard
-                          id={item.id}
-                          content={item.content}
-                          title={item.title}
-                          time={item.time}
+                          id={item?.id}
+                          content={item?.content}
+                          title={item?.title}
+                          time={item?.time}
                         />
                       );
                     })}
