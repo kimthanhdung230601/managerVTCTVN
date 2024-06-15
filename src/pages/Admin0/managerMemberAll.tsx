@@ -107,12 +107,12 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
     const updatedPayload = initialPayload + param;
     setPayload(updatedPayload);
   };
-  const filtersListNote = allMember?.list_note?.map(
-    (item: any, index: any) => ({
-      text: item.note,
-      value: item.note,
-    })
-  );
+  const filtersListNote = Array.from(
+    new Set(allMember?.list_note?.map((item: any) => item.note))
+  ).map((note) => ({
+    text: note,
+    value: note,
+  }));
 
   const navigate = useNavigate();
 

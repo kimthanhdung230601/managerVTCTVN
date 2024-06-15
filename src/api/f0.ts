@@ -7,11 +7,6 @@ export const deleteMemberF3 = (payload: any) =>
 //acount member
 export const getListMemberF12 = (payload: any) =>
   sendGet(`/AdminGetUsers?${payload}`);
-// export const getListMemberF12Accept = (payload: any) =>
-//   sendGet(`/AdminGetUsers?page=${payload}`);
-// export const getListMemberF12UnAccept = (payload: any) =>
-//   sendGet(`/AdminGetUsers?page=${payload}`);
-/////
 export const deleteMemberF12 = (payload: any) =>
   sendPost(`/AdminDeleteUser`, payload);
 export const updateAccount = (payload: any) =>
@@ -39,11 +34,9 @@ export const F0findF3ForCode = (payload: any) =>
 export const getInforAdmin = (param: any) =>
   sendGet("/AdminGetUserID?id=" + param);
 
-
 export const upLoadImage = (param: any) => sendPost("/AdminUploadImage", param);
 export const addNews = (param: any) => sendPost("/AdminAddNews", param);
 export const getListNews = (page: string, category: string) =>
   sendGet("/GetListNews?page=" + page + "&category=" + category);
 export const getNewsbyID = (param: any) => sendGet(`/GetNewsID?id=${param}`);
 export const signUpF1 = (param: any) => sendPost(`/AdminSignUpManage`, param);
-

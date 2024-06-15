@@ -152,16 +152,17 @@ const ManagerMemberTwo = () => {
       }
     },
   });
-  var filtersListNote = "";
+  let filtersListNote: { text: any; value: any }[] = [];
+
   if (listF3?.status === "success") {
-    filtersListNote = listF3?.list_note.map((item: any, index: any) => ({
-      text: item.note,
-      value: item.note,
+    const uniqueNotes = Array.from(
+      new Set(listF3?.list_note.map((item: any) => item.note))
+    );
+
+    filtersListNote = uniqueNotes.map((note) => ({
+      text: note,
+      value: note,
     }));
-    // filtersDetail = listF3?.list_detail.map((item: any, index: any) => ({
-    //   text: item.detail,
-    //   value: item.detail,
-    // }));
   }
 
   const [id, setID] = useState();
