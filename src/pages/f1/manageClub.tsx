@@ -63,7 +63,7 @@ export default function ManageClub() {
     () => getListClub(currentPage2, param),
     {
       onSettled: (data) => {
-        if (data.status === "failed") {
+        if (data?.status === "failed") {
           message.warning("Chưa có thành viên!");
           setClubList({
             status: "",
@@ -72,7 +72,7 @@ export default function ManageClub() {
             index_page: 0,
             data: [],
           });
-        } else if (data.status === "success") {
+        } else if (data?.status === "success") {
           setClubList(data);
         } else {
           message.error("Có lỗi xảy xa, vui lòng thử lại sau");
@@ -83,9 +83,9 @@ export default function ManageClub() {
   const { data: search } = useQuery(["search", key], () => searchInTable(key), {
     enabled: key !== "",
     onSettled: (data) => {
-      if (data.status === "success") {
+      if (data?.status === "success") {
         setClubList(data);
-      } else if (data.status === "failed") {
+      } else if (data?.status === "failed") {
         message.error("Không có dữ liệu.");
         setClubList({
           status: "",
@@ -147,19 +147,8 @@ export default function ManageClub() {
       dataIndex: "phone",
     },
     {
-      title: "Mã định danh",
-      dataIndex: "code",
-      render: (value, record) => {
-        if (value == null)
-          return <span style={{ color: "#8D8D8D" }}>Chưa duyệt HS</span>;
-        else {
-          return (
-            <span style={{ color: "#046C39", fontWeight: "bold" }}>
-              {value}
-            </span>
-          );
-        }
-      },
+      title: "CCCD",
+      dataIndex: "idcard",
     },
     {
       title: "CLB trực thuộc",
@@ -169,8 +158,8 @@ export default function ManageClub() {
         clubs?.status === "success"
           ? clubs?.data.map((item: any, index: number) => {
               return {
-                text: item.NameClb,
-                value: item.club,
+                text: item?.NameClb,
+                value: item?.club,
               };
             })
           : null,

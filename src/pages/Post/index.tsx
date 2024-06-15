@@ -72,8 +72,8 @@ export default function Post() {
   const [previewTitle, setPreviewTitle] = useState("");
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const { data, isFetching } = useQuery(
-    ["new", id.id],
-    () => getNewsbyID(id.id ? id.id : ""),
+    ["new", id?.id],
+    () => getNewsbyID(id?.id ? id?.id : ""),
     {
       enabled: hasId !== 0,
       onSuccess: (data) => {

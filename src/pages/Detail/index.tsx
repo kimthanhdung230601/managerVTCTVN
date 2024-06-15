@@ -80,27 +80,29 @@ export default function Detail() {
     },
     {
       onSettled: (data) => {
-        if (data.status === "success") {
+        if (data?.status === "success") {
           setUserData({
-            name: data.data[0].name,
-            nationality: data.data[0].nationality,
-            code: data.data[0].code,
-            birthday: moment(data.data[0].birthday).format("DD/MM/YYYY"),
-            sex: data.data[0].sex,
-            NameClb: data.data[0].NameClb,
-            hometown: data.data[0].hometown,
-            level: data.data[0].level.split("-")[0],
-            idcard: data.data[0].idcard,
-            address: data.data[0].address,
-            phone: data.data[0].phone,
-            email: data.data[0].email,
+            name: data?.data?.[0]?.name,
+            nationality: data?.data?.[0]?.nationality,
+            code: data?.data?.[0]?.code,
+            birthday: moment(data?.data?.[0]?.birthday).format("DD/MM/YYYY"),
+            sex: data?.data?.[0]?.sex,
+            NameClb: data?.data?.[0]?.NameClb,
+            hometown: data?.data?.[0]?.hometown,
+            level: data?.data?.[0]?.level.split("-")[0],
+            idcard: data?.data?.[0]?.idcard,
+            address: data?.data?.[0]?.address,
+            phone: data?.data?.[0]?.phone,
+            email: data?.data?.[0]?.email,
             achievements:
-              data.data[0].achievements !== "undefined"
-                ? data.data[0].achievements
+              data?.data?.[0]?.achievements !== "undefined"
+                ? data?.data?.[0]?.achievements
                 : "Không có giải",
 
-            note: data.data[0].note,
+            note: data?.data?.[0]?.note,
           });
+        } else {
+          message.error("Có lỗi xảy ra, vui lòng thử lại sau!");
         }
       },
     }
@@ -147,7 +149,7 @@ export default function Detail() {
                             xs={8}
                             className={`${styles.colImg} gutter-row`}
                           >
-                            {userInfor?.data[0].avatar ? (
+                            {userInfor?.data[0]?.avatar ? (
                               <div
                                 style={{ textAlign: "center", width: "auto" }}
                               >
@@ -177,7 +179,7 @@ export default function Detail() {
                             className={`${styles.colImg} gutter-row`}
                             style={isMobile ? {} : { marginTop: "20px" }}
                           >
-                            {userInfor?.data[0].image_certificate ? (
+                            {userInfor?.data[0]?.image_certificate ? (
                               <div style={{ textAlign: "center" }}>
                                 <Image
                                   src={`https://vocotruyen.id.vn/PHP_IMG/${userInfor?.data[0].image_certificate}`}
@@ -207,7 +209,7 @@ export default function Detail() {
                           >
                             <div style={{ textAlign: "center" }}>
                               <QRCode
-                                value={`https://vocotruyen.id.vn/thong-tin-ho-so?keyword=${userInfor?.data[0].idcard}`}
+                                value={`https://vocotruyen.id.vn/thong-tin-ho-so?keyword=${userInfor?.data[0]?.idcard}`}
                                 icon={require("../../assets/image/logo.png")}
                                 className={styles.detailImg}
                                 bgColor="#fff"

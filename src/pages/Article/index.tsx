@@ -17,7 +17,7 @@ export default function Article() {
       enabled: id.id !== undefined,
       onSuccess: (data) => {
         if (data.status === "success") {
-          setPost(data.data[0].content);
+          setPost(data?.data?.[0]?.content);
         }
       },
     }
@@ -30,7 +30,7 @@ export default function Article() {
     }
   );
   useEffect(() => {
-    document.title = data?.data[0].title;
+    document.title = data?.data[0]?.title || "Liên đoàn võ thuật cổ truyền";
     if (data) {
       const content = document.getElementById("content");
       if (content) {
@@ -62,10 +62,10 @@ export default function Article() {
                   xs={24}
                 >
                   <div className={styles.typePost}>BÀI VIẾT GẦN ĐÂY</div>
-                  <div className={styles.title}>{data?.data[0].title}</div>
+                  <div className={styles.title}>{data?.data?.[0]?.title}</div>
                   <div className={styles.border}></div>
                   <div className={styles.time}>
-                    ĐĂNG NGÀY {data?.data[0].time} BY ADMIN
+                    ĐĂNG NGÀY {data?.data?.[0]?.time} BY ADMIN
                   </div>
                   <div className={styles.article} id="content">
                     Nội dung
