@@ -675,7 +675,7 @@ const ManagerMemberUnAccept = ({ setFetching }: fetchingProp) => {
       {" "}
       <div className={styles.table}>
         <div className={styles.styleRight}>
-          <Search
+          {/* <Search
             className={styles.btn}
             placeholder="Tìm kiếm tại đây"
             allowClear
@@ -691,7 +691,7 @@ const ManagerMemberUnAccept = ({ setFetching }: fetchingProp) => {
           <Button className={styles.btn} onClick={exportToExcel}>
             <DownloadOutlined className={styles.icon} />
             Xuất excel
-          </Button>
+          </Button> */}
         </div>
         <Spin spinning={isFetching}>
           <Table

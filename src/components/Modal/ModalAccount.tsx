@@ -89,7 +89,7 @@ const ModalAccount = ({
             phone: data.data[0].phone,
             email: data.data[0].email,
             idcard: data.data[0].idcard,
-            level: data.data[0].level,
+            username: data.data[0].username,
           });
         }
       },
@@ -215,7 +215,7 @@ const ModalAccount = ({
     formdata.append("manage", value.manage);
     formdata.append("idcard", value.idcard);
     formdata.append("password", value.password);
-    formdata.append("level", value.level);
+    formdata.append("username", value.username);
     //
     formdata.append("club", dataDetailF2?.data[0].club);
     formdata.append("id", id);
@@ -439,7 +439,7 @@ const ModalAccount = ({
                 {" "}
                 <Form.Item
                   label="Tài khoản"
-                  name="level"
+                  name="username"
                   rules={[
                     { required: true, message: "Vui lòng điền tài khoản" },
                   ]}
