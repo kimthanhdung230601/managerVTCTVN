@@ -22,8 +22,12 @@ export default function Article() {
       },
     }
   );
-  const { data: listNews } = useQuery(["listNews"], () =>
-    getListNews("1", "0")
+  const { data: listNews } = useQuery(
+    ["listNews"],
+    () => getListNews("1", data?.data?.[0]?.category),
+    {
+      enabled: data?.data?.[0]?.category !== undefined,
+    }
   );
   useEffect(() => {
     document.title = data?.data[0].title;

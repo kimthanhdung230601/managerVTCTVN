@@ -137,6 +137,11 @@ p:has(img) {
   max-width: 100%;
 }
 
+iframe {
+  width: 100%;
+  height: 450px;
+}
+
 @media only screen and (max-width: 992px) {
   .postCol {
     border-right: none;
