@@ -74,7 +74,7 @@ const UpdateProfiles = () => {
       form.setFieldValue("detail", data.data[0].detail);
       form.setFieldValue("status", data.data[0].status);
       form.setFieldValue("achievements", data.data[0].achievements);
-      form.setFieldValue("club", data.data[0].NameClb);
+      form.setFieldValue("club", data.data[0].club);
       form.setFieldValue("hometown", data.data[0].hometown);
       // form.setFieldValue("address", data.data[0].address);
       form.setFieldValue("city", data.data[0].address);

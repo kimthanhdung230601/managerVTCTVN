@@ -224,7 +224,7 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
     {
       title: "Đẳng cấp",
       dataIndex: "level",
-      width: 130,
+      width: 270,
       filters: levelFilters,
 
       filterMultiple: false,
@@ -458,7 +458,7 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
     {
       title: "Đẳng cấp",
       dataIndex: "level",
-      width: 130,
+      width: 270,
       filters: levelFilters,
 
       filterMultiple: false,

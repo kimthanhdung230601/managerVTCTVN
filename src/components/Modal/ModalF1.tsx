@@ -38,6 +38,7 @@ const ModalF1 = ({
     ["getDetailF2", id],
     () => getDetailF2(id),
     {
+      enabled: id !== undefined,
       onSettled: (data) => {
         form.setFieldValue("name", data.data[0].name);
         form.setFieldValue("code", data.data[0].code);
@@ -48,6 +49,7 @@ const ModalF1 = ({
         form.setFieldValue("idcard", data?.data[0].idcard);
         form.setFieldValue("level", data.data[0].level);
         form.setFieldValue("password", data.data[0].password);
+        form.setFieldValue("username", data.data[0].username);
       },
     }
   );
@@ -82,6 +84,7 @@ const ModalF1 = ({
     formdata.append("manage", value.manage);
     formdata.append("password", value.password);
     formdata.append("level", value.level);
+    formdata.append("username", value.username);
     updateUserMutation.mutate(formdata);
   };
 
@@ -215,6 +218,17 @@ const ModalF1 = ({
                   name="password"
                   rules={[
                     { required: true, message: "Vui lòng điền password" },
+                  ]}
+                >
+                  <Input />
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item
+                  label="Tài khoản"
+                  name="username"
+                  rules={[
+                    { required: true, message: "Vui lòng điền tên tài khoản" },
                   ]}
                 >
                   <Input />
