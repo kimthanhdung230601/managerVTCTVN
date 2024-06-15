@@ -30,23 +30,21 @@ const Component = () => {
         <Route path="/dang-ky" element={<SignupF2 />}></Route>
         <Route path="/dang-ky-tai-khoan" element={<SignupF2Free />}></Route>
         <Route path="/dang-ky-f1" element={<SignupF1 />}></Route>
-        <Route path="/quan-ly-lien-doan-so-nganh" element={<LevelOne />}></Route>
+        <Route
+          path="/quan-ly-lien-doan-so-nganh"
+          element={<LevelOne />}
+        ></Route>
         <Route path="/thong-tin-ho-so/:id" element={<Detail />}></Route>
         <Route path="/thong-tin-ho-so" element={<Detail />}></Route>
         <Route path="/tin-tuc" element={<News />}></Route>
         <Route path="/huong-dan" element={<Guide />}></Route>
         <Route path="/dang-bai" element={<Post />}></Route>
+        <Route path="/dang-bai/:id" element={<Post />}></Route>
         <Route path="/bai-viet/:id" element={<Article />}></Route>
         <Route path="/chinh-sua-ho-so/:id" element={<UpdateProfiles />}></Route>
         <Route path="/huong-dan/:id" element={<Article />}></Route>
-        <Route
-          path="/thong-tin-tai-khoan/:id"
-          element={<Account />}
-        ></Route>
-        <Route
-          path="/doi-mat-khau"
-          element={<ChangePassword />}
-        ></Route>
+        <Route path="/thong-tin-tai-khoan/:id" element={<Account />}></Route>
+        <Route path="/doi-mat-khau" element={<ChangePassword />}></Route>
         <Route path="/them-hoi-vien" element={<Profiles />}></Route>
         <Route path="/them-hoi-vien/:key" element={<Profiles />}></Route>
         <Route path={`/lien-doan/:key`} element={<Admin />}></Route>
