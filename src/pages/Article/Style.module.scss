@@ -1,141 +1,144 @@
-.wrap{
-    padding: 120px 20px;
-    overflow-x: hidden;
-    min-height: 100vh;
-    background-color: #fff;
+.wrap {
+  padding: 120px 20px;
+  overflow-x: hidden;
+  min-height: 100vh;
+  background-color: #fff;
 }
 
-.fetchWrap{
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #fff;
-    color: #000;
+.fetchWrap {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
+  color: #000;
 }
 
-.row{
-    
-    justify-content: center;
+.row {
+  justify-content: center;
 }
 
-.typePost{
-    text-align: center;
-    font-size: 14px;
-    font-weight: 600;
-    color: #6f8f7f;
+.typePost {
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+  color: #6f8f7f;
 }
 
-.title{
-    text-align: center;
-    padding: 14px 0 20px 0;
-    font-size: 24px;
-    font-weight: 700;
-    color: #31443a;
+.title {
+  text-align: center;
+  padding: 14px 0 20px 0;
+  font-size: 24px;
+  font-weight: 700;
+  color: #31443a;
 }
 
-.time{
-    margin: 20px 0;
-    text-align: center;
-    font-size: 14px;
-    color: #797979;
+.time {
+  margin: 20px 0;
+  text-align: center;
+  font-size: 14px;
+  color: #797979;
 }
 
-.article > div{
-    width: 100%;
+.article > div {
+  width: 100%;
 }
 
-.postCol{
-    border-right: 1px solid #e4e4e4;
+.postCol {
+  border-right: 1px solid #e4e4e4;
 }
 
-.img{
-    width: 100%;
+.img {
+  width: 100%;
 }
 
-
-.note{
-    margin-top: 8px;
-    text-align: center;
-    font-size: 14px;
-    font-style: italic;
-    color: #797979;
+.note {
+  margin-top: 8px;
+  text-align: center;
+  font-size: 14px;
+  font-style: italic;
+  color: #797979;
 }
 
-p{
-    margin: 14px 0;
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 26px;
-    color: #000;
+p {
+  margin: 14px 0;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 26px;
+  color: #000;
 }
 
-.orther{
-    margin-top: 120px;
-    padding: 14px 0 20px 0;
-    font-size: 24px;
-    font-weight: 700;
-    color: #31443a;
-    border-bottom: 4px solid #e4e4e4;
+.orther {
+  margin-top: 120px;
+  padding: 14px 0 20px 0;
+  font-size: 24px;
+  font-weight: 700;
+  color: #31443a;
+  border-bottom: 4px solid #e4e4e4;
 }
 
-.articleList{
-    padding: 0;
-    margin: 0;
-    margin-top: 20px;
+.articleList {
+  padding: 0;
+  margin: 0;
+  margin-top: 20px;
 }
 
-.post{
-    cursor: pointer;
-    list-style: none;
-    margin: 8px 0;
-    font-size: 14px;
-    font-weight: 500;
-    color: #31443a;
+.post {
+  cursor: pointer;
+  list-style: none;
+  margin: 8px 0;
+  font-size: 14px;
+  font-weight: 500;
+  color: #31443a;
 }
 
-.post:hover{
-    color: var(--primary);
+.post:hover {
+  color: var(--primary);
 }
 
-.border{
-    margin: 0 auto;
-    width: 50px;
-    height: 10px;
-    border-bottom: 4px solid #e4e4e4;
+.border {
+  margin: 0 auto;
+  width: 50px;
+  height: 10px;
+  border-bottom: 4px solid #e4e4e4;
 }
 
-.author{
-    margin-top: 50px;
-    display: flex;
-    align-items: center;
-    padding: 20px 10px;
-    border-top: 1px solid #e4e4e4;
-    border-bottom: 1px solid #e4e4e4;
+.author {
+  margin-top: 50px;
+  display: flex;
+  align-items: center;
+  padding: 20px 10px;
+  border-top: 1px solid #e4e4e4;
+  border-bottom: 1px solid #e4e4e4;
 }
 
-.authorImg{
-    width: 150px !important;
-    height: 150px !important;
-    object-fit: cover;
-    border-radius: 50%;
-    border: 4px solid rgb(24, 24, 24);
+.authorImg {
+  width: 150px !important;
+  height: 150px !important;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 4px solid rgb(24, 24, 24);
 }
 
-.authorName{
-    margin-left: 30px;
-    font-size: 20px;
-    font-weight: 600;
-    color: #31443a;
+.authorName {
+  margin-left: 30px;
+  font-size: 20px;
+  font-weight: 600;
+  color: #31443a;
+}
+
+p:has(img) {
+  text-align: center;
 }
 
 .imgWrap {
-    width: 100%;
-    margin: 10px 0;
+  margin: 10px 0;
+  width: auto;
+  max-width: 100%;
 }
 
 @media only screen and (max-width: 992px) {
-    .postCol{
-        border-right: none;
-    }
+  .postCol {
+    border-right: none;
+  }
 }

@@ -2,6 +2,7 @@ import { LockOutlined, PhoneOutlined } from '@ant-design/icons'
 import { Button, Form, Image, Input, message } from 'antd'
 import React from 'react'
 import { useMutation } from 'react-query'
+import { useNavigate } from 'react-router-dom'
 import { logout } from '../../api/api'
 import { changePassword } from '../../api/ApiUser'
 import Footer from '../../components/Footer'
@@ -10,6 +11,7 @@ import styles from "./Style.module.scss"
 
 export default function ChangePassword() {
     document.title= "Đổi mật khẩu"
+    const navigate = useNavigate()
     const changePasswordMutation = useMutation(
         async (payload: any) => await changePassword(payload),
         {
@@ -18,9 +20,10 @@ export default function ChangePassword() {
                    message.success("Đổi mật khẩu thành công, vui lòng đăng nhập lại!") 
                    setTimeout(()=> {
                         logout()
+                        navigate('/dang-nhap')
                    }, 2000)
                 } else {
-                    message.success(data.data) 
+                    message.error(data.data) 
                 }
 
             },
@@ -57,16 +60,16 @@ export default function ChangePassword() {
                 >
                     <Form.Item
                     name="phone"
-                    // rules={[
-                    //     {
-                    //     pattern: /^[0-9]{10}$/,
-                    //     message: 'Số điện thoại không đúng định dạng',
-                    //     },
-                    //     {
-                    //     required: true,
-                    //     message: 'Vui lòng nhập số điện thoại',
-                    //     },
-                    // ]}
+                    rules={[
+                        {
+                        pattern: /^[0-9]{10}$/,
+                        message: 'Số điện thoại không đúng định dạng',
+                        },
+                        {
+                        required: true,
+                        message: 'Vui lòng nhập số điện thoại',
+                        },
+                    ]}
                     wrapperCol={{ span: 24 }}
                     className={styles.formItem}
                     >
@@ -79,15 +82,11 @@ export default function ChangePassword() {
                     
                     <Form.Item
                     name="password"
-                    // rules={[
-                    //     {
-                    //         pattern: /^.{8,}$/,
-                    //         message: 'Ít nhất 8 ký tự',
-                    //     },
-                    //     {
-                    //         required: true,
-                    //         message: 'Vui lòng nhập mật khẩu!',
-                    //     }]}
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Vui lòng nhập mật khẩu!',
+                        }]}
                     wrapperCol={{ span: 24 }}
                     className={styles.formItem}
                     >
@@ -99,15 +98,15 @@ export default function ChangePassword() {
                     </Form.Item>
                     <Form.Item
                     name="newPassword"
-                    // rules={[
-                    //     {
-                    //         pattern: /^.{8,}$/,
-                    //         message: 'Ít nhất 8 ký tự',
-                    //     },
-                    //     {
-                    //         required: true,
-                    //         message: 'Vui lòng nhập mật khẩu mới!',
-                    //     }]}
+                    rules={[
+                        {
+                            pattern: /^.{8,}$/,
+                            message: 'Ít nhất 8 ký tự',
+                        },
+                        {
+                            required: true,
+                            message: 'Vui lòng nhập mật khẩu mới!',
+                        }]}
                     wrapperCol={{ span: 24 }}
                     className={styles.formItem}
                     >

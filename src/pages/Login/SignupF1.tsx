@@ -41,15 +41,18 @@ import { level, province } from "../../until/until";
 import Cookies from "js-cookie";
 import { signUpF1 } from "../../api/f0";
 import { useDispatch, useSelector } from "react-redux";
-const secretKey = process.env.REACT_APP_SECRET_KEY as string;
 
-const getBase64 = (file: any): Promise<string> =>
-  new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result as string);
-    reader.onerror = (error) => reject(error);
-  });
+const options = [
+  { value: "11", label: "Liên đoàn võ thuật" },
+  { value: "12", label: "Liên đoàn võ thuật cổ truyền" },
+  { value: "13", label: "Hội Võ Thuật" },
+  { value: "14", label: "Hội Võ Thuật Cổ Truyền" },
+  { value: "15", label: "Công An" },
+  { value: "19", label: "Quân Đội" },
+  { value: "16", label: "Giáo Dục" },
+  { value: "17", label: "Sở VHTT và Du lịch" },
+  { value: "18", label: "Trung tâm huấn luyện thể thao" },
+];
 
 export default function SignupF1() {
   document.title = "Đăng ký tài khoản";
@@ -58,8 +61,6 @@ export default function SignupF1() {
   const reloadCount = useSelector((state: any) => state.reloadCount);
   const [showCaptcha, setShowCaptcha] = useState(false);
   const [isVerify, setIsVerify] = useState(false);
-//   const permission = CryptoJS.AES.decrypt(Cookies.get("permission") as string, secretKey);
-//   const decryptedPermission = permission.toString(CryptoJS.enc.Utf8);
   const signupMutation = useMutation(
     async (payload: any) => await signUpF1(payload),
     {
@@ -82,39 +83,32 @@ export default function SignupF1() {
   const handleRecaptchaChange = (value: any) => {
     setIsVerify(true);
   };
-  const isImage = (file: any) => {
-    const acceptedImageTypes = ["image/jpeg", "image/png"];
-    return acceptedImageTypes.includes(file.type);
-  };
-  const onChange = (value: string) => {
-    // console.log(`selected ${value}`);
-  };
-  const onSearch = (value: string) => {
-    // console.log('search:', value);
-  };
+
   const filterOption = (
     input: string,
     option?: { children: React.ReactNode }
   ) => (option?.children as string).toLowerCase().includes(input.toLowerCase());
   const onFinish = (value: any) => {
-    // delete value.confirm
-    console.log("value", value);
+    const selectedOption = options.find(
+      (option) => option.value === value.manage
+    );
     const payload = {
       name: value.name,
       phone: value.phone,
-      manage: value.manage,
+      club: value.manage,
       level: value.level,
       location: value.location,
       password: value.password,
-      username: value.username
+      username: value.username,
+      manage: selectedOption?.label,
     };
+
     signupMutation.mutate(payload);
   };
   useEffect(() => {
     dispatch({ type: "INCREMENT_LOAD_COUNT" });
     if (reloadCount.loadCount >= 9) {
       setShowCaptcha(true);
-
     }
     if (reloadCount.loadCount < 9 && !showCaptcha) {
       setTimeout(() => {
@@ -196,30 +190,14 @@ export default function SignupF1() {
               showSearch
               placeholder={"Đơn vị quản lý"}
               optionFilterProp="children"
-              onChange={onChange}
-              onSearch={onSearch}
               filterOption={filterOption}
               className={styles.select}
             >
-              <Select.Option value="Liên đoàn võ thuật">
-                Liên đoàn võ thuật
-              </Select.Option>
-              <Select.Option value="Liên đoàn võ thuật cổ truyền">
-                Liên đoàn võ thuật cổ truyền
-              </Select.Option>
-              <Select.Option value="Hội Võ Thuật">Hội Võ Thuật</Select.Option>
-              <Select.Option value="Hội Võ Thuật Cổ Truyền">
-                Hội Võ Thuật Cổ Truyền
-              </Select.Option>
-              <Select.Option value="Công An">Công An</Select.Option>
-              <Select.Option value="Quân Đội">Quân Đội</Select.Option>
-              <Select.Option value="Giáo Dục">Giáo Dục</Select.Option>
-              <Select.Option value="Sở VHTT và Du lịch">
-                Sở VHTT và Du lịch
-              </Select.Option>
-              <Select.Option value="Trung tâm huấn luyện thể thao">
-                Trung tâm huấn luyện thể thao
-              </Select.Option>
+              {options.map((option) => (
+                <Select.Option key={option.value} value={option.value}>
+                  {option.label}
+                </Select.Option>
+              ))}
             </Select>
           </Form.Item>
           <Form.Item
@@ -251,8 +229,6 @@ export default function SignupF1() {
               showSearch
               placeholder={"Tỉnh/Thành"}
               optionFilterProp="children"
-              onChange={onChange}
-              onSearch={onSearch}
               filterOption={filterOption}
               className={styles.select}
             >
@@ -272,7 +248,9 @@ export default function SignupF1() {
           </Form.Item>
           <Form.Item
             name="username"
-            rules={[{ required: true, message: "Vui lòng nhập tài khoản đăng nhập!" }]}
+            rules={[
+              { required: true, message: "Vui lòng nhập tài khoản đăng nhập!" },
+            ]}
             wrapperCol={{ span: 24 }}
             className={styles.formItem}
           >
@@ -345,7 +323,12 @@ export default function SignupF1() {
             </Form.Item>
           ) : null}
           <Form.Item className={styles.formItem} wrapperCol={{ span: 24 }}>
-            <Button type="primary" htmlType="submit" className={styles.button}>
+            <Button
+              type="primary"
+              htmlType="submit"
+              className={styles.button}
+              disabled={signupMutation.isLoading}
+            >
               Đăng ký
             </Button>
           </Form.Item>

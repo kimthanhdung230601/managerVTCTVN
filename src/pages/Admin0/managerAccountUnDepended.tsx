@@ -59,7 +59,7 @@ interface DataType {
   club: string;
   image_certificate: any;
   image_ref: any;
-  image_cmnd:any;
+  image_cmnd: any;
 }
 
 const { Option } = Select;
@@ -75,7 +75,7 @@ const customLocale = {
   selectInvert: "Đảo ngược", // Thay đổi văn bản khi chọn ngược
 };
 const ManagerAccountUnDepended = ({ refetch }: ManagerAccountProps) => {
- //tài khoản chưa được duyệt
+  //tài khoản chưa được duyệt
   const [currentPage, setCurrentPage] = useState(1);
   const initialPayload = `page=${currentPage}&pending=0&permission=2`;
   const [payload, setPayload] = useState(initialPayload);
@@ -300,8 +300,11 @@ const ManagerAccountUnDepended = ({ refetch }: ManagerAccountProps) => {
     {
       title: "STT",
       dataIndex: "key",
-
+      fixed: "left",
       width: 70,
+      render: (value, record, index) => {
+        return index + 1 + (currentPage - 1) * 10;
+      },
     },
     {
       title: "Họ và tên",
@@ -403,7 +406,7 @@ const ManagerAccountUnDepended = ({ refetch }: ManagerAccountProps) => {
             preview={true}
             className={styles.img}
           />
-             <Image
+          <Image
             src={`https://vocotruyen.id.vn/PHP_IMG/${record.image_cmnd}`}
             preview={true}
             className={styles.img}
@@ -472,7 +475,7 @@ const ManagerAccountUnDepended = ({ refetch }: ManagerAccountProps) => {
               // rowSelection={rowSelection}
               locale={customLocale}
               columns={isMobile ? columnsMobileAccept : columnsDesktopAccept}
-              dataSource={data?.data}
+              dataSource={data?.status === "success" ? data?.data : []}
               onChange={onChangeUnAccept}
               pagination={false}
               scroll={{

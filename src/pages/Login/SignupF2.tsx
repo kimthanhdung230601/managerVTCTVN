@@ -183,15 +183,12 @@ export default function SignupF2() {
     formdata.append("email", value.email);
     formdata.append("location", value.location);
     formdata.append("manage", value.manage);
-    formdata.append("level", value.level);
+    formdata.append("username", value.username);
     formdata.append("password", value.password);
     formdata.append(
       `image_cmnd`,
       value.image_cmnd.file.originFileObj as File,
-      CryptoJS.AES.encrypt(
-        value.image_cmnd.file.name,
-        randomKey
-      ).toString()
+      CryptoJS.AES.encrypt(value.image_cmnd.file.name, randomKey).toString()
     );
     formdata.append(
       `image_certificate`,
@@ -450,36 +447,8 @@ export default function SignupF2() {
             </Select>
           </Form.Item>
           <LineChartOutlined className={styles.iconSelect} />
-          {/* <Form.Item
-            name="level"
-            rules={[{ required: true, message: "Vui lòng chọn đẳng cấp!" }]}
-            wrapperCol={{ span: 24 }}
-            className={styles.formSelect}
-          > */}
-          {/* <Select
-              menuItemSelectedIcon={<LineChartOutlined />}
-              showSearch
-              placeholder={"Tài khoản đăng nhập"}
-              optionFilterProp="children"
-              onChange={onChange}
-              onSearch={onSearch}
-              filterOption={filterOption}
-              className={styles.select}
-            >
-              {level.map((option: string) => (
-                <Select.Option key={option} value={option}>
-                  {option}
-                </Select.Option>
-              ))}
-            </Select> */}
-          {/* <Input
-              className={styles.select}
-              prefix={<LineChartOutlined className={styles.icon} />}
-              placeholder="Tài khoản đăng nhập"
-            />
-          </Form.Item> */}{" "}
           <Form.Item
-            name="level"
+            name="username"
             rules={[
               { required: true, message: "Vui lòng nhập tên tài khoản!" },
             ]}
@@ -662,7 +631,12 @@ export default function SignupF2() {
             </Form.Item>
           ) : null}
           <Form.Item className={styles.formItem} wrapperCol={{ span: 24 }}>
-            <Button type="primary" htmlType="submit" className={styles.button}>
+            <Button
+              type="primary"
+              htmlType="submit"
+              className={styles.button}
+              disabled={signupMutation.isLoading}
+            >
               Đăng ký
             </Button>
           </Form.Item>

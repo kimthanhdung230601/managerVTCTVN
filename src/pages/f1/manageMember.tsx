@@ -2,7 +2,15 @@ import React, { useState } from "react";
 import Search, { SearchProps } from "antd/es/input/Search";
 import styles from "./Style.module.scss";
 import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
-import { message, Table, Spin, Popconfirm, Button, Modal, Pagination } from "antd";
+import {
+  message,
+  Table,
+  Spin,
+  Popconfirm,
+  Button,
+  Modal,
+  Pagination,
+} from "antd";
 import { ColumnsType, TableProps } from "antd/es/table";
 import { useLocation, useNavigate } from "react-router";
 import { levelFilters } from "../../until/until";
@@ -92,14 +100,14 @@ export default function ManageMember() {
           });
         } else {
           message.error("Có lỗi xảy xa, vui lòng thử lại sau");
-          setTimeout(()=> {
-            window.location.reload()
-          }, 2000)
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
         }
       },
     }
   );
-  
+
   const { data: search } = useQuery(["search", key], () => searchInTable(key), {
     enabled: key !== "",
     onSettled: (data) => {
@@ -107,11 +115,18 @@ export default function ManageMember() {
         setMemberList(data);
       } else if (data.status === "failed") {
         message.error("Không có dữ liệu.");
+        setMemberList({
+          status: "",
+          total_products: 0,
+          total_pages: 0,
+          index_page: 0,
+          data: [],
+        });
       } else {
         message.error("Có lỗi xảy ra, vui lòng thử lại sau");
-        setTimeout(()=> {
-          window.location.reload()
-        }, 2000)
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
       }
     },
   });
@@ -148,9 +163,9 @@ export default function ManageMember() {
         };
       }),
     });
-    setOpen(false)
+    setOpen(false);
   };
-  
+
   const showModal = () => {
     setOpen(true);
   };
@@ -165,7 +180,7 @@ export default function ManageMember() {
     selectedRowKeysCN,
     onChange: onSelectChangeCN,
     getCheckboxProps: (record: DataType_CN) => ({
-      disabled: record.status != "Chờ duyệt", 
+      disabled: record.status != "Chờ duyệt",
       status: record.status,
     }),
   };
@@ -287,7 +302,7 @@ export default function ManageMember() {
               Xem
             </Button>
 
-            {record.status == "Chờ duyệt"   ? (
+            {record.status == "Chờ duyệt" ? (
               <Popconfirm
                 title="Xác nhận xoá thành viên"
                 description={`Bạn có chắc chắn muốn xoá thành viên ${record.name} không ? `}
@@ -315,7 +330,6 @@ export default function ManageMember() {
     extra
   ) => {
     const param =
-    
       (filters.NameClb ? "&club=" + filters.NameClb[0] : "") +
       (filters.level
         ? "&level=" + encodeURIComponent(filters.level[0].toString())
@@ -324,84 +338,84 @@ export default function ManageMember() {
         ? "&status=" + encodeURIComponent(filters.status[0].toString())
         : "");
     setParam(param);
-   
   };
   return (
     <>
-      
-          {memberList?.status === "failed" ? (
-            <div className={styles.fetching}>Không có dữ liệu.</div>
-          ) : (
-            <>
-              <div className={styles.tableTop}>
-                <div>
-                  {hasSelected
-                    ? `Đã chọn ${selectedRowKeysCN.length} hồ sơ`
-                    : `Tổng số ${
-                        memberList?.total_products
-                          ? memberList?.total_products
-                          : "0"
-                      } hồ sơ`}
-                </div>
-                <div className={styles.filter}>
-                  <Search
-                    placeholder="Tìm kiếm tại đây"
-                    allowClear
-                    onSearch={onSearch}
-                    size="large"
-                    className={styles.search}
-                  />
-                  <div className={styles.btnWrap}>
-                    <Button
-                      className={styles.addBtn}
-                      onClick={() => {
-                        return navigate(`/them-hoi-vien/f1`)
-                      }}
-                    >
-                      <PlusOutlined className={styles.icon} />
-                      <span style={{ color: "#fff" }}>Thêm hội viên</span>
-                    </Button>
-                    <Button
-                      className={`${styles.addBtn} ${styles.deleteBtn}`}
-                      icon={<DeleteOutlined className={styles.icon} />}
-                      onClick={showModal}
-                      disabled={selectedRowKeysCN.length === 0 ? true : false}
-                    >
-                      <span style={{ color: "#fff" }}>Xóa</span>
-                    </Button>
-                  </div>
-                </div>
+      {memberList?.status === "failed" ? (
+        <div className={styles.fetching}>Không có dữ liệu.</div>
+      ) : (
+        <>
+          <div className={styles.tableTop}>
+            <div>
+              {hasSelected
+                ? `Đã chọn ${selectedRowKeysCN.length} hồ sơ`
+                : `Tổng số ${
+                    memberList?.total_products
+                      ? memberList?.total_products
+                      : "0"
+                  } hồ sơ`}
+            </div>
+            <div className={styles.filter}>
+              <Search
+                placeholder="Tìm kiếm tại đây"
+                allowClear
+                onSearch={onSearch}
+                size="large"
+                className={styles.search}
+              />
+              <div className={styles.btnWrap}>
+                <Button
+                  className={styles.addBtn}
+                  onClick={() => {
+                    return navigate(`/them-hoi-vien/f1`);
+                  }}
+                >
+                  <PlusOutlined className={styles.icon} />
+                  <span style={{ color: "#fff" }}>Thêm hội viên</span>
+                </Button>
+                <Button
+                  className={`${styles.addBtn} ${styles.deleteBtn}`}
+                  icon={<DeleteOutlined className={styles.icon} />}
+                  onClick={showModal}
+                  disabled={selectedRowKeysCN.length === 0 ? true : false}
+                >
+                  <span style={{ color: "#fff" }}>Xóa</span>
+                </Button>
               </div>
-              <Spin size='large' spinning={isFetching}>
-                <Table
-                  rowSelection={rowSelectionCN}
-                  columns={columns_CN}
-                  dataSource={memberList?.data}
-                  locale={customLocale}
-                  onChange={onChange}
-                  pagination={false}
-                  className={styles.table}
-                />
-                <Pagination 
-                  current={parseInt(currentPage1, 10)} 
-                  defaultCurrent={1}
-                  onChange={onPaginationChange1} 
-                  pageSize={30} 
-                  total={memberList?.status === "success" ? memberList.total_products : 0} />
-                </Spin>
-              <Modal
-                title="Xác nhận"
-                open={open}
-                onOk={handleDeleteMultiRecord}
-                onCancel={hideModal}
-                okText="Đồng ý"
-                cancelText="Huỷ"
-              >
-                <p>Bạn có chắc chắn muốn xoá các thành viên đã chọn không?</p>
-              </Modal>
-            </>
-          )}
-        
+            </div>
+          </div>
+          <Spin size="large" spinning={isFetching}>
+            <Table
+              rowSelection={rowSelectionCN}
+              columns={columns_CN}
+              dataSource={memberList?.data}
+              locale={customLocale}
+              onChange={onChange}
+              pagination={false}
+              className={styles.table}
+            />
+            <Pagination
+              current={parseInt(currentPage1, 10)}
+              defaultCurrent={1}
+              onChange={onPaginationChange1}
+              pageSize={30}
+              total={
+                memberList?.status === "success" ? memberList.total_products : 0
+              }
+            />
+          </Spin>
+          <Modal
+            title="Xác nhận"
+            open={open}
+            onOk={handleDeleteMultiRecord}
+            onCancel={hideModal}
+            okText="Đồng ý"
+            cancelText="Huỷ"
+          >
+            <p>Bạn có chắc chắn muốn xoá các thành viên đã chọn không?</p>
+          </Modal>
+        </>
+      )}
     </>
   );
 }

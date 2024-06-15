@@ -1,49 +1,27 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { PlusOutlined } from "@ant-design/icons";
 import {
-  AudioOutlined,
-  PlusOutlined,
-  DownloadOutlined,
-  CheckOutlined,
-  FileTextOutlined,
-} from "@ant-design/icons";
-import {
-  Input,
   Table,
   Button,
-  Form,
-  Select,
   Col,
   Row,
-  Image,
   Popconfirm,
   message,
   Pagination,
   Spin,
 } from "antd";
-import { admin, province } from "../../until/until";
+import { province } from "../../until/until";
 import styles from "./styles.module.scss";
-// import type { TableColumnsType, TableProps } from "antd/es/table";
-import type { TableColumnsType, TableProps } from "antd";
+import type { TableProps } from "antd";
 
-import ModalAccount from "../../components/Modal/ModalAccount";
-import ModalAccept from "../../components/Modal/ModalAccept";
 import { useNavigate } from "react-router";
 import { useMediaQuery } from "react-responsive";
-import { text } from "stream/consumers";
 import type { ColumnsType } from "antd/es/table";
 import { useQuery } from "react-query";
-import {
-  deleteMemberF12,
-  getListMemberF12,
-  // getListMemberF12Accept,
-  // getListMemberF12UnAccept,
-  updateAccount,
-} from "../../api/f0";
-import ListClub from "../../hook/listClub";
+import { deleteMemberF12, getListMemberF12 } from "../../api/f0";
 import CryptoJS from "crypto-js";
 import ModalF1 from "../../components/Modal/ModalF1";
 const secretKey = process.env.REACT_APP_SECRET_KEY as string;
-interface ManagerAccountProps {}
 interface DataType {
   key: React.Key;
   id: string;
@@ -67,28 +45,26 @@ interface DataType {
   image_ref: any;
 }
 
-const { Option } = Select;
 const filterProivce = province.map((province) => ({
   text: province,
   value: province,
 }));
 const customLocale = {
-  filterConfirm: "OK", // Thay đổi nút xác nhận
-  filterReset: "Xoá", // Thay đổi nút reset
-  filterEmptyText: "No filters", // Thay đổi văn bản khi không có bộ lọc
-  selectAll: "Chọn tất cả", // Thay đổi văn bản "Select All Items" ở đây
-  selectInvert: "Đảo ngược", // Thay đổi văn bản khi chọn ngược
+  filterConfirm: "OK",
+  filterReset: "Xoá",
+  filterEmptyText: "No filters",
+  selectAll: "Chọn tất cả",
+  selectInvert: "Đảo ngược",
 };
 const ManagerF1 = () => {
-  //tài khoản đã được duyệt
   const [currentPageAccount, setCurrentPageAccount] = useState(1);
-  const initialPayload = `page=${currentPageAccount}&permission=1}`;
+  const initialPayload = `page=${currentPageAccount}&permission=1`;
   const [payloadAccept, setPayloadAccept] = useState<any>(initialPayload);
   const {
     data: dataMemberF12Accept,
     refetch: refetchAccept,
     isFetching: isFetchingAccept,
-  } = useQuery(['dataF12Accept', payloadAccept], () =>
+  } = useQuery(["dataF12Accept", payloadAccept], () =>
     getListMemberF12(payloadAccept)
   );
   const onChange: TableProps<DataType>["onChange"] = (pagination, filters) => {
@@ -155,11 +131,6 @@ const ManagerF1 = () => {
       fixed: "left",
       width: 210,
     },
-    // {
-    //   title: "CCCD",
-    //   dataIndex: "idcard",
-    //   width: 250,
-    // },
     {
       title: "Số điện thoại",
       dataIndex: "phone",
@@ -229,11 +200,6 @@ const ManagerF1 = () => {
 
       filterMultiple: false,
     },
-    // {
-    //   title: "Mật khẩu",
-    //   dataIndex: "password",
-    //   width: 150,
-    // },
     {
       key: "action",
       width: 200,
@@ -269,6 +235,7 @@ const ManagerF1 = () => {
     {
       title: "STT",
       dataIndex: "key",
+
       width: 20,
       render: (value, record, index) => {
         return index + 1 + (currentPageAccount - 1) * 10;
@@ -277,26 +244,22 @@ const ManagerF1 = () => {
     {
       title: "Họ và tên",
       dataIndex: "name",
+
       width: 210,
-    },
-    {
-      title: "Mã định danh",
-      dataIndex: "idcard",
-      width: 250,
     },
     {
       title: "Số điện thoại",
       dataIndex: "phone",
       width: 150,
     },
+
     {
-      title: "Tỉnh",
+      title: "Tỉnh/Thành",
       dataIndex: "location",
       filters: filterProivce,
       onFilter: (value: any, record) => record.location.startsWith(value),
-      filterMultiple: false,
-
       filterSearch: true,
+      filterMultiple: false,
       width: 120,
     },
     {
@@ -343,44 +306,44 @@ const ManagerF1 = () => {
       ],
       onFilter: (value: any, record) => record.manage.indexOf(value) === 0,
       filterMultiple: false,
+
       width: 200,
     },
     {
       title: "Chức danh",
       dataIndex: "level",
       width: 200,
-    },
 
-    // {
-    //   title: "Mật khẩu",
-    //   dataIndex: "password",
-    //   width: 150,
-    // },
+      filterMultiple: false,
+    },
     {
-      // title: 'Action',
       key: "action",
       width: 200,
-      render: (_, record) => (
-        <span>
-          <button
-            className={styles.btnTb}
-            onClick={() => showModalMember(record.id)}
-          >
-            Sửa
-          </button>
-          <Popconfirm
-            title="Xóa"
-            description={`Bạn có muốn xóa ${record.name} không`}
-            onConfirm={() => confirm(record.id)}
-            onCancel={cancel}
-            okText="Có"
-            cancelText="Không"
-          >
-            {" "}
-            <button className={styles.btnTbDanger}>Xóa</button>
-          </Popconfirm>
-        </span>
-      ),
+      render: (_, record) => {
+        const idEncode = CryptoJS.AES.encrypt(record.id, secretKey).toString();
+        const id = encodeURIComponent(idEncode);
+        return (
+          <span>
+            <button
+              className={styles.btnTb}
+              onClick={() => showModalMember(record.id)}
+            >
+              Sửa
+            </button>
+            <Popconfirm
+              title="Xóa"
+              description={`Bạn có muốn xóa ${record.name} không`}
+              onConfirm={() => confirm(record.id)}
+              onCancel={cancel}
+              okText="Có"
+              cancelText="Không"
+            >
+              {" "}
+              <button className={styles.btnTbDanger}>Xóa</button>
+            </Popconfirm>
+          </span>
+        );
+      },
     },
   ];
 
@@ -388,14 +351,6 @@ const ManagerF1 = () => {
     <div className={styles.wrap}>
       <div className={styles.managerAccount}>
         <Row gutter={40} justify="end" className={styles.buttonGroup}>
-          {/* <Col xxl={12} md={24} className="gutter-row">
-            <div style={{ width: "180px" }}>
-              <div className={styles.postLabel}>
-                <FileTextOutlined style={{ marginRight: "10px" }} />
-                Quản lý tài khoản
-              </div>
-            </div>
-          </Col> */}
           <Col
             xxl={12}
             md={24}
@@ -418,7 +373,11 @@ const ManagerF1 = () => {
           <Spin spinning={isFetchingAccept}>
             <Table
               columns={isMobile ? columnsMobileAccount : columnsDesktopAccount}
-              dataSource={dataMemberF12Accept?.data}
+              dataSource={
+                dataMemberF12Accept?.status === "success"
+                  ? dataMemberF12Accept?.data
+                  : []
+              }
               pagination={false}
               locale={customLocale}
               onChange={onChange}

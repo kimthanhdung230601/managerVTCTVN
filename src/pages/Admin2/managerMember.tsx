@@ -1,12 +1,7 @@
 import { useEffect, useState } from "react";
-import {
-  AudioOutlined,
-  PlusOutlined,
-  DownloadOutlined,
-} from "@ant-design/icons";
+import { PlusOutlined } from "@ant-design/icons";
 import type { SearchProps } from "antd/es/input";
 import {
-  Input,
   Table,
   Button,
   TableProps,
@@ -15,27 +10,19 @@ import {
   message,
   Pagination,
 } from "antd";
-import { admin, level, levelFilters, randomState } from "../../until/until";
+import { levelFilters } from "../../until/until";
 import styles from "./styles.module.scss";
 import type { ColumnsType } from "antd/es/table";
-import type { FilterValue } from "antd/es/table/interface";
 
 import Search from "antd/es/input/Search";
 import ModalUpdateNote from "../../components/Modal/ModalUpdateNote";
-import ModalMember from "../../components/Modal/ModalAccount";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "react-query";
-import {
-  deleteMemberF3,
-  getFilterTable,
-  getListMemberF3,
-  searchInTable,
-} from "../../api/f2";
+import { deleteMemberF3, getListMemberF3, searchInTable } from "../../api/f2";
 import moment from "moment";
 import CryptoJS from "crypto-js";
 import Cookies from "js-cookie";
-import { logout } from "../../api/api";
-import { findMember } from "../../api/f0";
+
 const secretKey = process.env.REACT_APP_SECRET_KEY as string;
 
 interface ManagerMemberProps {}
@@ -104,7 +91,6 @@ const ManagerMemberTwo = () => {
   }, [decryptedPerrmission, clubValue]);
   const [param, setParam] = useState("");
   const [key, setKey] = useState("");
-  const [memberList, setMemberList] = useState<data>();
 
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -117,42 +103,19 @@ const ManagerMemberTwo = () => {
     data: listF3,
     refetch: refetchListF3,
     isFetching,
-  } = useQuery(
-    ["listF3", payload],
-    () => getListMemberF3(payload),
-
-    {
-      onSettled: (data) => {
-        if (data.status === "success") {
-          setMemberList(data);
-        } else if (data.status === "failed") {
-          message.warning(data.data);
-        } else {
-          message.error("Có lỗi xảy ra, vui lòng thử lại sau");
-        }
-      },
-    }
-  );
-
-  const { data: search } = useQuery(["search", key], () => searchInTable(key), {
-    enabled: key !== "",
+  } = useQuery(["listF3", payload], () => getListMemberF3(payload), {
     onSettled: (data) => {
       if (data.status === "success") {
-        setMemberList(data);
+        // setMemberList(data);
       } else if (data.status === "failed") {
-        message.error("Không có dữ liệu.");
-        setTimeout(() => {
-          window.location.reload();
-        }, 2000);
+        message.warning(data.data);
       } else {
         message.error("Có lỗi xảy ra, vui lòng thử lại sau");
-        setTimeout(() => {
-          window.location.reload();
-        }, 2000);
       }
     },
   });
   let filtersListNote: { text: any; value: any }[] = [];
+
 
   if (listF3?.status === "success") {
     const uniqueNotes = Array.from(
@@ -179,8 +142,19 @@ const ManagerMemberTwo = () => {
   const cancel = (value: any) => {};
   //tìm kiếm
 
-  const onSearch: SearchProps["onSearch"] = (value, _e, info) => {
-    setKey(value);
+  const [dataFind, setDataFind] = useState<DataType[]>([]);
+  const onSearch: SearchProps["onSearch"] = async (
+    value: any,
+    _e: any,
+    info: any
+  ) => {
+    const res = await searchInTable(value);
+    if (res.status === "success") {
+      setDataFind(res.data); // Cập nhật dataFind nếu tìm thấy kết quả
+    } else {
+      setDataFind([]); // Đặt dataFind về rỗng nếu không tìm thấy kết quả
+      message.error("Không tìm thấy kết quả");
+    }
   };
 
   //modal
@@ -260,14 +234,7 @@ const ManagerMemberTwo = () => {
       filterMultiple: false,
       onFilter: (value: any, rec) => rec.note.indexOf(value) === 0,
     },
-    // {
-    //   title: "Chi tiết",
-    //   dataIndex: "detail",
-    //   width: 130,
-    //   filters: filtersDetail,
-    //   filterMultiple: false,
-    //   onFilter: (value: any, rec) => rec.detail.indexOf(value) === 0,
-    // },
+
     {
       title: "Tình trạng",
       dataIndex: "status",
@@ -437,57 +404,30 @@ const ManagerMemberTwo = () => {
         </div>
       </div>
       <div className={styles.table}>
-        <div style={{ marginBottom: 16 }}>
-          {/* <span style={{ marginLeft: 8 }}>
-            {hasSelected ? `Đã chọn ${selectedRowKeys.length} bản ghi` : ""}
-          </span> */}
-        </div>
+        <div style={{ marginBottom: 16 }}></div>
         <Spin spinning={isFetching}>
-          {memberList?.status === "success" ? (
-            <>
-              {" "}
-              <Table
-                // rowSelection={rowSelection}
-                columns={columns}
-                dataSource={memberList?.data}
-                // dataSource={listF3?.data}
-                locale={customLocale}
-                scroll={{ x: 1300 }}
-                style={{ overflowX: "auto" }}
-                pagination={false}
-                onChange={onChange}
-              />
-              <Pagination
-                defaultCurrent={1}
-                onChange={onChangePage}
-                total={listF3?.total_products}
-                // total={50}
-                pageSize={30}
-                style={{ margin: "1vh 0", float: "right" }}
-              />
-            </>
-          ) : (
-            <>
-              {" "}
-              <Table
-                // rowSelection={rowSelection}
-                columns={columns}
-                dataSource={listF3?.data}
-                locale={customLocale}
-                scroll={{ x: 1300 }}
-                style={{ overflowX: "auto" }}
-                pagination={false}
-              />
-              <Pagination
-                defaultCurrent={currentPage}
-                onChange={onChangePage}
-                total={listF3?.total_products}
-                // total={50}
-                pageSize={30}
-                style={{ margin: "1vh 0", float: "right" }}
-              />
-            </>
-          )}
+          <Table
+            columns={columns}
+            dataSource={
+              listF3?.status === "failed"
+                ? []
+                : dataFind?.length > 0
+                ? dataFind
+                : listF3?.data
+            }
+            locale={customLocale}
+            scroll={{ x: 1300 }}
+            style={{ overflowX: "auto" }}
+            pagination={false}
+            onChange={onChange}
+          />
+          <Pagination
+            defaultCurrent={1}
+            onChange={onChangePage}
+            total={listF3?.total_products}
+            pageSize={30}
+            style={{ margin: "1vh 0", float: "right" }}
+          />
         </Spin>
       </div>
       <ModalUpdateNote

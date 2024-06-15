@@ -252,7 +252,6 @@ const Profiles = () => {
 
   const location = useLocation();
   const previousPathname = location.state?.prevPathname;
-  console.log(dataClubF1);
   return (
     <>
       <div className={styles.wrap}>
