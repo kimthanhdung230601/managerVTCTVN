@@ -35,11 +35,11 @@ const RegisterForPrize = () => {
   const data: DataTypeFile[] = [
     {
       name: "Điều lệ giải vô địch VCT Việt Nam",
-      link: require("../../assets/fileUpload/DIEU LE GIAI VO ĐICH VCT NAM 2024.pdf"),
+      link: "/assets/fileUpload/DIEU LE GIAI VO ĐICH VCT NAM 2024.pdf",
     },
     {
       name: "Biểu mẫu đăng ký thi đấu",
-      link: require("../../assets/fileUpload/Biểu mẫu đăng ký thi đấu ( các đơn vị kê khai).doc"),
+      link: "/assets/fileUpload/Biểu mẫu đăng ký thi đấu ( các đơn vị kê khai).doc",
     },
   ];
 
