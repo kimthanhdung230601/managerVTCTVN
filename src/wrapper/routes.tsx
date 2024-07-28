@@ -21,6 +21,7 @@ import NotFoundPage from "../pages/404";
 import UpdateProfiles from "../pages/UpdateF0";
 import SignupF1 from "../pages/Login/SignupF1";
 import SignupF2Free from "../pages/Login/SignupF2Free";
+import RegisterForPrize from "../pages/RegisterForPrize";
 const Component = () => {
   return (
     <>
@@ -38,6 +39,7 @@ const Component = () => {
         <Route path="/thong-tin-ho-so" element={<Detail />}></Route>
         <Route path="/tin-tuc" element={<News />}></Route>
         <Route path="/huong-dan" element={<Guide />}></Route>
+        <Route path="/dangkygiaivodich" element={<RegisterForPrize />}></Route>
         <Route path="/dang-bai" element={<Post />}></Route>
         <Route path="/dang-bai/:id" element={<Post />}></Route>
         <Route path="/bai-viet/:id" element={<Article />}></Route>
