@@ -109,7 +109,7 @@ const ModalAccount = ({
         } else {
           message.error("Có lỗi xảy ra, vui lòng thử lại sau!");
           setLoading(false);
-          console.log("data2", data);
+
           // setTimeout(() => {
           //   window.location.reload();
           // }, 2000);
@@ -204,7 +204,6 @@ const ModalAccount = ({
   };
   const onFinish = async (value: any) => {
     setLoading(true);
-    console.log("value", value);
 
     const randomKey = CryptoJS.lib.WordArray.random(16).toString();
     const formdata = new FormData();

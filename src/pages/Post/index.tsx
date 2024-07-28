@@ -78,7 +78,6 @@ export default function Post() {
       enabled: hasId !== 0,
       onSuccess: (data) => {
         if (data?.status === "success") {
-          console.log("title", data?.data[0]?.title);
           form.setFieldValue("title", data?.data[0]?.title);
           form.setFieldValue("category", data?.data[0]?.category);
           form.setFieldValue("description", data?.data[0]?.description);
