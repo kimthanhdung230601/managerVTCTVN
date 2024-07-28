@@ -1,6 +1,8 @@
 .wrap {
   padding: 120px 40px;
-  background-color: #fff;
+  background-image: url("../../assets/image/bg.png");
+  background-repeat: no-repeat;
+  background-position: top;
 }
 
 .imageWrap {
@@ -46,8 +48,9 @@
   font-weight: bold;
   margin: 12px 0px 0px 0px;
 }
-.subTitle {
-  margin-top: 20px;
+.table {
+  margin: 20px 50px 0 50px;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
 .content {
   margin: 6px 20px 0 20px;
@@ -60,5 +63,8 @@
 @media (max-width: 900px) {
   .des {
     margin: 0px 20px;
+  }
+  .table {
+    margin: 20px 10px 0 10px;
   }
 }

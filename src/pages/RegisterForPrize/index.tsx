@@ -19,11 +19,20 @@ const columns_file: ColumnsType<DataTypeFile> = [
     dataIndex: "name",
   },
   {
-    title: "Tải xuống",
+    title: "",
     dataIndex: "link",
     render: (text: string) => (
       <div>
-        <a href={text} download>
+        <a
+          href={text}
+          download
+          style={{
+            color: "initial",
+            transition: "color 0.3s",
+          }}
+          onMouseEnter={(e) => (e.currentTarget.style.color = "var(--primary)")}
+          onMouseLeave={(e) => (e.currentTarget.style.color = "initial")}
+        >
           Tải xuống
         </a>
       </div>
@@ -35,11 +44,11 @@ const RegisterForPrize = () => {
   const data: DataTypeFile[] = [
     {
       name: "Điều lệ giải vô địch VCT Việt Nam",
-      link: "/assets/fileUpload/DIEU LE GIAI VO ĐICH VCT NAM 2024.pdf",
+      link: "/assets/fileUpload/DIEU LE GIAI VO DICH VCT NAM 2024.pdf",
     },
     {
       name: "Biểu mẫu đăng ký thi đấu",
-      link: "/assets/fileUpload/Biểu mẫu đăng ký thi đấu ( các đơn vị kê khai).doc",
+      link: "/assets/fileUpload/Bieu-mau-dang-ky-thi-dau.doc",
     },
   ];
 
@@ -58,8 +67,7 @@ const RegisterForPrize = () => {
             Giải Vô địch Võ cổ truyền quốc gia lần thứ XXXIII năm 2024
           </div>
           <div className={styles.des}>
-            <div className={styles.title2}>NHỮNG QUY ĐỊNH CHUNG</div>
-            <div className={styles.subTitle2}>Điều 1. Mục đích</div>
+            <div className={styles.subTitle2}>Mục đích</div>
             <div className={styles.content}>
               <p>
                 1. Hưởng ứng Cuộc vận động "Toàn dân rèn luyện thân thể theo
@@ -86,7 +94,9 @@ const RegisterForPrize = () => {
                 dựng cộng đồng Võ cổ truyền đoàn kết, đổi mới và phát triển.
               </p>
             </div>
-            <div className={styles.subTitle2}>Điều 2. Yêu cầu</div>
+            <div className={styles.subTitle2}>
+              Thời gian và địa điểm thi đấu
+            </div>
             <div className={styles.content}>
               <p> 1. Thời gian: từ ngày 15 đến ngày 25 tháng 9 năm 2024.</p>
               <p>
@@ -96,7 +106,7 @@ const RegisterForPrize = () => {
             </div>
           </div>
         </div>
-        <div className={styles.subTitle}>
+        <div className={styles.tables}>
           <Table
             columns={columns_file}
             dataSource={data}
