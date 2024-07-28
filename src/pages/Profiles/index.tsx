@@ -196,14 +196,14 @@ const Profiles = () => {
   // useEffect(() => {
   //   form.setFieldValue("club", decryptedNameClb);
   // }, [form]);
-  console.log("decryptedClub", decryptedClub);
+
   const [loading, setLoading] = useState(false);
   const onFinish = (values: any) => {
     const formattedBirthday = moment(new Date(values.birthday)).format(
       "YYYY-MM-DD"
     );
     setLoading(true);
-    console.log("form", values);
+
     const randomKey = CryptoJS.lib.WordArray.random(16).toString();
 
     const formdata = new FormData();
@@ -374,7 +374,7 @@ const Profiles = () => {
                         { required: true, message: "Vui lòng điền quốc tịch" },
                       ]}
                     >
-                      <Input style={{width:"100%"}}/>
+                      <Input style={{ width: "100%" }} />
                     </Form.Item>
                     <Row gutter={16}>
                       <Col span={12}>

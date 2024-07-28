@@ -198,7 +198,6 @@ export default function SignupF2() {
       value.image_ref.file.originFileObj as File,
       CryptoJS.AES.encrypt(value.image_ref.file.name, randomKey).toString()
     );
-    console.log("ảnh", value);
     signupMutation.mutate(formdata);
   };
 

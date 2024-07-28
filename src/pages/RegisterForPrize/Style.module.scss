@@ -1,8 +1,8 @@
 .wrap {
-  padding: 120px 40px;
+  padding: 120px 40px 50px 40px;
   background-image: url("../../assets/image/bg.png");
   background-repeat: no-repeat;
-  background-position: top;
+  background-position: center;
 }
 
 .imageWrap {
@@ -32,13 +32,15 @@
   position: relative;
   display: inline-block;
   font-weight: bold;
-  margin-top: 10px;
+  font-size: 20px;
+  margin: 20px 0 30px;
+  color: #000;
 }
 .subTitle1::after {
   content: "";
   position: absolute;
   left: 25%;
-  bottom: -10px;
+  bottom: -15px;
   width: 50%;
   height: 1px;
   background-color: rgb(53, 53, 53);
@@ -47,24 +49,27 @@
   text-align: justify;
   font-weight: bold;
   margin: 12px 0px 0px 0px;
+  color: #000;
+  font-size: 18px;
 }
 .table {
-  margin: 20px 50px 0 50px;
+  margin: 20px 0;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
 .content {
   margin: 6px 20px 0 20px;
   text-align: justify;
   p {
-    margin: 0;
+    margin: 8px 0;
+    color: #000;
   }
 }
 
 @media (max-width: 900px) {
+  .wrap {
+    padding: 120px 15px 50px 15px;
+  }
   .des {
     margin: 0px 20px;
-  }
-  .table {
-    margin: 20px 10px 0 10px;
   }
 }
