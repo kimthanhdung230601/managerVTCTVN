@@ -1,5 +1,5 @@
 .wrap {
-  padding: 120px 20px;
+  padding: 120px 40px;
   background-color: #fff;
 }
 
@@ -11,15 +11,54 @@
   width: 195px !important;
   min-width: 150px !important;
 }
-
-.title {
+.des {
+  margin: 0px 240px;
+}
+.title1 {
   margin-top: 20px;
   font-size: 24px;
   color: #000;
   font-weight: 600;
-  font-size: 24px;
+}
+.title2 {
+  margin-top: 25px;
+  font-size: 20px;
+  color: #000;
+  font-weight: 500;
+}
+.subTitle1 {
+  position: relative;
+  display: inline-block;
+  font-weight: bold;
+  margin-top: 10px;
+}
+.subTitle1::after {
+  content: "";
+  position: absolute;
+  left: 25%;
+  bottom: -10px;
+  width: 50%;
+  height: 1px;
+  background-color: rgb(53, 53, 53);
+}
+.subTitle2 {
+  text-align: justify;
+  font-weight: bold;
+  margin: 12px 0px 0px 0px;
+}
+.subTitle {
+  margin-top: 20px;
+}
+.content {
+  margin: 6px 20px 0 20px;
+  text-align: justify;
+  p {
+    margin: 0;
+  }
 }
 
-.content {
-  margin: 10px 20px 0 20px;
+@media (max-width: 900px) {
+  .des {
+    margin: 0px 20px;
+  }
 }

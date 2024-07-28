@@ -208,6 +208,15 @@ export default function Header() {
               Đăng ký tài khoản
             </Link>
           </li>
+          <li className={styles.menuResponsiveItem}>
+            <Link
+              to={"/dangkygiaivodich"}
+              className={styles.menuResponsiveLink}
+              onClick={handleCloseMenu}
+            >
+              Đăng ký giải vô địch
+            </Link>
+          </li>
           {Cookies.get("token") ? (
             <li className={styles.menuResponsiveItem}>
               <Link
