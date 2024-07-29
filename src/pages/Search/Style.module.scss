@@ -59,7 +59,10 @@
 }
 
 @media only screen and (max-width: 576px) {
+  .wrap {
+    padding: 22px;
+  }
   .input {
-    width: 300px;
+    width: 100%;
   }
 }

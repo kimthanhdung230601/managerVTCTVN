@@ -29,7 +29,7 @@ export default function SearchId() {
               className={styles.img}
             />
             <div className={styles.title}>
-              Liên đoàn võ thuật cổ truyền Việt Nam
+              Liên đoàn Võ thuật cổ truyền Việt Nam
             </div>
           </div>
           <div className={styles.search}>
