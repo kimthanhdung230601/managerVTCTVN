@@ -1,0 +1,49 @@
+.fightTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.fightTable .ant-table-thead > tr > th {
+  background-color: #f5f5f5;
+  color: #333;
+  font-weight: bold;
+  text-align: center;
+}
+
+.fightTable .ant-table-tbody > tr > td {
+  text-align: center;
+  padding: 10px;
+}
+
+.fightTable .ant-table-tbody > tr:nth-child(odd) {
+  background-color: #f9f9f9;
+}
+
+.fightTable .ant-table-tbody > tr:hover {
+  background-color: #e6f7ff;
+}
+
+.fightTable .ant-table-cell {
+  border: 1px solid #ddd;
+}
+
+.fightTable .ant-table-thead > tr > th,
+.fightTable .ant-table-tbody > tr > td {
+  padding: 12px 8px;
+}
+
+.fightTable .fight-winner-red {
+  background-color: #dc143c;
+  color: white;
+  padding: 10px;
+  height: 60px;
+  text-align: center;
+}
+
+.fightTable .fight-winner-blue {
+  background-color: #0066ff;
+  color: white;
+  padding: 10px;
+  height: 60px;
+  text-align: center;
+}
