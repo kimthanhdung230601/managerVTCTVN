@@ -1,223 +1,309 @@
-import React from "react";
-import { Table, TableProps } from "antd";
+import React, { useState } from "react";
+import { Checkbox } from "antd";
+import { isVisible } from "@testing-library/user-event/dist/utils";
+import { useParams } from "react-router";
 
-interface FightData {
-  key: string;
-  round: string;
-  department: {
-    redTeam: string;
-    blueTeam: string;
-  };
-  judge1: { RedPoint: string; BluePoint: string };
-  judge2: { RedPoint: string; BluePoint: string };
-  judge3: { RedPoint: string; BluePoint: string };
-  judge4: { RedPoint: string; BluePoint: string };
-  judge5: { RedPoint: string; BluePoint: string };
+interface Match {
+  name: string;
+  blue_score: string;
+  red_score: string;
 }
+interface Title {
+  title: string;
+}
+const titles: Title[] = [
+  { title: "Hiệp" },
+  { title: "Góc đài" },
+  { title: "Giám định 1" },
+  { title: "Giám định 2" },
+  { title: "Giám định 3" },
+  { title: "Giám định 4" },
+  { title: "Giám định 5" },
+  { title: "Thắng" },
+];
 
-const calculateTotalPoints = (record: FightData) => {
-  const redTotal =
-    parseInt(record.judge1.RedPoint) +
-    parseInt(record.judge2.RedPoint) +
-    parseInt(record.judge3.RedPoint) +
-    parseInt(record.judge4.RedPoint) +
-    parseInt(record.judge5.RedPoint);
-
-  const blueTotal =
-    parseInt(record.judge1.BluePoint) +
-    parseInt(record.judge2.BluePoint) +
-    parseInt(record.judge3.BluePoint) +
-    parseInt(record.judge4.BluePoint) +
-    parseInt(record.judge5.BluePoint);
-
-  return { redTotal, blueTotal };
+const calculateTotalScore = (match: Match[]) => {
+  const totalRedScore = match?.reduce(
+    (total, match) => total + Number(match.red_score),
+    0
+  );
+  const totalBlueScore = match?.reduce(
+    (total, match) => total + Number(match.blue_score),
+    0
+  );
+  return { totalRedScore, totalBlueScore };
 };
-const data: FightData[] = [
-  {
-    key: "1",
-    round: "Hiệp 1",
-    department: {
-      redTeam: "Đội A",
-      blueTeam: "Đội B",
-    },
-    judge1: { RedPoint: "1", BluePoint: "2" },
-    judge2: { RedPoint: "1", BluePoint: "2" },
-    judge3: { RedPoint: "1", BluePoint: "2" },
-    judge4: { RedPoint: "1", BluePoint: "2" },
-    judge5: { RedPoint: "1", BluePoint: "2" },
-  },
-  {
-    key: "2",
-    round: "Hiệp 2",
-    department: {
-      redTeam: "Đội A",
-      blueTeam: "Đội B",
-    },
-    judge1: { RedPoint: "9", BluePoint: "7" },
-    judge2: { RedPoint: "9", BluePoint: "7" },
-    judge3: { RedPoint: "9", BluePoint: "7" },
-    judge4: { RedPoint: "9", BluePoint: "7" },
-    judge5: { RedPoint: "9", BluePoint: "7" },
-  },
-  {
-    key: "3",
-    round: "Hiệp 3",
-    department: {
-      redTeam: "Đội A",
-      blueTeam: "Đội B",
-    },
-    judge1: { RedPoint: "7", BluePoint: "9" },
-    judge2: { RedPoint: "8", BluePoint: "8" },
-    judge3: { RedPoint: "9", BluePoint: "9" },
-    judge4: { RedPoint: "7", BluePoint: "9" },
-    judge5: { RedPoint: "8", BluePoint: "8" },
-  },
-];
-const baseColumns: TableProps<FightData>["columns"] = [
-  {
-    title: "Hiệp",
-    dataIndex: "round",
-    key: "round",
-    fixed: "left" as const,
-  },
-  {
-    title: "Góc đài",
-    dataIndex: "department",
-    key: "department",
-    fixed: "left" as const,
-    render: (text: any, record: FightData) => (
-      <>
-        <div
-          style={{
-            backgroundColor: "#DC143C",
-            color: "white",
-            padding: "5px",
-            height: "30px",
-          }}
-        >
-          {/* {record.department.redTeam} */}
-        </div>
-        <div
-          style={{
-            backgroundColor: "#0066FF",
-            color: "white",
-            padding: "5px",
-            height: "30px",
-          }}
-        >
-          {/* {record.department.blueTeam} */}
-        </div>
-      </>
-    ),
-  },
-  {
-    title: "Giám định 1",
-    dataIndex: "judge1",
-    key: "judge1",
-    render: (text: any, record: FightData) => (
-      <>
-        <div> {record.judge1.RedPoint}</div>
-        <div> {record.judge1.BluePoint}</div>
-      </>
-    ),
-  },
-  {
-    title: "Giám định 2",
-    dataIndex: "judge2",
-    key: "judge2",
-    render: (text: any, record: FightData) => (
-      <>
-        <div> {record.judge2.RedPoint}</div>
-        <div> {record.judge2.BluePoint}</div>
-      </>
-    ),
-  },
-  {
-    title: "Giám định 3",
-    dataIndex: "judge3",
-    key: "judge3",
-    render: (text: any, record: FightData) => (
-      <>
-        <div> {record.judge3.RedPoint}</div>
-        <div> {record.judge3.BluePoint}</div>
-      </>
-    ),
-  },
-  {
-    title: "Giám định 4",
-    dataIndex: "judge4",
-    key: "judge4",
-    render: (text: any, record: FightData) => (
-      <>
-        <div> {record.judge4.RedPoint}</div>
-        <div> {record.judge4.BluePoint}</div>
-      </>
-    ),
-  },
-  {
-    title: "Giám định 5",
-    dataIndex: "judge5",
-    key: "judge5",
-    render: (text: any, record: FightData) => (
-      <>
-        <div> {record.judge5.RedPoint}</div>
-        <div> {record.judge5.BluePoint}</div>
-      </>
-    ),
-  },
-  {
-    title: "Thắng",
-    key: "winner",
-    render: (text: any, record: FightData) => {
-      const { redTotal, blueTotal } = calculateTotalPoints(record);
-      return redTotal > blueTotal ? (
-        <div
-          style={{
-            backgroundColor: "#DC143C",
-            color: "white",
-            padding: "5px",
-            height: "60px",
-          }}
-        >
-          {/* {record.department.redTeam} */}
-        </div>
-      ) : (
-        <div
-          style={{
-            backgroundColor: "#0066FF",
-            color: "white",
-            padding: "5px",
-            height: "60px",
-          }}
-        >
-          {/* {record.department.blueTeam} */}
-        </div>
-      );
-    },
-  },
-];
 
-const FightTable: React.FC<{ isSelect?: boolean }> = ({ isSelect }) => {
-  const columns = isSelect
-    ? [
-        ...baseColumns,
-        {
-          title: "Chọn",
-          key: "select",
-          render: (text: any, record: FightData) => (
-            <input type="checkbox" name="fightSelect" />
-          ),
-        },
-      ]
-    : baseColumns;
+// Function to determine the winner of a round
+const determineWinner = (redScore: number, blueScore: number) => {
+  if (blueScore > redScore) return "Blue";
+  if (redScore > blueScore) return "Red";
+  return "Draw";
+};
+
+const FightTable: React.FC<{
+  isSelect?: boolean;
+  match_1: Match[];
+  match_2: Match[];
+  match_3: Match[];
+  isVisitMatch1: boolean | string;
+  isVisitMatch2: boolean | string;
+  isVisitMatch3: boolean | string;
+  selected?: any;
+  setSelected?: any;
+}> = ({
+  isSelect,
+  match_1,
+  match_2,
+  match_3,
+  isVisitMatch1,
+  isVisitMatch2,
+  isVisitMatch3,
+  selected,
+  setSelected,
+}) => {
+  const match1Scores = calculateTotalScore(match_1);
+  const match2Scores = calculateTotalScore(match_2);
+  const match3Scores = calculateTotalScore(match_3);
+
+  // Determine winners for each round
+  const winnerMatch1 = determineWinner(
+    match1Scores.totalRedScore,
+    match1Scores.totalBlueScore
+  );
+  const winnerMatch2 = determineWinner(
+    match2Scores.totalRedScore,
+    match2Scores.totalBlueScore
+  );
+  const winnerMatch3 = determineWinner(
+    match3Scores.totalRedScore,
+    match3Scores.totalBlueScore
+  );
+  const param = useParams();
+  const stadium = param.arena;
+
+  // const [selected, setSelected] = useState<{ [key: string]: boolean }>({
+  //   match1: false,
+  //   match2: false,
+  //   match3: false,
+  // });
+
+  const handleCheckboxChange = (match: string) => {
+    setSelected((prev: any) => {
+      const newSelected = { ...prev, [match]: !prev[match] };
+      return newSelected;
+    });
+    console.log("select", selected);
+  };
 
   return (
-    <Table<FightData>
-      columns={columns}
-      dataSource={data}
-      pagination={false}
-      bordered
-    />
+    <>
+      {/* Header Titles */}
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: isSelect ? "repeat(9, 1fr)" : "repeat(8, 1fr)",
+          backgroundColor: `var(--primary)`,
+          color: "#FFF",
+          paddingTop: "24px",
+          paddingBottom: "24px",
+          textAlign: "center",
+        }}
+      >
+        {titles.map((item, index) => (
+          <div key={index}>{item.title}</div>
+        ))}
+      </div>
+      {/* Hiệp 1 */}
+      {isVisitMatch1 === true || isVisitMatch1 === "true" ? (
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: isSelect ? "repeat(9, 1fr)" : "repeat(8, 1fr)",
+            backgroundColor: `#FFF`,
+            padding: "12px 12px 12px 0",
+
+            borderBottom: "1px solid #CCCCCC",
+            textAlign: "center",
+          }}
+        >
+          <div>Hiệp 1</div>
+          <div
+            style={{
+              height: "35px",
+              width: "100%",
+              backgroundColor: "#FF0000",
+            }}
+          ></div>
+          {match_1.map((item, index) => (
+            <div key={index}>{item.red_score}</div>
+          ))}
+          <div
+            style={{
+              height: "40px",
+              width: "100%",
+              backgroundColor: winnerMatch1 === "Blue" ? "#0099FF" : "#FF0000",
+            }}
+          ></div>{" "}
+          {isSelect && <div></div>}
+          <div></div>
+          <div
+            style={{
+              height: "35px",
+              width: "100%",
+              backgroundColor: "#0099FF",
+            }}
+          ></div>
+          {match_1.map((item, index) => (
+            <div key={index}>{item.blue_score}</div>
+          ))}
+          <div
+            style={{
+              height: "40px",
+              width: "100%",
+              backgroundColor: winnerMatch1 === "Blue" ? "#0099FF" : "#FF0000",
+            }}
+          >
+            {/* {winnerMatch1} */}
+          </div>{" "}
+          {isSelect && (
+            <Checkbox
+              style={{ paddingLeft: "40px" }}
+              checked={selected.match1}
+              onChange={() => handleCheckboxChange("match1")}
+            />
+          )}
+        </div>
+      ) : (
+        <></>
+      )}
+
+      {/* Hiệp 2 */}
+      {isVisitMatch2 === true || isVisitMatch2 === "true" ? (
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: isSelect ? "repeat(9, 1fr)" : "repeat(8, 1fr)",
+            backgroundColor: `#FFF`,
+            padding: "12px 12px 12px 0",
+            borderBottom: "1px solid #CCCCCC",
+            textAlign: "center",
+          }}
+        >
+          <div>Hiệp 2</div>
+          <div
+            style={{
+              height: "35px",
+              width: "100%",
+              backgroundColor: "#FF0000",
+            }}
+          ></div>
+          {match_2.map((item, index) => (
+            <div key={index}>{item.red_score}</div>
+          ))}
+          <div
+            style={{
+              height: "40px",
+              width: "100%",
+              backgroundColor: winnerMatch2 === "Blue" ? "#0099FF" : "#FF0000",
+            }}
+          ></div>{" "}
+          {isSelect && <div></div>}
+          <div></div>
+          <div
+            style={{
+              height: "35px",
+              width: "100%",
+              backgroundColor: "#0099FF",
+            }}
+          ></div>
+          {match_2.map((item, index) => (
+            <div key={index}>{item.blue_score}</div>
+          ))}
+          <div
+            style={{
+              height: "40px",
+              width: "100%",
+              backgroundColor: winnerMatch2 === "Blue" ? "#0099FF" : "#FF0000",
+            }}
+          >
+            {/* {winnerMatch1} */}
+          </div>{" "}
+          {isSelect && (
+            <Checkbox
+              style={{ paddingLeft: "40px" }}
+              checked={selected.match2}
+              onChange={() => handleCheckboxChange("match2")}
+            />
+          )}
+        </div>
+      ) : (
+        <></>
+      )}
+
+      {/* Hiệp 3 */}
+      {isVisitMatch3 === true || isVisitMatch3 === "true" ? (
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: isSelect ? "repeat(9, 1fr)" : "repeat(8, 1fr)",
+            backgroundColor: `#FFF`,
+            padding: "12px 12px 12px 0",
+            borderBottom: "1px solid #CCCCCC",
+            textAlign: "center",
+          }}
+        >
+          <div>Hiệp 3</div>
+          <div
+            style={{
+              height: "35px",
+              width: "100%",
+              backgroundColor: "#FF0000",
+            }}
+          ></div>
+          {match_3.map((item, index) => (
+            <div key={index}>{item.red_score}</div>
+          ))}
+          <div
+            style={{
+              height: "40px",
+              width: "100%",
+              backgroundColor: winnerMatch3 === "Blue" ? "#0099FF" : "#FF0000",
+            }}
+          ></div>{" "}
+          {isSelect && <div></div>}
+          <div></div>
+          <div
+            style={{
+              height: "35px",
+              width: "100%",
+              backgroundColor: "#0099FF",
+            }}
+          ></div>
+          {match_3.map((item, index) => (
+            <div key={index}>{item.blue_score}</div>
+          ))}
+          <div
+            style={{
+              height: "40px",
+              width: "100%",
+              backgroundColor: winnerMatch3 === "Blue" ? "#0099FF" : "#FF0000",
+            }}
+          >
+            {/* {winnerMatch1} */}
+          </div>{" "}
+          {isSelect && (
+            <Checkbox
+              style={{ paddingLeft: "40px" }}
+              checked={selected.match3}
+              onChange={() => handleCheckboxChange("match3")}
+            />
+          )}
+        </div>
+      ) : (
+        <></>
+      )}
+    </>
   );
 };
 

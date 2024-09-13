@@ -42,6 +42,24 @@ h3 {
   padding: 0;
   margin: 0;
 }
+h1 {
+  font-size: 40px;
+}
+h2 {
+  font-size: 32px;
+}
+h3 {
+  font-size: 25px;
+}
+.title {
+  font-size: 24px;
+}
+.infor {
+  font-size: 28px;
+}
+.name {
+  font-size: 50px;
+}
 .wrap {
   background-color: var(--bgColor);
   // padding-top: 7vh;
@@ -65,7 +83,7 @@ h3 {
   }
 }
 
-.ant-pagination{
+.ant-pagination {
   margin-top: 20px;
   text-align: end !important;
 }
@@ -175,7 +193,7 @@ h3 {
 .ant-space-item {
   width: 100% !important;
 }
-.ant-form-item-label{
+.ant-form-item-label {
   white-space: nowrap !important;
   width: auto !important;
   // padding-right: 1vh !important;

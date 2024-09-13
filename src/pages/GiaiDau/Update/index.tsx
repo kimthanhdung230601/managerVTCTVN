@@ -1,33 +1,118 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Input } from "antd";
 import bgImage from "../../../assets/image/bg.png";
 import FightTable from "../Container/table";
+import { useQuery, useQueryClient } from "react-query";
+import {
+  getTournaments,
+  reset,
+  updateInfor,
+  updateVisitable,
+} from "../../../api/giaiDau";
+import { useParams } from "react-router";
 
 const Update = () => {
+  const param = useParams();
+  const arena = param.arena;
   const resetCategories = { weight: "", sex: "" };
   const resetInfor = [
     { name: "", unit: "" },
     { name: "", unit: "" },
   ];
-  const initialCategoriesDefault = { weight: "12", sex: "Nữ" };
+  const initialCategoriesDefault = { weight: "", sex: "" };
+
   const initialInforDefault = [
-    { name: "Kim Dung", unit: "Hà Đông" },
-    { name: "Xuân Ninh", unit: "Hà Nội" },
+    { name: "", unit: "" },
+    { name: "", unit: "" },
   ];
+  const [selected, setSelected] = useState<{ [key: string]: boolean }>({
+    match1: false,
+    match2: false,
+    match3: false,
+  });
+
   // State for input values
   const [categories, setCategories] = useState(initialCategoriesDefault);
   const [infor, setInfor] = useState(initialInforDefault);
-
+  const queryClient = useQueryClient();
   // Handlers for button clicks
-  const handleUndo = () => {
+  const handleUndo = async () => {
+    setSelected({
+      match1: false,
+      match2: false,
+      match3: false,
+    });
     setCategories(resetCategories);
     setInfor(resetInfor);
+    const result = await reset(arena);
+    console.log("result: " + result);
+
+    if (result.status === "success") {
+      alert("Hoàn tác thành công");
+    }
   };
 
-  const handleUpdate = () => {
-    console.log("Categories:", categories);
-    console.log("Infor:", infor);
+  const handleUpdate = async () => {
+    const payload = {
+      stadium: arena,
+      blueName: infor[1].name,
+      redName: infor[0].name,
+      blueTeam: infor[1].unit,
+      redTeam: infor[0].unit,
+      weightClass: categories.weight,
+      gender: categories.sex,
+    };
+    const result = await updateInfor(
+      payload.stadium,
+      payload.blueName,
+      payload.redName,
+      payload.blueTeam,
+      payload.redTeam,
+      payload.weightClass,
+      payload.gender
+    );
+    if (result.status === "success") alert("Cập nhật thành công");
+    for (let i = 1; i < 3; i++) {
+      const matchKey = `match${i}`;
+
+      const result1 = await updateVisitable(arena, i, selected[matchKey]);
+      // if (result.status === "success") alert("Cập nhật thành công");
+    }
+    console.log("select", selected);
   };
+
+  const { data } = useQuery(["tournament4"], () => getTournaments(arena));
+
+  useEffect(() => {
+    if (data) {
+      setCategories({
+        weight: data?.data[0].weight_class,
+        sex: data?.data[0].gender,
+      });
+      setInfor([
+        {
+          name: data?.data[0].fighter_red_name,
+          unit: data?.data[0].red_team,
+        },
+        {
+          name: data?.data[0].fighter_blue_name,
+          unit: data?.data[0].blue_team,
+        },
+      ]);
+    }
+  }, [data]);
+  const [apiCount, setApiCount] = useState(0);
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      queryClient.fetchQuery(["tournament4"], () => getTournaments(arena));
+
+      setApiCount((prevCount) => prevCount + 1);
+    }, 100);
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [arena, queryClient]);
 
   return (
     <div
@@ -143,15 +228,27 @@ const Update = () => {
           </div>
         </div>
         {/* Bảng điểm */}
-        <div
-          style={{
-            paddingLeft: "32px",
-            paddingRight: "32px",
-            marginTop: "32px",
-          }}
-        >
-          <FightTable isSelect />
-        </div>
+        {data && (
+          <div
+            style={{
+              paddingLeft: "32px",
+              paddingRight: "32px",
+              marginTop: "32px",
+            }}
+          >
+            <FightTable
+              isSelect
+              match_1={data.match_1}
+              match_2={data.match_2}
+              match_3={data.match_3}
+              isVisitMatch1={true}
+              isVisitMatch2={true}
+              isVisitMatch3={true}
+              selected={selected}
+              setSelected={setSelected}
+            />
+          </div>
+        )}
         {/* Nút bấm */}
         <div
           style={{

@@ -4,27 +4,11 @@ export const RouteList = [
     permission: 3,
   },
   {
-    name: "/cap-nhat",
+    name: "/cap-nhat/:id",
     permission: 3,
   },
   {
-    name: "/giam-dinh-1",
-    permission: 3,
-  },
-  {
-    name: "/giam-dinh-2",
-    permission: 3,
-  },
-  {
-    name: "/giam-dinh-3",
-    permission: 3,
-  },
-  {
-    name: "/giam-dinh-4",
-    permission: 3,
-  },
-  {
-    name: "/giam-dinh-5",
+    name: "/giam-dinh/:i/:arena",
     permission: 3,
   },
 ];

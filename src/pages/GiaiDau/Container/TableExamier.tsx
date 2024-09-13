@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Table, Input, Button } from "antd";
+import { useParams } from "react-router";
+import { updateTournaments } from "../../../api/giaiDau";
 
 interface DataItem {
   key: string;
@@ -8,10 +10,11 @@ interface DataItem {
 }
 
 interface CustomTableProp {
-  number: number;
+  number: string | undefined | number;
+  selectedMatch: string;
 }
 
-const CustomTable = ({ number }: CustomTableProp) => {
+const CustomTable = ({ number, selectedMatch }: CustomTableProp) => {
   const [dataSource, setDataSource] = useState<DataItem[]>([
     {
       key: "1",
@@ -19,7 +22,9 @@ const CustomTable = ({ number }: CustomTableProp) => {
       greenScore: "",
     },
   ]);
-
+  const param = useParams();
+  const id = param.id;
+  const arena = param.arena;
   const handleScoreChange = (
     value: string,
     key: string,
@@ -42,15 +47,23 @@ const CustomTable = ({ number }: CustomTableProp) => {
     );
   };
 
-  const handleUpdate = () => {
-    console.log(
-      "Red Scores:",
-      dataSource.map((item) => item.redScore)
+  const handleUpdate = async () => {
+    const payload = {
+      stadium: arena,
+      judge: id,
+      match: selectedMatch,
+      blueScore: dataSource[0].greenScore,
+      redScore: dataSource[0].redScore,
+    };
+
+    const result = await updateTournaments(
+      payload.stadium,
+      payload.judge,
+      payload.match,
+      payload.blueScore,
+      payload.redScore
     );
-    console.log(
-      "Green Scores:",
-      dataSource.map((item) => item.greenScore)
-    );
+    if (result.status === "success") alert("Cập nhật thành công");
   };
 
   const columns = [
