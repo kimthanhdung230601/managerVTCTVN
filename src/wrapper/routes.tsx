@@ -14,6 +14,7 @@ const Component = () => {
         <Route path="/nguoi-xem/:arena" element={<Home />}></Route>
         <Route path="/cap-nhat/:arena" element={<Update />}></Route>
         <Route path="/giam-dinh/:id/:arena" element={<ExamnierOne />} />
+        <Route path="/giam-dinh" element={<ExamnierOne />} />
       </Routes>
     </>
   );

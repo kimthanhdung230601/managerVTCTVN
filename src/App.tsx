@@ -1,14 +1,13 @@
 import GlobalStyle from "./globalStyles";
-import Wrapper from "./wrapper";
+import Component from "./wrapper/routes";
 
 function App() {
   return (
     <div className="App">
-     
-    <GlobalStyle>
-      <Wrapper />
-    </GlobalStyle>
-  </div>
+      <GlobalStyle>
+        <Component />
+      </GlobalStyle>
+    </div>
   );
 }
 

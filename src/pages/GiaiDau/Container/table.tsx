@@ -1,11 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { message, Radio } from "antd";
 import { useParams } from "react-router";
-import {
-  updateRound,
-  updateVisitable,
-  updateWinner,
-} from "../../../api/giaiDau";
+import { updateRound, updateWinner } from "../../../api/giaiDau";
 
 interface Match {
   name: string;
@@ -18,7 +14,7 @@ interface Title {
 
 interface VisitableEnity {
   round_number: string;
-  visible: boolean;
+  visible: boolean | string;
   win: string;
 }
 const titles: Title[] = [
@@ -39,7 +35,8 @@ const FightTable: React.FC<{
   match_3: Match[];
   visible?: VisitableEnity[];
   setRound?: any;
-}> = ({ isSelect, match_1, match_2, match_3, visible, setRound }) => {
+  row?: any;
+}> = ({ isSelect, match_1, match_2, match_3, visible, setRound, row }) => {
   // console.log("win", visible);
 
   const param = useParams();
@@ -55,14 +52,19 @@ const FightTable: React.FC<{
   const [winSelected3, setWinSelectd3] = useState<string>(
     visible ? visible[2].win : ""
   );
+  useEffect(() => {
+    if (row === 0) setSelected(0);
+  }, [row]);
+
   const handleRadioChange = async (e: any) => {
-    // const result = await updateVisitable(arena, e.target.value, true);
+    setSelected(e.target.value);
     setRound(e.target.value);
     const resultRound = await updateRound(arena, e.target.value);
-    setSelected(e.target.value);
+
     if (resultRound?.status === "success")
       message.success(`Đang ở hiệp ${e.target.value}`);
   };
+
   const handleSetselectedWinRound1 = async (value: string) => {
     setWinSelectd1(value);
     const result = await updateWinner(arena, 1, value);
@@ -122,9 +124,13 @@ const FightTable: React.FC<{
             backgroundColor: "#FF0000",
           }}
         ></div>
-        {match_1.map((item, index) => (
-          <div key={index}>{item.red_score}</div>
-        ))}
+        {match_1.map((item, index) =>
+          isSelect || (visible && visible[0].visible === "true") ? (
+            <div key={index}>{item.red_score}</div>
+          ) : (
+            <div key={index}>0</div>
+          )
+        )}
         {isSelect ? (
           <div
             style={{
@@ -161,7 +167,9 @@ const FightTable: React.FC<{
               width: "100%",
 
               backgroundColor: visible
-                ? visible[0]?.win === "red"
+                ? visible[0]?.visible === "false"
+                  ? "transparent"
+                  : visible[0]?.win === "red"
                   ? "#FF0000"
                   : "#0099FF"
                 : "transparent",
@@ -184,15 +192,20 @@ const FightTable: React.FC<{
             backgroundColor: "#0099FF",
           }}
         ></div>
-        {match_1.map((item, index) => (
-          <div key={index}>{item.blue_score}</div>
-        ))}
+
+        {match_1.map((item, index) =>
+          isSelect || (visible && visible[0].visible === "true") ? (
+            <div key={index}>{item.blue_score}</div>
+          ) : (
+            <div key={index}>0</div>
+          )
+        )}
+
         {isSelect ? (
           <div
             style={{
               height: "40px",
               width: "100%",
-              // backgroundColor: winnerMatch1 === "Blue" ? "#0099FF" : "#FF0000",
             }}
           ></div>
         ) : (
@@ -202,7 +215,9 @@ const FightTable: React.FC<{
               width: "100%",
 
               backgroundColor: visible
-                ? visible[0]?.win === "red"
+                ? visible[0]?.visible === "false"
+                  ? "transparent"
+                  : visible[0]?.win === "red"
                   ? "#FF0000"
                   : "#0099FF"
                 : "transparent",
@@ -232,9 +247,13 @@ const FightTable: React.FC<{
             backgroundColor: "#FF0000",
           }}
         ></div>
-        {match_2.map((item, index) => (
-          <div key={index}>{item.red_score}</div>
-        ))}
+        {match_2.map((item, index) =>
+          isSelect || (visible && visible[1].visible === "true") ? (
+            <div key={index}>{item.red_score}</div>
+          ) : (
+            <div key={index}>0</div>
+          )
+        )}
         {isSelect ? (
           <div
             style={{
@@ -271,7 +290,9 @@ const FightTable: React.FC<{
               width: "100%",
 
               backgroundColor: visible
-                ? visible[1]?.win === "red"
+                ? visible[1]?.visible === "false"
+                  ? "transparent"
+                  : visible[1]?.win === "red"
                   ? "#FF0000"
                   : "#0099FF"
                 : "transparent",
@@ -294,9 +315,13 @@ const FightTable: React.FC<{
             backgroundColor: "#0099FF",
           }}
         ></div>
-        {match_2.map((item, index) => (
-          <div key={index}>{item.blue_score}</div>
-        ))}
+        {match_2.map((item, index) =>
+          isSelect || (visible && visible[1].visible === "true") ? (
+            <div key={index}>{item.blue_score}</div>
+          ) : (
+            <div key={index}>0</div>
+          )
+        )}
         {isSelect ? (
           <div
             style={{
@@ -311,7 +336,9 @@ const FightTable: React.FC<{
               width: "100%",
 
               backgroundColor: visible
-                ? visible[1]?.win === "red"
+                ? visible[1]?.visible === "false"
+                  ? "transparent"
+                  : visible[1]?.win === "red"
                   ? "#FF0000"
                   : "#0099FF"
                 : "transparent",
@@ -340,9 +367,13 @@ const FightTable: React.FC<{
             backgroundColor: "#FF0000",
           }}
         ></div>
-        {match_3.map((item, index) => (
-          <div key={index}>{item.red_score}</div>
-        ))}
+        {match_3.map((item, index) =>
+          isSelect || (visible && visible[2].visible === "true") ? (
+            <div key={index}>{item.red_score}</div>
+          ) : (
+            <div key={index}>0</div>
+          )
+        )}
         {isSelect ? (
           <div
             style={{
@@ -379,7 +410,9 @@ const FightTable: React.FC<{
               width: "100%",
 
               backgroundColor: visible
-                ? visible[2]?.win === "red"
+                ? visible[2]?.visible === "false"
+                  ? "transparent"
+                  : visible[2]?.win === "red"
                   ? "#FF0000"
                   : "#0099FF"
                 : "transparent",
@@ -402,9 +435,13 @@ const FightTable: React.FC<{
             backgroundColor: "#0099FF",
           }}
         ></div>
-        {match_3.map((item, index) => (
-          <div key={index}>{item.blue_score}</div>
-        ))}
+        {match_3.map((item, index) =>
+          isSelect || (visible && visible[2].visible === "true") ? (
+            <div key={index}>{item.blue_score}</div>
+          ) : (
+            <div key={index}>0</div>
+          )
+        )}
         {isSelect ? (
           <div
             style={{
@@ -419,7 +456,9 @@ const FightTable: React.FC<{
               width: "100%",
 
               backgroundColor: visible
-                ? visible[2]?.win === "red"
+                ? visible[2]?.visible === "false"
+                  ? "transparent"
+                  : visible[2]?.win === "red"
                   ? "#FF0000"
                   : "#0099FF"
                 : "transparent",

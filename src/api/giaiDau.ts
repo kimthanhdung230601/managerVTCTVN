@@ -44,7 +44,7 @@ export const updateWinner = (stadium: any, roundId: any, winner: any) =>
     `/VCT2024?API=Update_Win&id_stadium=${stadium}&round_id=${roundId}&win=${winner}`
   );
 
-//uppdate gửi điểm ở hiệp nào
+//uppdate thư ký sẽ gửi điểm ở hiệp nào
 export const updateRound = (stadium: any, roundId: any) =>
   sendGet(
     `VCT2024?API=Update_Choose&id_stadium=${stadium}&round_id=${roundId}`

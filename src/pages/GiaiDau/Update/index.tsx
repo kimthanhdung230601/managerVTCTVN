@@ -31,7 +31,7 @@ const Update = () => {
     match2: false,
     match3: false,
   });
-  const [row, setRound] = useState(1);
+  const [row, setRound] = useState<number>(0);
   const isPortrait = useMediaQuery({ query: "(max-width: 920px)" });
 
   // State for input values
@@ -45,10 +45,10 @@ const Update = () => {
       match2: false,
       match3: false,
     });
+    setRound(0);
     setCategories(resetCategories);
     setInfor(resetInfor);
     const result = await reset(arena);
-    console.log("result: " + result);
 
     if (result.status === "success") {
       message.success("Làm mới thành công");
@@ -74,10 +74,14 @@ const Update = () => {
       payload.weightClass,
       payload.gender
     );
-    // if (result.status === "success") message.success("Cập nhật thành công");
-    const resultUpdate = await updateVisitable(arena, row, true);
-    if (resultUpdate.status === "success")
-      message.success(`Gửi điểm của hiệp ${row} thành công`);
+    if (result.status === "success")
+      message.success("Cập nhật thông tin giải đấu thành công");
+    if (row === 0) message.warning("Vui lòng chọn hiệp đấu");
+    else {
+      const resultUpdate = await updateVisitable(arena, row, true);
+      if (resultUpdate.status === "success")
+        message.success(`Gửi điểm của hiệp ${row} thành công`);
+    }
   };
 
   const { data } = useQuery(["tournament4"], () => getTournaments(arena));
@@ -253,6 +257,7 @@ const Update = () => {
                 match_3={data.match_3}
                 visible={data?.visible}
                 setRound={setRound}
+                row={row}
               />{" "}
             </div>
           </div>

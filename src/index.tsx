@@ -25,26 +25,26 @@ const queryClient = new QueryClient({
 root.render(
   <Provider store={store}>
     <PersistGate persistor={persistor}>
-        <QueryClientProvider client={queryClient}>
-          <ConfigProvider
-            locale={vi_VN}
-            theme={{
-              token: {
-                colorPrimary: "#046c39",
-                colorPrimaryBorder: "#046c39",
-                colorPrimaryHover: "#b4ddc194",
-              },
-            }}
-          >
-            <QueryClientProvider client={queryClient}>
-              <BrowserRouter>
-                <Suspense fallback={null}>
-                  <App />
-                </Suspense>
-              </BrowserRouter>
-            </QueryClientProvider>
-          </ConfigProvider>
-        </QueryClientProvider>
+      <QueryClientProvider client={queryClient}>
+        <ConfigProvider
+          locale={vi_VN}
+          theme={{
+            token: {
+              colorPrimary: "#046c39",
+              colorPrimaryBorder: "#046c39",
+              colorPrimaryHover: "#b4ddc194",
+            },
+          }}
+        >
+          <QueryClientProvider client={queryClient}>
+            <BrowserRouter>
+              <Suspense fallback={null}>
+                <App />
+              </Suspense>
+            </BrowserRouter>
+          </QueryClientProvider>
+        </ConfigProvider>
+      </QueryClientProvider>
     </PersistGate>
   </Provider>
 );
