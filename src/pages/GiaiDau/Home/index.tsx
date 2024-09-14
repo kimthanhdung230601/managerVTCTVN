@@ -4,10 +4,13 @@ import FightTable from "../Container/table";
 import { getTournaments } from "../../../api/giaiDau";
 import { useParams } from "react-router";
 import { useEffect, useState } from "react";
+import { useMediaQuery } from "react-responsive";
 
 const Home = () => {
   const param = useParams();
   const arena = param.arena;
+  const isPortrait = useMediaQuery({ query: "(max-width: 920px)" });
+
   const { data, refetch, isFetching } = useQuery(
     ["tournament"],
     () => getTournaments(arena),
@@ -16,17 +19,6 @@ const Home = () => {
       refetchIntervalInBackground: true,
     }
   );
-  const [isVisitMatch1, setIsVisitMatch1] = useState(false);
-  const [isVisitMatch2, setIsVisitMatch2] = useState(false);
-  const [isVisitMatch3, setIsVisitMatch3] = useState(false);
-
-  useEffect(() => {
-    if (data) {
-      setIsVisitMatch1(data?.visible[0].visible);
-      setIsVisitMatch2(data.visible[1].visible);
-      setIsVisitMatch3(data.visible[2].visible);
-    }
-  }, [data]);
 
   return (
     <div
@@ -69,6 +61,8 @@ const Home = () => {
             justifyContent: "space-around",
             alignItems: "center",
             marginTop: "32px",
+            flexDirection: isPortrait ? "column" : "row",
+            gap: isPortrait ? "22px" : "0",
           }}
         >
           <div style={{ color: "#DC143C" }}>
@@ -117,19 +111,28 @@ const Home = () => {
         <div
           className="title"
           style={{
-            paddingLeft: "120px",
-            paddingRight: "120px",
+            marginLeft: !isPortrait ? "120px" : "30px",
+            marginRight: !isPortrait ? "120px" : "30px",
             marginTop: "32px",
+            overflowX: "auto",
           }}
         >
-          <FightTable
-            match_1={data.match_1}
-            match_2={data.match_2}
-            match_3={data.match_3}
-            isVisitMatch1={isVisitMatch1}
-            isVisitMatch2={isVisitMatch2}
-            isVisitMatch3={isVisitMatch3}
-          />
+          {" "}
+          <div
+            style={{
+              width: isPortrait ? "1200px" : "100%",
+            }}
+          >
+            {" "}
+            <FightTable
+              match_1={data.match_1}
+              match_2={data.match_2}
+              match_3={data.match_3}
+              isVisitMatch1={true}
+              isVisitMatch2={true}
+              isVisitMatch3={true}
+            />
+          </div>
         </div>
       )}
     </div>
