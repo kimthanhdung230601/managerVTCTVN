@@ -70,8 +70,9 @@ const CustomTable = ({ number }: CustomTableProp) => {
       payload.blueScore,
       payload.redScore
     );
-    if (result.status === "success")
-      message.success("Cập nhập điểm thành công");
+    console.log("result", result);
+
+    if (result.status === "success") message.success("Gửi điểm thành công");
   };
 
   const columns = [
@@ -132,8 +133,8 @@ const CustomTable = ({ number }: CustomTableProp) => {
           paddingTop: "24px",
         }}
       >
-        <Button onClick={handleUndo}>Hoàn tác</Button>
-        <Button onClick={handleUpdate}>Cập nhật</Button>
+        <Button onClick={handleUndo}>Làm mới</Button>
+        <Button onClick={handleUpdate}>Gửi điểm</Button>
       </div>
     </>
   );

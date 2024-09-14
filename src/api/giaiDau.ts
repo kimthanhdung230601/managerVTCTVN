@@ -37,3 +37,15 @@ export const updateVisitable = (stadium: any, roundId: any, visitable: any) =>
   sendGet(
     `/VCT2024?API=Update_Visible&id_stadium=${stadium}&round_id=${roundId}&visible=${visitable}`
   );
+//
+//uppdate winner
+export const updateWinner = (stadium: any, roundId: any, winner: any) =>
+  sendGet(
+    `/VCT2024?API=Update_Win&id_stadium=${stadium}&round_id=${roundId}&win=${winner}`
+  );
+
+//uppdate gửi điểm ở hiệp nào
+export const updateRound = (stadium: any, roundId: any) =>
+  sendGet(
+    `VCT2024?API=Update_Choose&id_stadium=${stadium}&round_id=${roundId}`
+  );

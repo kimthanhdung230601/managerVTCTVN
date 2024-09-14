@@ -31,6 +31,7 @@ const Update = () => {
     match2: false,
     match3: false,
   });
+  const [row, setRound] = useState(1);
   const isPortrait = useMediaQuery({ query: "(max-width: 920px)" });
 
   // State for input values
@@ -50,7 +51,7 @@ const Update = () => {
     console.log("result: " + result);
 
     if (result.status === "success") {
-      message.success("Hoàn tác thành công");
+      message.success("Làm mới thành công");
     }
   };
 
@@ -73,15 +74,14 @@ const Update = () => {
       payload.weightClass,
       payload.gender
     );
-    if (result.status === "success") message.success("Cập nhật thành công");
-    for (let i = 1; i <= 3; i++) {
-      const matchKey = `match${i}`;
-
-      const result1 = await updateVisitable(arena, i, selected[matchKey]);
-    }
+    // if (result.status === "success") message.success("Cập nhật thành công");
+    const resultUpdate = await updateVisitable(arena, row, true);
+    if (resultUpdate.status === "success")
+      message.success(`Gửi điểm của hiệp ${row} thành công`);
   };
 
   const { data } = useQuery(["tournament4"], () => getTournaments(arena));
+  console.log("data", data?.visible);
 
   useEffect(() => {
     if (data) {
@@ -251,11 +251,8 @@ const Update = () => {
                 match_1={data.match_1}
                 match_2={data.match_2}
                 match_3={data.match_3}
-                isVisitMatch1={true}
-                isVisitMatch2={true}
-                isVisitMatch3={true}
-                selected={selected}
-                setSelected={setSelected}
+                visible={data?.visible}
+                setRound={setRound}
               />{" "}
             </div>
           </div>
@@ -268,7 +265,7 @@ const Update = () => {
             paddingTop: "24px",
           }}
         >
-          <Button onClick={handleUndo}>Hoàn tác</Button>
+          <Button onClick={handleUndo}>Làm mới</Button>
           <Button onClick={handleUpdate}>Cập nhật</Button>
         </div>
       </div>

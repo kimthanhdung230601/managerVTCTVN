@@ -1,7 +1,7 @@
 import { Button } from "antd";
-import bgImage from "../../../assets/image/bg.png";
 import { useNavigate } from "react-router";
 import { useMediaQuery } from "react-responsive";
+import bgImage from "../../../assets/image/bg.png";
 
 const Dashboard = () => {
   const navigate = useNavigate();

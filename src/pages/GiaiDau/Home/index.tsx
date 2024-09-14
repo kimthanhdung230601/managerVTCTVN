@@ -28,7 +28,7 @@ const Home = () => {
         backgroundSize: "cover",
         backgroundPosition: "center",
         paddingTop: "32px",
-        height: "150vh",
+        height: "97vh",
         marginBottom: "30px",
       }}
     >
@@ -42,17 +42,10 @@ const Home = () => {
       <img
         src={require("../../../assets/image/logo.png")}
         alt="logo"
-        style={{ width: "270px", height: "270px", marginTop: "32px" }}
+        style={{ width: "200px", height: "200px", marginTop: "3px" }}
       />
       {/* hạng cân */}
-      <div
-        style={{ marginTop: "38px", marginBottom: "38px" }}
-        className="title"
-      >
-        <div style={{ paddingTop: "3px" }}>
-          <span>Giới tính: </span> <span>{data?.data[0].gender}</span>
-        </div>
-      </div>
+
       {/*  Nội dung thi đấu*/}
       <div>
         <div
@@ -60,18 +53,17 @@ const Home = () => {
             display: "flex",
             justifyContent: "space-around",
             alignItems: "center",
-            marginTop: "32px",
             flexDirection: isPortrait ? "column" : "row",
             gap: isPortrait ? "22px" : "0",
           }}
         >
-          <div style={{ color: "#DC143C" }}>
+          <div style={{ color: "#DC143C", width: "350px" }}>
             <h3>Giáp Đỏ</h3>
             <p
               className="name"
               style={{
                 fontWeight: "bold",
-                paddingTop: "16px",
+                paddingTop: "3px",
                 paddingBottom: "16px",
               }}
             >
@@ -82,10 +74,17 @@ const Home = () => {
               {data?.data[0].red_team}
             </span>
           </div>{" "}
-          <div style={{ fontSize: "32px" }}>
-            <span>Hạng cân: </span> {data?.data[0].weight_class}
+          <div style={{ marginBottom: "38px" }} className="title">
+            {" "}
+            <div style={{ fontSize: "32px" }}>
+              <span>Hạng cân: </span> {data?.data[0].weight_class}
+            </div>{" "}
+            <div style={{ fontSize: "32px" }}>
+              <span>Giới tính: </span> <span>{data?.data[0].gender}</span>
+            </div>{" "}
+            <h1 style={{ color: `var(--primary)` }}>Võ Đài {arena}</h1>
           </div>
-          <div style={{ color: "#0066FF" }}>
+          <div style={{ color: "#0066FF", width: "350px" }}>
             <h3>Giáp Xanh</h3>
             <p
               className="name"
@@ -105,7 +104,7 @@ const Home = () => {
           </div>
         </div>
       </div>
-      <h1 style={{ color: `var(--primary)` }}>Võ Đài {arena}</h1>
+
       {/* Bảng điểm */}
       {data && (
         <div
@@ -113,7 +112,7 @@ const Home = () => {
           style={{
             marginLeft: !isPortrait ? "120px" : "30px",
             marginRight: !isPortrait ? "120px" : "30px",
-            marginTop: "32px",
+            marginTop: "3px",
             overflowX: "auto",
           }}
         >
@@ -128,9 +127,7 @@ const Home = () => {
               match_1={data.match_1}
               match_2={data.match_2}
               match_3={data.match_3}
-              isVisitMatch1={true}
-              isVisitMatch2={true}
-              isVisitMatch3={true}
+              visible={data?.visible}
             />
           </div>
         </div>
