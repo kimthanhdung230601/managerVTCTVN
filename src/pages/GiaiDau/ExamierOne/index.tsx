@@ -4,18 +4,19 @@ import bgImage from "../../../assets/image/bg.png";
 import ExamierTable from "../Container/TableExamier";
 import { useQuery } from "react-query";
 import { getTournaments } from "../../../api/giaiDau";
+import { useMediaQuery } from "react-responsive";
 
 const ExamierOne = () => {
   const param = useParams();
   const id = param.id;
   const arena = param.arena;
-  const [selectedMatch, setSelectedMatch] = useState("1");
 
-  const handleMatchChange = (event: any) => {
-    setSelectedMatch(event.target.value);
-  };
-  console.log("selectedMatch", selectedMatch);
-  const { data } = useQuery(["tournament1"], () => getTournaments(arena));
+  const isPortrait = useMediaQuery({ query: "(max-width: 668px)" });
+
+  const { data } = useQuery(["tournament5"], () => getTournaments(arena), {
+    refetchInterval: 500,
+    refetchIntervalInBackground: true,
+  });
 
   return (
     <div
@@ -25,15 +26,29 @@ const ExamierOne = () => {
         backgroundSize: "cover",
         backgroundPosition: "center",
         paddingTop: "32px",
-        height: "100vh",
+        height: !isPortrait ? "100vh" : "120vh",
       }}
     >
       {/* tiêu đề */}
       <div style={{ textTransform: "uppercase" }}>
-        <h1 style={{ color: `var(--primary)` }}>
-          Liên đoàn võ thuật cổ truyền việt nam
-        </h1>
-        <h3 style={{ paddingTop: "16px" }}>Giải vô địch toàn quốc năm 2024</h3>
+        {!isPortrait ? (
+          <h1 style={{ color: `var(--primary)` }}>
+            Liên đoàn võ thuật cổ truyền việt nam
+          </h1>
+        ) : (
+          <h2 style={{ color: `var(--primary)` }}>
+            Liên đoàn võ thuật cổ truyền việt nam
+          </h2>
+        )}
+        {!isPortrait ? (
+          <h3 style={{ paddingTop: "16px" }}>
+            Giải vô địch toàn quốc năm 2024
+          </h3>
+        ) : (
+          <h4 style={{ paddingTop: "16px", fontSize: "22px" }}>
+            Giải vô địch toàn quốc năm 2024
+          </h4>
+        )}
       </div>
       {/* hạng cân */}
       <div style={{ marginTop: "8px" }}>
@@ -48,7 +63,7 @@ const ExamierOne = () => {
       <div>
         <div
           style={{
-            display: "flex",
+            display: !isPortrait ? "flex" : "block",
             justifyContent: "space-around",
             marginTop: "32px",
           }}
@@ -70,7 +85,9 @@ const ExamierOne = () => {
               {data?.data[0].red_team}
             </span>
           </div>
-          <div style={{ color: "#0066FF" }}>
+          <div
+            style={{ color: "#0066FF", marginTop: !isPortrait ? 0 : "32px" }}
+          >
             <h3>Giáp Xanh</h3>
             <p
               className="name"
@@ -90,32 +107,25 @@ const ExamierOne = () => {
           </div>
         </div>
       </div>
-      {/* Select hiệp đấu */}
-      <div style={{ marginTop: "32px" }}>
-        <label htmlFor="match-select" style={{ marginRight: "8px" }}>
-          Chọn hiệp đấu:
-        </label>
-        <select
-          id="match-select"
-          value={selectedMatch}
-          onChange={handleMatchChange}
-          style={{ padding: "8px", fontSize: "16px" }}
-        >
-          <option value="1">Hiệp đấu 1</option>
-          <option value="2">Hiệp đấu 2</option>
-          <option value="3">Hiệp đấu 3</option>
-        </select>
-      </div>
+
       {/* Bảng điểm */}
-      <h1 style={{ color: `var(--primary)` }}>Võ Đài {arena}</h1>
+      {!isPortrait ? (
+        <h1 style={{ color: `var(--primary)`, marginTop: "12px" }}>
+          Võ Đài {arena}
+        </h1>
+      ) : (
+        <h2 style={{ color: `var(--primary)`, marginTop: "12px" }}>
+          Võ Đài {arena}
+        </h2>
+      )}
       <div
         style={{
-          paddingLeft: "170px",
-          paddingRight: "170px",
+          paddingLeft: !isPortrait ? "170px" : "30px",
+          paddingRight: !isPortrait ? "170px" : "30px",
           marginTop: "32px",
         }}
       >
-        <ExamierTable number={id} selectedMatch={selectedMatch} />
+        <ExamierTable number={id} />
       </div>
     </div>
   );

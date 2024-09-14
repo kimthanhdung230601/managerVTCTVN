@@ -12,14 +12,13 @@ const Home = () => {
     ["tournament"],
     () => getTournaments(arena),
     {
-      refetchInterval: 100, // Gọi lại API mỗi 100ms
-      refetchIntervalInBackground: true, // Tự động gọi khi ứng dụng ở background
+      refetchInterval: 500,
+      refetchIntervalInBackground: true,
     }
   );
   const [isVisitMatch1, setIsVisitMatch1] = useState(false);
   const [isVisitMatch2, setIsVisitMatch2] = useState(false);
   const [isVisitMatch3, setIsVisitMatch3] = useState(false);
-  console.log("data", data);
 
   useEffect(() => {
     if (data) {
@@ -37,7 +36,8 @@ const Home = () => {
         backgroundSize: "cover",
         backgroundPosition: "center",
         paddingTop: "32px",
-        height: "100vh",
+        height: "150vh",
+        marginBottom: "30px",
       }}
     >
       {/* tiêu đề */}

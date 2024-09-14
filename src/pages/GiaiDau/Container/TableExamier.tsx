@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { Table, Input, Button } from "antd";
+import { Table, Input, Button, message } from "antd";
 import { useParams } from "react-router";
 import { updateTournaments } from "../../../api/giaiDau";
+import { useMediaQuery } from "react-responsive";
 
 interface DataItem {
   key: string;
@@ -11,10 +12,11 @@ interface DataItem {
 
 interface CustomTableProp {
   number: string | undefined | number;
-  selectedMatch: string;
 }
 
-const CustomTable = ({ number, selectedMatch }: CustomTableProp) => {
+const CustomTable = ({ number }: CustomTableProp) => {
+  const isPortrait = useMediaQuery({ query: "(max-width: 668px)" });
+
   const [dataSource, setDataSource] = useState<DataItem[]>([
     {
       key: "1",
@@ -22,9 +24,11 @@ const CustomTable = ({ number, selectedMatch }: CustomTableProp) => {
       greenScore: "",
     },
   ]);
+
   const param = useParams();
   const id = param.id;
   const arena = param.arena;
+
   const handleScoreChange = (
     value: string,
     key: string,
@@ -41,17 +45,21 @@ const CustomTable = ({ number, selectedMatch }: CustomTableProp) => {
     setDataSource(
       dataSource.map((item) => ({
         ...item,
-        redScore: "", // Reset redScore to empty string
-        greenScore: "", // Reset greenScore to empty string
+        redScore: "",
+        greenScore: "",
       }))
     );
   };
 
   const handleUpdate = async () => {
+    if (dataSource[0].redScore === "" || dataSource[0].greenScore === "") {
+      message.warning("Vui lòng nhập điểm");
+      return;
+    }
+
     const payload = {
       stadium: arena,
       judge: id,
-      match: selectedMatch,
       blueScore: dataSource[0].greenScore,
       redScore: dataSource[0].redScore,
     };
@@ -59,11 +67,11 @@ const CustomTable = ({ number, selectedMatch }: CustomTableProp) => {
     const result = await updateTournaments(
       payload.stadium,
       payload.judge,
-      payload.match,
       payload.blueScore,
       payload.redScore
     );
-    if (result.status === "success") alert("Cập nhật thành công");
+    if (result.status === "success")
+      message.success("Cập nhập điểm thành công");
   };
 
   const columns = [
@@ -76,7 +84,7 @@ const CustomTable = ({ number, selectedMatch }: CustomTableProp) => {
           type="number"
           value={text}
           onChange={(e) => handleScoreChange(e.target.value, record.key, "red")}
-          style={{ width: "170px" }}
+          style={{ width: !isPortrait ? "170px" : "100%" }}
         />
       ),
     },
@@ -91,7 +99,7 @@ const CustomTable = ({ number, selectedMatch }: CustomTableProp) => {
           onChange={(e) =>
             handleScoreChange(e.target.value, record.key, "green")
           }
-          style={{ width: "170px" }}
+          style={{ width: !isPortrait ? "170px" : "100%" }}
         />
       ),
     },

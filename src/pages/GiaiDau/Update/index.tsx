@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, Input } from "antd";
+import { Button, Input, message } from "antd";
 import bgImage from "../../../assets/image/bg.png";
 import FightTable from "../Container/table";
 import { useQuery, useQueryClient } from "react-query";
@@ -10,6 +10,7 @@ import {
   updateVisitable,
 } from "../../../api/giaiDau";
 import { useParams } from "react-router";
+import { useMediaQuery } from "react-responsive";
 
 const Update = () => {
   const param = useParams();
@@ -30,6 +31,7 @@ const Update = () => {
     match2: false,
     match3: false,
   });
+  const isPortrait = useMediaQuery({ query: "(max-width: 920px)" });
 
   // State for input values
   const [categories, setCategories] = useState(initialCategoriesDefault);
@@ -48,7 +50,7 @@ const Update = () => {
     console.log("result: " + result);
 
     if (result.status === "success") {
-      alert("Hoàn tác thành công");
+      message.success("Hoàn tác thành công");
     }
   };
 
@@ -71,14 +73,12 @@ const Update = () => {
       payload.weightClass,
       payload.gender
     );
-    if (result.status === "success") alert("Cập nhật thành công");
-    for (let i = 1; i < 3; i++) {
+    if (result.status === "success") message.success("Cập nhật thành công");
+    for (let i = 1; i <= 3; i++) {
       const matchKey = `match${i}`;
 
       const result1 = await updateVisitable(arena, i, selected[matchKey]);
-      // if (result.status === "success") alert("Cập nhật thành công");
     }
-    console.log("select", selected);
   };
 
   const { data } = useQuery(["tournament4"], () => getTournaments(arena));
@@ -107,7 +107,7 @@ const Update = () => {
       queryClient.fetchQuery(["tournament4"], () => getTournaments(arena));
 
       setApiCount((prevCount) => prevCount + 1);
-    }, 100);
+    }, 500);
 
     return () => {
       clearInterval(intervalId);
@@ -167,8 +167,11 @@ const Update = () => {
           <div
             style={{
               display: "flex",
+              flexDirection: isPortrait ? "column" : "row",
               justifyContent: "space-around",
               marginTop: "32px",
+              paddingLeft: isPortrait ? "28px" : "0",
+              paddingRight: isPortrait ? "28px" : "0",
             }}
           >
             <div style={{ color: "#DC143C" }}>
@@ -228,25 +231,33 @@ const Update = () => {
           </div>
         </div>
         {/* Bảng điểm */}
+        <h2 style={{ color: `var(--primary)` }}>Võ đài {arena}</h2>
         {data && (
           <div
             style={{
-              paddingLeft: "32px",
-              paddingRight: "32px",
+              marginLeft: "32px",
+              marginRight: "32px",
               marginTop: "32px",
+              overflowX: "auto",
             }}
           >
-            <FightTable
-              isSelect
-              match_1={data.match_1}
-              match_2={data.match_2}
-              match_3={data.match_3}
-              isVisitMatch1={true}
-              isVisitMatch2={true}
-              isVisitMatch3={true}
-              selected={selected}
-              setSelected={setSelected}
-            />
+            <div
+              style={{
+                width: isPortrait ? "1200px" : "100%",
+              }}
+            >
+              <FightTable
+                isSelect
+                match_1={data.match_1}
+                match_2={data.match_2}
+                match_3={data.match_3}
+                isVisitMatch1={true}
+                isVisitMatch2={true}
+                isVisitMatch3={true}
+                selected={selected}
+                setSelected={setSelected}
+              />{" "}
+            </div>
           </div>
         )}
         {/* Nút bấm */}

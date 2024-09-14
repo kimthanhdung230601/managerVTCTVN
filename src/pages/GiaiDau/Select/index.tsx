@@ -1,9 +1,12 @@
 import { Button } from "antd";
 import bgImage from "../../../assets/image/bg.png";
 import { useNavigate } from "react-router";
+import { useMediaQuery } from "react-responsive";
 
 const Dashboard = () => {
   const navigate = useNavigate();
+  const isPortrait = useMediaQuery({ query: "(max-width: 992px)" });
+
   return (
     <div
       style={{
@@ -14,6 +17,7 @@ const Dashboard = () => {
         justifyContent: "space-around",
         backgroundSize: "cover",
         backgroundPosition: "center",
+        flexDirection: isPortrait ? "column" : "row",
       }}
     >
       {/* Võ Đài 1 */}
@@ -26,9 +30,15 @@ const Dashboard = () => {
           paddingTop: "90px",
         }}
       >
-        <h1 style={{ paddingBottom: "40px", textTransform: "uppercase" }}>
-          Vui lòng chọn vai trò
-        </h1>
+        {!isPortrait ? (
+          <h1 style={{ paddingBottom: "40px", textTransform: "uppercase" }}>
+            Vui lòng chọn vai trò
+          </h1>
+        ) : (
+          <h2 style={{ paddingBottom: "40px", textTransform: "uppercase" }}>
+            Vui lòng chọn vai trò
+          </h2>
+        )}
         <h2>Võ Đài 1</h2>
         <Button
           onClick={() => navigate("/nguoi-xem/1")}
@@ -83,9 +93,15 @@ const Dashboard = () => {
           paddingTop: "90px",
         }}
       >
-        <h1 style={{ paddingBottom: "40px", textTransform: "uppercase" }}>
-          Vui lòng chọn vai trò
-        </h1>
+        {!isPortrait ? (
+          <h1 style={{ paddingBottom: "40px", textTransform: "uppercase" }}>
+            Vui lòng chọn vai trò
+          </h1>
+        ) : (
+          <h2 style={{ paddingBottom: "40px", textTransform: "uppercase" }}>
+            Vui lòng chọn vai trò
+          </h2>
+        )}
         <h2>Võ Đài 2</h2>
         <Button
           onClick={() => navigate("/nguoi-xem/2")}

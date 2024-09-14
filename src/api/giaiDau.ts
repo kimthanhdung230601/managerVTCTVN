@@ -7,12 +7,11 @@ export const getTournaments = (payload: any) =>
 export const updateTournaments = (
   stadium: any,
   judge: any,
-  match: any,
   blueScore: any,
   redScore: any
 ) =>
   sendGet(
-    `/VCT2024?API=Update&id_stadium=${stadium}&id_judge=${judge}&id_match=${match}&blue_score=${blueScore}&red_score=${redScore}`
+    `/VCT2024?API=Update&id_stadium=${stadium}&id_judge=${judge}&blue_score=${blueScore}&red_score=${redScore}`
   );
 
 // admin update infor
