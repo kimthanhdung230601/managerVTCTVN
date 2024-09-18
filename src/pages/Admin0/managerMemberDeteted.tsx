@@ -156,6 +156,7 @@ const ManagerMemberDeleted = ({ setFetching }: fetchingProp) => {
   }));
 
   const onChangePage = (value: any) => {
+    searchParam.set("pageAll3", value.toString());
     setCurrentPage(value);
     const updatedPayload =
       `page=${value}&status=` + encodeURIComponent(status.toString()) + param;

@@ -185,6 +185,7 @@ const ManagerMemberUnAccept = ({ setFetching }: fetchingProp) => {
 
   //page
   const onChangePage = (value: any) => {
+    searchParam.set("pageAll1", value.toString());
     setCurrentPage(value);
     const updatedPayload =
       `page=${value}&status=` + encodeURIComponent(status.toString()) + param;

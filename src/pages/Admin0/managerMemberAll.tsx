@@ -79,6 +79,7 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
     (searchParam.get("level1") ? "&level=" + searchParam.get("level1") : "") +
     (searchParam.get("note1") ? "&note=" + searchParam.get("note1") : "") +
     (searchParam.get("status1") ? "&status=" + searchParam.get("status1") : "");
+
   const [currentPage, setCurrentPage] = useState<any>(
     searchParam.get("pageAll") || "1"
   );
@@ -160,6 +161,7 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
     refetch();
     setFetching(true);
   }, [fetching]);
+
   const onChangePage = (value: any) => {
     searchParam.set("pageAll", value.toString());
     navigate(`${location.pathname}?${searchParam.toString()}`);
