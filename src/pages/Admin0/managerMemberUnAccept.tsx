@@ -34,7 +34,7 @@ import * as XLSX from "xlsx";
 
 import Search from "antd/es/input/Search";
 // import ModalMember from "../../components/Modal/ModalAccount";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Mutation, useMutation, useQuery } from "react-query";
 import {
   deleteMemberF3,
@@ -77,21 +77,40 @@ interface fetchingProp {
   setFetching: (value: boolean) => void;
 }
 const ManagerMemberUnAccept = ({ setFetching }: fetchingProp) => {
+  const location = useLocation();
+  const searchParam = new URLSearchParams(useLocation().search);
   //filter
-  const [currentPage, setCurrentPage] = useState(1);
   const status = "Chờ duyệt";
+  const [currentPage, setCurrentPage] = useState<any>(
+    searchParam.get("pageAll1") || "1"
+  );
+  const params =
+    (searchParam.get("unit2")
+      ? "&DonViQuanLy=" + searchParam.get("unit2")
+      : "") +
+    (searchParam.get("club2") ? "&club=" + searchParam.get("club2") : "") +
+    (searchParam.get("address2")
+      ? "&address=" + searchParam.get("address2")
+      : "") +
+    (searchParam.get("level2") ? "&level=" + searchParam.get("level2") : "") +
+    (searchParam.get("note2") ? "&note=" + searchParam.get("note2") : "") +
+    (searchParam.get("status2") ? "&status=" + searchParam.get("status2") : "");
   const initialPayload =
     `page=${currentPage}&status=` + encodeURIComponent(status.toString());
-  const [payload, setPayload] = useState<any>(
-    `page=${currentPage}&status=` + encodeURIComponent(status.toString())
-  );
-  const [param, setParam] = useState("");
 
+  const [payload, setPayload] = useState<any>(
+    `page=${currentPage}&status=` +
+      encodeURIComponent(status.toString()) +
+      params
+  );
+
+  const [param, setParam] = useState("");
   const {
     data: allMember,
     refetch,
     isFetching,
   } = useQuery(["allMember", payload], () => getListMember(payload));
+
   const onChange: TableProps<DataType>["onChange"] = (pagination, filters) => {
     const param =
       (filters.DonViQuanLy ? "&DonViQuanLy=" + filters.DonViQuanLy[0] : "") +
@@ -108,8 +127,36 @@ const ManagerMemberUnAccept = ({ setFetching }: fetchingProp) => {
       (filters.status
         ? "&status=" + encodeURIComponent(filters.status[0].toString())
         : "");
-    const updatedPayload = initialPayload + param;
+    if (filters.DonViQuanLy)
+      searchParam.set("unit2", filters.DonViQuanLy[0].toString());
+    else searchParam.delete("unit2");
+    if (filters.NameClub)
+      searchParam.set("club2", filters.NameClub[0].toString());
+    else searchParam.delete("club2");
+    if (filters.address)
+      searchParam.set(
+        "address2",
+        encodeURIComponent(filters.address[0].toString())
+      );
+    else searchParam.delete("address2");
+    if (filters.level)
+      searchParam.set(
+        "level2",
+        encodeURIComponent(filters.level[0].toString())
+      );
+    else searchParam.delete("level2");
+    if (filters.note)
+      searchParam.set("note2", encodeURIComponent(filters.note[0].toString()));
+    else searchParam.delete("note2");
+    if (filters.status)
+      searchParam.set(
+        "status2",
+        encodeURIComponent(filters.status[0].toString())
+      );
+    else searchParam.delete("status2");
+    navigate(`${location.pathname}?${searchParam.toString()}`);
     setParam(param);
+    const updatedPayload = initialPayload + param;
     setPayload(updatedPayload);
   };
   const filtersListNote = allMember?.list_note?.map(
@@ -192,7 +239,7 @@ const ManagerMemberUnAccept = ({ setFetching }: fetchingProp) => {
       fixed: "left",
       width: 70,
       render: (value, record, index) => {
-        return index + 1 + (currentPage - 1) * 10;
+        return index + 1 + (currentPage - 1) * 50;
       },
     },
     {

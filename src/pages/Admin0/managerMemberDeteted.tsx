@@ -1,41 +1,24 @@
-import { useEffect, useState } from "react";
-import {
-  AudioOutlined,
-  PlusOutlined,
-  DownloadOutlined,
-} from "@ant-design/icons";
+import { useState } from "react";
+
 import type { SearchProps } from "antd/es/input";
 import {
-  Input,
   Table,
   Button,
   TableProps,
-  Row,
-  Col,
   Spin,
   Pagination,
   Popconfirm,
   message,
 } from "antd";
 import styles from "./styles.module.scss";
-import {
-  OnlyProvince,
-  level,
-  levelFilters,
-  managerf1,
-  province,
-  randomState,
-  statess,
-} from "../../until/until";
+import { OnlyProvince, levelFilters } from "../../until/until";
 import { useMediaQuery } from "react-responsive";
 import type { ColumnsType } from "antd/es/table";
-import type { FilterValue } from "antd/es/table/interface";
 import * as XLSX from "xlsx";
 
-import Search from "antd/es/input/Search";
 // import ModalMember from "../../components/Modal/ModalAccount";
-import { useNavigate } from "react-router-dom";
-import { Mutation, useMutation, useQuery } from "react-query";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useQuery } from "react-query";
 import {
   deleteMemberF3,
   findMember,
@@ -46,7 +29,6 @@ import moment from "moment";
 import ListClub from "../../hook/listClub";
 import CryptoJS from "crypto-js";
 const secretKey = process.env.REACT_APP_SECRET_KEY as string;
-interface ManagerMemberProps {}
 interface DataType {
   stt: any;
   birthday: any;
@@ -77,15 +59,34 @@ interface fetchingProp {
   setFetching: (value: boolean) => void;
 }
 const ManagerMemberDeleted = ({ setFetching }: fetchingProp) => {
+  const location = useLocation();
+  const searchParam = new URLSearchParams(useLocation().search);
+  const params =
+    (searchParam.get("unit3")
+      ? "&DonViQuanLy=" + searchParam.get("unit3")
+      : "") +
+    (searchParam.get("club3") ? "&club=" + searchParam.get("club3") : "") +
+    (searchParam.get("address3")
+      ? "&address=" + searchParam.get("address3")
+      : "") +
+    (searchParam.get("level3") ? "&level=" + searchParam.get("level3") : "") +
+    (searchParam.get("note3") ? "&note=" + searchParam.get("note3") : "") +
+    (searchParam.get("status3") ? "&status=" + searchParam.get("status3") : "");
   //filter
-  const [currentPage, setCurrentPage] = useState(1);
-  const [param, setParam] = useState("");
+  const [currentPage, setCurrentPage] = useState<any>(
+    searchParam.get("pageAll3") || "1"
+  );
   const status = "Chờ duyệt xóa";
   const initialPayload =
     `page=${currentPage}&status=` + encodeURIComponent(status.toString());
+
   const [payload, setPayload] = useState<any>(
-    `page=${currentPage}&status=` + encodeURIComponent(status.toString())
+    `page=${currentPage}&status=` +
+      encodeURIComponent(status.toString()) +
+      params
   );
+
+  const [param, setParam] = useState("");
 
   const {
     data: allMember,
@@ -94,8 +95,6 @@ const ManagerMemberDeleted = ({ setFetching }: fetchingProp) => {
   } = useQuery(["allMember", payload], () => getListMember(payload));
   const onChange: TableProps<DataType>["onChange"] = (pagination, filters) => {
     const param: any =
-      // "?page=" +
-      // currentPage +
       (filters.DonViQuanLy ? "&DonViQuanLy=" + filters.DonViQuanLy[0] : "") +
       (filters.club ? "$club=" + filters.club[0] : "") +
       (filters.address
@@ -110,8 +109,36 @@ const ManagerMemberDeleted = ({ setFetching }: fetchingProp) => {
       (filters.status
         ? "&status=" + encodeURIComponent(filters.status[0].toString())
         : "");
-    const updatedPayload = initialPayload + param;
+    if (filters.DonViQuanLy)
+      searchParam.set("unit3", filters.DonViQuanLy[0].toString());
+    else searchParam.delete("unit3");
+    if (filters.NameClub)
+      searchParam.set("club3", filters.NameClub[0].toString());
+    else searchParam.delete("club3");
+    if (filters.address)
+      searchParam.set(
+        "address3",
+        encodeURIComponent(filters.address[0].toString())
+      );
+    else searchParam.delete("address3");
+    if (filters.level)
+      searchParam.set(
+        "level3",
+        encodeURIComponent(filters.level[0].toString())
+      );
+    else searchParam.delete("level3");
+    if (filters.note)
+      searchParam.set("note3", encodeURIComponent(filters.note[0].toString()));
+    else searchParam.delete("note3");
+    if (filters.status)
+      searchParam.set(
+        "status3",
+        encodeURIComponent(filters.status[0].toString())
+      );
+    else searchParam.delete("status3");
+    navigate(`${location.pathname}?${searchParam.toString()}`);
     setParam(param);
+    const updatedPayload = initialPayload + param;
     setPayload(updatedPayload);
   };
   const filtersListNote = allMember?.list_note?.map(
@@ -183,7 +210,7 @@ const ManagerMemberDeleted = ({ setFetching }: fetchingProp) => {
       fixed: "left",
       width: 70,
       render: (value, record, index) => {
-        return index + 1 + (currentPage - 1) * 10;
+        return index + 1 + (currentPage - 1) * 50;
       },
     },
     {
