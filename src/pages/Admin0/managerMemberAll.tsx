@@ -80,7 +80,9 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
     (searchParam.get("note1") ? "&note=" + searchParam.get("note1") : "") +
     (searchParam.get("status1") ? "&status=" + searchParam.get("status1") : "");
 
+
   const [currentPage, setCurrentPage] = useState<any>(
+
     searchParam.get("pageAll") || "1"
   );
   const initialPayload = `page=${currentPage}`;
@@ -217,7 +219,7 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
       fixed: "left",
       width: 70,
       render: (value, record, index) => {
-        return index + 1 + (currentPage - 1) * 10;
+        return index + 1 + (Number(currentPage) - 1) * 10;
       },
     },
     {

@@ -16,7 +16,7 @@ import type { ColumnsType } from "antd/es/table";
 
 import Search from "antd/es/input/Search";
 import ModalUpdateNote from "../../components/Modal/ModalUpdateNote";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useQuery } from "react-query";
 import { deleteMemberF3, getListMemberF3, searchInTable } from "../../api/f2";
 import moment from "moment";
@@ -71,6 +71,17 @@ const customLocale = {
 };
 
 const ManagerMemberTwo = () => {
+  const searchURL = new URLSearchParams(useLocation().search);
+  const location = useLocation();
+  const params =
+    (searchURL.get("level") ? "&level=" + searchURL.get("level") : "") +
+    (searchURL.get("note") ? "&note=" + searchURL.get("note") : "") +
+    (searchURL.get("status") ? "&status=" + searchURL.get("status") : "") +
+    (searchURL.get("detail") ? "&detail=" + searchURL.get("detail") : "") +
+    (searchURL.get("achievements")
+      ? "&achievements=" + searchURL.get("achievements")
+      : "");
+
   const club = CryptoJS.AES.decrypt(Cookies.get("club") as string, secretKey);
   const decryptedClub = club.toString(CryptoJS.enc.Utf8);
   const permission = CryptoJS.AES.decrypt(
@@ -89,14 +100,16 @@ const ManagerMemberTwo = () => {
       setClubName(clubValue);
     }
   }, [decryptedPerrmission, clubValue]);
-  const [param, setParam] = useState("");
+  const [param, setParam] = useState(params || "");
   const [key, setKey] = useState("");
 
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(
+    Number(searchURL.get("page")) || 1
+  );
 
   const initialPayload = `club=${clubName}&page=${currentPage}`;
   const [payload, setPayload] = useState<any>(
-    `club=${clubName}&page=${currentPage}`
+    `club=${clubName}&page=${currentPage}` + param
   );
 
   const {
@@ -115,7 +128,6 @@ const ManagerMemberTwo = () => {
     },
   });
   let filtersListNote: { text: any; value: any }[] = [];
-
 
   if (listF3?.status === "success") {
     const uniqueNotes = Array.from(
@@ -223,6 +235,9 @@ const ManagerMemberTwo = () => {
       width: 130,
       filters: levelFilters,
       filterMultiple: false,
+      defaultFilteredValue: searchURL.get("level")
+        ? [decodeURIComponent(searchURL.get("level") as string)]
+        : null,
       onFilter: (value: any, rec) => rec.level.indexOf(value) === 0,
     },
 
@@ -231,6 +246,9 @@ const ManagerMemberTwo = () => {
       dataIndex: "note",
       width: 130,
       filters: filtersListNote,
+      defaultFilteredValue: searchURL.get("note")
+        ? [decodeURIComponent(searchURL.get("note") as string)]
+        : null,
       filterMultiple: false,
       onFilter: (value: any, rec) => rec.note.indexOf(value) === 0,
     },
@@ -253,6 +271,9 @@ const ManagerMemberTwo = () => {
           value: "Chờ duyệt",
         },
       ],
+      defaultFilteredValue: searchURL.get("status")
+        ? [decodeURIComponent(searchURL.get("status") as string)]
+        : null,
       filterMultiple: false,
       render: (value, record) => {
         if (value === "Đã duyệt")
@@ -278,7 +299,11 @@ const ManagerMemberTwo = () => {
           value: "Không",
         },
       ],
-      filterMode: "tree",
+      filterMultiple: false,
+      defaultFilteredValue: searchURL.get("achievements")
+        ? [decodeURIComponent(searchURL.get("achievements") as string)]
+        : null,
+
       onFilter: (value: any, record) => {
         if (value === "Có" && record.achievements.length > 0) {
           return true; // Trả về true nếu giá trị là "Có" và có thành tích
@@ -343,6 +368,8 @@ const ManagerMemberTwo = () => {
   ];
 
   const onChangePage = (value: any) => {
+    searchURL.set("page", value.toString());
+    navigate(`${location.pathname}?${searchURL.toString()}`);
     setCurrentPage(value);
     const updatedPayload = `club=${clubName}&page=${value}` + param;
     setPayload(updatedPayload);
@@ -356,22 +383,44 @@ const ManagerMemberTwo = () => {
     const param =
       // "?club" +
       // (decryptedPerrmission == "2" ? clubName : clubName) +
-      (filters.level
-        ? "&level=" + encodeURIComponent(filters.level[0].toString())
+      (filters?.level
+        ? "&level=" + encodeURIComponent(filters?.level[0].toString())
         : "") +
-      (filters.note
-        ? "&note=" + encodeURIComponent(filters.note[0].toString())
+      (filters?.note && filters?.note !== undefined
+        ? "&note=" + encodeURIComponent(filters?.note[0].toString())
         : "") +
-      (filters.detail
-        ? "&detail=" + encodeURIComponent(filters.detail[0].toString())
+      (filters?.detail
+        ? "&detail=" + encodeURIComponent(filters?.detail[0].toString())
         : "") +
-      (filters.status
-        ? "&status=" + encodeURIComponent(filters.status[0].toString())
+      (filters?.status
+        ? "&status=" + encodeURIComponent(filters?.status[0].toString())
         : "") +
-      (filters.achievements
+      (filters?.achievements
         ? "&achievements=" +
-          encodeURIComponent(filters.achievements[0].toString())
+          encodeURIComponent(filters?.achievements[0].toString())
         : "");
+    if (filters?.level)
+      searchURL.set("level", encodeURIComponent(filters?.level[0].toString()));
+    else searchURL.delete("level");
+    if (filters?.note && filters?.note !== undefined)
+      searchURL.set("note", encodeURIComponent(filters?.note[0].toString()));
+    else searchURL.delete("note");
+    if (filters?.detail !== undefined && filters?.detail)
+      searchURL.set(
+        "detail",
+        encodeURIComponent(filters?.detail[0].toString())
+      );
+    else searchURL.delete("detail");
+    if (filters?.status)
+      searchURL.set(
+        "status",
+        encodeURIComponent(filters?.status[0].toString())
+      );
+    else searchURL.delete("status");
+    if (filters?.achievements)
+      searchURL.set("achievements", filters?.achievements[0].toString());
+    else searchURL.delete("achievements");
+    navigate(`${location.pathname}?${searchURL.toString()}`);
     setParam(param);
     const updatedPayload = initialPayload + param;
     setPayload(updatedPayload);
@@ -423,6 +472,7 @@ const ManagerMemberTwo = () => {
           />
           <Pagination
             defaultCurrent={1}
+            current={currentPage}
             onChange={onChangePage}
             total={listF3?.total_products}
             pageSize={30}

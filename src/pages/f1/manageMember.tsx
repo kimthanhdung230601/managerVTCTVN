@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Search, { SearchProps } from "antd/es/input/Search";
 import styles from "./Style.module.scss";
 import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
@@ -61,10 +61,13 @@ export default function ManageMember() {
   const navigate = useNavigate();
   const location = useLocation();
   const searchURL = new URLSearchParams(useLocation().search);
+  const params =
+    (searchURL.get("level") ? "&level=" + searchURL.get("level") : "") +
+    (searchURL.get("status") ? "&status=" + searchURL.get("status") : "");
   const [currentPage1, setCurrentPage1] = useState(
     searchURL.get("page") || "1"
   );
-  const [param, setParam] = useState("");
+  const [param, setParam] = useState(params || "");
   const [key, setKey] = useState("");
   const [selectedRowKeysCN, setSelectedRowKeysCN] = useState<React.Key[]>([]);
   const [memberList, setMemberList] = useState<data>();
@@ -188,13 +191,8 @@ export default function ManageMember() {
   };
   const hasSelected = selectedRowKeysCN.length > 0;
   const onPaginationChange1 = (page: number) => {
-    const newPage = searchURL.get("page");
     searchURL.set("page", page.toString());
-    navigate(
-      location.pathname +
-        "?tab=Member" +
-        (newPage ? `&page=${page}` : `&page=${page}`)
-    );
+    navigate(`${location.pathname}?${searchURL.toString()}`);
     setCurrentPage1(page.toString());
   };
   const onSearch: SearchProps["onSearch"] = (value, _e, info) => {
@@ -245,6 +243,9 @@ export default function ManageMember() {
       dataIndex: "level",
       filterMultiple: false,
       filters: levelFilters,
+      defaultFilteredValue: searchURL.get("level")
+        ? [decodeURIComponent(searchURL.get("level") as string)]
+        : null,
       onFilter: (value: any, record) => record?.level.indexOf(value) === 0,
     },
     {
@@ -273,6 +274,9 @@ export default function ManageMember() {
           value: "Chờ duyệt xoá",
         },
       ],
+      defaultFilteredValue: searchURL.get("status")
+        ? [decodeURIComponent(searchURL.get("status") as string)]
+        : null,
       onFilter: (value: any, record) => record?.status.indexOf(value) === 0,
       render: (value, record) => {
         if (value === "Đã duyệt")
@@ -332,15 +336,41 @@ export default function ManageMember() {
     extra
   ) => {
     const param =
-      (filters.NameClb ? "&club=" + filters.NameClb[0] : "") +
-      (filters.level
-        ? "&level=" + encodeURIComponent(filters.level[0].toString())
+      (filters?.NameClb && filters?.NameClb !== undefined
+        ? "&club=" + filters.NameClb[0]
         : "") +
-      (filters.status
-        ? "&status=" + encodeURIComponent(filters.status[0].toString())
+      (filters?.level
+        ? "&level=" + encodeURIComponent(filters?.level[0].toString())
+        : "") +
+      (filters?.status
+        ? "&status=" + encodeURIComponent(filters?.status[0].toString())
         : "");
+    if (filters?.NameClb && filters?.NameClb !== undefined)
+      searchURL.set("club", filters?.NameClb[0].toString());
+    else searchURL.delete("club");
+    if (filters?.level)
+      searchURL.set("level", encodeURIComponent(filters?.level[0].toString()));
+    else searchURL.delete("level");
+    if (filters?.status)
+      searchURL.set(
+        "status",
+        encodeURIComponent(filters?.status[0].toString())
+      );
+    else searchURL.delete("status");
+    navigate(`${location.pathname}?${searchURL.toString()}`);
     setParam(param);
   };
+
+  useEffect(() => {
+    const keyTab = searchURL.get("tab");
+    const page = searchURL.get("page");
+    if (!keyTab) {
+      searchURL.set("tab", "Member");
+    }
+    if (!page) searchURL.set("page", "1");
+    navigate(`${location.pathname}?${searchURL.toString()}`);
+  }, []);
+
   return (
     <>
       {memberList?.status === "failed" ? (
