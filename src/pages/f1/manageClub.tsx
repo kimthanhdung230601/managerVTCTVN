@@ -4,8 +4,9 @@ import { message, Table, Spin, Pagination } from "antd";
 import React, { useState } from "react";
 import styles from "./Style.module.scss";
 import { useLocation, useNavigate } from "react-router";
-import { levelFilters } from "../../until/until";
 import { useQuery } from "react-query";
+import { useEffect } from "react";
+
 import {
   getClubs,
   getFilterTable,
@@ -47,14 +48,17 @@ const customLocale = {
 };
 
 export default function ManageClub() {
+  const searchURL = new URLSearchParams(useLocation().search);
+  const params =
+    (searchURL.get("club") ? "&club=" + searchURL.get("club") : "") +
+    (searchURL.get("pending") ? "&pending=" + searchURL.get("pending") : "");
   const navigate = useNavigate();
   const location = useLocation();
-  const searchURL = new URLSearchParams(useLocation().search);
   const [key, setKey] = useState("");
   const [currentPage2, setCurrentPage2] = useState(
     searchURL.get("page") || "1"
   );
-  const [param, setParam] = useState("");
+  const [param, setParam] = useState(params || "");
   const { data: clubs } = useQuery(["clubs"], () => getClubs());
   const [clubList, setClubList] = useState<data>();
   const [selectedRowKeysCLB, setSelectedRowKeysCLB] = useState<React.Key[]>([]);
@@ -111,13 +115,8 @@ export default function ManageClub() {
   };
   const hasSelected = selectedRowKeysCLB.length > 0;
   const onPaginationChange2 = (page: number) => {
-    const newPage = searchURL.get("page");
     searchURL.set("page", page.toString());
-    navigate(
-      location.pathname +
-        "?tab=CLB" +
-        (newPage ? `&page=${page}` : `&page=${page}`)
-    );
+    navigate(`${location.pathname}?${searchURL.toString()}`);
     setCurrentPage2(page.toString());
   };
   const onSearch: SearchProps["onSearch"] = (value, _e, info) => {
@@ -154,6 +153,9 @@ export default function ManageClub() {
       title: "CLB trực thuộc",
       dataIndex: "NameClb",
       filterMultiple: false,
+      defaultFilteredValue: searchURL.get("club")
+        ? [decodeURIComponent(searchURL.get("club") as string)]
+        : null,
       filters:
         clubs?.status === "success"
           ? clubs?.data.map((item: any, index: number) => {
@@ -173,6 +175,9 @@ export default function ManageClub() {
       title: "Tình trạng",
       dataIndex: "pending",
       filterMultiple: false,
+      defaultFilteredValue: searchURL.get("pending")
+        ? [decodeURIComponent(searchURL.get("pending") as string)]
+        : null,
       filters: [
         {
           text: "Hoạt động",
@@ -221,10 +226,30 @@ export default function ManageClub() {
     extra
   ) => {
     const param =
-      (filters.NameClb ? "&club=" + filters.NameClb[0] : "") +
-      (filters.pending ? "&pending=" + filters.pending[0] : "");
+      (filters?.NameClb && filters?.NameClb !== undefined
+        ? "&club=" + filters?.NameClb[0]
+        : "") + (filters?.pending ? "&pending=" + filters?.pending[0] : "");
+
+    if (filters?.NameClb && filters?.NameClb !== undefined)
+      searchURL.set("club", filters?.NameClb[0].toString());
+    else searchURL.delete("club");
+    if (filters?.pending)
+      searchURL.set("pending", filters?.pending[0].toString());
+    else searchURL.delete("pending");
+    navigate(`${location.pathname}?${searchURL.toString()}`);
     setParam(param);
   };
+
+  useEffect(() => {
+    const keyTab = searchURL.get("tab");
+    const page = searchURL.get("page");
+    if (!keyTab) {
+      searchURL.set("tab", "CLB");
+    }
+    if (!page) searchURL.set("page", "1");
+    navigate(`${location.pathname}?${searchURL.toString()}`);
+  }, []);
+
   return (
     <>
       {clubList?.status === "failed" ? (
