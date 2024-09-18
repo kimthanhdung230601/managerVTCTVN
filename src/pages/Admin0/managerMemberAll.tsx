@@ -1,12 +1,7 @@
 import { useEffect, useState } from "react";
-import {
-  AudioOutlined,
-  PlusOutlined,
-  DownloadOutlined,
-} from "@ant-design/icons";
+import { PlusOutlined, DownloadOutlined } from "@ant-design/icons";
 import type { SearchProps } from "antd/es/input";
 import {
-  Input,
   Table,
   Button,
   TableProps,
@@ -18,23 +13,14 @@ import {
   message,
 } from "antd";
 import styles from "./styles.module.scss";
-import {
-  OnlyProvince,
-  level,
-  levelFilters,
-  managerf1,
-  province,
-  randomState,
-  statess,
-} from "../../until/until";
+import { OnlyProvince, levelFilters } from "../../until/until";
 import { useMediaQuery } from "react-responsive";
 import type { ColumnsType } from "antd/es/table";
-import type { FilterValue } from "antd/es/table/interface";
 import * as XLSX from "xlsx";
 
 import Search from "antd/es/input/Search";
 // import ModalMember from "../../components/Modal/ModalAccount";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Mutation, useMutation, useQuery } from "react-query";
 import {
   deleteMemberF3,
@@ -65,6 +51,7 @@ interface DataType {
   level: string;
   achievements: string;
 }
+
 interface fetchingProp {
   fetching: any;
   setFetching: (value: boolean) => void;
@@ -78,15 +65,33 @@ const customLocale = {
 };
 const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
   //filter
-  const [currentPage, setCurrentPage] = useState(1);
+  const location = useLocation();
+  const searchParam = new URLSearchParams(useLocation().search);
+
+  const params =
+    (searchParam.get("unit1")
+      ? "&DonViQuanLy=" + searchParam.get("unit1")
+      : "") +
+    (searchParam.get("club1") ? "&club=" + searchParam.get("club1") : "") +
+    (searchParam.get("address1")
+      ? "&address=" + searchParam.get("address1")
+      : "") +
+    (searchParam.get("level1") ? "&level=" + searchParam.get("level1") : "") +
+    (searchParam.get("note1") ? "&note=" + searchParam.get("note1") : "") +
+    (searchParam.get("status1") ? "&status=" + searchParam.get("status1") : "");
+
+  const [currentPage, setCurrentPage] = useState<any>(
+    searchParam.get("pageAll") || "1"
+  );
   const initialPayload = `page=${currentPage}`;
   const [param, setParam] = useState("");
-  const [payload, setPayload] = useState<any>(`page=${currentPage}`);
+  const [payload, setPayload] = useState<any>(`page=${currentPage}` + params);
   const {
     data: allMember,
     refetch,
     isFetching,
   } = useQuery(["allMember", payload], () => getListMember(payload));
+
   const onChange: TableProps<DataType>["onChange"] = (pagination, filters) => {
     const param =
       (filters.DonViQuanLy ? "&DonViQuanLy=" + filters.DonViQuanLy[0] : "") +
@@ -103,10 +108,40 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
       (filters.status
         ? "&status=" + encodeURIComponent(filters.status[0].toString())
         : "");
+
+    if (filters.DonViQuanLy)
+      searchParam.set("unit1", filters.DonViQuanLy[0].toString());
+    else searchParam.delete("unit1");
+    if (filters.NameClub)
+      searchParam.set("club1", filters.NameClub[0].toString());
+    else searchParam.delete("club1");
+    if (filters.address)
+      searchParam.set(
+        "address1",
+        encodeURIComponent(filters.address[0].toString())
+      );
+    else searchParam.delete("address1");
+    if (filters.level)
+      searchParam.set(
+        "level1",
+        encodeURIComponent(filters.level[0].toString())
+      );
+    else searchParam.delete("level1");
+    if (filters.note)
+      searchParam.set("note1", encodeURIComponent(filters.note[0].toString()));
+    else searchParam.delete("note1");
+    if (filters.status)
+      searchParam.set(
+        "status1",
+        encodeURIComponent(filters.status[0].toString())
+      );
+    else searchParam.delete("status1");
+    navigate(`${location.pathname}?${searchParam.toString()}`);
     setParam(param);
     const updatedPayload = initialPayload + param;
     setPayload(updatedPayload);
   };
+
   const filtersListNote = Array.from(
     new Set(allMember?.list_note?.map((item: any) => item.note))
   ).map((note) => ({
@@ -126,7 +161,10 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
     refetch();
     setFetching(true);
   }, [fetching]);
+
   const onChangePage = (value: any) => {
+    searchParam.set("pageAll", value.toString());
+    navigate(`${location.pathname}?${searchParam.toString()}`);
     setCurrentPage(value);
     const updatedPayload = `page=${value}` + param;
     setPayload(updatedPayload);
@@ -226,7 +264,6 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
       dataIndex: "level",
       width: 270,
       filters: levelFilters,
-
       filterMultiple: false,
       onFilter: (value: any, record) => record.level.indexOf(value) === 0,
       // render(value, record, index) {
@@ -276,12 +313,12 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
       filterMultiple: false,
       onFilter: (value: any, record) => record.DonViQuanLy.indexOf(value) === 0,
     },
+
     {
       title: "CLB trực thuộc F2",
       dataIndex: "NameClb",
       width: 300,
       filters: ListClub(),
-
       filterMultiple: false,
       filterSearch: true,
       onFilter: (value: any, record) => record.club.indexOf(value) === 0,
@@ -291,7 +328,6 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
       dataIndex: "note",
       width: 130,
       filters: filtersListNote,
-
       filterSearch: true,
       filterMultiple: false,
       onFilter: (value: any, record) => record.note.indexOf(value) === 0,
@@ -429,7 +465,7 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
       title: "STT",
       dataIndex: "stt",
       render: (value, record, index) => {
-        return index + 1 + (currentPage - 1) * 10;
+        return index + 1 + (Number(currentPage) - 1) * 10;
       },
     },
     {
@@ -640,7 +676,7 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
     // Tạo một mảng dữ liệu chứa thông tin cần xuất
     let exportData: any[] = [{ "": "DANH SÁCH HỘI VIÊN" }];
     exportData = dataToExport.map((item: any, index: number) => ({
-      STT: index + 1 + (currentPage - 1) * 10,
+      STT: index + 1 + (Number(currentPage) - 1) * 10,
       "Họ tên": item.name,
       "Ngày sinh": moment(item.birthday).format("DD/MM/YYYY"),
       "Số điện thoại": item.phone,
@@ -662,6 +698,7 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
     // Tạo một file Excel từ workbook
     XLSX.writeFile(wb, "Danh sách hội viên.xlsx");
   };
+
   return (
     <div className={styles.wrapComponent}>
       {" "}
@@ -758,7 +795,7 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
             pagination={false}
           />
           <Pagination
-            defaultCurrent={currentPage}
+            defaultCurrent={Number(currentPage)}
             onChange={onChangePage}
             total={allMember?.total_products}
             pageSize={50}

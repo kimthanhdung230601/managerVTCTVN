@@ -27,7 +27,7 @@ import type { TableColumnsType, TableProps } from "antd";
 
 import ModalAccount from "../../components/Modal/ModalAccount";
 import ModalAccept from "../../components/Modal/ModalAccept";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { useMediaQuery } from "react-responsive";
 import { text } from "stream/consumers";
 import type { ColumnsType } from "antd/es/table";
@@ -75,11 +75,27 @@ const customLocale = {
   selectInvert: "Đảo ngược", // Thay đổi văn bản khi chọn ngược
 };
 const ManagerAccountUnDepended = ({ refetch }: ManagerAccountProps) => {
+  const location = useLocation();
+  const searchParam = new URLSearchParams(useLocation().search);
+  const navigate = useNavigate();
+
+  const params =
+    (searchParam.get("unitUndepend")
+      ? "&manage=" + searchParam.get("unitUndepend")
+      : "") +
+    (searchParam.get("addressUndepend")
+      ? "&location=" + searchParam.get("addressUndepend")
+      : "");
+
   //tài khoản chưa được duyệt
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState<any>(
+    searchParam.get("pageAllUndepend") || "1"
+  );
   const initialPayload = `page=${currentPage}&pending=0&permission=2`;
-  const [payload, setPayload] = useState(initialPayload);
   const [param, setParam] = useState("");
+
+  const [payload, setPayload] = useState<any>(`page=${currentPage}` + params);
+
   const {
     data,
     refetch: refetchUnAccept,
@@ -95,12 +111,22 @@ const ManagerAccountUnDepended = ({ refetch }: ManagerAccountProps) => {
         : "") +
       (filters.manage
         ? "$manage=" + encodeURIComponent(filters.manage[0].toString())
-        : "") +
-      (filters.nameClub ? "$club=" + filters.nameClub[0] : "");
+        : "");
 
+    if (filters.location)
+      searchParam.set("unitUndepend", filters.location[0].toString());
+    else searchParam.delete("unitUndepend");
+    if (filters.manage)
+      searchParam.set(
+        "addressUndepend",
+        encodeURIComponent(filters.manage[0].toString())
+      );
+    else searchParam.delete("addressUndepend");
+
+    navigate(`${location.pathname}?${searchParam.toString()}`);
+    setParam(param);
     const updatePayload = initialPayload + param;
     setPayload(updatePayload);
-    setParam(param);
   };
 
   const onChangePageAccept = (value: any) => {
