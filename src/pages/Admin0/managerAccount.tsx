@@ -16,8 +16,7 @@ import styles from "./styles.module.scss";
 import type { TableProps } from "antd";
 
 import ModalAccount from "../../components/Modal/ModalAccount";
-import ModalAccept from "../../components/Modal/ModalAccept";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { useMediaQuery } from "react-responsive";
 import type { ColumnsType } from "antd/es/table";
 import { useQuery } from "react-query";
@@ -62,11 +61,23 @@ const customLocale = {
   selectInvert: "Đảo ngược", // Thay đổi văn bản khi chọn ngược
 };
 const ManagerAccount = () => {
+  const location = useLocation();
+  const searchParam = new URLSearchParams(useLocation().search);
+  const navigate = useNavigate();
+
+  const params =
+    (searchParam.get("unit1") ? "&location=" + searchParam.get("unit1") : "") +
+    (searchParam.get("club1") ? "&manage=" + searchParam.get("club1") : "");
   //tài khoản đã được duyệt
-  const [currentPageAccount, setCurrentPageAccount] = useState(1);
+  const [currentPageAccount, setCurrentPageAccount] = useState<any>(
+    searchParam.get("pageAll") || "1"
+  );
   const initialPayload = `page=${currentPageAccount}&pending=1&permission=2`;
   const [param, setParam] = useState("");
-  const [payload, setPayload] = useState<any>(initialPayload);
+  const [payload, setPayload] = useState<any>(
+    `page=${currentPageAccount}` + params
+  );
+
   const {
     data: dataMemberF12Accept,
     refetch: refetchAccept,
@@ -77,10 +88,16 @@ const ManagerAccount = () => {
       (filters.location
         ? "&location=" + encodeURIComponent(filters.location[0].toString())
         : "") +
-      (filters.NameClub ? "&club=" + filters.NameClub[0] : "") +
       (filters.manage
         ? "&manage=" + encodeURIComponent(filters.manage[0].toString())
         : "");
+    if (filters.location)
+      searchParam.set("unit1", filters.location[0].toString());
+    else searchParam.delete("unit1");
+    if (filters.manage) searchParam.set("club1", filters.manage[0].toString());
+    else searchParam.delete("club1");
+    navigate(`${location.pathname}?${searchParam.toString()}`);
+
     const updatePayload = initialPayload + param;
     setPayload(updatePayload);
     setParam(param);

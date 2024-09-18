@@ -14,7 +14,7 @@ import { province } from "../../until/until";
 import styles from "./styles.module.scss";
 import type { TableProps } from "antd";
 
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { useMediaQuery } from "react-responsive";
 import type { ColumnsType } from "antd/es/table";
 import { useQuery } from "react-query";
@@ -57,9 +57,22 @@ const customLocale = {
   selectInvert: "Đảo ngược",
 };
 const ManagerF1 = () => {
-  const [currentPageAccount, setCurrentPageAccount] = useState(1);
+  const location = useLocation();
+  const searchParam = new URLSearchParams(useLocation().search);
+  const navigate = useNavigate();
+
+  const params =
+    (searchParam.get("unit2") ? "&location=" + searchParam.get("unit2") : "") +
+    (searchParam.get("club2") ? "&manage=" + searchParam.get("club2") : "");
+
+  const [currentPageAccount, setCurrentPageAccount] = useState<any>(
+    searchParam.get("pageAll") || "1"
+  );
+
   const initialPayload = `page=${currentPageAccount}&permission=1`;
-  const [payloadAccept, setPayloadAccept] = useState<any>(initialPayload);
+  const [payloadAccept, setPayloadAccept] = useState<any>(
+    `page=${currentPageAccount}` + params
+  );
   const {
     data: dataMemberF12Accept,
     refetch: refetchAccept,
@@ -76,11 +89,22 @@ const ManagerF1 = () => {
       (filters.manage
         ? "&manage=" + encodeURIComponent(filters.manage[0].toString())
         : "");
-    setPayloadAccept(param);
-    refetchAccept();
+
+    if (filters.location)
+      searchParam.set("unit2", filters.location[0].toString());
+    else searchParam.delete("unit2");
+    if (filters.manage) searchParam.set("club2", filters.manage[0].toString());
+    else searchParam.delete("club2");
+
+    navigate(`${location.pathname}?${searchParam.toString()}`);
+    const updatePayload = initialPayload + param;
+    setPayloadAccept(updatePayload);
+    // refetchAccept();
   };
 
   const onChangePageAccount = (value: any) => {
+    searchParam.set("pageAll", value.toString());
+    navigate(`${location.pathname}?${searchParam.toString()}`);
     setCurrentPageAccount(value);
     refetchAccept();
   };

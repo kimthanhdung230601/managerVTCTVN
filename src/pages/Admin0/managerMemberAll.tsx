@@ -1,12 +1,7 @@
 import { useEffect, useState } from "react";
-import {
-  AudioOutlined,
-  PlusOutlined,
-  DownloadOutlined,
-} from "@ant-design/icons";
+import { PlusOutlined, DownloadOutlined } from "@ant-design/icons";
 import type { SearchProps } from "antd/es/input";
 import {
-  Input,
   Table,
   Button,
   TableProps,
@@ -18,18 +13,9 @@ import {
   message,
 } from "antd";
 import styles from "./styles.module.scss";
-import {
-  OnlyProvince,
-  level,
-  levelFilters,
-  managerf1,
-  province,
-  randomState,
-  statess,
-} from "../../until/until";
+import { OnlyProvince, levelFilters } from "../../until/until";
 import { useMediaQuery } from "react-responsive";
 import type { ColumnsType } from "antd/es/table";
-import type { FilterValue } from "antd/es/table/interface";
 import * as XLSX from "xlsx";
 
 import Search from "antd/es/input/Search";
@@ -65,6 +51,7 @@ interface DataType {
   level: string;
   achievements: string;
 }
+
 interface fetchingProp {
   fetching: any;
   setFetching: (value: boolean) => void;
@@ -80,6 +67,7 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
   //filter
   const location = useLocation();
   const searchParam = new URLSearchParams(useLocation().search);
+
   const params =
     (searchParam.get("unit1")
       ? "&DonViQuanLy=" + searchParam.get("unit1")
@@ -91,7 +79,10 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
     (searchParam.get("level1") ? "&level=" + searchParam.get("level1") : "") +
     (searchParam.get("note1") ? "&note=" + searchParam.get("note1") : "") +
     (searchParam.get("status1") ? "&status=" + searchParam.get("status1") : "");
-  const [currentPage, setCurrentPage] = useState(
+
+
+  const [currentPage, setCurrentPage] = useState<any>(
+
     searchParam.get("pageAll") || "1"
   );
   const initialPayload = `page=${currentPage}`;
@@ -152,6 +143,7 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
     const updatedPayload = initialPayload + param;
     setPayload(updatedPayload);
   };
+
   const filtersListNote = Array.from(
     new Set(allMember?.list_note?.map((item: any) => item.note))
   ).map((note) => ({
@@ -171,6 +163,7 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
     refetch();
     setFetching(true);
   }, [fetching]);
+
   const onChangePage = (value: any) => {
     searchParam.set("pageAll", value.toString());
     navigate(`${location.pathname}?${searchParam.toString()}`);
@@ -273,7 +266,6 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
       dataIndex: "level",
       width: 270,
       filters: levelFilters,
-
       filterMultiple: false,
       onFilter: (value: any, record) => record.level.indexOf(value) === 0,
       // render(value, record, index) {
@@ -329,7 +321,6 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
       dataIndex: "NameClb",
       width: 300,
       filters: ListClub(),
-
       filterMultiple: false,
       filterSearch: true,
       onFilter: (value: any, record) => record.club.indexOf(value) === 0,
@@ -339,7 +330,6 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
       dataIndex: "note",
       width: 130,
       filters: filtersListNote,
-
       filterSearch: true,
       filterMultiple: false,
       onFilter: (value: any, record) => record.note.indexOf(value) === 0,
@@ -710,6 +700,7 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
     // Tạo một file Excel từ workbook
     XLSX.writeFile(wb, "Danh sách hội viên.xlsx");
   };
+
   return (
     <div className={styles.wrapComponent}>
       {" "}
