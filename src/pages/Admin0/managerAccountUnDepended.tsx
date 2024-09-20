@@ -106,20 +106,20 @@ const ManagerAccountUnDepended = ({ refetch }: ManagerAccountProps) => {
     filters
   ) => {
     const param =
-      (filters.location
-        ? "&location=" + encodeURIComponent(filters.location[0].toString())
+      (filters?.location
+        ? "&location=" + encodeURIComponent(filters?.location[0].toString())
         : "") +
-      (filters.manage
-        ? "$manage=" + encodeURIComponent(filters.manage[0].toString())
+      (filters?.manage
+        ? "$manage=" + encodeURIComponent(filters?.manage[0].toString())
         : "");
 
-    if (filters.location)
-      searchParam.set("unitUndepend", filters.location[0].toString());
+    if (filters?.location)
+      searchParam.set("unitUndepend", filters?.location[0].toString());
     else searchParam.delete("unitUndepend");
-    if (filters.manage)
+    if (filters?.manage)
       searchParam.set(
         "addressUndepend",
-        encodeURIComponent(filters.manage[0].toString())
+        encodeURIComponent(filters?.manage[0].toString())
       );
     else searchParam.delete("addressUndepend");
 
@@ -209,7 +209,9 @@ const ManagerAccountUnDepended = ({ refetch }: ManagerAccountProps) => {
       onFilter: (value: any, record) => record.location.startsWith(value),
       filterMultiple: false,
       filterSearch: true,
-
+      defaultFilteredValue: searchParam.get("unitUndepend")
+        ? [decodeURIComponent(searchParam.get("unitUndepend") as string)]
+        : null,
       width: 120,
     },
     {
@@ -242,6 +244,9 @@ const ManagerAccountUnDepended = ({ refetch }: ManagerAccountProps) => {
           value: "Quân Đội",
         },
       ],
+      defaultFilteredValue: searchParam.get("addressUndepend")
+        ? [decodeURIComponent(searchParam.get("addressUndepend") as string)]
+        : null,
       onFilter: (value: any, record) => record.manage.indexOf(value) === 0,
       filterMultiple: false,
     },

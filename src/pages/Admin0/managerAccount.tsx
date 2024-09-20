@@ -183,6 +183,9 @@ const ManagerAccount = () => {
       filterSearch: true,
       filterMultiple: false,
       width: 120,
+      defaultFilteredValue: searchParam.get("unit1")
+        ? [decodeURIComponent(searchParam.get("unit1") as string)]
+        : null,
     },
     {
       title: "Đơn vị quản lý",
@@ -215,7 +218,9 @@ const ManagerAccount = () => {
       ],
       onFilter: (value: any, record) => record.manage.indexOf(value) === 0,
       filterMultiple: false,
-
+      defaultFilteredValue: searchParam.get("club1")
+        ? [decodeURIComponent(searchParam.get("club1") as string)]
+        : null,
       width: 200,
     },
     {

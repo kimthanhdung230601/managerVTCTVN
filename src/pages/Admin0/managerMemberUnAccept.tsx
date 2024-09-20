@@ -94,6 +94,9 @@ const ManagerMemberUnAccept = ({ setFetching }: fetchingProp) => {
       : "") +
     (searchParam.get("level2") ? "&level=" + searchParam.get("level2") : "") +
     (searchParam.get("note2") ? "&note=" + searchParam.get("note2") : "") +
+    (searchParam.get("achievements2")
+      ? "&achievements=" + searchParam.get("achievements2")
+      : "") +
     (searchParam.get("status2") ? "&status=" + searchParam.get("status2") : "");
   const initialPayload =
     `page=${currentPage}&status=` + encodeURIComponent(status.toString());
@@ -113,47 +116,57 @@ const ManagerMemberUnAccept = ({ setFetching }: fetchingProp) => {
 
   const onChange: TableProps<DataType>["onChange"] = (pagination, filters) => {
     const param =
-      (filters.DonViQuanLy ? "&DonViQuanLy=" + filters.DonViQuanLy[0] : "") +
-      (filters.club ? "$club=" + filters.club[0] : "") +
-      (filters.address
-        ? "&address=" + encodeURIComponent(filters.address[0].toString())
+      (filters?.DonViQuanLy ? "&DonViQuanLy=" + filters?.DonViQuanLy[0] : "") +
+      (filters?.club ? "$club=" + filters?.club[0] : "") +
+      (filters?.address
+        ? "&address=" + encodeURIComponent(filters?.address[0].toString())
         : "") +
-      (filters.level
-        ? "&level=" + encodeURIComponent(filters.level[0].toString())
+      (filters?.level
+        ? "&level=" + encodeURIComponent(filters?.level[0].toString())
         : "") +
-      (filters.note
-        ? "&note=" + encodeURIComponent(filters.note[0].toString())
+      (filters?.note && filters?.note !== undefined
+        ? "&note=" + encodeURIComponent(filters?.note[0].toString())
         : "") +
-      (filters.status
-        ? "&status=" + encodeURIComponent(filters.status[0].toString())
+      (filters?.achievements && filters?.achievements !== undefined
+        ? "&achievements=" +
+          encodeURIComponent(filters?.achievements[0].toString())
+        : "") +
+      (filters?.status
+        ? "&status=" + encodeURIComponent(filters?.status[0].toString())
         : "");
-    if (filters.DonViQuanLy)
-      searchParam.set("unit2", filters.DonViQuanLy[0].toString());
+    if (filters?.DonViQuanLy)
+      searchParam.set("unit2", filters?.DonViQuanLy[0].toString());
     else searchParam.delete("unit2");
-    if (filters.NameClub)
-      searchParam.set("club2", filters.NameClub[0].toString());
+    if (filters?.NameClub)
+      searchParam.set("club2", filters?.NameClub[0].toString());
     else searchParam.delete("club2");
-    if (filters.address)
+    if (filters?.address)
       searchParam.set(
         "address2",
-        encodeURIComponent(filters.address[0].toString())
+        encodeURIComponent(filters?.address[0].toString())
       );
     else searchParam.delete("address2");
-    if (filters.level)
+    if (filters?.level)
       searchParam.set(
         "level2",
-        encodeURIComponent(filters.level[0].toString())
+        encodeURIComponent(filters?.level[0].toString())
       );
     else searchParam.delete("level2");
-    if (filters.note)
-      searchParam.set("note2", encodeURIComponent(filters.note[0].toString()));
+    if (filters?.note)
+      searchParam.set("note2", encodeURIComponent(filters?.note[0].toString()));
     else searchParam.delete("note2");
-    if (filters.status)
+    if (filters?.status)
       searchParam.set(
         "status2",
-        encodeURIComponent(filters.status[0].toString())
+        encodeURIComponent(filters?.status[0].toString())
       );
     else searchParam.delete("status2");
+    if (filters?.achievements)
+      searchParam.set(
+        "achievements2",
+        encodeURIComponent(filters?.achievements[0].toString())
+      );
+    else searchParam.delete("achievements2");
     navigate(`${location.pathname}?${searchParam.toString()}`);
     setParam(param);
     const updatedPayload = initialPayload + param;
@@ -287,7 +300,9 @@ const ManagerMemberUnAccept = ({ setFetching }: fetchingProp) => {
       dataIndex: "level",
       width: 130,
       filters: levelFilters,
-
+      defaultFilteredValue: searchParam.get("level2")
+        ? [decodeURIComponent(searchParam.get("level2") as string)]
+        : null,
       filterMultiple: false,
       onFilter: (value: any, record) => record.level.indexOf(value) === 0,
     },
@@ -296,6 +311,9 @@ const ManagerMemberUnAccept = ({ setFetching }: fetchingProp) => {
       dataIndex: "address",
       filters: filterProivce,
       filterMultiple: false,
+      defaultFilteredValue: searchParam.get("address2")
+        ? [decodeURIComponent(searchParam.get("address2") as string)]
+        : null,
       onFilter: (value: any, record) => record.address.indexOf(value) === 0,
       filterSearch: true,
       width: 120,
@@ -343,7 +361,9 @@ const ManagerMemberUnAccept = ({ setFetching }: fetchingProp) => {
           value: "Trung tâm huấn luyện thể thao",
         },
       ],
-
+      defaultFilteredValue: searchParam.get("unit2")
+        ? [decodeURIComponent(searchParam.get("unit2") as string)]
+        : null,
       filterMultiple: false,
       onFilter: (value: any, record) => record.DonViQuanLy.indexOf(value) === 0,
     },
@@ -352,7 +372,9 @@ const ManagerMemberUnAccept = ({ setFetching }: fetchingProp) => {
       dataIndex: "NameClb",
       width: 300,
       filters: ListClub(),
-
+      defaultFilteredValue: searchParam.get("NameClb2")
+        ? [decodeURIComponent(searchParam.get("NameClb2") as string)]
+        : null,
       filterMultiple: false,
       filterSearch: true,
       onFilter: (value: any, record) => record.club.indexOf(value) === 0,
@@ -362,7 +384,9 @@ const ManagerMemberUnAccept = ({ setFetching }: fetchingProp) => {
       dataIndex: "note",
       width: 130,
       filters: filtersListNote,
-
+      defaultFilteredValue: searchParam.get("note2")
+        ? [decodeURIComponent(searchParam.get("note2") as string)]
+        : null,
       filterSearch: true,
       filterMultiple: false,
       onFilter: (value: any, record) => record.note.indexOf(value) === 0,
@@ -389,7 +413,9 @@ const ManagerMemberUnAccept = ({ setFetching }: fetchingProp) => {
           value: "Nghỉ",
         },
       ],
-
+      defaultFilteredValue: searchParam.get("status2")
+        ? [decodeURIComponent(searchParam.get("status2") as string)]
+        : null,
       filterMultiple: false,
       render: (value, record) => {
         if (value === "Đã duyệt")
@@ -415,7 +441,9 @@ const ManagerMemberUnAccept = ({ setFetching }: fetchingProp) => {
           value: "Không",
         },
       ],
-
+      defaultFilteredValue: searchParam.get("achievements2")
+        ? [decodeURIComponent(searchParam.get("achievements2") as string)]
+        : null,
       filterMultiple: false,
       onFilter: (value: any, record) => {
         if (

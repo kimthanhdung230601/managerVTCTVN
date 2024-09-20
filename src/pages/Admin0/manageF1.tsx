@@ -82,18 +82,19 @@ const ManagerF1 = () => {
   );
   const onChange: TableProps<DataType>["onChange"] = (pagination, filters) => {
     const param =
-      (filters.location
-        ? "&location=" + encodeURIComponent(filters.location[0].toString())
+      (filters?.location
+        ? "&location=" + encodeURIComponent(filters?.location[0].toString())
         : "") +
-      (filters.club ? "$club=" + filters.club[0] : "") +
-      (filters.manage
-        ? "&manage=" + encodeURIComponent(filters.manage[0].toString())
+      (filters?.club ? "$club=" + filters?.club[0] : "") +
+      (filters?.manage
+        ? "&manage=" + encodeURIComponent(filters?.manage[0].toString())
         : "");
 
-    if (filters.location)
-      searchParam.set("unit2", filters.location[0].toString());
+    if (filters?.location)
+      searchParam.set("unit2", filters?.location[0].toString());
     else searchParam.delete("unit2");
-    if (filters.manage) searchParam.set("club2", filters.manage[0].toString());
+    if (filters?.manage)
+      searchParam.set("club2", filters?.manage[0].toString());
     else searchParam.delete("club2");
 
     navigate(`${location.pathname}?${searchParam.toString()}`);
@@ -169,6 +170,9 @@ const ManagerF1 = () => {
       filterSearch: true,
       filterMultiple: false,
       width: 120,
+      defaultFilteredValue: searchParam.get("unit2")
+        ? [decodeURIComponent(searchParam.get("unit2") as string)]
+        : null,
     },
     {
       title: "Đơn vị quản lý",
@@ -214,7 +218,9 @@ const ManagerF1 = () => {
       ],
       onFilter: (value: any, record) => record.manage.indexOf(value) === 0,
       filterMultiple: false,
-
+      defaultFilteredValue: searchParam.get("club2")
+        ? [decodeURIComponent(searchParam.get("club2") as string)]
+        : null,
       width: 200,
     },
     {
