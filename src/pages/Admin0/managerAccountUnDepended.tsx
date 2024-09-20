@@ -178,7 +178,7 @@ const ManagerAccountUnDepended = ({ refetch }: ManagerAccountProps) => {
       fixed: "left",
       width: 70,
       render: (value, record, index) => {
-        return index + 1 + (currentPage - 1) * 10;
+        return index + 1 + (currentPage - 1) * 36;
       },
     },
     {
@@ -334,7 +334,7 @@ const ManagerAccountUnDepended = ({ refetch }: ManagerAccountProps) => {
       fixed: "left",
       width: 70,
       render: (value, record, index) => {
-        return index + 1 + (currentPage - 1) * 10;
+        return index + 1 + (currentPage - 1) * 36;
       },
     },
     {
@@ -499,7 +499,12 @@ const ManagerAccountUnDepended = ({ refetch }: ManagerAccountProps) => {
         <div className={styles.table}>
           <span style={{ marginLeft: 8 }}>
             {/* {hasSelected ? `Đã chọn ${selectedRowKeys.length} hồ sơ` : ""} */}
-          </span>
+          </span>{" "}
+          {data && (
+            <div className={styles.Text}>
+              Tổng số tài khoản: {data?.total_products}
+            </div>
+          )}
           <Spin spinning={isFetchingUnAccept}>
             {" "}
             <Table
@@ -518,7 +523,7 @@ const ManagerAccountUnDepended = ({ refetch }: ManagerAccountProps) => {
               defaultCurrent={1}
               onChange={onChangePageAccept}
               total={data?.total_products}
-              pageSize={30}
+              pageSize={36}
               style={{ margin: "1vh 0", float: "right" }}
             />
           </Spin>

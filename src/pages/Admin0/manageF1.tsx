@@ -147,7 +147,7 @@ const ManagerF1 = () => {
       fixed: "left",
       width: 20,
       render: (value, record, index) => {
-        return index + 1 + (currentPageAccount - 1) * 10;
+        return index + 1 + (currentPageAccount - 1) * 37;
       },
     },
     {
@@ -268,7 +268,7 @@ const ManagerF1 = () => {
 
       width: 20,
       render: (value, record, index) => {
-        return index + 1 + (currentPageAccount - 1) * 10;
+        return index + 1 + (currentPageAccount - 1) * 37;
       },
     },
     {
@@ -399,6 +399,11 @@ const ManagerF1 = () => {
             </div>
           </Col>
         </Row>
+        {dataMemberF12Accept && (
+          <div className={styles.Text}>
+            Tổng số tài khoản: {dataMemberF12Accept?.total_products}
+          </div>
+        )}
         <div className={styles.table}>
           <Spin spinning={isFetchingAccept}>
             <Table
@@ -420,7 +425,7 @@ const ManagerF1 = () => {
               defaultCurrent={1}
               onChange={onChangePageAccount}
               total={dataMemberF12Accept?.total_products}
-              pageSize={30}
+              pageSize={37}
               style={{ margin: "1vh 0", float: "right" }}
             />
           </Spin>

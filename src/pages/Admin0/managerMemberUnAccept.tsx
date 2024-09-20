@@ -328,24 +328,37 @@ const ManagerMemberUnAccept = ({ setFetching }: fetchingProp) => {
           value: "Công An",
         },
         {
-          text: "Hội Võ Thuật",
-          value: "Hội Võ Thuật",
+          text: "Quân Đội",
+          value: "Quân Đội",
         },
         {
           text: "Giáo Dục",
           value: "Giáo Dục",
         },
         {
-          text: "Liên Đoàn",
-          value: "Liên Đoàn",
+          text: "Hội Võ Thuật",
+          value: "Hội Võ Thuật",
         },
         {
-          text: "Sở VHTT",
-          value: "Sở VHTT",
+          text: "Hội Võ Thuật Cổ Truyền",
+          value: "Hội Võ Thuật Cổ Truyền",
         },
         {
-          text: "Quân Đội",
-          value: "Quân Đội",
+          text: "Liên đoàn võ thuật",
+          value: "Liên đoàn võ thuật",
+        },
+        {
+          text: "Liên đoàn võ thuật cổ truyền",
+          value: "Liên đoàn võ thuật cổ truyền",
+        },
+
+        {
+          text: "Sở VHTT và Du lịch",
+          value: "Sở VHTT và Du lịch",
+        },
+        {
+          text: "Trung tâm huấn luyện thể thao",
+          value: "Trung tâm huấn luyện thể thao",
         },
       ],
       defaultFilteredValue: searchParam.get("unit2")
@@ -569,24 +582,37 @@ const ManagerMemberUnAccept = ({ setFetching }: fetchingProp) => {
           value: "Công An",
         },
         {
-          text: "Hội Võ Thuật",
-          value: "Hội Võ Thuật",
+          text: "Quân Đội",
+          value: "Quân Đội",
         },
         {
           text: "Giáo Dục",
           value: "Giáo Dục",
         },
         {
-          text: "Liên Đoàn",
-          value: "Liên Đoàn",
+          text: "Hội Võ Thuật",
+          value: "Hội Võ Thuật",
         },
         {
-          text: "Sở VHTT",
-          value: "Sở VHTT",
+          text: "Hội Võ Thuật Cổ Truyền",
+          value: "Hội Võ Thuật Cổ Truyền",
         },
         {
-          text: "Quân Đội",
-          value: "Quân Đội",
+          text: "Liên đoàn võ thuật",
+          value: "Liên đoàn võ thuật",
+        },
+        {
+          text: "Liên đoàn võ thuật cổ truyền",
+          value: "Liên đoàn võ thuật cổ truyền",
+        },
+
+        {
+          text: "Sở VHTT và Du lịch",
+          value: "Sở VHTT và Du lịch",
+        },
+        {
+          text: "Trung tâm huấn luyện thể thao",
+          value: "Trung tâm huấn luyện thể thao",
         },
       ],
 
@@ -749,26 +775,13 @@ const ManagerMemberUnAccept = ({ setFetching }: fetchingProp) => {
   return (
     <div className={styles.wrapComponent}>
       {" "}
-      <div className={styles.table}>
-        <div className={styles.styleRight}>
-          {/* <Search
-            className={styles.btn}
-            placeholder="Tìm kiếm tại đây"
-            allowClear
-            onSearch={onSearch}
-            size="large"
-            style={{
-              maxWidth: "300px",
-              marginBottom: "4px",
-              marginRight: "8px",
-            }}
-          />
-
-          <Button className={styles.btn} onClick={exportToExcel}>
-            <DownloadOutlined className={styles.icon} />
-            Xuất excel
-          </Button> */}
+      {allMember && (
+        <div className={styles.Text}>
+          Tổng số thành viên: {allMember?.total_products}
         </div>
+      )}
+      <div className={styles.table}>
+        <div className={styles.styleRight}></div>
         <Spin spinning={isFetching}>
           <Table
             // rowSelection={rowSelection}

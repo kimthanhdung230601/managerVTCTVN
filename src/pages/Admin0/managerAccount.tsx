@@ -146,7 +146,7 @@ const ManagerAccount = () => {
       fixed: "left",
       width: 20,
       render: (value, record, index) => {
-        return index + 1 + (currentPageAccount - 1) * 10;
+        return index + 1 + (currentPageAccount - 1) * 36;
       },
     },
     {
@@ -490,6 +490,11 @@ const ManagerAccount = () => {
           </Col>
         </Row>
         <div className={styles.table}>
+          {dataMemberF12Accept && (
+            <div className={styles.Text}>
+              Tổng số tài khoản: {dataMemberF12Accept?.total_products}
+            </div>
+          )}
           <Spin spinning={isFetchingAccept}>
             <Table
               columns={isMobile ? columnsMobileAccount : columnsDesktopAccount}
@@ -510,7 +515,7 @@ const ManagerAccount = () => {
               defaultCurrent={1}
               onChange={onChangePageAccount}
               total={dataMemberF12Accept?.total_products}
-              pageSize={30}
+              pageSize={36}
               style={{ margin: "1vh 0", float: "right" }}
             />
           </Spin>
