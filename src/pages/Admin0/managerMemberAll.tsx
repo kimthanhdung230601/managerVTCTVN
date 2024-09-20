@@ -265,10 +265,8 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
       width: 270,
       filters: levelFilters,
       filterMultiple: false,
+      defaultFilteredValue: [],
       onFilter: (value: any, record) => record.level.indexOf(value) === 0,
-      // render(value, record, index) {
-      //   return <span> {value.split('-').parts}</span>
-      // },
     },
     {
       title: "Tỉnh",
@@ -289,24 +287,37 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
           value: "Công An",
         },
         {
-          text: "Hội Võ Thuật",
-          value: "Hội Võ Thuật",
+          text: "Quân Đội",
+          value: "Quân Đội",
         },
         {
           text: "Giáo Dục",
           value: "Giáo Dục",
         },
         {
-          text: "Liên Đoàn",
-          value: "Liên Đoàn",
+          text: "Hội Võ Thuật",
+          value: "Hội Võ Thuật",
         },
         {
-          text: "Sở VHTT",
-          value: "Sở VHTT",
+          text: "Hội Võ Thuật Cổ Truyền",
+          value: "Hội Võ Thuật Cổ Truyền",
         },
         {
-          text: "Quân Đội",
-          value: "Quân Đội",
+          text: "Liên đoàn võ thuật",
+          value: "Liên đoàn võ thuật",
+        },
+        {
+          text: "Liên đoàn võ thuật cổ truyền",
+          value: "Liên đoàn võ thuật cổ truyền",
+        },
+
+        {
+          text: "Sở VHTT và Du lịch",
+          value: "Sở VHTT và Du lịch",
+        },
+        {
+          text: "Trung tâm huấn luyện thể thao",
+          value: "Trung tâm huấn luyện thể thao",
         },
       ],
 
@@ -471,7 +482,6 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
     {
       title: "Họ tên",
       dataIndex: "name",
-
       width: 200,
     },
     {
@@ -496,10 +506,12 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
       dataIndex: "level",
       width: 270,
       filters: levelFilters,
-
+      defaultFilteredValue: searchParam.get("level1")
+        ? [decodeURIComponent(searchParam.get("level1") as string)]
+        : null,
       filterMultiple: false,
       onFilter: (value: any, record) => record.level.indexOf(value) === 0,
-      render(value, record, index) {
+      render(value) {
         return <span> {value.split(" - ").parts}</span>;
       },
     },
@@ -507,6 +519,9 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
       title: "Tỉnh",
       dataIndex: "address",
       filters: filterProivce,
+      defaultFilteredValue: [
+        encodeURIComponent(searchParam.get("address1") ?? ""), // Ensure null is replaced with an empty string
+      ],
       onFilter: (value: any, record) => record.address.indexOf(value) === 0,
       filterSearch: true,
       width: 120,
@@ -521,27 +536,42 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
           value: "Công An",
         },
         {
-          text: "Hội Võ Thuật",
-          value: "Hội Võ Thuật",
+          text: "Quân Đội",
+          value: "Quân Đội",
         },
         {
           text: "Giáo Dục",
           value: "Giáo Dục",
         },
         {
-          text: "Liên Đoàn",
-          value: "Liên Đoàn",
+          text: "Hội Võ Thuật",
+          value: "Hội Võ Thuật",
         },
         {
-          text: "Sở VHTT",
-          value: "Sở VHTT",
+          text: "Hội Võ Thuật Cổ Truyền",
+          value: "Hội Võ Thuật Cổ Truyền",
         },
         {
-          text: "Quân Đội",
-          value: "Quân Đội",
+          text: "Liên đoàn võ thuật",
+          value: "Liên đoàn võ thuật",
+        },
+        {
+          text: "Liên đoàn võ thuật cổ truyền",
+          value: "Liên đoàn võ thuật cổ truyền",
+        },
+
+        {
+          text: "Sở VHTT và Du lịch",
+          value: "Sở VHTT và Du lịch",
+        },
+        {
+          text: "Trung tâm huấn luyện thể thao",
+          value: "Trung tâm huấn luyện thể thao",
         },
       ],
-
+      defaultFilteredValue: [
+        encodeURIComponent(searchParam.get("unit1") ?? ""), // Ensure null is replaced with an empty string
+      ],
       filterMultiple: false,
       onFilter: (value: any, record) => record.DonViQuanLy.indexOf(value) === 0,
     },
@@ -550,18 +580,22 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
       dataIndex: "NameClb",
       width: 300,
       filters: ListClub(),
-
+      defaultFilteredValue: [
+        encodeURIComponent(searchParam.get("club1") ?? ""), // Ensure null is replaced with an empty string
+      ],
       filterMultiple: false,
       onFilter: (value: any, record) => record.club.indexOf(value) === 0,
     },
     {
-      title: "Ghi chú",
-      dataIndex: "note",
-      width: 130,
-      filters: filtersListNote,
-
+      title: "Đẳng cấp",
+      dataIndex: "level",
+      width: 270,
+      filters: levelFilters,
       filterMultiple: false,
-      onFilter: (value: any, record) => record.note.indexOf(value) === 0,
+      defaultFilteredValue: searchParam.get("level1")
+        ? [decodeURIComponent(searchParam.get("level1") as string)]
+        : null,
+      onFilter: (value: any, record) => record.level.indexOf(value) === 0,
     },
     {
       title: "Tình trạng",
@@ -581,7 +615,9 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
           value: "Chờ duyệt",
         },
       ],
-
+      defaultFilteredValue: [
+        encodeURIComponent(searchParam.get("status1") ?? ""), // Ensure null is replaced with an empty string
+      ],
       filterMultiple: false,
       render: (value, record) => {
         if (value === "Đã duyệt")
@@ -698,6 +734,7 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
     // Tạo một file Excel từ workbook
     XLSX.writeFile(wb, "Danh sách hội viên.xlsx");
   };
+  console.log("level", decodeURIComponent(searchParam.get("level1") as string));
 
   return (
     <div className={styles.wrapComponent}>
@@ -775,6 +812,11 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
             </Row>
           </Col>
         </Row>
+        {allMember && (
+          <div className={styles.Text}>
+            Tổng số thành viên: {allMember?.total_products}
+          </div>
+        )}
         <Spin spinning={isFetching}>
           <Table
             // rowSelection={rowSelection}
