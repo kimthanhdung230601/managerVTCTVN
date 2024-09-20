@@ -78,11 +78,12 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
       : "") +
     (searchParam.get("level1") ? "&level=" + searchParam.get("level1") : "") +
     (searchParam.get("note1") ? "&note=" + searchParam.get("note1") : "") +
+    (searchParam.get("achievements1")
+      ? "&achievements=" + searchParam.get("achievements1")
+      : "") +
     (searchParam.get("status1") ? "&status=" + searchParam.get("status1") : "");
 
-
   const [currentPage, setCurrentPage] = useState<any>(
-
     searchParam.get("pageAll") || "1"
   );
   const initialPayload = `page=${currentPage}`;
@@ -96,48 +97,58 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
 
   const onChange: TableProps<DataType>["onChange"] = (pagination, filters) => {
     const param =
-      (filters.DonViQuanLy ? "&DonViQuanLy=" + filters.DonViQuanLy[0] : "") +
-      (filters.NameClub ? "&club=" + filters.NameClub[0] : "") +
-      (filters.address
-        ? "&address=" + encodeURIComponent(filters.address[0].toString())
+      (filters?.DonViQuanLy ? "&DonViQuanLy=" + filters?.DonViQuanLy[0] : "") +
+      (filters?.NameClub ? "&club=" + filters?.NameClub[0] : "") +
+      (filters?.address
+        ? "&address=" + encodeURIComponent(filters?.address[0].toString())
         : "") +
-      (filters.level
-        ? "&level=" + encodeURIComponent(filters.level[0].toString())
+      (filters?.level
+        ? "&level=" + encodeURIComponent(filters?.level[0].toString())
         : "") +
-      (filters.note
-        ? "&note=" + encodeURIComponent(filters.note[0].toString())
+      (filters?.note && filters?.note !== undefined
+        ? "&note=" + encodeURIComponent(filters?.note[0].toString())
         : "") +
-      (filters.status
-        ? "&status=" + encodeURIComponent(filters.status[0].toString())
+      (filters?.achievements && filters?.achievements !== undefined
+        ? "&achievements=" +
+          encodeURIComponent(filters?.achievements[0].toString())
+        : "") +
+      (filters?.status
+        ? "&status=" + encodeURIComponent(filters?.status[0].toString())
         : "");
 
-    if (filters.DonViQuanLy)
-      searchParam.set("unit1", filters.DonViQuanLy[0].toString());
+    if (filters?.DonViQuanLy)
+      searchParam.set("unit1", filters?.DonViQuanLy[0].toString());
     else searchParam.delete("unit1");
-    if (filters.NameClub)
-      searchParam.set("club1", filters.NameClub[0].toString());
+    if (filters?.NameClub)
+      searchParam.set("club1", filters?.NameClub[0].toString());
     else searchParam.delete("club1");
-    if (filters.address)
+    if (filters?.address)
       searchParam.set(
         "address1",
-        encodeURIComponent(filters.address[0].toString())
+        encodeURIComponent(filters?.address[0].toString())
       );
     else searchParam.delete("address1");
-    if (filters.level)
+    if (filters?.level)
       searchParam.set(
         "level1",
-        encodeURIComponent(filters.level[0].toString())
+        encodeURIComponent(filters?.level[0].toString())
       );
     else searchParam.delete("level1");
-    if (filters.note)
-      searchParam.set("note1", encodeURIComponent(filters.note[0].toString()));
+    if (filters?.note)
+      searchParam.set("note1", encodeURIComponent(filters?.note[0].toString()));
     else searchParam.delete("note1");
-    if (filters.status)
+    if (filters?.status)
       searchParam.set(
         "status1",
-        encodeURIComponent(filters.status[0].toString())
+        encodeURIComponent(filters?.status[0].toString())
       );
     else searchParam.delete("status1");
+    if (filters?.achievements)
+      searchParam.set(
+        "achievements1",
+        encodeURIComponent(filters?.achievements[0].toString())
+      );
+    else searchParam.delete("achievements1");
     navigate(`${location.pathname}?${searchParam.toString()}`);
     setParam(param);
     const updatedPayload = initialPayload + param;
@@ -267,6 +278,9 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
       width: 270,
       filters: levelFilters,
       filterMultiple: false,
+      defaultFilteredValue: searchParam.get("level1")
+        ? [decodeURIComponent(searchParam.get("level1") as string)]
+        : null,
       onFilter: (value: any, record) => record.level.indexOf(value) === 0,
       // render(value, record, index) {
       //   return <span> {value.split('-').parts}</span>
@@ -277,6 +291,9 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
       dataIndex: "address",
       filters: filterProivce,
       filterMultiple: false,
+      defaultFilteredValue: searchParam.get("address1")
+        ? [decodeURIComponent(searchParam.get("address1") as string)]
+        : null,
       onFilter: (value: any, record) => record.address.indexOf(value) === 0,
       filterSearch: true,
       width: 120,
@@ -311,7 +328,9 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
           value: "Quân Đội",
         },
       ],
-
+      defaultFilteredValue: searchParam.get("unit1")
+        ? [decodeURIComponent(searchParam.get("unit1") as string)]
+        : null,
       filterMultiple: false,
       onFilter: (value: any, record) => record.DonViQuanLy.indexOf(value) === 0,
     },
@@ -323,6 +342,9 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
       filters: ListClub(),
       filterMultiple: false,
       filterSearch: true,
+      defaultFilteredValue: searchParam.get("NameClb1")
+        ? [decodeURIComponent(searchParam.get("NameClb1") as string)]
+        : null,
       onFilter: (value: any, record) => record.club.indexOf(value) === 0,
     },
     {
@@ -330,6 +352,9 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
       dataIndex: "note",
       width: 130,
       filters: filtersListNote,
+      defaultFilteredValue: searchParam.get("note1")
+        ? [decodeURIComponent(searchParam.get("note1") as string)]
+        : null,
       filterSearch: true,
       filterMultiple: false,
       onFilter: (value: any, record) => record.note.indexOf(value) === 0,
@@ -366,6 +391,9 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
         if (value === "Chờ duyệt")
           return <span style={{ color: "#F6C404" }}>Chờ duyệt HS</span>;
       },
+      defaultFilteredValue: searchParam.get("status1")
+        ? [decodeURIComponent(searchParam.get("status1") as string)]
+        : null,
       onFilter: (value: any, record) => record.status.indexOf(value) === 0,
     },
     {
@@ -384,6 +412,9 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
       ],
 
       filterMultiple: false,
+      defaultFilteredValue: searchParam.get("achievements1")
+        ? [decodeURIComponent(searchParam.get("achievements1") as string)]
+        : null,
       onFilter: (value: any, record) => {
         if (
           value === "Có" &&
@@ -498,7 +529,9 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
       dataIndex: "level",
       width: 270,
       filters: levelFilters,
-
+      defaultFilteredValue: searchParam.get("level1")
+        ? [decodeURIComponent(searchParam.get("level1") as string)]
+        : null,
       filterMultiple: false,
       onFilter: (value: any, record) => record.level.indexOf(value) === 0,
       render(value, record, index) {
@@ -512,6 +545,9 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
       onFilter: (value: any, record) => record.address.indexOf(value) === 0,
       filterSearch: true,
       width: 120,
+      defaultFilteredValue: searchParam.get("address1")
+        ? [decodeURIComponent(searchParam.get("address1") as string)]
+        : null,
     },
     {
       title: "Đơn vị quản lý F1",
@@ -543,7 +579,9 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
           value: "Quân Đội",
         },
       ],
-
+      defaultFilteredValue: searchParam.get("unit1")
+        ? [decodeURIComponent(searchParam.get("unit1") as string)]
+        : null,
       filterMultiple: false,
       onFilter: (value: any, record) => record.DonViQuanLy.indexOf(value) === 0,
     },
@@ -552,7 +590,9 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
       dataIndex: "NameClb",
       width: 300,
       filters: ListClub(),
-
+      defaultFilteredValue: searchParam.get("NameClb1")
+        ? [decodeURIComponent(searchParam.get("NameClb1") as string)]
+        : null,
       filterMultiple: false,
       onFilter: (value: any, record) => record.club.indexOf(value) === 0,
     },
@@ -561,7 +601,9 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
       dataIndex: "note",
       width: 130,
       filters: filtersListNote,
-
+      defaultFilteredValue: searchParam.get("note1")
+        ? [decodeURIComponent(searchParam.get("note1") as string)]
+        : null,
       filterMultiple: false,
       onFilter: (value: any, record) => record.note.indexOf(value) === 0,
     },
@@ -583,7 +625,9 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
           value: "Chờ duyệt",
         },
       ],
-
+      defaultFilteredValue: searchParam.get("status1")
+        ? [decodeURIComponent(searchParam.get("status1") as string)]
+        : null,
       filterMultiple: false,
       render: (value, record) => {
         if (value === "Đã duyệt")
@@ -609,7 +653,9 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
           value: "Không",
         },
       ],
-
+      defaultFilteredValue: searchParam.get("achievements1")
+        ? [decodeURIComponent(searchParam.get("achievements1") as string)]
+        : null,
       filterMultiple: false,
       onFilter: (value: any, record) => {
         if (value === "Có" && record.achievements?.length > 0) {
