@@ -110,7 +110,7 @@ const ManagerAccountUnDepended = ({ refetch }: ManagerAccountProps) => {
         ? "&location=" + encodeURIComponent(filters?.location[0].toString())
         : "") +
       (filters?.manage
-        ? "$manage=" + encodeURIComponent(filters?.manage[0].toString())
+        ? "&manage=" + encodeURIComponent(filters?.manage[0].toString())
         : "");
 
     if (filters?.location)
