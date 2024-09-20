@@ -69,13 +69,14 @@ export default function Detail() {
   const search = useLocation();
   const [userData, setUserData] = useState(initialData);
   const keyword = new URLSearchParams(useLocation().search);
+  const paramKey = keyword.get("keyword") || "";
   const isMobile = useMediaQuery({ maxWidth: 576 });
+
   const { data: userInfor, isFetching } = useQuery(
     ["userInfor", params.id, search],
     () => {
-      const data = keyword.get("keyword") || "";
       if (search.search.includes("keyword"))
-        return getInforF3(data, search.search);
+        return getInforF3(paramKey, search.search);
       else return getInforF3(params.id, search.pathname);
     },
     {
@@ -107,6 +108,11 @@ export default function Detail() {
       },
     }
   );
+
+  const dobFormat = (date: any) => {
+    if (paramKey?.includes("VCT")) return moment(date).format("YYYY");
+    else return date.split(" ")[0];
+  };
 
   return (
     <div>
@@ -172,34 +178,37 @@ export default function Detail() {
                               </div>
                             ) : null}
                           </Col>
-                          <Col
-                            xxl={24}
-                            md={24}
-                            xs={8}
-                            className={`${styles.colImg} gutter-row`}
-                            style={isMobile ? {} : { marginTop: "20px" }}
-                          >
-                            {userInfor?.data[0]?.image_certificate ? (
-                              <div style={{ textAlign: "center" }}>
-                                <Image
-                                  src={`https://vocotruyen.id.vn/PHP_IMG/${userInfor?.data[0].image_certificate}`}
-                                  preview={true}
-                                  className={styles.detailImg}
-                                />
-                                <div
-                                  style={{
-                                    fontWeight: "500",
-                                    color: "#000",
-                                    textAlign: "center",
-                                    marginTop: "8px",
-                                    fontStyle: "italic",
-                                  }}
-                                >
-                                  Bằng cấp
+                          {!paramKey?.includes("VCT") && (
+                            <Col
+                              xxl={24}
+                              md={24}
+                              xs={8}
+                              className={`${styles.colImg} gutter-row`}
+                              style={isMobile ? {} : { marginTop: "20px" }}
+                            >
+                              {userInfor?.data[0]?.image_certificate ? (
+                                <div style={{ textAlign: "center" }}>
+                                  <Image
+                                    src={`https://vocotruyen.id.vn/PHP_IMG/${userInfor?.data[0].image_certificate}`}
+                                    preview={true}
+                                    className={styles.detailImg}
+                                  />
+                                  <div
+                                    style={{
+                                      fontWeight: "500",
+                                      color: "#000",
+                                      textAlign: "center",
+                                      marginTop: "8px",
+                                      fontStyle: "italic",
+                                    }}
+                                  >
+                                    Bằng cấp
+                                  </div>
                                 </div>
-                              </div>
-                            ) : null}
-                          </Col>
+                              ) : null}
+                            </Col>
+                          )}
+
                           <Col
                             className={`${styles.colImg} gutter-row`}
                             xxl={24}
@@ -209,7 +218,7 @@ export default function Detail() {
                           >
                             <div style={{ textAlign: "center" }}>
                               <QRCode
-                                value={`https://vocotruyen.id.vn/thong-tin-ho-so?keyword=${userInfor?.data[0]?.idcard}`}
+                                value={`https://vocotruyen.id.vn/thong-tin-ho-so?keyword=${userInfor?.data[0]?.code}`}
                                 icon={require("../../assets/image/logo.png")}
                                 className={styles.detailImg}
                                 bgColor="#fff"
@@ -242,6 +251,7 @@ export default function Detail() {
                             const keys = Object.keys(userData);
                             const key = keys[index] as keyof Infor;
                             const data = userData[key];
+
                             if (data) {
                               i++;
                               return (
@@ -269,7 +279,7 @@ export default function Detail() {
                                   >
                                     <span style={{ color: "#000" }}>
                                       {key === "birthday"
-                                        ? data.split(" ")[0]
+                                        ? dobFormat(data)
                                         : data}
                                     </span>
                                   </Col>
