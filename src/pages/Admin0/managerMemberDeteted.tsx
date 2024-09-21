@@ -500,7 +500,7 @@ const ManagerMemberDeleted = ({ setFetching }: fetchingProp) => {
       dataIndex: "stt",
       width: 70,
       render: (value, record, index) => {
-        return index + 1 + (currentPage - 1) * 10;
+        return index + 1 + (currentPage - 1) * 50;
       },
     },
     {
@@ -811,6 +811,7 @@ const ManagerMemberDeleted = ({ setFetching }: fetchingProp) => {
             total={allMember?.total_products}
             pageSize={50}
             style={{ margin: "1vh 0", float: "right" }}
+            current={currentPage}
           />
         </Spin>
       </div>

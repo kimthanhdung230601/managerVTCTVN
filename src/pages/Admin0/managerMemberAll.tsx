@@ -230,7 +230,7 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
       fixed: "left",
       width: 70,
       render: (value, record, index) => {
-        return index + 1 + (Number(currentPage) - 1) * 10;
+        return index + 1 + (Number(currentPage) - 1) * 50;
       },
     },
     {
@@ -498,7 +498,7 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
       title: "STT",
       dataIndex: "stt",
       render: (value, record, index) => {
-        return index + 1 + (Number(currentPage) - 1) * 10;
+        return index + 1 + (Number(currentPage) - 1) * 50;
       },
     },
     {
@@ -848,6 +848,7 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
             total={allMember?.total_products}
             pageSize={50}
             style={{ margin: "1vh 0", float: "right" }}
+            current={currentPage}
           />
         </Spin>
       </div>
