@@ -308,24 +308,37 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
           value: "Công An",
         },
         {
-          text: "Hội Võ Thuật",
-          value: "Hội Võ Thuật",
+          text: "Quân Đội",
+          value: "Quân Đội",
         },
         {
           text: "Giáo Dục",
           value: "Giáo Dục",
         },
         {
-          text: "Liên Đoàn",
-          value: "Liên Đoàn",
+          text: "Hội Võ Thuật",
+          value: "Hội Võ Thuật",
         },
         {
-          text: "Sở VHTT",
-          value: "Sở VHTT",
+          text: "Hội Võ Thuật Cổ Truyền",
+          value: "Hội Võ Thuật Cổ Truyền",
         },
         {
-          text: "Quân Đội",
-          value: "Quân Đội",
+          text: "Liên đoàn võ thuật",
+          value: "Liên đoàn võ thuật",
+        },
+        {
+          text: "Liên đoàn võ thuật cổ truyền",
+          value: "Liên đoàn võ thuật cổ truyền",
+        },
+
+        {
+          text: "Sở VHTT và Du lịch",
+          value: "Sở VHTT và Du lịch",
+        },
+        {
+          text: "Trung tâm huấn luyện thể thao",
+          value: "Trung tâm huấn luyện thể thao",
         },
       ],
       defaultFilteredValue: searchParam.get("unit1")
@@ -559,24 +572,37 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
           value: "Công An",
         },
         {
-          text: "Hội Võ Thuật",
-          value: "Hội Võ Thuật",
+          text: "Quân Đội",
+          value: "Quân Đội",
         },
         {
           text: "Giáo Dục",
           value: "Giáo Dục",
         },
         {
-          text: "Liên Đoàn",
-          value: "Liên Đoàn",
+          text: "Hội Võ Thuật",
+          value: "Hội Võ Thuật",
         },
         {
-          text: "Sở VHTT",
-          value: "Sở VHTT",
+          text: "Hội Võ Thuật Cổ Truyền",
+          value: "Hội Võ Thuật Cổ Truyền",
         },
         {
-          text: "Quân Đội",
-          value: "Quân Đội",
+          text: "Liên đoàn võ thuật",
+          value: "Liên đoàn võ thuật",
+        },
+        {
+          text: "Liên đoàn võ thuật cổ truyền",
+          value: "Liên đoàn võ thuật cổ truyền",
+        },
+
+        {
+          text: "Sở VHTT và Du lịch",
+          value: "Sở VHTT và Du lịch",
+        },
+        {
+          text: "Trung tâm huấn luyện thể thao",
+          value: "Trung tâm huấn luyện thể thao",
         },
       ],
       defaultFilteredValue: searchParam.get("unit1")
@@ -823,6 +849,9 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
             </Row>
           </Col>
         </Row>
+        <div className={styles.Text}>
+          Tổng số thành viên: {allMember?.total_products}
+        </div>
         <Spin spinning={isFetching}>
           <Table
             // rowSelection={rowSelection}

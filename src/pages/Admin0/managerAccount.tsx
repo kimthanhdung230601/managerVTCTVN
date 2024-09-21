@@ -75,7 +75,7 @@ const ManagerAccount = () => {
   const initialPayload = `page=${currentPageAccount}&pending=1&permission=2`;
   const [param, setParam] = useState("");
   const [payload, setPayload] = useState<any>(
-    initialPayload + `page=${currentPageAccount}` + params
+    initialPayload + `&page=${currentPageAccount}` + params
   );
 
   const {

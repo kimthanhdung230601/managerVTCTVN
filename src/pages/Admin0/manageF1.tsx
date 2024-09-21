@@ -72,7 +72,7 @@ const ManagerF1 = () => {
   const initialPayload = `page=${currentPageAccount}&permission=1`;
 
   const [payloadAccept, setPayloadAccept] = useState<any>(
-    `page=${currentPageAccount}` + params
+    `&permission=1` + `&page=${currentPageAccount}` + params
   );
 
   const onChangePageAccount = (value: any) => {
