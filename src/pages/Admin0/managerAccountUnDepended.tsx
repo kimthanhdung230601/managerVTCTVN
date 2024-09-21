@@ -95,7 +95,7 @@ const ManagerAccountUnDepended = ({ refetch }: ManagerAccountProps) => {
   const [param, setParam] = useState("");
 
   const [payload, setPayload] = useState<any>(
-    initialPayload + `page=${currentPage}` + params
+    initialPayload + `&page=${currentPage}` + params
   );
 
   const {
