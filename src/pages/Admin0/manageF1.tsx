@@ -70,9 +70,19 @@ const ManagerF1 = () => {
   );
 
   const initialPayload = `page=${currentPageAccount}&permission=1`;
+
   const [payloadAccept, setPayloadAccept] = useState<any>(
     `page=${currentPageAccount}` + params
   );
+
+  const onChangePageAccount = (value: any) => {
+    searchParam.set("pageAll", value.toString());
+    navigate(`${location.pathname}?${searchParam.toString()}`);
+    setCurrentPageAccount(value);
+    const updatedPayload = `page=${value}` + params;
+    setPayloadAccept(updatedPayload);
+  };
+
   const {
     data: dataMemberF12Accept,
     refetch: refetchAccept,
@@ -80,6 +90,8 @@ const ManagerF1 = () => {
   } = useQuery(["dataF12Accept", payloadAccept], () =>
     getListMemberF12(payloadAccept)
   );
+  console.log("payloadAccept", payloadAccept);
+
   const onChange: TableProps<DataType>["onChange"] = (pagination, filters) => {
     const param =
       (filters?.location
@@ -103,12 +115,6 @@ const ManagerF1 = () => {
     // refetchAccept();
   };
 
-  const onChangePageAccount = (value: any) => {
-    searchParam.set("pageAll", value.toString());
-    navigate(`${location.pathname}?${searchParam.toString()}`);
-    setCurrentPageAccount(value);
-    refetchAccept();
-  };
   //tài khoản chưa được duyệt
 
   const naviagte = useNavigate();
@@ -224,7 +230,7 @@ const ManagerF1 = () => {
       width: 200,
     },
     {
-      title: "Chức danh",
+      title: "Tài khoản",
       dataIndex: "level",
       width: 200,
 
@@ -291,6 +297,9 @@ const ManagerF1 = () => {
       filterSearch: true,
       filterMultiple: false,
       width: 120,
+      defaultFilteredValue: searchParam.get("unit2")
+        ? [decodeURIComponent(searchParam.get("unit2") as string)]
+        : null,
     },
     {
       title: "Đơn vị quản lý",
@@ -336,7 +345,9 @@ const ManagerF1 = () => {
       ],
       onFilter: (value: any, record) => record.manage.indexOf(value) === 0,
       filterMultiple: false,
-
+      defaultFilteredValue: searchParam.get("club2")
+        ? [decodeURIComponent(searchParam.get("club2") as string)]
+        : null,
       width: 200,
     },
     {
@@ -349,6 +360,7 @@ const ManagerF1 = () => {
     {
       key: "action",
       width: 200,
+
       render: (_, record) => {
         const idEncode = CryptoJS.AES.encrypt(record.id, secretKey).toString();
         const id = encodeURIComponent(idEncode);
@@ -427,6 +439,7 @@ const ManagerF1 = () => {
               total={dataMemberF12Accept?.total_products}
               pageSize={37}
               style={{ margin: "1vh 0", float: "right" }}
+              current={currentPageAccount}
             />
           </Spin>
         </div>

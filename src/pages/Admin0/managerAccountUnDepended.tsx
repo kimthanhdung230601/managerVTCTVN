@@ -94,7 +94,9 @@ const ManagerAccountUnDepended = ({ refetch }: ManagerAccountProps) => {
   const initialPayload = `page=${currentPage}&pending=0&permission=2`;
   const [param, setParam] = useState("");
 
-  const [payload, setPayload] = useState<any>(`page=${currentPage}` + params);
+  const [payload, setPayload] = useState<any>(
+    initialPayload + `page=${currentPage}` + params
+  );
 
   const {
     data,
@@ -178,7 +180,7 @@ const ManagerAccountUnDepended = ({ refetch }: ManagerAccountProps) => {
       fixed: "left",
       width: 70,
       render: (value, record, index) => {
-        return index + 1 + (currentPage - 1) * 36;
+        return index + 1 + (currentPage - 1) * 37;
       },
     },
     {
@@ -334,7 +336,7 @@ const ManagerAccountUnDepended = ({ refetch }: ManagerAccountProps) => {
       fixed: "left",
       width: 70,
       render: (value, record, index) => {
-        return index + 1 + (currentPage - 1) * 36;
+        return index + 1 + (currentPage - 1) * 37;
       },
     },
     {
@@ -523,7 +525,7 @@ const ManagerAccountUnDepended = ({ refetch }: ManagerAccountProps) => {
               defaultCurrent={1}
               onChange={onChangePageAccept}
               total={data?.total_products}
-              pageSize={36}
+              pageSize={37}
               style={{ margin: "1vh 0", float: "right" }}
             />
           </Spin>

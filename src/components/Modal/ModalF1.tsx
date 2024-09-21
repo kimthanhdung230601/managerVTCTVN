@@ -84,7 +84,6 @@ const ModalF1 = ({
     formdata.append("manage", value.manage);
     formdata.append("password", value.password);
     formdata.append("level", value.level);
-    formdata.append("username", value.username);
     updateUserMutation.mutate(formdata);
   };
 
@@ -192,7 +191,7 @@ const ModalF1 = ({
             <Row gutter={16}>
               <Col span={12}>
                 <Form.Item
-                  label="Chức danh"
+                  label="Tài khoản"
                   name="level"
                   rules={[
                     { required: true, message: "Vui lòng điền chức danh" },
@@ -218,17 +217,6 @@ const ModalF1 = ({
                   name="password"
                   rules={[
                     { required: true, message: "Vui lòng điền password" },
-                  ]}
-                >
-                  <Input />
-                </Form.Item>
-              </Col>
-              <Col span={12}>
-                <Form.Item
-                  label="Tài khoản"
-                  name="username"
-                  rules={[
-                    { required: true, message: "Vui lòng điền tên tài khoản" },
                   ]}
                 >
                   <Input />

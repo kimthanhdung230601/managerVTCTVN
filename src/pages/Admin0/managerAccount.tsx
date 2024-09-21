@@ -75,7 +75,7 @@ const ManagerAccount = () => {
   const initialPayload = `page=${currentPageAccount}&pending=1&permission=2`;
   const [param, setParam] = useState("");
   const [payload, setPayload] = useState<any>(
-    `page=${currentPageAccount}` + params
+    initialPayload + `page=${currentPageAccount}` + params
   );
 
   const {
@@ -108,8 +108,7 @@ const ManagerAccount = () => {
     const updatedPayload = `page=${value}&pending=1&permission=2` + param;
     setPayload(updatedPayload);
   };
-  //tài khoản chưa được duyệt
-
+  //tài khoản đã duyệt
   const naviagte = useNavigate();
   const isMobile = useMediaQuery({ maxWidth: 768 });
   //modal quản lý thành viên
@@ -146,7 +145,7 @@ const ManagerAccount = () => {
       fixed: "left",
       width: 20,
       render: (value, record, index) => {
-        return index + 1 + (currentPageAccount - 1) * 36;
+        return index + 1 + (currentPageAccount - 1) * 37;
       },
     },
     {
@@ -311,7 +310,7 @@ const ManagerAccount = () => {
       fixed: "left",
       width: 20,
       render: (value, record, index) => {
-        return index + 1 + (currentPageAccount - 1) * 10;
+        return index + 1 + (currentPageAccount - 1) * 37;
       },
     },
     {
@@ -515,7 +514,7 @@ const ManagerAccount = () => {
               defaultCurrent={1}
               onChange={onChangePageAccount}
               total={dataMemberF12Accept?.total_products}
-              pageSize={36}
+              pageSize={37}
               style={{ margin: "1vh 0", float: "right" }}
             />
           </Spin>
