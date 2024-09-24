@@ -10,6 +10,7 @@ import ManageMember from "./manageMember";
 import { useLocation, useNavigate } from "react-router";
 import Cookies from "js-cookie";
 import CryptoJS from "crypto-js";
+import { ReactComponent as Logo } from "../../assets/svg/logo.svg";
 
 const secretKey = process.env.REACT_APP_SECRET_KEY || "";
 const decrypt = (value: string) => {
@@ -46,11 +47,7 @@ export default function LevelOne() {
       <Header />
       <div className={styles.wrap}>
         <div className={styles.imageWrap}>
-          <Image
-            src={require("../../assets/image/logo.png")}
-            preview={false}
-            className={styles.img}
-          />
+          <Logo />
           <div className={styles.title}>
             Đơn vị quản lý:{" "}
             {manageF1 ? `${manageF1} - ${location}` : "Liên đoàn, Sở, Ngành"}

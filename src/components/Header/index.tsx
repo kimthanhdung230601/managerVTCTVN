@@ -7,6 +7,8 @@ import { MenuOutlined, CloseOutlined, UserOutlined } from "@ant-design/icons";
 import Cookies from "js-cookie";
 import { logout } from "../../api/api";
 import { isAdmin } from "../../api/ApiUser";
+import { ReactComponent as LogoHeader } from "../../assets/svg/logoHeader.svg";
+
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [manage, setManage] = useState("");
@@ -44,11 +46,7 @@ export default function Header() {
         <Col className="gutter-row">
           <Row gutter={40} className={styles.headerList}>
             <Col>
-              <Image
-                src={require("../../assets/image/logo.png")}
-                preview={false}
-                className={styles.img}
-              />
+              <LogoHeader />
             </Col>
             <Col className={styles.headerItem}>
               <Link to={"/"} className={styles.itemLink}>

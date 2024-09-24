@@ -7,6 +7,8 @@ import { getListNews, getNewsbyID } from "../../api/f0";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
 import styles from "./Style.module.scss";
+import { ReactComponent as User } from "../../assets/svg/usse.svg";
+
 export default function Article() {
   const id = useParams();
   const [post, setPost] = useState("");
@@ -71,11 +73,14 @@ export default function Article() {
                     Nội dung
                   </div>
                   <div className={styles.author}>
-                    <Image
+                    <div className={styles.authorImg}>
+                      <User />
+                    </div>
+                    {/* <Image
                       src={require("../../assets/image/user.jpg")}
                       preview={false}
                       className={styles.authorImg}
-                    />
+                    /> */}
                     <div className={styles.authorName}>ADMIN</div>
                   </div>
                 </Col>

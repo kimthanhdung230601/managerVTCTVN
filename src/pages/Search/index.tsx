@@ -4,6 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 import Header from "../../components/Header";
 import styles from "./Style.module.scss";
 import type { SearchProps } from "antd/es/input/Search";
+import { ReactComponent as Logo } from "../../assets/svg/logo.svg";
+
 const { Search } = Input;
 export default function SearchId() {
   document.title = "Tra cứu hội viên";
@@ -23,11 +25,7 @@ export default function SearchId() {
       <div style={{ paddingTop: "70px" }}>
         <div className={styles.wrap}>
           <div className={styles.imageWrap}>
-            <Image
-              src={require("../../assets/image/logo.png")}
-              preview={false}
-              className={styles.img}
-            />
+            <Logo />
             <div className={styles.title}>
               Liên đoàn Võ thuật cổ truyền Việt Nam
             </div>

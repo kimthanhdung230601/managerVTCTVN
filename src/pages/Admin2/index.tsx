@@ -9,6 +9,8 @@ import Cookies from "js-cookie";
 import CryptoJS from "crypto-js";
 import { useQuery } from "react-query";
 import { getInforAdmin } from "../../api/f2";
+import { ReactComponent as Logo } from "../../assets/svg/logo.svg";
+
 const secretKey = process.env.REACT_APP_SECRET_KEY as string;
 
 type MenuItem = Required<MenuProps>["items"][number];
@@ -80,11 +82,7 @@ const AdminTwo = () => {
       <div className={styles.logoWrap}>
         <div className={styles.title}>
           <div className={styles.logoContainer}>
-            <img
-              className={styles.logoImg}
-              src={require("../../assets/image/logo.png")}
-              alt="Logo"
-            />
+            <Logo />
           </div>
           <div className={styles.titleContent}>
             <div className={styles.titleText}>Đơn vị: {userId.clb}</div>{" "}

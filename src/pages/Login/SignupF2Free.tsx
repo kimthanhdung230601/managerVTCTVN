@@ -40,6 +40,7 @@ import { level, province } from "../../until/until";
 import CryptoJS from "crypto-js";
 import moment from "moment";
 import Cookies from "js-cookie";
+import { ReactComponent as Logo } from "../../assets/svg/logo.svg";
 
 const secretKey = process.env.REACT_APP_SECRET_KEY as string;
 
@@ -236,11 +237,7 @@ export default function SignupF2() {
   return (
     <div className={styles.loginWrap}>
       <div className={styles.logo}>
-        <Image
-          src={require("../../assets/image/logo.png")}
-          preview={false}
-          className={styles.logoImg}
-        />
+        <Logo />
       </div>
       <div className={styles.login}>
         <div className={styles.title}>

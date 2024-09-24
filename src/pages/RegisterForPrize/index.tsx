@@ -2,6 +2,7 @@ import { Image } from "antd";
 import Header from "../../components/Header";
 import styles from "./Style.module.scss";
 import Table, { ColumnsType } from "antd/es/table";
+import { ReactComponent as Logo } from "../../assets/svg/logo.svg";
 
 interface DataTypeFile {
   name: string;
@@ -57,11 +58,7 @@ const RegisterForPrize = () => {
       <Header />
       <div className={styles.wrap}>
         <div className={styles.imageWrap}>
-          <Image
-            src={require("../../assets/image/logo.png")}
-            preview={false}
-            className={styles.img}
-          />
+          <Logo />
           <br />
           <div className={styles.subTitle1}>
             Giải Vô địch Võ cổ truyền quốc gia lần thứ XXXIII năm 2024

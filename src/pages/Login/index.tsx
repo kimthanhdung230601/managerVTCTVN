@@ -10,6 +10,8 @@ import { accountF0, accountF1, accountF2 } from "../../until/until";
 import { signin } from "../../api/ApiUser";
 import Cookies from "js-cookie";
 import CryptoJS from "crypto-js";
+import { ReactComponent as Logo } from "../../assets/svg/logo.svg";
+
 const secretKey = process.env.REACT_APP_SECRET_KEY as string;
 
 export default function Login() {
@@ -103,7 +105,6 @@ export default function Login() {
         "id",
         CryptoJS.AES.encrypt(res?.info_user[0].id, secretKey).toString()
       );
-    
     } else {
       message.error("Nhập sai tài khoản hoặc mật khẩu");
     }
@@ -111,11 +112,7 @@ export default function Login() {
   return (
     <div className={styles.loginWrap}>
       <div className={styles.logo}>
-        <Image
-          src={require("../../assets/image/logo.png")}
-          preview={false}
-          className={styles.logoImg}
-        />
+        <Logo />
       </div>
       <div className={styles.login}>
         <div className={styles.title}>Đăng nhập</div>
@@ -133,7 +130,12 @@ export default function Login() {
         >
           <Form.Item
             name="phone"
-            rules={[{ required: true, message: "Hãy nhập số điện thoại hoặc tên tài khoản!" }]}
+            rules={[
+              {
+                required: true,
+                message: "Hãy nhập số điện thoại hoặc tên tài khoản!",
+              },
+            ]}
             wrapperCol={{ span: 24 }}
             className={styles.formItem}
           >
