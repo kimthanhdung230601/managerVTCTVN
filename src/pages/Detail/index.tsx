@@ -1,7 +1,5 @@
 import { Col, Image, message, QRCode, Row, Spin } from "antd";
-import Cookies from "js-cookie";
-import CryptoJS from "crypto-js";
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { useQuery } from "react-query";
 import { useMediaQuery } from "react-responsive";
 import { useLocation, useParams } from "react-router-dom";
@@ -9,7 +7,7 @@ import { getInforF3 } from "../../api/ApiUser";
 import Header from "../../components/Header";
 import styles from "./Style.module.scss";
 import moment from "moment";
-const secretKey = process.env.REACT_APP_SECRET_KEY as string;
+import { ReactComponent as Logo } from "../../assets/svg/logo.svg";
 
 interface Infor {
   name: string;
@@ -131,11 +129,7 @@ export default function Detail() {
                 {
                   <div className={styles.wrap}>
                     <div className={styles.imageWrap}>
-                      <Image
-                        src={require("../../assets/image/logo.png")}
-                        preview={false}
-                        className={styles.img}
-                      />
+                      <Logo />
                       <div className={styles.title}>THÔNG TIN HỒ SƠ</div>
                     </div>
                     <Row

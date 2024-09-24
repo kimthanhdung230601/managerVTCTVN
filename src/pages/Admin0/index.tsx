@@ -8,6 +8,7 @@ import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import styles from "./styles.module.scss";
 import ManagerF1 from "./manageF1";
+import { ReactComponent as Logo } from "../../assets/svg/logo.svg";
 
 const { TabPane } = Tabs;
 
@@ -71,16 +72,12 @@ const Admin = () => {
   }, [selectedMenuItem]);
 
   return (
-    <div style={{ backgroundColor: "#fff", minHeight:"100vh" }} >
+    <div style={{ backgroundColor: "#fff", minHeight: "100vh" }}>
       <Header />
       <div className={styles.logoWrap}>
         <div className={styles.title}>
           <div className={styles.logoContainer}>
-            <img
-              className={styles.logoImg}
-              src={require("../../assets/image/logo.png")}
-              alt="Logo"
-            />
+            <Logo />
           </div>
           <div className={styles.titleText}>{titleText}</div>
         </div>

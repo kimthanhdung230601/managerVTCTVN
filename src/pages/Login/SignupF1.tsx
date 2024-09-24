@@ -41,6 +41,7 @@ import { level, province } from "../../until/until";
 import Cookies from "js-cookie";
 import { signUpF1 } from "../../api/f0";
 import { useDispatch, useSelector } from "react-redux";
+import { ReactComponent as Logo } from "../../assets/svg/logo.svg";
 
 const options = [
   { value: "11", label: "Liên đoàn võ thuật" },
@@ -121,11 +122,7 @@ export default function SignupF1() {
   return (
     <div className={styles.loginWrap}>
       <div className={styles.logo}>
-        <Image
-          src={require("../../assets/image/logo.png")}
-          preview={false}
-          className={styles.logoImg}
-        />
+        <Logo />
       </div>
       <div className={styles.login}>
         <div className={styles.title}>

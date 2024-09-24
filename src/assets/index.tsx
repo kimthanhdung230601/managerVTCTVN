@@ -1,0 +1,12 @@
+export const backgroundHeader = "image/background.png";
+export const background = "image/bg.png";
+export const background2 = "image/bg2.png";
+export const bgProfiles = "image/bgProfiles.png";
+export const image = "image/image.jpg";
+export const logo = "image/logo.png";
+export const news = "image/new.png";
+export const post = "image/post.jpg";
+export const qr = "image/qr.png";
+export const referral = "image/referral.jpg";
+export const userJPG = "image/user.jpg";
+export const userPNG = "image/user.png";

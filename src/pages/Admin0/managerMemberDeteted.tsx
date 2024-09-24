@@ -1,6 +1,5 @@
 import { useState } from "react";
 
-import type { SearchProps } from "antd/es/input";
 import {
   Table,
   Button,
@@ -19,12 +18,7 @@ import * as XLSX from "xlsx";
 // import ModalMember from "../../components/Modal/ModalAccount";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useQuery } from "react-query";
-import {
-  deleteMemberF3,
-  findMember,
-  getListMember,
-  updateMemberF3,
-} from "../../api/f0";
+import { deleteMemberF3, getListMember, updateMemberF3 } from "../../api/f0";
 import moment from "moment";
 import ListClub from "../../hook/listClub";
 import CryptoJS from "crypto-js";
@@ -201,19 +195,6 @@ const ManagerMemberDeleted = ({ setFetching }: fetchingProp) => {
 
   //tìm kiếm
   const [dataFind, setDataFind] = useState<DataType[]>([]);
-  const onSearch: SearchProps["onSearch"] = async (
-    value: any,
-    _e: any,
-    info: any
-  ) => {
-    const res = await findMember(value);
-    if (res.status === "success") {
-      setDataFind(res.data); // Cập nhật dataFind nếu tìm thấy kết quả
-    } else {
-      setDataFind([]); // Đặt dataFind về rỗng nếu không tìm thấy kết quả
-      message.error("Không tìm thấy kết quả");
-    }
-  };
 
   //modal
   //modal quản lý thành viên
@@ -760,7 +741,6 @@ const ManagerMemberDeleted = ({ setFetching }: fetchingProp) => {
   };
   return (
     <div className={styles.wrapComponent}>
-      {" "}
       <div className={styles.table}>
         <div className={styles.styleRight}>
           {/* <Search
