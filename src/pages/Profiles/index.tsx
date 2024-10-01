@@ -502,7 +502,7 @@ const Profiles = () => {
                 <Row gutter={16}>
                   <Col span={8} xs={24} sm={24} md={8}>
                     <Form.Item
-                      label="Tỉnh/Thành"
+                      label="Nguyên quán"
                       name="city"
                       rules={[
                         { required: true, message: "Vui lòng chọn tỉnh/thành" },
@@ -523,7 +523,7 @@ const Profiles = () => {
                   </Col>
                   <Col span={8} xs={24} sm={24} md={8}>
                     <Form.Item
-                      label="Quê quán"
+                      label="Địa chỉ thường trú"
                       name="hometown"
                       rules={[
                         { required: true, message: "Vui lòng điền quê quán" },
@@ -533,13 +533,7 @@ const Profiles = () => {
                     </Form.Item>
                   </Col>
                   <Col span={8} xs={24} sm={24} md={8}>
-                    <Form.Item
-                      label="Số CCCD "
-                      name="idcard"
-                      rules={[
-                        { required: true, message: "Vui lòng điền CCCD" },
-                      ]}
-                    >
+                    <Form.Item label="Số CCCD " name="idcard">
                       <Input />
                     </Form.Item>
                   </Col>
