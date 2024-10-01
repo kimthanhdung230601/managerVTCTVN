@@ -89,25 +89,24 @@
       .buttonGroup {
         // margin-top: 1vh;
         margin-bottom: 1vh;
-        .showBtn{
+        .showBtn {
           margin-right: 2vh;
           border: none;
           border-radius: 4px;
           padding: 1vh;
           cursor: pointer;
         }
-        .selectedBtn{
+        .selectedBtn {
           background-color: var(--primary);
           color: white;
         }
-        .noneSelectedBtn{
-          background-color: #ADB4B0;
+        .noneSelectedBtn {
+          background-color: #adb4b0;
           color: white;
         }
-       }
+      }
     }
     .uploadImg {
-      
     }
     .btn {
       background-color: var(--primary);
@@ -124,13 +123,13 @@
 }
 @media only screen and (max-width: 1200px) and (min-width: 768px) {
   .wrap .content {
-    padding: 6vh 4vh 0 4vh;
+    padding: 12vh 4vh 0 4vh;
   }
 }
 
 /* Cho các thiết bị có chiều rộng nhỏ hơn 768px (điện thoại) */
 @media only screen and (max-width: 767px) {
   .wrap .content {
-    padding: 6vh 4vh 0 4vh;
+    padding: 12vh 4vh 0 4vh;
   }
 }
