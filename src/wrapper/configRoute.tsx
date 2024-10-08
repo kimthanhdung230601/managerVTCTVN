@@ -72,4 +72,8 @@ export const RouteList = [
     name: "/",
     permission: 3,
   },
+  {
+    name: "/dang-ky-giai-dau",
+    permission: 3,
+  },
 ];

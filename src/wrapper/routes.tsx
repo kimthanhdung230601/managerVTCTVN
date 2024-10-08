@@ -22,6 +22,7 @@ import UpdateProfiles from "../pages/UpdateF0";
 import SignupF1 from "../pages/Login/SignupF1";
 import SignupF2Free from "../pages/Login/SignupF2Free";
 import RegisterForPrize from "../pages/RegisterForPrize";
+import TournamentRegistration from "../pages/giaidau/Dang_ky_giai_dau";
 const Component = () => {
   return (
     <>
@@ -55,6 +56,10 @@ const Component = () => {
           element={<UpdateMember />}
         ></Route>
         <Route path="/quan-ly-don-vi" element={<AdminTwo />}></Route>
+        <Route
+          path="/dang-ky-giai-dau"
+          element={<TournamentRegistration />}
+        ></Route>
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </>
