@@ -13,3 +13,5 @@ export const getManagamentMember = (payload: any) =>
 
 export const postFixF0 = (payload: any) =>
   sendPost("Fight2024?type=Fix", payload);
+export const updateFile = (payload: any) =>
+  sendPost("Fight2024?type=Image&mode=1", payload);
