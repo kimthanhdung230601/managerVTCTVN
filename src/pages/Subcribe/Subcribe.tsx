@@ -5,10 +5,10 @@ import { Button, message, Popconfirm } from "antd";
 import Subcribe1 from "./Subcribe1";
 import Subcribe2 from "./Subcribe2";
 import Subcribe3 from "./Subcribe3";
-import { useMutation } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { submitListmember } from "../../api/f2";
-import { useParams } from "react-router";
-import { updateListSubcribe } from "../../api/f0";
+import { useLocation, useParams } from "react-router";
+import { getListSubcribe, updateListSubcribe } from "../../api/f0";
 import useMemberSubscribe from "../../hook/useMemberSubscribe";
 import { isAdmin } from "../../api/ApiUser";
 
@@ -209,7 +209,6 @@ export default function Subcribe() {
       }));
     }
   };
-  console.log("groupByName", groupByName);
 
   return (
     <div className={styles.tableWrap}>
@@ -222,29 +221,34 @@ export default function Subcribe() {
             okText="Có"
             cancelText="Huỷ"
           >
-            <Button>Gửi hồ sơ</Button>
+            <Button danger>Đăng ký</Button>
           </Popconfirm>
         )}
       </div>
-
-      <p className={styles.title}>NỘI DUNG QUYỀN QUY ĐỊNH</p>
-      <Subcribe1
-        idclub={id}
-        listMemberSubscribe={groupByName}
-        onSelectMember={onSelectMember}
-      />
-      <p className={styles.title}>NỘI DUNG QUYỀN TỰ CHỌN</p>
-      <Subcribe2
-        idclub={id}
-        listMemberSubscribe={groupByName}
-        onSelectMember={onSelectMember}
-      />
-      <p className={styles.title}>NỘI DUNG ĐỐI LUYỆN</p>
-      <Subcribe3
-        idclub={id}
-        listMemberSubscribe={groupByName}
-        onSelectMember={onSelectMember}
-      />
+      {groupByName !== undefined && Object.keys(groupByName).length > 0 ? (
+        <div>
+          <p className={styles.title}>NỘI DUNG QUYỀN QUY ĐỊNH</p>
+          <Subcribe1
+            idclub={id}
+            listMemberSubscribe={groupByName}
+            onSelectMember={onSelectMember}
+          />
+          <p className={styles.title}>NỘI DUNG QUYỀN TỰ CHỌN</p>
+          <Subcribe2
+            idclub={id}
+            listMemberSubscribe={groupByName}
+            onSelectMember={onSelectMember}
+          />
+          <p className={styles.title}>NỘI DUNG ĐỐI LUYỆN</p>
+          <Subcribe3
+            idclub={id}
+            listMemberSubscribe={groupByName}
+            onSelectMember={onSelectMember}
+          />
+        </div>
+      ) : (
+        <div className={styles.noti}>Chưa có dữ liệu</div>
+      )}
     </div>
   );
 }
