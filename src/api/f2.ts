@@ -22,3 +22,9 @@ export const searchInTable = (param: any) => sendGet("/FindData?data=" + param);
 export const getListMemberClubF2 = () => sendGet("/Fight2024");
 export const submitListmember = (param: any) =>
   sendPost("/Fight2024?type=Submit&mode=1", param);
+
+export const getInfoF2 = (param: any) => {
+  if (param != undefined)
+    return sendPost("/Fight2024?type=Info", { id: param });
+  else return sendPost("/Fight2024?type=Info");
+};
