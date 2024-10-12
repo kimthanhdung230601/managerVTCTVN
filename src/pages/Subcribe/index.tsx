@@ -9,10 +9,17 @@ import { Tabs, Input, Button, message } from "antd";
 import TabPane from "antd/es/tabs/TabPane";
 import TournamentRegistration from "../giaidau/Dang_ky_giai_dau_doi_khang";
 import { updateFile } from "../../api/thiDau";
+import { useQuery } from "react-query";
+import { getInfoF2 } from "../../api/f2";
+import { useParams } from "react-router";
+import AcceptListMemberDetail from "../giaidau/Xem_chi_tiet_du_lieu_duyet";
 
 const secretKey = process.env.REACT_APP_SECRET_KEY as string;
 
 export default function SubcribePage() {
+  const { id } = useParams();
+  const { data: infoF2 } = useQuery(["info"], () => getInfoF2(id));
+
   const name = CryptoJS.AES.decrypt(Cookies.get("name") as string, secretKey);
   const decryptedName = name.toString(CryptoJS.enc.Utf8);
   const phone = CryptoJS.AES.decrypt(Cookies.get("phone") as string, secretKey);
@@ -82,21 +89,8 @@ export default function SubcribePage() {
             <Logo />
           </div>
           <div className={styles.titleContent}>
-            <div className={styles.titleText}>Đơn vị: {userId.clb}</div>
-            <div className={styles.subTitleText}>
-              <div className={styles.boldText}>Thông tin người quản lý</div>
-            </div>
-            <div className={styles.subTitleText}>
-              <div className={styles.labelTitle}>Họ tên: </div>
-              <div className={styles.titleName}>{userId.name}</div>
-            </div>
-            <div className={styles.subTitleText}>
-              <div className={styles.labelTitle}>Số điện thoại:</div>
-              <div className={styles.titleName}>{userId.phone}</div>
-            </div>
-            <div className={styles.subTitleText}>
-              <div className={styles.labelTitle}>Email: </div>
-              <div className={styles.titleName}>{userId.email}</div>
+            <div className={styles.titleText}>
+              {infoF2 && <> Đơn vị: {infoF2?.data[0].nameClb}</>}
             </div>
           </div>
         </div>

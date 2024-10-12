@@ -25,6 +25,7 @@ import AcceptListMember from "../pages/giaidau/Xem_chi_tiet_du_lieu_duyet";
 import AcceptListMemberDetail from "../pages/giaidau/Xem_chi_tiet_du_lieu_duyet";
 import SubcribePage from "../pages/Subcribe";
 import SubcribePageEdit from "../pages/Subcribe Edit";
+import AcceptSubscribe from "../pages/AcceptSubscibe";
 const Component = () => {
   return (
     <>
@@ -53,13 +54,11 @@ const Component = () => {
         <Route path="/them-hoi-vien" element={<Profiles />}></Route>
         <Route path="/them-hoi-vien/:key" element={<Profiles />}></Route>
 
-        <Route path="/dang-ky-thi-dau" element={<SubcribePage />}></Route>
-
-        <Route path="/dang-ky-thi-dau/:id" element={<SubcribePage />}></Route>
         <Route
-          path="/danh-sach-dang-ky-quyen-thuat"
-          element={<SubcribePageEdit />}
+          path="/duyet-ho-so-dang-ky"
+          element={<AcceptSubscribe />}
         ></Route>
+
         <Route path={`/lien-doan/:key`} element={<Admin />}></Route>
         <Route
           path="/lien-doan/:key/UpdateMember"
@@ -70,9 +69,16 @@ const Component = () => {
         {/* <Route
           path="/dang-ky-giai-dau"
           element={<TournamentRegistration />}
-        ></Route> */}
+          ></Route> */}
         <Route path="/quan-ly-giai-dau" element={<AdminManagement />}></Route>
         <Route path="/duyet-giai-dau" element={<AcceptListMember />}></Route>
+
+        <Route path="/dang-ky-thi-dau/:id" element={<SubcribePage />}></Route>
+        <Route
+          path="/danh-sach-dang-ky-quyen-thuat"
+          element={<SubcribePageEdit />}
+        ></Route>
+        <Route path="/dang-ky-thi-dau" element={<SubcribePage />}></Route>
         <Route
           path="/duyet-giai-dau/:id"
           element={<AcceptListMemberDetail />}

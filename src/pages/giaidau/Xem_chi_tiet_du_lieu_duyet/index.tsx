@@ -10,29 +10,29 @@ const AcceptListMemberDetail = () => {
   const param = useParams();
   const idClub = Number(param.id);
 
-  const navigate = useNavigate();
-  const paramURL = new URLSearchParams(useLocation().search);
-  const location = useLocation();
-  const onChange = (key: string) => {
-    paramURL.set("tab", key);
-    navigate(`${location.pathname}?${paramURL.toString()}`);
-  };
-  const items: TabsProps["items"] = [
-    {
-      key: "1",
-      label: "THI ĐẤU QUYỀN THUẬT",
-      children: <SubcribePageEdit />,
-    },
-    {
-      key: "2",
-      label: "THI ĐẤU ĐỐI KHÁNG",
-      children: <TabAnagonism idClub={idClub} />,
-    },
-  ];
+  // const navigate = useNavigate();
+  // const paramURL = new URLSearchParams(useLocation().search);
+  // const location = useLocation();
+  // const onChange = (key: string) => {
+  //   paramURL.set("tab", key);
+  //   navigate(`${location.pathname}?${paramURL.toString()}`);
+  // };
+  // const items: TabsProps["items"] = [
+  //   {
+  //     key: "1",
+  //     label: "THI ĐẤU QUYỀN THUẬT",
+  //     children: <SubcribePageEdit />,
+  //   },
+  //   {
+  //     key: "2",
+  //     label: "THI ĐẤU ĐỐI KHÁNG",
+  //     children: <TabAnagonism idClub={idClub} />,
+  //   },
+  // ];
   return (
     <>
-      <Header />
-      <div
+      {/* <Header /> */}
+      {/* <div
         style={{
           display: "flex",
           justifyContent: "center",
@@ -43,13 +43,14 @@ const AcceptListMemberDetail = () => {
         }}
       >
         <Logo />
-      </div>
-      <Tabs
+      </div> */}
+      {/* <Tabs
         defaultActiveKey={paramURL.get("tab") || "0"}
         items={items}
         onChange={onChange}
         centered
-      />
+      /> */}
+      <TabAnagonism idClub={idClub} />
     </>
   );
 };

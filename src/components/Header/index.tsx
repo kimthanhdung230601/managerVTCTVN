@@ -81,15 +81,17 @@ export default function Header() {
                 Đăng ký giải vô địch
               </Link>
             </Col>
-            <Col className={styles.headerItem}>
-              <Link to={"/dang-ky-thi-dau"} className={styles.itemLink}>
-                Đăng ký thi đấu
-              </Link>
-            </Col>
+            {isAdmin() === "2" && (
+              <Col className={styles.headerItem}>
+                <Link to={"/dang-ky-thi-dau"} className={styles.itemLink}>
+                  Đăng ký thi đấu
+                </Link>
+              </Col>
+            )}
             {isAdmin() === "0" && (
               <Col className={styles.headerItem}>
-                <Link to={"/duyet-giai-dau"} className={styles.itemLink}>
-                  Duyệt thi đấu
+                <Link to={"/duyet-ho-so-dang-ky"} className={styles.itemLink}>
+                  Duyệt hồ sơ
                 </Link>
               </Col>
             )}
@@ -227,15 +229,29 @@ export default function Header() {
               Đăng ký giải vô địch
             </Link>
           </li>
-          <li className={styles.menuResponsiveItem}>
-            <Link
-              to={"/dang-ky-thi-dau"}
-              className={styles.menuResponsiveLink}
-              onClick={handleCloseMenu}
-            >
-              Đăng ký thi đấu
-            </Link>
-          </li>
+          {isAdmin() === "2" && (
+            <li className={styles.menuResponsiveItem}>
+              <Link
+                to={"/dang-ky-thi-dau"}
+                className={styles.menuResponsiveLink}
+                onClick={handleCloseMenu}
+              >
+                Đăng ký thi đấu
+              </Link>
+            </li>
+          )}
+          {isAdmin() === "0" && (
+            <li className={styles.menuResponsiveItem}>
+              <Link
+                to={"/duyet-ho-so-dang-ky"}
+                className={styles.menuResponsiveLink}
+                onClick={handleCloseMenu}
+              >
+                Duyệt hồ sơ
+              </Link>
+            </li>
+          )}
+
           {Cookies.get("token") ? (
             <li className={styles.menuResponsiveItem}>
               <Link

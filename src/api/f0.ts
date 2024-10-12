@@ -51,3 +51,9 @@ export const updateListSubcribe = (param: any) =>
 
 export const getListMemberClub = (idclub: number) =>
   sendGet(`/Fight2024?idclub=${idclub}`);
+
+export const acceptClubSubscribe = (param: any) =>
+  sendPost(`/Fight2024?type=Accept`, param);
+
+export const getListAcceptSubscribe = () =>
+  sendPost(`/Fight2024?type=List`, {});
