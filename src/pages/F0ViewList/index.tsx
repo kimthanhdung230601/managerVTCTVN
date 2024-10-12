@@ -14,8 +14,6 @@ import AdminManagement from "../giaidau/Thu_thap_du_lieu_doi_khang";
 export default function F0ViewList() {
   const { id } = useParams();
 
-  const { data: infoF2 } = useQuery(["info"], () => getInfoF2(id));
-
   const onChange = (key: string) => {
     console.log(key);
   };
@@ -30,7 +28,7 @@ export default function F0ViewList() {
           </div>
           <div className={styles.titleContent}>
             <div className={styles.titleText}>
-              {infoF2 && <> Đơn vị: {infoF2?.data[0].nameClb}</>}
+              DANH SÁCH ĐĂNG KÝ CUP CÂU LẠC BỘ
             </div>
           </div>
         </div>
