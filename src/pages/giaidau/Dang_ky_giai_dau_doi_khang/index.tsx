@@ -6,19 +6,6 @@ const TournamentRegistration = () => {
   return (
     <>
       <div>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            paddingTop: "120px",
-            flexDirection: "column",
-          }}
-        >
-          <Logo />
-        </div>
-      </div>
-      <div>
         <CustomTableWeightOne />
         <CustomTableWeightTwo />
       </div>

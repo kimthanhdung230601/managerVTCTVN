@@ -8,7 +8,6 @@ import {
 } from "../../../api/thiDau";
 import moment from "moment";
 import { adminManagement, weight } from "../Data";
-import { isEditable } from "@testing-library/user-event/dist/utils";
 
 interface Person {
   code: string;
@@ -49,8 +48,10 @@ const TableRow = ({
   );
 
   const dataFilter = !data
-    ? dataFight?.data.filter((item: adminManagement) => item.sex === sex)
-    : dataManagement1?.data.filter((item: adminManagement) => item.sex === sex);
+    ? dataFight?.data.filter((item: adminManagement) => item.sex === sex) || []
+    : dataManagement1?.data.filter(
+        (item: adminManagement) => item.sex === sex
+      ) || [];
 
   useEffect(() => {
     if (data) {

@@ -4,6 +4,10 @@ export const RouteList = [
     permission: 2,
   },
   {
+    name: "/dang-ky-giai-dau",
+    permission: 2,
+  },
+  {
     name: "/quan-ly-don-vi",
     permission: 2,
   },
@@ -77,8 +81,13 @@ export const RouteList = [
     name: "/huong-dan",
     permission: 3,
   },
+
   {
     name: "/dang-ky-giai-dau",
-    permission: 3,
+    permission: 2,
+  },
+  {
+    name: "/duyet-giai-dau",
+    permission: 0,
   },
 ];

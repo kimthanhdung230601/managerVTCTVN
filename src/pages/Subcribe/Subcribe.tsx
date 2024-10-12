@@ -220,7 +220,7 @@ export default function Subcribe() {
           okText="Có"
           cancelText="Huỷ"
         >
-          <Button danger>Đăng ký</Button>
+          <Button danger>Gửi hồ sơ</Button>
         </Popconfirm>
       </div>
 

@@ -4,11 +4,10 @@ import { ReactComponent as Logo } from "../../assets/svg/logo.svg";
 import Header from "../../components/Header";
 import Cookies from "js-cookie";
 import CryptoJS from "crypto-js";
-import type { PopconfirmProps } from "antd";
-import { Button, message, Popconfirm } from "antd";
 import Subcribe from "./Subcribe";
-import { useMutation } from "react-query";
-import { submitListmember } from "../../api/f2";
+import { Tabs } from "antd";
+import TabPane from "antd/es/tabs/TabPane";
+import TournamentRegistration from "../giaidau/Dang_ky_giai_dau_doi_khang";
 
 const secretKey = process.env.REACT_APP_SECRET_KEY as string;
 export default function SubcribePage() {
@@ -29,6 +28,9 @@ export default function SubcribePage() {
     email: decryptedEmail,
     clb: decryptedNameClb,
   });
+  const onChange = (key: string) => {
+    console.log(key);
+  };
 
   return (
     <div>
@@ -61,8 +63,14 @@ export default function SubcribePage() {
           </div>
         </div>
       </div>
-
-      <Subcribe />
+      <Tabs defaultActiveKey="0" onChange={onChange} centered>
+        <TabPane key={0} tab="Dữ liệu đối kháng">
+          <TournamentRegistration />
+        </TabPane>
+        <TabPane key={1} tab="Dữ liệu quyền thuật">
+          <Subcribe />
+        </TabPane>
+      </Tabs>
     </div>
   );
 }

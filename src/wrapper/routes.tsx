@@ -52,7 +52,9 @@ const Component = () => {
         <Route path="/doi-mat-khau" element={<ChangePassword />}></Route>
         <Route path="/them-hoi-vien" element={<Profiles />}></Route>
         <Route path="/them-hoi-vien/:key" element={<Profiles />}></Route>
+
         <Route path="/dang-ky-thi-dau" element={<SubcribePage />}></Route>
+
         <Route path="/dang-ky-thi-dau/:id" element={<SubcribePage />}></Route>
         <Route
           path="/danh-sach-dang-ky-quyen-thuat"
@@ -65,10 +67,10 @@ const Component = () => {
         ></Route>
         <Route path="/quan-ly-don-vi" element={<AdminTwo />}></Route>
         {/* dang ky giai dau */}
-        <Route
+        {/* <Route
           path="/dang-ky-giai-dau"
           element={<TournamentRegistration />}
-        ></Route>
+        ></Route> */}
         <Route path="/quan-ly-giai-dau" element={<AdminManagement />}></Route>
         <Route path="/duyet-giai-dau" element={<AcceptListMember />}></Route>
         <Route
