@@ -1,19 +1,37 @@
 import { Tabs, TabsProps } from "antd";
 import TabPane from "antd/es/tabs/TabPane";
-import { useParams } from "react-router";
+import { useLocation, useNavigate, useParams } from "react-router";
 import TabAnagonism from "./TabAnagonism";
 import { ReactComponent as Logo } from "../../../assets/svg/logo.svg";
+import SubcribePageEdit from "../../Subcribe Edit";
+import Header from "../../../components/Header";
 
 const AcceptListMemberDetail = () => {
   const param = useParams();
   const idClub = Number(param.id);
 
+  const navigate = useNavigate();
+  const paramURL = new URLSearchParams(useLocation().search);
+  const location = useLocation();
   const onChange = (key: string) => {
-    console.log(key);
+    paramURL.set("tab", key);
+    navigate(`${location.pathname}?${paramURL.toString()}`);
   };
-
+  const items: TabsProps["items"] = [
+    {
+      key: "1",
+      label: "THI ĐẤU QUYỀN THUẬT",
+      children: <SubcribePageEdit />,
+    },
+    {
+      key: "2",
+      label: "THI ĐẤU ĐỐI KHÁNG",
+      children: <TabAnagonism idClub={idClub} />,
+    },
+  ];
   return (
     <>
+      <Header />
       <div
         style={{
           display: "flex",
@@ -26,14 +44,12 @@ const AcceptListMemberDetail = () => {
       >
         <Logo />
       </div>
-      <Tabs defaultActiveKey="0" onChange={onChange} centered>
-        <TabPane key={0} tab="Dữ liệu đối kháng">
-          <TabAnagonism idClub={idClub} />
-        </TabPane>
-        <TabPane key={1} tab="Dữ liệu quyền thuật">
-          <TabAnagonism idClub={idClub} />
-        </TabPane>
-      </Tabs>
+      <Tabs
+        defaultActiveKey={paramURL.get("tab") || "0"}
+        items={items}
+        onChange={onChange}
+        centered
+      />
     </>
   );
 };

@@ -35,25 +35,11 @@ export default function SubcribePageEdit() {
 
   return (
     <div className={styles.wrapper}>
-      <Header />
-      <div className={styles.logoWrap}>
-        <div className={styles.title}>
-          <div className={styles.logoContainer}>
-            <Logo />
-          </div>
-          <div className={styles.titleContent}>
-            <div className={styles.titleText}>
-              Danh sách đăng ký Quyền Thuật
-            </div>{" "}
-          </div>
-        </div>
-      </div>
       <Tabs
         defaultActiveKey={paramURL.get("tab") || "Male"}
         items={items}
         onChange={onChange}
       />
-      ;
     </div>
   );
 }

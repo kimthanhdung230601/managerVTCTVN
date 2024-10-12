@@ -48,10 +48,12 @@ const TableRow = ({
   );
 
   const dataFilter = !data
-    ? dataFight?.data.filter((item: adminManagement) => item.sex === sex) || []
-    : dataManagement1?.data.filter(
-        (item: adminManagement) => item.sex === sex
-      ) || [];
+    ? dataFight?.data
+      ? dataFight.data.filter((item: adminManagement) => item.sex === sex)
+      : []
+    : dataManagement1?.data
+    ? dataManagement1.data.filter((item: adminManagement) => item.sex === sex)
+    : [];
 
   useEffect(() => {
     if (data) {

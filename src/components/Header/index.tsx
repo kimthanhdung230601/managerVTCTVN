@@ -86,6 +86,13 @@ export default function Header() {
                 Đăng ký thi đấu
               </Link>
             </Col>
+            {isAdmin() === "0" && (
+              <Col className={styles.headerItem}>
+                <Link to={"/duyet-giai-dau"} className={styles.itemLink}>
+                  Duyệt thi đấu
+                </Link>
+              </Col>
+            )}
           </Row>
         </Col>
         <Col className={`${styles.headerItem} gutter-row`}>
