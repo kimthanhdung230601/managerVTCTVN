@@ -42,3 +42,12 @@ export const updateNew = (param: any) => sendPost("/EditNewsID", param);
 export const deleteNew = (param: any) => sendPost("/DeleteNewsID", param);
 export const getNewsbyID = (param: any) => sendGet(`/GetNewsID?id=${param}`);
 export const signUpF1 = (param: any) => sendPost(`/AdminSignUpManage`, param);
+
+export const getListSubcribe = (param: any) =>
+  sendPost(`/Fight2024?type=Detail`, param);
+
+export const updateListSubcribe = (param: any) =>
+  sendPost(`/Fight2024?type=Fix`, param);
+
+export const getListMemberClub = (idclub: number) =>
+  sendGet(`/Fight2024?idclub=${idclub}`);

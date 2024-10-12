@@ -23,6 +23,8 @@ import TournamentRegistration from "../pages/giaidau/Dang_ky_giai_dau_doi_khang"
 import AdminManagement from "../pages/giaidau/Thu_thap_du_lieu_doi_khang";
 import AcceptListMember from "../pages/giaidau/Xem_chi_tiet_du_lieu_duyet";
 import AcceptListMemberDetail from "../pages/giaidau/Xem_chi_tiet_du_lieu_duyet";
+import SubcribePage from "../pages/Subcribe";
+import SubcribePageEdit from "../pages/Subcribe Edit";
 const Component = () => {
   return (
     <>
@@ -50,6 +52,12 @@ const Component = () => {
         <Route path="/doi-mat-khau" element={<ChangePassword />}></Route>
         <Route path="/them-hoi-vien" element={<Profiles />}></Route>
         <Route path="/them-hoi-vien/:key" element={<Profiles />}></Route>
+        <Route path="/dang-ky-thi-dau" element={<SubcribePage />}></Route>
+        <Route path="/dang-ky-thi-dau/:id" element={<SubcribePage />}></Route>
+        <Route
+          path="/danh-sach-dang-ky-quyen-thuat"
+          element={<SubcribePageEdit />}
+        ></Route>
         <Route path={`/lien-doan/:key`} element={<Admin />}></Route>
         <Route
           path="/lien-doan/:key/UpdateMember"
