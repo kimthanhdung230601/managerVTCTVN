@@ -77,4 +77,8 @@ export const RouteList = [
     name: "/huong-dan",
     permission: 3,
   },
+  {
+    name: "/dang-ky-giai-dau",
+    permission: 3,
+  },
 ];

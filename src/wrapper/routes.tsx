@@ -4,24 +4,25 @@ import Detail from "../pages/Detail";
 import LevelOne from "../pages/f1";
 import Guide from "../pages/Guide";
 import Home from "../pages/Home";
-import JuryMember from "../pages/JuryMember";
 import Login from "../pages/Login";
 import SignupF2 from "../pages/Login/SignupF2";
 import News from "../pages/News";
 import Post from "../pages/Post";
-import Search from "../pages/Search";
 import Profiles from "../pages/Profiles";
 import Admin from "../pages/Admin0";
 import UpdateMember from "../pages/Admin0/updateMember";
 import AdminTwo from "../pages/Admin2";
 import Account from "../pages/Account";
 import ChangePassword from "../pages/ChangePassword";
-import CryptoJS from "crypto-js";
 import NotFoundPage from "../pages/404";
 import UpdateProfiles from "../pages/UpdateF0";
 import SignupF1 from "../pages/Login/SignupF1";
 import SignupF2Free from "../pages/Login/SignupF2Free";
 import RegisterForPrize from "../pages/RegisterForPrize";
+import TournamentRegistration from "../pages/giaidau/Dang_ky_giai_dau_doi_khang";
+import AdminManagement from "../pages/giaidau/Thu_thap_du_lieu_doi_khang";
+import AcceptListMember from "../pages/giaidau/Xem_chi_tiet_du_lieu_duyet";
+import AcceptListMemberDetail from "../pages/giaidau/Xem_chi_tiet_du_lieu_duyet";
 import SubcribePage from "../pages/Subcribe";
 import SubcribePageEdit from "../pages/Subcribe Edit";
 const Component = () => {
@@ -63,6 +64,18 @@ const Component = () => {
           element={<UpdateMember />}
         ></Route>
         <Route path="/quan-ly-don-vi" element={<AdminTwo />}></Route>
+        {/* dang ky giai dau */}
+        <Route
+          path="/dang-ky-giai-dau"
+          element={<TournamentRegistration />}
+        ></Route>
+        <Route path="/quan-ly-giai-dau" element={<AdminManagement />}></Route>
+        <Route path="/duyet-giai-dau" element={<AcceptListMember />}></Route>
+        <Route
+          path="/duyet-giai-dau/:id"
+          element={<AcceptListMemberDetail />}
+        ></Route>
+        {/*  */}
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </>
