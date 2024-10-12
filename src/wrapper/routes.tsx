@@ -26,6 +26,7 @@ import AcceptListMemberDetail from "../pages/giaidau/Xem_chi_tiet_du_lieu_duyet"
 import SubcribePage from "../pages/Subcribe";
 import SubcribePageEdit from "../pages/Subcribe Edit";
 import AcceptSubscribe from "../pages/AcceptSubscibe";
+import ListClubsRes from "../pages/giaidau/Xem_danh_sach";
 const Component = () => {
   return (
     <>
@@ -74,10 +75,7 @@ const Component = () => {
         <Route path="/duyet-giai-dau" element={<AcceptListMember />}></Route>
 
         <Route path="/dang-ky-thi-dau/:id" element={<SubcribePage />}></Route>
-        <Route
-          path="/danh-sach-dang-ky-quyen-thuat"
-          element={<SubcribePageEdit />}
-        ></Route>
+        <Route path="/danh-sach-thi-dau" element={<ListClubsRes />}></Route>
         <Route path="/dang-ky-thi-dau" element={<SubcribePage />}></Route>
         <Route
           path="/duyet-giai-dau/:id"

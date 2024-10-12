@@ -13,31 +13,14 @@ import { useQuery } from "react-query";
 import { getInfoF2 } from "../../api/f2";
 import { useParams } from "react-router";
 import AcceptListMemberDetail from "../giaidau/Xem_chi_tiet_du_lieu_duyet";
+import AdminManagement from "../giaidau/Thu_thap_du_lieu_doi_khang";
 
 const secretKey = process.env.REACT_APP_SECRET_KEY as string;
 
 export default function SubcribePage() {
   const { id } = useParams();
+
   const { data: infoF2 } = useQuery(["info"], () => getInfoF2(id));
-
-  const name = CryptoJS.AES.decrypt(Cookies.get("name") as string, secretKey);
-  const decryptedName = name.toString(CryptoJS.enc.Utf8);
-  const phone = CryptoJS.AES.decrypt(Cookies.get("phone") as string, secretKey);
-  const decryptedPhone = phone.toString(CryptoJS.enc.Utf8);
-  const email = CryptoJS.AES.decrypt(Cookies.get("email") as string, secretKey);
-  const decryptedEmail = email.toString(CryptoJS.enc.Utf8);
-  const NameClb = CryptoJS.AES.decrypt(
-    Cookies.get("NameClb") as string,
-    secretKey
-  );
-  const decryptedNameClb = NameClb.toString(CryptoJS.enc.Utf8);
-
-  const [userId, setUserId] = useState<any>({
-    name: decryptedName,
-    phone: decryptedPhone,
-    email: decryptedEmail,
-    clb: decryptedNameClb,
-  });
 
   const [file, setFile] = useState<File | null>(null);
 

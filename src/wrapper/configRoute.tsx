@@ -64,7 +64,7 @@ export const RouteList = [
     permission: 0,
   },
   {
-    name: "/danh-sach-dang-ky-quyen-thuat",
+    name: "/danh-sach-thi-dau",
     permission: 0,
   },
   {

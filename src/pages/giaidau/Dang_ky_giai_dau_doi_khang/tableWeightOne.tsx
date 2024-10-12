@@ -3,6 +3,7 @@ import TableRow from "../Component/tableRow";
 import { Button, message, Popconfirm } from "antd";
 import { addNewMember } from "../../../api/thiDau";
 import { data_weight_1, tableThead, thongTin, weight } from "../Data";
+import { isAdmin } from "../../../api/ApiUser";
 
 // Define thongTin interface
 
@@ -89,28 +90,31 @@ const CustomTableWeightOne: React.FC = () => {
           {" "}
           THI ĐẤU ĐỐI KHÁNG HÌNH THỨC I
         </h1>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "flex-end",
-            marginRight: "12px",
-            marginTop: "12px",
-            marginBottom: "12px",
-          }}
-        >
-          <Popconfirm
-            title="Cảnh báo"
-            description="Lưu ý: khi hồ sơ đã gửi thì sẽ ko sửa được nữa, bạn chắc chắn muốn gửi? "
-            open={open}
-            onConfirm={handleOk}
-            okButtonProps={{ loading: confirmLoading }}
-            onCancel={handleCancel}
+        {isAdmin() === "2" && (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "flex-end",
+              marginRight: "12px",
+              marginTop: "12px",
+              marginBottom: "12px",
+            }}
           >
-            <Button type="primary" onClick={showPopconfirm}>
-              Gửi hô sơ
-            </Button>
-          </Popconfirm>
-        </div>
+            <Popconfirm
+              title="Cảnh báo"
+              description="Lưu ý: khi hồ sơ đã gửi thì sẽ ko sửa được nữa, bạn chắc chắn muốn gửi? "
+              open={open}
+              onConfirm={handleOk}
+              okButtonProps={{ loading: confirmLoading }}
+              onCancel={handleCancel}
+            >
+              <Button type="primary" onClick={showPopconfirm}>
+                Gửi hồ sơ
+              </Button>
+            </Popconfirm>
+          </div>
+        )}
+
         {/* Render header */}
         <div
           style={{

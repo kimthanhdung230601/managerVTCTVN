@@ -3,6 +3,7 @@ import TableRow from "../Component/tableRow";
 import { Button, message, Popconfirm } from "antd";
 import { addNewMember } from "../../../api/thiDau";
 import { data_weight_2, tableThead, thongTin, weight } from "../Data";
+import { isAdmin } from "../../../api/ApiUser";
 
 // Define thongTin interface
 
@@ -147,18 +148,20 @@ const CustomTableWeightTwo: React.FC = () => {
             marginBottom: "12px",
           }}
         >
-          <Popconfirm
-            title="Cảnh báo"
-            description="Lưu ý: khi hồ sơ đã gửi thì sẽ ko sửa được nữa, bạn chắc chắn muốn gửi? "
-            open={open}
-            onConfirm={handleOk}
-            okButtonProps={{ loading: confirmLoading }}
-            onCancel={handleCancel}
-          >
-            <Button type="primary" onClick={showPopconfirm}>
-              Gửi hô sơ
-            </Button>
-          </Popconfirm>
+          {isAdmin() === "2" && (
+            <Popconfirm
+              title="Cảnh báo"
+              description="Lưu ý: khi hồ sơ đã gửi thì sẽ ko sửa được nữa, bạn chắc chắn muốn gửi? "
+              open={open}
+              onConfirm={handleOk}
+              okButtonProps={{ loading: confirmLoading }}
+              onCancel={handleCancel}
+            >
+              <Button type="primary" onClick={showPopconfirm}>
+                Gửi hồ sơ
+              </Button>
+            </Popconfirm>
+          )}
         </div>
         {/* Render header */}
         <div

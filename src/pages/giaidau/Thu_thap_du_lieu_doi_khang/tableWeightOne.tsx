@@ -34,7 +34,9 @@ const CustomTableAdminOne = ({
   const filterNu = filterNamType?.filter((person: any) => person.sex === "Nữ");
   return (
     <>
-      <div style={{ margin: "20px 0" }}>
+      <div
+        style={{ margin: "20px 0", paddingLeft: "48px", paddingRight: "48px" }}
+      >
         <h1
           style={{
             marginTop: "48px",
@@ -70,136 +72,142 @@ const CustomTableAdminOne = ({
           ))}
         </div>
 
-        {dataManagement?.data
-          .filter((person: any) => person.sex === "Nam")
-          .filter((person: any) => person.type === typeFilter)
-          .map((person: any, index: number) => (
-            <div
-              key={index}
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(7, 1fr)",
-              }}
-            >
-              {index === filterNam.length / 2 - 1 ? (
+        {dataManagement?.data &&
+          dataManagement?.data
+            .filter((person: any) => person.sex === "Nam")
+            .filter((person: any) => person.type === typeFilter)
+            .map((person: any, index: number) => (
+              <div
+                key={index}
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(7, 1fr)",
+                }}
+              >
+                {index === filterNam.length / 2 - 1 ? (
+                  <div
+                    style={{
+                      padding: "10px",
+                      gridColumn: "span 1",
+                      textAlignLast: "center",
+                      borderBottom:
+                        index === filterNam.length - 1
+                          ? "1px solid #ddd"
+                          : "none",
+                      borderRight: "1px solid #ddd",
+                    }}
+                  >
+                    Nam
+                  </div>
+                ) : (
+                  <div
+                    style={{
+                      padding: "10px",
+                      borderBottom:
+                        index === filterNam.length - 1
+                          ? "1px solid #ddd"
+                          : "none",
+                      borderRight: "1px solid #ddd",
+                    }}
+                  />
+                )}
                 <div
                   style={{
-                    padding: "10px",
-                    gridColumn: "span 1",
-                    textAlignLast: "center",
-                    borderBottom:
-                      index === filterNam.length - 1
-                        ? "1px solid #ddd"
-                        : "none",
+                    borderBottom: "1px solid #ddd",
                     borderRight: "1px solid #ddd",
+                    textAlignLast: "center",
+                    alignContent: "center",
                   }}
                 >
-                  Nam
+                  {index + 1}
                 </div>
-              ) : (
                 <div
                   style={{
-                    padding: "10px",
-                    borderBottom:
-                      index === filterNam.length - 1
-                        ? "1px solid #ddd"
-                        : "none",
                     borderRight: "1px solid #ddd",
-                  }}
-                />
-              )}
-              <div
-                style={{
-                  borderBottom: "1px solid #ddd",
-                  borderRight: "1px solid #ddd",
-                  textAlignLast: "center",
-                  alignContent: "center",
-                }}
-              >
-                {index + 1}
-              </div>
-              <div
-                style={{
-                  borderRight: "1px solid #ddd",
-                  borderBottom: "1px solid #ddd",
-                  padding: "12px 18px",
-                }}
-              >
-                {person.name}
-              </div>
-              <div style={{ gridColumn: "span 4" }}>
-                <TableRow
-                  isNamCLB
-                  data={person}
-                  sex="Nam"
-                  isEditable={isEditTable}
-                />
-              </div>
-            </div>
-          ))}
-        {dataManagement?.data
-          .filter((person: any) => person.sex === "Nữ")
-          .filter((person: any) => person.type === typeFilter)
-          .map((person: any, index: number) => (
-            <div
-              key={index}
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(7, 1fr)",
-              }}
-            >
-              {index === Math.floor(filterNu.length / 2) ? (
-                <div
-                  style={{
-                    padding: "10px",
-                    gridColumn: "span 1",
-                    textAlignLast: "center",
-                    borderBottom:
-                      index === filterNu.length - 1 ? "1px solid #ddd" : "none",
-                    borderRight: "1px solid #ddd",
+                    borderBottom: "1px solid #ddd",
+                    padding: "12px 18px",
                   }}
                 >
-                  Nữ
+                  {person.name}
                 </div>
-              ) : (
+                <div style={{ gridColumn: "span 4" }}>
+                  <TableRow
+                    isNamCLB
+                    data={person}
+                    sex="Nam"
+                    isEditable={isEditTable}
+                  />
+                </div>
+              </div>
+            ))}
+        {dataManagement?.data &&
+          dataManagement?.data
+            .filter((person: any) => person.sex === "Nữ")
+            .filter((person: any) => person.type === typeFilter)
+            .map((person: any, index: number) => (
+              <div
+                key={index}
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(7, 1fr)",
+                }}
+              >
+                {index === Math.floor(filterNu.length / 2) ? (
+                  <div
+                    style={{
+                      padding: "10px",
+                      gridColumn: "span 1",
+                      textAlignLast: "center",
+                      borderBottom:
+                        index === filterNu.length - 1
+                          ? "1px solid #ddd"
+                          : "none",
+                      borderRight: "1px solid #ddd",
+                    }}
+                  >
+                    Nữ
+                  </div>
+                ) : (
+                  <div
+                    style={{
+                      padding: "10px",
+                      borderBottom:
+                        index === filterNu.length - 1
+                          ? "1px solid #ddd"
+                          : "none",
+                      borderRight: "1px solid #ddd",
+                    }}
+                  />
+                )}
                 <div
                   style={{
-                    padding: "10px",
-                    borderBottom:
-                      index === filterNu.length - 1 ? "1px solid #ddd" : "none",
+                    borderBottom: "1px solid #ddd",
                     borderRight: "1px solid #ddd",
+                    textAlignLast: "center",
+                    alignContent: "center",
                   }}
-                />
-              )}
-              <div
-                style={{
-                  borderBottom: "1px solid #ddd",
-                  borderRight: "1px solid #ddd",
-                  textAlignLast: "center",
-                  alignContent: "center",
-                }}
-              >
-                {index + 1}
+                >
+                  {index + 1}
+                </div>
+                <div
+                  style={{
+                    borderRight: "1px solid #ddd",
+                    borderBottom: "1px solid #ddd",
+                    padding: "12px 18px",
+                  }}
+                >
+                  {person.name}
+                </div>
+                <div style={{ gridColumn: "span 4" }}>
+                  <TableRow
+                    isNamCLB
+                    data={person}
+                    sex="Nữ"
+                    isEditable={isEditTable}
+                  />
+                </div>
               </div>
-              <div
-                style={{
-                  borderRight: "1px solid #ddd",
-                  borderBottom: "1px solid #ddd",
-                  padding: "12px 18px",
-                }}
-              >
-                {person.name}
-              </div>
-              <div style={{ gridColumn: "span 4" }}>
-                <TableRow
-                  isNamCLB
-                  data={person}
-                  sex="Nữ"
-                  isEditable={isEditTable}
-                />
-              </div>
-            </div>
-          ))}
+            ))}
       </div>
     </>
   );

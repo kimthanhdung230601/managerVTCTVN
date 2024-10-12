@@ -5,11 +5,12 @@ import { Button, message, Popconfirm } from "antd";
 import Subcribe1 from "./Subcribe1";
 import Subcribe2 from "./Subcribe2";
 import Subcribe3 from "./Subcribe3";
-import { useMutation, useQuery } from "react-query";
+import { useMutation } from "react-query";
 import { submitListmember } from "../../api/f2";
-import { useLocation, useParams } from "react-router";
-import { getListSubcribe, updateListSubcribe } from "../../api/f0";
+import { useParams } from "react-router";
+import { updateListSubcribe } from "../../api/f0";
 import useMemberSubscribe from "../../hook/useMemberSubscribe";
+import { isAdmin } from "../../api/ApiUser";
 
 interface User {
   sex: string;
@@ -213,15 +214,17 @@ export default function Subcribe() {
   return (
     <div className={styles.tableWrap}>
       <div className={styles.btnWrap}>
-        <Popconfirm
-          title="Lưu ý"
-          description="Khi hồ sơ đã gửi sẽ không sửa được nữa, bạn chắc chắn muốn gửi?"
-          onConfirm={confirm}
-          okText="Có"
-          cancelText="Huỷ"
-        >
-          <Button danger>Gửi hồ sơ</Button>
-        </Popconfirm>
+        {isAdmin() === "2" && (
+          <Popconfirm
+            title="Lưu ý"
+            description="Khi hồ sơ đã gửi sẽ không sửa được nữa, bạn chắc chắn muốn gửi?"
+            onConfirm={confirm}
+            okText="Có"
+            cancelText="Huỷ"
+          >
+            <Button>Gửi hồ sơ</Button>
+          </Popconfirm>
+        )}
       </div>
 
       <p className={styles.title}>NỘI DUNG QUYỀN QUY ĐỊNH</p>

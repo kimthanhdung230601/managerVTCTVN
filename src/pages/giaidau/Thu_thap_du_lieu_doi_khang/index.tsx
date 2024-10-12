@@ -1,5 +1,6 @@
 import CustomTableAdminOne from "./tableWeightOne";
 import { ReactComponent as Logo } from "../../../assets/svg/logo.svg";
+import { useParams } from "react-router";
 
 interface Props {
   isNotShowTitle?: boolean;
@@ -13,21 +14,6 @@ const AdminManagement = ({
 }: Props) => {
   return (
     <>
-      <div>
-        {!isNotShowTitle && (
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              paddingTop: "120px",
-              flexDirection: "column",
-            }}
-          >
-            <Logo />
-          </div>
-        )}
-      </div>
       <div>
         <CustomTableAdminOne
           idClub={idClub}
