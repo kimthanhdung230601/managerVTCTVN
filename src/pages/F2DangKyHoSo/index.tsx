@@ -40,7 +40,7 @@ export default function F2Subcribe() {
     }
 
     const formData = new FormData();
-    formData.append("file", file);
+    formData.append("imageClb", file);
 
     try {
       const response = await updateFile(formData);
