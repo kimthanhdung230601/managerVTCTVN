@@ -26,5 +26,5 @@ export const submitListmember = (param: any) =>
 export const getInfoF2 = (param: any) => {
   if (param != undefined)
     return sendPost("/Fight2024?type=Info", { id: param });
-  else return sendPost("/Fight2024?type=Info");
+  else return sendPost("/Fight2024?type=Info", {});
 };
