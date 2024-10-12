@@ -22,6 +22,8 @@ import UpdateProfiles from "../pages/UpdateF0";
 import SignupF1 from "../pages/Login/SignupF1";
 import SignupF2Free from "../pages/Login/SignupF2Free";
 import RegisterForPrize from "../pages/RegisterForPrize";
+import SubcribePage from "../pages/Subcribe";
+import SubcribePageEdit from "../pages/Subcribe Edit";
 const Component = () => {
   return (
     <>
@@ -49,6 +51,12 @@ const Component = () => {
         <Route path="/doi-mat-khau" element={<ChangePassword />}></Route>
         <Route path="/them-hoi-vien" element={<Profiles />}></Route>
         <Route path="/them-hoi-vien/:key" element={<Profiles />}></Route>
+        <Route path="/dang-ky-thi-dau" element={<SubcribePage />}></Route>
+        <Route path="/dang-ky-thi-dau/:id" element={<SubcribePage />}></Route>
+        <Route
+          path="/danh-sach-dang-ky-quyen-thuat"
+          element={<SubcribePageEdit />}
+        ></Route>
         <Route path={`/lien-doan/:key`} element={<Admin />}></Route>
         <Route
           path="/lien-doan/:key/UpdateMember"

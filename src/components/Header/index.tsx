@@ -81,6 +81,11 @@ export default function Header() {
                 Đăng ký giải vô địch
               </Link>
             </Col>
+            <Col className={styles.headerItem}>
+              <Link to={"/dang-ky-thi-dau"} className={styles.itemLink}>
+                Đăng ký thi đấu
+              </Link>
+            </Col>
           </Row>
         </Col>
         <Col className={`${styles.headerItem} gutter-row`}>
@@ -213,6 +218,15 @@ export default function Header() {
               onClick={handleCloseMenu}
             >
               Đăng ký giải vô địch
+            </Link>
+          </li>
+          <li className={styles.menuResponsiveItem}>
+            <Link
+              to={"/dang-ky-thi-dau"}
+              className={styles.menuResponsiveLink}
+              onClick={handleCloseMenu}
+            >
+              Đăng ký thi đấu
             </Link>
           </li>
           {Cookies.get("token") ? (
