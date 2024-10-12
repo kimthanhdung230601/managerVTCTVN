@@ -119,10 +119,12 @@ export default function AcceptSubscribe() {
           <div className={styles.total}>
             <div className={styles.total1}>Tổng số</div>
             <div className={styles.total2}>
-              Vận động viên quyền thuật: <b>30</b>
+              Vận động viên quyền thuật:{" "}
+              <b>{getListAccept?.total[0].total_mode_1}</b>
             </div>
             <div className={styles.total2}>
-              Vận động viên đối kháng: <b>30</b>
+              Vận động viên đối kháng:{" "}
+              <b>{getListAccept?.total[0].total_mode_2}</b>
             </div>
           </div>
         </div>
