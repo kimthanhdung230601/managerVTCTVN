@@ -43,7 +43,10 @@ export const RouteList = [
     name: "/chinh-sua-ho-so",
     permission: 0,
   },
-
+  {
+    name: "/duyet-giai-dau",
+    permission: 0,
+  },
   {
     name: "/",
     permission: 3,

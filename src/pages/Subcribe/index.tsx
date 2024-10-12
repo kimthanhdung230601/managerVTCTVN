@@ -12,6 +12,7 @@ import { updateFile } from "../../api/thiDau";
 import { useQuery } from "react-query";
 import { getInfoF2 } from "../../api/f2";
 import { useParams } from "react-router";
+import AcceptListMemberDetail from "../giaidau/Xem_chi_tiet_du_lieu_duyet";
 
 const secretKey = process.env.REACT_APP_SECRET_KEY as string;
 
@@ -89,7 +90,7 @@ export default function SubcribePage() {
           </div>
           <div className={styles.titleContent}>
             <div className={styles.titleText}>
-              Đơn vị: {infoF2?.data[0].nameClb}
+              {infoF2 && <> Đơn vị: {infoF2?.data[0].nameClb}</>}
             </div>
           </div>
         </div>

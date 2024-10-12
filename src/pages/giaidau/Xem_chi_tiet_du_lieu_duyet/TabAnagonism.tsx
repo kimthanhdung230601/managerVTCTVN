@@ -10,7 +10,7 @@ const TabAnagonism = ({ idClub }: TabAnagonismProps) => {
       <AdminManagement
         isNotShowTitle={true}
         idClub={idClub}
-        isEdiTable={false}
+        isEdiTable={true}
       />
     </>
   );

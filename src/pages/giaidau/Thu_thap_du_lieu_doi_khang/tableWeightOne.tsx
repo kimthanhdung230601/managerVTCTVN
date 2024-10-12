@@ -23,9 +23,9 @@ const CustomTableAdminOne = ({
   );
 
   //lọc theo hình thức
-  const filterNamType = dataManagement?.data.filter(
-    (person: any) => person.type === typeFilter
-  );
+  const filterNamType = dataManagement?.data
+    ? dataManagement.data.filter((person: any) => person.type === typeFilter)
+    : [];
 
   //lọc theo giới tính bảng 1
   const filterNam = filterNamType?.filter(
