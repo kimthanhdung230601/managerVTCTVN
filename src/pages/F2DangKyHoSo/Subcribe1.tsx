@@ -48,7 +48,7 @@ export default function Subcribe1({
         </div>
         {listContents.map((item, index) => (
           <div className={styles.tableRow} key={`${item}_${index}`}>
-            <div className={styles.bodyIndex}>{index}</div>
+            <div className={styles.bodyIndex}>{++index}</div>
             <div className={styles.bodyItem}>{item}</div>
             <div className={styles.group}>
               <div className={styles.bodyInfo}>
