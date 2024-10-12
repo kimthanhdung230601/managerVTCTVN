@@ -24,6 +24,7 @@ import SignupF2Free from "../pages/Login/SignupF2Free";
 import RegisterForPrize from "../pages/RegisterForPrize";
 import SubcribePage from "../pages/Subcribe";
 import SubcribePageEdit from "../pages/Subcribe Edit";
+import AcceptSubscribe from "../pages/AcceptSubscibe";
 const Component = () => {
   return (
     <>
@@ -53,6 +54,10 @@ const Component = () => {
         <Route path="/them-hoi-vien/:key" element={<Profiles />}></Route>
         <Route path="/dang-ky-thi-dau" element={<SubcribePage />}></Route>
         <Route path="/dang-ky-thi-dau/:id" element={<SubcribePage />}></Route>
+        <Route
+          path="/duyet-ho-so-dang-ky"
+          element={<AcceptSubscribe />}
+        ></Route>
         <Route
           path="/danh-sach-dang-ky-quyen-thuat"
           element={<SubcribePageEdit />}
