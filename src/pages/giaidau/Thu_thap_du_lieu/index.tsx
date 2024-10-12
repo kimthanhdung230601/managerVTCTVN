@@ -1,8 +1,8 @@
+import CustomTableAdminOne from "./tableWeightOne";
 import { ReactComponent as Logo } from "../../../assets/svg/logo.svg";
-import CustomTableWeightOne from "./tableWeightOne";
-import CustomTableWeightTwo from "./tableWeighTwo";
+import CustomTableAdminTwo from "./tableWeightTwo";
 
-const TournamentRegistration = () => {
+const AdminManagement = () => {
   return (
     <>
       <div>
@@ -19,11 +19,11 @@ const TournamentRegistration = () => {
         </div>
       </div>
       <div>
-        <CustomTableWeightOne />
-        <CustomTableWeightTwo />
+        <CustomTableAdminOne />
+        <CustomTableAdminTwo />
       </div>
     </>
   );
 };
 
-export default TournamentRegistration;
+export default AdminManagement;
