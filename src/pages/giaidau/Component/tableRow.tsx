@@ -8,6 +8,7 @@ import {
 } from "../../../api/thiDau";
 import moment from "moment";
 import { adminManagement, weight } from "../Data";
+import { isEditable } from "@testing-library/user-event/dist/utils";
 
 interface Person {
   code: string;
@@ -23,11 +24,18 @@ interface TableRowProps {
   isNamCLB?: boolean;
   data?: adminManagement;
   sex: string;
+  isEditable?: boolean;
 }
 
 const { Option } = Select;
 
-const TableRow = ({ setWeight, isNamCLB, data, sex }: TableRowProps) => {
+const TableRow = ({
+  setWeight,
+  isNamCLB,
+  data,
+  sex,
+  isEditable = true,
+}: TableRowProps) => {
   const [selectedPerson, setSelectedPerson] = useState<Person | null>(null);
   const { data: dataFight } = useQuery(["data"], () => getListInfor(), {
     enabled: !data,
@@ -116,6 +124,7 @@ const TableRow = ({ setWeight, isNamCLB, data, sex }: TableRowProps) => {
         placeholder="Chọn tên"
         onChange={data ? handleFixMember : handleChange}
         allowClear
+        disabled={!isEditable}
         value={selectedPerson ? selectedPerson.name : undefined}
       >
         {dataFilter?.map((option: Person) => (

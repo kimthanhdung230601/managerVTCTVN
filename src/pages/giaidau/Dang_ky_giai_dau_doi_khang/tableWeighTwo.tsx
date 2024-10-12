@@ -128,7 +128,13 @@ const CustomTableWeightTwo: React.FC = () => {
   return (
     <>
       <div style={{ margin: "20px 0" }}>
-        <h1 style={{ marginTop: "48px", textAlign: "center" }}>
+        <h1
+          style={{
+            marginTop: "48px",
+            textAlign: "center",
+            marginBottom: "36px",
+          }}
+        >
           {" "}
           THI ĐẤU ĐỐI KHÁNG HÌNH THỨC II
         </h1>

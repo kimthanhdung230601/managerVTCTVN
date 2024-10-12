@@ -5,16 +5,26 @@ import { useQuery } from "react-query";
 import { getManagamentMember } from "../../../api/thiDau";
 
 // Define thongTin interface
-
-const CustomTableAdminTwo: React.FC = () => {
-  const payload = { mode: 2 };
+interface Props {
+  idClub?: number;
+  title: string;
+  typeFilter: string;
+  isEditTable?: boolean;
+}
+const CustomTableAdminOne = ({
+  idClub,
+  title,
+  typeFilter,
+  isEditTable = true,
+}: Props) => {
+  const payload = { mode: 2, ...(idClub && { idclub: idClub as number }) };
   const { data: dataManagement } = useQuery(["data1"], () =>
     getManagamentMember(payload)
   );
 
   //lọc theo hình thức
   const filterNamType = dataManagement?.data.filter(
-    (person: any) => person.type === "hinh_thuc_2"
+    (person: any) => person.type === typeFilter
   );
 
   //lọc theo giới tính bảng 1
@@ -25,8 +35,14 @@ const CustomTableAdminTwo: React.FC = () => {
   return (
     <>
       <div style={{ margin: "20px 0" }}>
-        <h1 style={{ marginTop: "48px", textAlign: "center" }}>
-          QUẢN LÝ THU THẬP DỮ LIỆU ĐỐI KHÁNG I
+        <h1
+          style={{
+            marginTop: "48px",
+            textAlign: "center",
+            marginBottom: "36px",
+          }}
+        >
+          {title}
         </h1>
 
         {/* Render header */}
@@ -56,7 +72,7 @@ const CustomTableAdminTwo: React.FC = () => {
 
         {dataManagement?.data
           .filter((person: any) => person.sex === "Nam")
-          .filter((person: any) => person.type === "hinh_thuc_2")
+          .filter((person: any) => person.type === typeFilter)
           .map((person: any, index: number) => (
             <div
               key={index}
@@ -112,13 +128,18 @@ const CustomTableAdminTwo: React.FC = () => {
                 {person.name}
               </div>
               <div style={{ gridColumn: "span 4" }}>
-                <TableRow isNamCLB data={person} sex="Nam" />
+                <TableRow
+                  isNamCLB
+                  data={person}
+                  sex="Nam"
+                  isEditable={isEditTable}
+                />
               </div>
             </div>
           ))}
         {dataManagement?.data
           .filter((person: any) => person.sex === "Nữ")
-          .filter((person: any) => person.type === "hinh_thuc_2")
+          .filter((person: any) => person.type === typeFilter)
           .map((person: any, index: number) => (
             <div
               key={index}
@@ -170,7 +191,12 @@ const CustomTableAdminTwo: React.FC = () => {
                 {person.name}
               </div>
               <div style={{ gridColumn: "span 4" }}>
-                <TableRow isNamCLB data={person} sex="Nữ" />
+                <TableRow
+                  isNamCLB
+                  data={person}
+                  sex="Nữ"
+                  isEditable={isEditTable}
+                />
               </div>
             </div>
           ))}
@@ -179,4 +205,4 @@ const CustomTableAdminTwo: React.FC = () => {
   );
 };
 
-export default CustomTableAdminTwo;
+export default CustomTableAdminOne;
