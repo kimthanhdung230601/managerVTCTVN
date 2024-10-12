@@ -19,14 +19,13 @@ import UpdateProfiles from "../pages/UpdateF0";
 import SignupF1 from "../pages/Login/SignupF1";
 import SignupF2Free from "../pages/Login/SignupF2Free";
 import RegisterForPrize from "../pages/RegisterForPrize";
-import TournamentRegistration from "../pages/giaidau/Dang_ky_giai_dau_doi_khang";
 import AdminManagement from "../pages/giaidau/Thu_thap_du_lieu_doi_khang";
 import AcceptListMember from "../pages/giaidau/Xem_chi_tiet_du_lieu_duyet";
 import AcceptListMemberDetail from "../pages/giaidau/Xem_chi_tiet_du_lieu_duyet";
-import SubcribePage from "../pages/Subcribe";
-import SubcribePageEdit from "../pages/Subcribe Edit";
 import AcceptSubscribe from "../pages/AcceptSubscibe";
-import ListClubsRes from "../pages/giaidau/Xem_danh_sach";
+import F0AcceptFile from "../pages/F0DuyetHoSo";
+import F2Subcribe from "../pages/F2DangKyHoSo";
+import F0ViewList from "../pages/F0ViewList";
 const Component = () => {
   return (
     <>
@@ -74,9 +73,15 @@ const Component = () => {
         <Route path="/quan-ly-giai-dau" element={<AdminManagement />}></Route>
         <Route path="/duyet-giai-dau" element={<AcceptListMember />}></Route>
 
-        <Route path="/dang-ky-thi-dau/:id" element={<SubcribePage />}></Route>
-        <Route path="/danh-sach-thi-dau" element={<ListClubsRes />}></Route>
-        <Route path="/dang-ky-thi-dau" element={<SubcribePage />}></Route>
+        {/* F0 sua ho so */}
+        <Route path="/dang-ky-thi-dau/:id" element={<F0AcceptFile />}></Route>
+
+        {/* f0 xem danh sach nhieu CLB */}
+        <Route path="/danh-sach-thi-dau" element={<F0ViewList />}></Route>
+
+        {/* f2 dang ky thi dau  */}
+        <Route path="/dang-ky-thi-dau" element={<F2Subcribe />}></Route>
+
         <Route
           path="/duyet-giai-dau/:id"
           element={<AcceptListMemberDetail />}

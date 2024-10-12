@@ -6,6 +6,7 @@ import { ReactComponent as Logo } from "../../../assets/svg/logo.svg";
 import SubcribePageEdit from "../../Subcribe Edit";
 import Header from "../../../components/Header";
 import TabAnagonism from "../Xem_chi_tiet_du_lieu_duyet/TabAnagonism";
+import TournamentRegistration from "../Dang_ky_giai_dau_doi_khang";
 
 const ListClubsRes = () => {
   const param = useParams();
@@ -27,7 +28,7 @@ const ListClubsRes = () => {
     {
       key: "2",
       label: "THI ĐẤU ĐỐI KHÁNG",
-      children: <TabAnagonism />,
+      children: <TournamentRegistration />,
     },
   ];
   return (
