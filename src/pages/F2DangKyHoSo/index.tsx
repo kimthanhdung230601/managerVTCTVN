@@ -12,12 +12,8 @@ import { updateFile } from "../../api/thiDau";
 import { useQuery } from "react-query";
 import { getInfoF2 } from "../../api/f2";
 import { useParams } from "react-router";
-import AcceptListMemberDetail from "../giaidau/Xem_chi_tiet_du_lieu_duyet";
-import AdminManagement from "../giaidau/Thu_thap_du_lieu_doi_khang";
 
-const secretKey = process.env.REACT_APP_SECRET_KEY as string;
-
-export default function SubcribePage() {
+export default function F2Subcribe() {
   const { id } = useParams();
 
   const { data: infoF2 } = useQuery(["info"], () => getInfoF2(id));
@@ -78,7 +74,7 @@ export default function SubcribePage() {
           </div>
         </div>
       </div>
-
+      {/* F2 dang ky ho so */}
       <div
         style={{
           marginLeft: "30%",
