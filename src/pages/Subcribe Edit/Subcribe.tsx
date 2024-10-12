@@ -40,30 +40,32 @@ export default function Subcribe({ sex }: IProps) {
       <div className={styles.btnWrap}></div>
 
       {multiAgeGroup !== undefined &&
-        Object.keys(multiAgeGroup).length > 0 &&
-        singleAgeGroup !== undefined &&
-        Object.keys(singleAgeGroup).length > 0 && (
-          <>
-            <p className={styles.title}>NỘI DUNG QUYỀN QUY ĐỊNH</p>
-            <Subcribe1
-              sex={sex}
-              listMembers={multiAgeGroup}
-              onSelectMember={onSelectMember}
-            />
-            <p className={styles.title}>NỘI DUNG QUYỀN TỰ CHỌN</p>
-            <Subcribe2
-              sex={sex}
-              listMembers={multiAgeGroup}
-              onSelectMember={onSelectMember}
-            />
-            <p className={styles.title}>NỘI DUNG ĐỐI LUYỆN</p>
-            <Subcribe3
-              sex={sex}
-              listMembers={singleAgeGroup}
-              onSelectMember={onSelectMember}
-            />
-          </>
-        )}
+      Object.keys(multiAgeGroup).length > 0 &&
+      singleAgeGroup !== undefined &&
+      Object.keys(singleAgeGroup).length > 0 ? (
+        <>
+          <p className={styles.title}>NỘI DUNG QUYỀN QUY ĐỊNH</p>
+          <Subcribe1
+            sex={sex}
+            listMembers={multiAgeGroup}
+            onSelectMember={onSelectMember}
+          />
+          <p className={styles.title}>NỘI DUNG QUYỀN TỰ CHỌN</p>
+          <Subcribe2
+            sex={sex}
+            listMembers={multiAgeGroup}
+            onSelectMember={onSelectMember}
+          />
+          <p className={styles.title}>NỘI DUNG ĐỐI LUYỆN</p>
+          <Subcribe3
+            sex={sex}
+            listMembers={singleAgeGroup}
+            onSelectMember={onSelectMember}
+          />
+        </>
+      ) : (
+        <div className={styles.noti}>Chưa có dữ liệu</div>
+      )}
     </div>
   );
 }
