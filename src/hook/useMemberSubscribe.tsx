@@ -6,7 +6,6 @@ interface IProps {
   id?: string;
 }
 export default function useMemberSubscribe({ id }: IProps) {
-  console.log("id param", id);
   const { data: listMembers, isLoading } = useQuery(["listMembers"], () =>
     getListSubcribe({ mode: 1 })
   );

@@ -32,6 +32,10 @@ export const RouteList = [
     permission: 0,
   },
   {
+    name: "/duyet-ho-so-dang-ky",
+    permission: 0,
+  },
+  {
     name: "/dang-bai",
     permission: 0,
   },
@@ -54,6 +58,10 @@ export const RouteList = [
   },
   {
     name: "/dang-ky-f1",
+    permission: 0,
+  },
+  {
+    name: "/danh-sach-dang-ky-quyen-thuat",
     permission: 0,
   },
   {
