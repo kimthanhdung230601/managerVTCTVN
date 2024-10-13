@@ -154,8 +154,8 @@ const TableRow = ({
         }}
       >
         {selectedPerson
-          ? moment(selectedPerson.birthday).format("DD/MM?YYYY")
-          : data && moment(data.birthday).format("DD/MM?YYYY")}
+          ? moment(selectedPerson.birthday).format("DD/MM/YYYY")
+          : data && moment(data.birthday).format("DD/MM/YYYY")}
       </div>
       {isNamCLB && (
         <div
