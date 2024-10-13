@@ -119,23 +119,31 @@ const TableRow = ({
         paddingLeft: "12px",
       }}
     >
-      <Select
-        style={{
-          width: "100%",
-          margin: "12px 0",
-        }}
-        placeholder="Chọn tên"
-        onChange={data ? handleFixMember : handleChange}
-        allowClear
-        disabled={!isEditable}
-        value={selectedPerson ? selectedPerson.name : undefined}
-      >
-        {dataFilter?.map((option: Person) => (
-          <Option key={option.code} value={option.code}>
-            {option.name}
-          </Option>
-        ))}
-      </Select>
+      {isEditable ? (
+        <Select
+          style={{
+            width: "100%",
+            margin: "12px 0",
+          }}
+          placeholder="Chọn tên"
+          onChange={data ? handleFixMember : handleChange}
+          allowClear
+          disabled={!isEditable}
+          value={selectedPerson ? selectedPerson.name : undefined}
+        >
+          {dataFilter?.map((option: Person) => (
+            <Option key={option.code} value={option.code}>
+              {option.name}
+            </Option>
+          ))}
+        </Select>
+      ) : (
+        <div style={{ textAlignLast: "center", alignContent: "center" }}>
+          {" "}
+          {selectedPerson?.name}
+        </div>
+      )}
+
       <div
         style={{
           borderLeft: "1px solid #ddd",
