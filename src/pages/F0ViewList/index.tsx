@@ -36,7 +36,7 @@ export default function F0ViewList() {
 
       <Tabs defaultActiveKey="0" onChange={onChange} centered>
         <TabPane key={0} tab="Dữ liệu đối kháng">
-          <AdminManagement />
+          <AdminManagement isEdiTable={false} />
         </TabPane>
         <TabPane key={1} tab="Dữ liệu quyền thuật">
           <SubcribePageEdit />
