@@ -90,7 +90,7 @@ const ManagerF1 = () => {
   } = useQuery(["dataF12Accept", payloadAccept], () =>
     getListMemberF12(payloadAccept)
   );
-  console.log("payloadAccept", payloadAccept);
+  // console.log("payloadAccept", payloadAccept);
 
   const onChange: TableProps<DataType>["onChange"] = (pagination, filters) => {
     const param =

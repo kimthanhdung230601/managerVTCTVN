@@ -25,6 +25,7 @@ export default function Subcribe3({
   listMemberSubscribe,
   onSelectMember,
 }: IProps) {
+  // console.log("member subscribe", listMemberSubscribe);
   return (
     <div>
       <div className={styles.table}>
@@ -57,8 +58,7 @@ export default function Subcribe3({
                     ageGroup="Nhóm tuổi 1"
                     onSelectMember={onSelectMember}
                     memberInfo={
-                      listMemberSubscribe &&
-                      listMemberSubscribe[item]["Nhóm tuổi 1"][0]
+                      listMemberSubscribe?.[item]?.["Nhóm tuổi 1"]?.[0] || null
                     }
                   />
                   <SubscribeMember
@@ -67,8 +67,7 @@ export default function Subcribe3({
                     ageGroup="Nhóm tuổi 1"
                     onSelectMember={onSelectMember}
                     memberInfo={
-                      listMemberSubscribe &&
-                      listMemberSubscribe[item]["Nhóm tuổi 1"][1]
+                      listMemberSubscribe?.[item]?.["Nhóm tuổi 1"]?.[1] || null
                     }
                   />
                   <SubscribeMember
@@ -77,8 +76,7 @@ export default function Subcribe3({
                     ageGroup="Nhóm tuổi 1"
                     onSelectMember={onSelectMember}
                     memberInfo={
-                      listMemberSubscribe &&
-                      listMemberSubscribe[item]["Nhóm tuổi 1"][1]
+                      listMemberSubscribe?.[item]?.["Nhóm tuổi 1"]?.[2] || null
                     }
                   />
                   <SubscribeMember
@@ -87,8 +85,7 @@ export default function Subcribe3({
                     ageGroup="Nhóm tuổi 1"
                     onSelectMember={onSelectMember}
                     memberInfo={
-                      listMemberSubscribe &&
-                      listMemberSubscribe[item]["Nhóm tuổi 1"][1]
+                      listMemberSubscribe?.[item]?.["Nhóm tuổi 1"]?.[3] || null
                     }
                   />
                   <SubscribeMember
@@ -97,8 +94,7 @@ export default function Subcribe3({
                     ageGroup="Nhóm tuổi 1"
                     onSelectMember={onSelectMember}
                     memberInfo={
-                      listMemberSubscribe &&
-                      listMemberSubscribe[item]["Nhóm tuổi 1"][1]
+                      listMemberSubscribe?.[item]?.["Nhóm tuổi 1"]?.[4] || null
                     }
                     isLastItem={true}
                   />

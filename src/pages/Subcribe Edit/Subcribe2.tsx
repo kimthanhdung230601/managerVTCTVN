@@ -47,7 +47,7 @@ export default function Subcribe2({
                   (từ 17 đến 40 tuổi)
                 </div>
                 <div className={styles.memberInfo}>
-                  {listMembers?.[sex][item]["Nhóm tuổi 1"].map(
+                  {listMembers?.[sex]?.[item]?.["Nhóm tuổi 1"].map(
                     (member: any, index: number) => (
                       <SubscribeMemberEdit
                         sex={sex}
@@ -57,7 +57,7 @@ export default function Subcribe2({
                         onSelectMember={onSelectMember}
                         isLastItem={
                           index ===
-                          listMembers?.[sex][item]["Nhóm tuổi 1"].length - 1
+                          listMembers?.[sex]?.[item]?.["Nhóm tuổi 1"].length - 1
                         }
                       />
                     )
@@ -71,7 +71,7 @@ export default function Subcribe2({
                   (từ 41 đến 50 tuổi)
                 </div>
                 <div className={styles.memberInfo}>
-                  {listMembers?.[sex][item]["Nhóm tuổi 2"].map(
+                  {listMembers?.[sex]?.[item]?.["Nhóm tuổi 2"].map(
                     (member: any, index: number) => (
                       <SubscribeMemberEdit
                         sex={sex}
@@ -81,7 +81,7 @@ export default function Subcribe2({
                         onSelectMember={onSelectMember}
                         isLastItem={
                           index ===
-                          listMembers?.[sex][item]["Nhóm tuổi 2"].length - 1
+                          listMembers?.[sex]?.[item]?.["Nhóm tuổi 2"].length - 1
                         }
                       />
                     )
@@ -95,7 +95,7 @@ export default function Subcribe2({
                   (từ 51 đến 60 tuổi)
                 </div>
                 <div className={styles.memberInfo}>
-                  {listMembers?.[sex][item]["Nhóm tuổi 3"].map(
+                  {listMembers?.[sex]?.[item]?.["Nhóm tuổi 3"].map(
                     (member: any, index: number) => (
                       <SubscribeMemberEdit
                         sex={sex}
@@ -105,7 +105,7 @@ export default function Subcribe2({
                         onSelectMember={onSelectMember}
                         isLastItem={
                           index ===
-                          listMembers?.[sex][item]["Nhóm tuổi 3"].length - 1
+                          listMembers?.[sex]?.[item]?.["Nhóm tuổi 3"].length - 1
                         }
                       />
                     )

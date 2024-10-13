@@ -73,7 +73,7 @@ export default function F0AcceptFile() {
   };
 
   const onChange = (key: string) => {
-    console.log(key);
+    // console.log(key);
   };
 
   return (
