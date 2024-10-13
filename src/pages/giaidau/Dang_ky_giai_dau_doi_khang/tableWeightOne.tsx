@@ -88,7 +88,7 @@ const CustomTableWeightOne: React.FC = () => {
           }}
         >
           {" "}
-          THI ĐẤU ĐỐI KHÁNG HÌNH THỨC I
+          THI ĐẤU ĐỐI KHÁNG HÌNH THỨC 1
         </h1>
         {isAdmin() === "2" && (
           <div
