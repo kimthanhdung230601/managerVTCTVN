@@ -44,7 +44,8 @@ export default function SubscribeMemberEdit({
       className={`${styles.memberItemWrap} ${isLastItem && styles.lastItem}`}
     >
       <div className={styles.memberItem}>
-        <Select
+        <div>{memberInfo?.hoTen}</div>
+        {/* <Select
           menuItemSelectedIcon={<CheckOutlined />}
           showSearch
           placeholder={"Chọn hồ sơ thành viên"}
@@ -80,23 +81,25 @@ export default function SubscribeMemberEdit({
               })}
             </>
           )}
-        </Select>
+        </Select> */}
       </div>
-      {userSelected && (
-        <>
-          {" "}
-          <div className={styles.bodyItem}>
-            {moment(userSelected?.birthday).format("DD/MM/YYYY") ||
-              moment(memberInfo?.birthday).format("DD/MM/YYYY")}
-          </div>
-          <div className={styles.bodySex}>
-            {userSelected?.tenClb || memberInfo?.tenClb}
-          </div>
-          <div className={`${styles.bodyItem} ${styles.lastItem}`}>
-            {userSelected?.code || memberInfo?.code}
-          </div>
-        </>
-      )}
+
+      <>
+        {" "}
+        <div className={styles.bodyItem}>
+          {/* {moment(userSelected?.birthday).format("DD/MM/YYYY") ||
+              moment(memberInfo?.birthday).format("DD/MM/YYYY")} */}
+          {moment(memberInfo?.birthday).format("DD/MM/YYYY")}
+        </div>
+        <div className={styles.bodySex}>
+          {/* {userSelected?.tenClb || memberInfo?.tenClb} */}
+          {memberInfo?.tenClb}
+        </div>
+        <div className={`${styles.bodyItem} ${styles.lastItem}`}>
+          {/* {userSelected?.code || memberInfo?.code} */}
+          {memberInfo?.code}
+        </div>
+      </>
     </div>
   );
 }
