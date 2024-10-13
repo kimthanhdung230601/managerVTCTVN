@@ -35,7 +35,7 @@ export default function F0ViewList() {
       </div>
 
       <Tabs defaultActiveKey="0" onChange={onChange} centered>
-        <TabPane key={0} tab="Dữ liệu đối kháng">
+        <TabPane key={0} tab="Dữ liệu đối kháng hình thức">
           <AdminManagement isEdiTable={false} />
         </TabPane>
         <TabPane key={1} tab="Dữ liệu quyền thuật">
