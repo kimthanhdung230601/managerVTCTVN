@@ -149,6 +149,18 @@ const TableRow = ({
           ? moment(selectedPerson.birthday).format("DD/MM?YYYY")
           : data && moment(data.birthday).format("DD/MM?YYYY")}
       </div>
+      {isNamCLB && (
+        <div
+          style={{
+            borderRight: "1px solid #ddd",
+            padding: "12px 18px",
+            textAlign: "center",
+            alignContent: "center",
+          }}
+        >
+          {selectedPerson ? selectedPerson.NameClb : data?.tenClb}
+        </div>
+      )}
       <div
         style={{
           borderRight: "1px solid #ddd",
@@ -157,18 +169,8 @@ const TableRow = ({
           alignContent: "center",
         }}
       >
-        {selectedPerson ? selectedPerson.id : data?.id}
+        {selectedPerson ? selectedPerson.code : data?.code}
       </div>
-      {isNamCLB && (
-        <div
-          style={{
-            borderRight: "1px solid #ddd",
-            padding: "12px 18px",
-          }}
-        >
-          {selectedPerson ? selectedPerson.NameClb : data?.tenClb}
-        </div>
-      )}
     </div>
   );
 };

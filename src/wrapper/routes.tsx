@@ -54,11 +54,6 @@ const Component = () => {
         <Route path="/them-hoi-vien" element={<Profiles />}></Route>
         <Route path="/them-hoi-vien/:key" element={<Profiles />}></Route>
 
-        <Route
-          path="/duyet-ho-so-dang-ky"
-          element={<AcceptSubscribe />}
-        ></Route>
-
         <Route path={`/lien-doan/:key`} element={<Admin />}></Route>
         <Route
           path="/lien-doan/:key/UpdateMember"
@@ -72,8 +67,12 @@ const Component = () => {
           ></Route> */}
         <Route path="/quan-ly-giai-dau" element={<AdminManagement />}></Route>
         <Route path="/duyet-giai-dau" element={<AcceptListMember />}></Route>
-
-        {/* F0 sua ho so */}
+        {/* f0 duyệt hồ sơ đăng ký */}
+        <Route
+          path="/duyet-ho-so-dang-ky"
+          element={<AcceptSubscribe />}
+        ></Route>
+        {/* F0 sua ho so chi tiet*/}
         <Route path="/dang-ky-thi-dau/:id" element={<F0AcceptFile />}></Route>
 
         {/* f0 xem danh sach nhieu CLB */}

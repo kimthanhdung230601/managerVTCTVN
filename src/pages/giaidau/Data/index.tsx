@@ -71,8 +71,8 @@ export const tableTheadAdmin: string[] = [
   "Hạng Cân",
   "Họ Tên",
   "Ngày Sinh",
+  "Đơn vị",
   "Mã định danh",
-  "Tên câu lạc bộ",
 ];
 
 export interface adminManagement {

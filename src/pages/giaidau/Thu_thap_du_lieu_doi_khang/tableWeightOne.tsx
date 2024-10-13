@@ -54,7 +54,7 @@ const CustomTableAdminOne = ({
             gridTemplateColumns: "repeat(7, 1fr)",
             background: "#f2f2f2",
             fontWeight: "bold",
-            borderTop: "1px solid #ddd",
+            border: "1px solid #ddd",
             justifyItems: "center",
           }}
         >
@@ -82,9 +82,10 @@ const CustomTableAdminOne = ({
                 style={{
                   display: "grid",
                   gridTemplateColumns: "repeat(7, 1fr)",
+                  borderLeft: "1px solid #ddd",
                 }}
               >
-                {index === filterNam.length / 2 - 1 ? (
+                {index === 0 ? (
                   <div
                     style={{
                       padding: "10px",
@@ -152,14 +153,14 @@ const CustomTableAdminOne = ({
                   gridTemplateColumns: "repeat(7, 1fr)",
                 }}
               >
-                {index === Math.floor(filterNu.length / 2) ? (
+                {index === 0 ? (
                   <div
                     style={{
                       padding: "10px",
                       gridColumn: "span 1",
                       textAlignLast: "center",
                       borderBottom:
-                        index === filterNu.length - 1
+                        index === filterNam.length - 1
                           ? "1px solid #ddd"
                           : "none",
                       borderRight: "1px solid #ddd",

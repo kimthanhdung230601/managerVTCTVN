@@ -35,8 +35,8 @@ export default function Subcribe1({
           <div className={styles.colItem}>Nội dung</div>
           <div className={styles.colItem}>Nhóm tuổi</div>
           <div className={styles.colContent}>Họ tên</div>
-          <div className={styles.colSex}>Đơn vị</div>
           <div className={styles.colRight}>Ngày sinh</div>
+          <div className={styles.colSex}>Đơn vị</div>
           <div className={`${styles.colRight} ${styles.lastItem}`}>
             Mã định danh
           </div>

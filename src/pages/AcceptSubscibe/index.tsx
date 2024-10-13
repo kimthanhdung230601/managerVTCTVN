@@ -5,7 +5,6 @@ import { Table, Button } from "antd";
 import { TableProps, Popconfirm, message } from "antd";
 import { useMutation, useQuery } from "react-query";
 import { acceptClubSubscribe, getListAcceptSubscribe } from "../../api/f0";
-import type { PopconfirmProps } from "antd";
 import { useNavigate } from "react-router";
 
 interface DataType {

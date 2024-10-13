@@ -19,40 +19,50 @@ export default function F0AcceptFile() {
 
   const { data: infoF2 } = useQuery(["info"], () => getInfoF2(id));
 
-  const [file, setFile] = useState<File | null>(null);
-
-  // Handle file change
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = e.target.files && e.target.files[0];
-    if (selectedFile && selectedFile.type === "application/pdf") {
-      setFile(selectedFile);
-      message.success(`Đã chọn file ${selectedFile.name}`);
-    } else {
-      message.error("Vui lòng chọn file PDF.");
-      setFile(null);
-    }
-  };
-
   // Handle form submission
   const handleSubmit = async () => {
-    if (!file) {
-      message.error("Vui lòng chọn file PDF.");
+    const fileUrl = infoF2?.image[1].image;
+    console.log(fileUrl);
+
+    if (!fileUrl) {
+      console.error("Không tìm thấy file PDF.");
       return;
     }
 
-    const formData = new FormData();
-    formData.append("file", file);
+    const fileName = fileUrl.split("/").pop();
+    if (!fileName) {
+      console.error("Không tìm thấy file PDF.");
+      return;
+    }
 
     try {
-      const response = await updateFile(formData);
+      // Fetch the file data
+      const response = await fetch(
+        `https://vocotruyen.id.vn/PHP_IMG/${fileName}`
+      );
+      const blob = await response.blob();
 
-      if (response.status === "success") {
-        message.success("Tải file lên thành công");
-      } else {
-        message.error("Tải file thất bại");
-      }
+      // Create an object URL for the blob
+      const downloadUrl = window.URL.createObjectURL(blob);
+
+      // Create a temporary <a> element for downloading
+      const link = document.createElement("a");
+      link.href = downloadUrl;
+
+      // Set the new file name
+      link.setAttribute(
+        "download",
+        `Danh sách đăng ký thi đấu CLB ${infoF2?.data[0].nameClb}.pdf`
+      );
+
+      document.body.appendChild(link);
+      link.click();
+
+      // Clean up the object URL and the <a> element
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(downloadUrl);
     } catch (error) {
-      message.error("Tải file thất bại");
+      console.error("Error fetching the PDF:", error);
     }
   };
 
@@ -70,12 +80,12 @@ export default function F0AcceptFile() {
           </div>
           <div className={styles.titleContent}>
             <div className={styles.titleText}>
-              {infoF2 && <> Đơn vị: {infoF2?.data[0].nameClb}</>}
+              {infoF2?.data && <> Đơn vị: {infoF2?.data[0].nameClb}</>}
             </div>
           </div>
         </div>
       </div>
-      {/* f0 duyệt hồ sơ */}
+      {/* f0 sửa hồ sơ */}
       <div
         style={{
           marginLeft: "30%",
@@ -84,14 +94,12 @@ export default function F0AcceptFile() {
           flexDirection: "column",
         }}
       >
-        <Input
-          type="file"
-          accept=".pdf"
-          onChange={handleFileChange}
-          style={{ marginBottom: 16 }}
-        />
-        <Button type="primary" onClick={handleSubmit} disabled={!file}>
-          Tải ảnh giấy giới thiệu (định dạng PDF)
+        <Button
+          type="primary"
+          onClick={handleSubmit}
+          style={{ marginBottom: "36px" }}
+        >
+          Tải giấy giới thiệu
         </Button>
       </div>
 

@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import styles from "./styles.module.scss";
 import { ReactComponent as Logo } from "../../assets/svg/logo.svg";
 import Header from "../../components/Header";
-import Cookies from "js-cookie";
 import CryptoJS from "crypto-js";
 import Subcribe from "./Subcribe";
 import { Tabs, Input, Button, message } from "antd";
@@ -12,13 +11,21 @@ import { updateFile } from "../../api/thiDau";
 import { useQuery } from "react-query";
 import { getInfoF2 } from "../../api/f2";
 import { useParams } from "react-router";
-
+export const generateRandomKey = (length: number) => {
+  return Array(length)
+    .fill(0)
+    .map(() => Math.random().toString(36).charAt(2)) // Lấy ký tự ngẫu nhiên từ 'a-z' và '0-9'
+    .join("");
+};
 export default function F2Subcribe() {
   const { id } = useParams();
 
   const { data: infoF2 } = useQuery(["info"], () => getInfoF2(id));
 
   const [file, setFile] = useState<File | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const encryptionKey = generateRandomKey(16);
 
   // Handle file change
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,8 +46,21 @@ export default function F2Subcribe() {
       return;
     }
 
+    const originalFileName = file.name;
+    const fileExtension = originalFileName.split(".").pop(); // Lấy phần mở rộng file
+    const encryptedFileName = CryptoJS.HmacSHA256(
+      originalFileName,
+      encryptionKey
+    ).toString();
+
+    // Tạo một file mới với tên mã hóa
+    const newFileName = `${encryptedFileName}.${fileExtension}`; // Giữ nguyên phần mở rộng file
+    const renamedFile = new File([file], newFileName, { type: file.type });
+
     const formData = new FormData();
-    formData.append("imageClb", file);
+    formData.append("imageClb", renamedFile);
+
+    setIsLoading(true);
 
     try {
       const response = await updateFile(formData);
@@ -52,9 +72,10 @@ export default function F2Subcribe() {
       }
     } catch (error) {
       message.error("Tải file thất bại");
+    } finally {
+      setIsLoading(false);
     }
   };
-
   const onChange = (key: string) => {
     console.log(key);
   };
@@ -69,7 +90,7 @@ export default function F2Subcribe() {
           </div>
           <div className={styles.titleContent}>
             <div className={styles.titleText}>
-              {infoF2 && <> Đơn vị: {infoF2?.data[0].nameClb}</>}
+              {infoF2?.data && <> Đơn vị: {infoF2?.data[0].nameClb}</>}
             </div>
           </div>
         </div>
@@ -89,7 +110,11 @@ export default function F2Subcribe() {
           onChange={handleFileChange}
           style={{ marginBottom: 16 }}
         />
-        <Button type="primary" onClick={handleSubmit} disabled={!file}>
+        <Button
+          type="primary"
+          onClick={handleSubmit}
+          disabled={!file || isLoading}
+        >
           Tải ảnh giấy giới thiệu (định dạng PDF)
         </Button>
       </div>

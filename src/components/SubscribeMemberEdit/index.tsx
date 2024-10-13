@@ -84,12 +84,13 @@ export default function SubscribeMemberEdit({
       </div>
       {userSelected && (
         <>
-          <div className={styles.bodySex}>
-            {userSelected?.tenClb || memberInfo?.tenClb}
-          </div>
+          {" "}
           <div className={styles.bodyItem}>
             {moment(userSelected?.birthday).format("DD/MM/YYYY") ||
               moment(memberInfo?.birthday).format("DD/MM/YYYY")}
+          </div>
+          <div className={styles.bodySex}>
+            {userSelected?.tenClb || memberInfo?.tenClb}
           </div>
           <div className={`${styles.bodyItem} ${styles.lastItem}`}>
             {userSelected?.code || memberInfo?.code}
