@@ -18,20 +18,24 @@ export default function F0AcceptFile() {
   const { id } = useParams();
 
   const { data: infoF2 } = useQuery(["info"], () => getInfoF2(id));
-
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   // Handle form submission
   const handleSubmit = async () => {
+    setIsLoading(true);
     const fileUrl = infoF2?.image[1].image;
-    console.log(fileUrl);
 
     if (!fileUrl) {
-      console.error("Không tìm thấy file PDF.");
+      message.error("Không tìm thấy file.");
+      setIsLoading(false);
+
       return;
     }
 
     const fileName = fileUrl.split("/").pop();
     if (!fileName) {
-      console.error("Không tìm thấy file PDF.");
+      console.error("Không tìm thấy file.");
+      setIsLoading(false);
+
       return;
     }
 
@@ -52,7 +56,7 @@ export default function F0AcceptFile() {
       // Set the new file name
       link.setAttribute(
         "download",
-        `Danh sách đăng ký thi đấu CLB ${infoF2?.data[0].nameClb}.pdf`
+        `Giáy giới thiệu CLB ${infoF2?.data[0].nameClb}`
       );
 
       document.body.appendChild(link);
@@ -61,8 +65,10 @@ export default function F0AcceptFile() {
       // Clean up the object URL and the <a> element
       document.body.removeChild(link);
       window.URL.revokeObjectURL(downloadUrl);
+      setIsLoading(false);
     } catch (error) {
       console.error("Error fetching the PDF:", error);
+      setIsLoading(false);
     }
   };
 
@@ -98,6 +104,7 @@ export default function F0AcceptFile() {
           type="primary"
           onClick={handleSubmit}
           style={{ marginBottom: "36px" }}
+          disabled={isLoading}
         >
           Tải giấy giới thiệu
         </Button>

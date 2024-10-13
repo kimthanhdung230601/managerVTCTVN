@@ -11,12 +11,14 @@ import { updateFile } from "../../api/thiDau";
 import { useQuery } from "react-query";
 import { getInfoF2 } from "../../api/f2";
 import { useParams } from "react-router";
+
 export const generateRandomKey = (length: number) => {
   return Array(length)
     .fill(0)
     .map(() => Math.random().toString(36).charAt(2)) // Lấy ký tự ngẫu nhiên từ 'a-z' và '0-9'
     .join("");
 };
+
 export default function F2Subcribe() {
   const { id } = useParams();
 
@@ -30,11 +32,19 @@ export default function F2Subcribe() {
   // Handle file change
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files && e.target.files[0];
-    if (selectedFile && selectedFile.type === "application/pdf") {
+    // Allow PDF, PNG, JPG, and JPEG files
+    const validFileTypes = [
+      "application/pdf",
+      "image/png",
+      "image/jpeg",
+      "image/jpg",
+    ];
+
+    if (selectedFile && validFileTypes.includes(selectedFile.type)) {
       setFile(selectedFile);
       message.success(`Đã chọn file ${selectedFile.name}`);
     } else {
-      message.error("Vui lòng chọn file PDF.");
+      message.error("Vui lòng chọn file PDF, PNG, JPG hoặc JPEG.");
       setFile(null);
     }
   };
@@ -42,7 +52,7 @@ export default function F2Subcribe() {
   // Handle form submission
   const handleSubmit = async () => {
     if (!file) {
-      message.error("Vui lòng chọn file PDF.");
+      message.error("Vui lòng chọn file.");
       return;
     }
 
@@ -76,6 +86,7 @@ export default function F2Subcribe() {
       setIsLoading(false);
     }
   };
+
   const onChange = (key: string) => {
     console.log(key);
   };
@@ -106,7 +117,7 @@ export default function F2Subcribe() {
       >
         <Input
           type="file"
-          accept=".pdf"
+          accept=".pdf, .png, .jpg, .jpeg" // Updated to accept multiple file types
           onChange={handleFileChange}
           style={{ marginBottom: 16 }}
         />
@@ -115,7 +126,7 @@ export default function F2Subcribe() {
           onClick={handleSubmit}
           disabled={!file || isLoading}
         >
-          Tải ảnh giấy giới thiệu (định dạng PDF)
+          Tải giấy giới thiệu (định dạng PDF, PNG, JPG, JPEG)
         </Button>
       </div>
 
