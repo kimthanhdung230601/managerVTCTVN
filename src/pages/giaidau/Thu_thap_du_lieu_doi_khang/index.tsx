@@ -17,13 +17,13 @@ const AdminManagement = ({
       <div>
         <CustomTableAdminOne
           idClub={idClub}
-          title="BẢNG DỮ LIỆU ĐỐI KHÁNG I"
+          title="BẢNG DỮ LIỆU ĐỐI KHÁNG HÌNH THỨC 1"
           typeFilter="hinh_thuc_1"
           isEditTable={isEdiTable}
         />
         <CustomTableAdminOne
           idClub={idClub}
-          title="BẢNG DỮ LIỆU ĐỐI KHÁNG II"
+          title="BẢNG DỮ LIỆU ĐỐI KHÁNG HÌNH THỨC 2"
           typeFilter="hinh_thuc_2"
           isEditTable={isEdiTable}
         />

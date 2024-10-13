@@ -122,7 +122,7 @@ export default function AcceptSubscribe() {
               <b>{getListAccept?.total[0].total_mode_1}</b>
             </div>
             <div className={styles.total2}>
-              Vận động viên đối kháng:{" "}
+              Vận động viên đối kháng hình thức:{" "}
               <b>{getListAccept?.total[0].total_mode_2}</b>
             </div>
           </div>

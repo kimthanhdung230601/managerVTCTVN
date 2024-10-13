@@ -27,7 +27,7 @@ const ListClubsRes = () => {
     },
     {
       key: "2",
-      label: "THI ĐẤU ĐỐI KHÁNG",
+      label: "THI ĐẤU ĐỐI KHÁNG HÌNH THỨC",
       children: <TournamentRegistration />,
     },
   ];

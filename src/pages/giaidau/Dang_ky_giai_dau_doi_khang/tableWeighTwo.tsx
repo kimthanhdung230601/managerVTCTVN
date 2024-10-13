@@ -137,7 +137,7 @@ const CustomTableWeightTwo: React.FC = () => {
           }}
         >
           {" "}
-          THI ĐẤU ĐỐI KHÁNG HÌNH THỨC II
+          THI ĐẤU ĐỐI KHÁNG HÌNH THỨC 2
         </h1>
         <div
           style={{
