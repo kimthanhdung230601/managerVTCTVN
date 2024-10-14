@@ -15,7 +15,7 @@ export default function F0ViewList() {
   const { id } = useParams();
 
   const onChange = (key: string) => {
-    console.log(key);
+    // console.log(key);
   };
 
   return (

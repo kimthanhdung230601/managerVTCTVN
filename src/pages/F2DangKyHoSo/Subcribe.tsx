@@ -209,7 +209,7 @@ export default function Subcribe() {
       }));
     }
   };
-  console.log("groupByName", groupByName);
+  // console.log("groupByName", groupByName);
 
   return (
     <div className={styles.tableWrap}>
