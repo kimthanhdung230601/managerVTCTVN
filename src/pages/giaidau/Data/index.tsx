@@ -74,7 +74,16 @@ export const tableTheadAdmin: string[] = [
   "Đơn vị",
   "Mã định danh",
 ];
-
+export const tableTheadAdminUpdate: string[] = [
+  "Giới Tính",
+  "STT",
+  "Hạng Cân",
+  "Họ Tên",
+  "Ngày Sinh",
+  "Đơn vị",
+  "Mã định danh",
+  "",
+];
 export interface adminManagement {
   id: string;
   idclub: string;

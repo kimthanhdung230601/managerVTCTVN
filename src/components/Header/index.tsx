@@ -76,11 +76,11 @@ export default function Header() {
                 Hướng dẫn
               </Link>
             </Col>
-            <Col className={styles.headerItem}>
+            {/* <Col className={styles.headerItem}>
               <Link to={"/dangkygiaivodich"} className={styles.itemLink}>
                 Đăng ký giải vô địch
               </Link>
-            </Col>
+            </Col> */}
             {isAdmin() === "2" && (
               <Col className={styles.headerItem}>
                 <Link to={"/dang-ky-thi-dau"} className={styles.itemLink}>
@@ -227,7 +227,7 @@ export default function Header() {
               Đăng ký tài khoản
             </Link>
           </li>
-          <li className={styles.menuResponsiveItem}>
+          {/* <li className={styles.menuResponsiveItem}>
             <Link
               to={"/dangkygiaivodich"}
               className={styles.menuResponsiveLink}
@@ -235,7 +235,7 @@ export default function Header() {
             >
               Đăng ký giải vô địch
             </Link>
-          </li>
+          </li> */}
           {isAdmin() === "2" && (
             <li className={styles.menuResponsiveItem}>
               <Link

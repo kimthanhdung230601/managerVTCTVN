@@ -97,7 +97,7 @@ export default function Subcribe1({
                     ageGroup="Nhóm tuổi 2"
                     onSelectMember={onSelectMember}
                     memberInfo={
-                      listMemberSubscribe &&
+                      listMemberSubscribe[item]["Nhóm tuổi 2"][0] &&
                       listMemberSubscribe[item]["Nhóm tuổi 2"][0]
                     }
                   />

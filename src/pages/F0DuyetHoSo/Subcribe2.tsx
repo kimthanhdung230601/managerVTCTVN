@@ -34,8 +34,8 @@ export default function Subcribe2({
           <div className={styles.colItem}>Nội dung</div>
           <div className={styles.colItem}>Nhóm tuổi</div>
           <div className={styles.colContent}>Họ tên</div>
-          <div className={styles.colSex}>Giới tính</div>
-          <div className={styles.colRight}>Ngày sinh</div>
+          <div className={styles.colSex}>Ngày sinh</div>
+          <div className={styles.colRight}>Đơn vị</div>
           <div className={`${styles.colRight} ${styles.lastItem}`}>
             Mã định danh
           </div>
@@ -91,7 +91,7 @@ export default function Subcribe2({
                     ageGroup="Nhóm tuổi 2"
                     onSelectMember={onSelectMember}
                     memberInfo={
-                      listMemberSubscribe &&
+                      listMemberSubscribe[item]["Nhóm tuổi 2"][0] &&
                       listMemberSubscribe[item]["Nhóm tuổi 2"][0]
                     }
                   />

@@ -8,6 +8,7 @@ import {
 } from "../../../api/thiDau";
 import moment from "moment";
 import { adminManagement, weight } from "../Data";
+import { CheckOutlined } from "@ant-design/icons";
 
 interface Person {
   code: string;
@@ -92,12 +93,14 @@ const TableRow = ({
   };
 
   const handleFixMember = async (value: string) => {
+    console.log("value", value);
+
     const person =
       dataManagement1?.data.find((option: any) => option.code === value) ||
       null;
 
     const payload = {
-      iduser: person.id,
+      iduser: value ? person.id : 0,
       id: data?.id,
     };
     const res = await postFixF0(payload);
@@ -108,7 +111,9 @@ const TableRow = ({
       message.error("Lỗi khi sửa đổi thông tin, vui lòng thử lại");
     }
   };
-
+  const onSearch = (value: string) => {
+    // console.log('search:', value);
+  };
   return (
     <div
       style={{
@@ -127,9 +132,13 @@ const TableRow = ({
           }}
           placeholder="Chọn tên"
           onChange={data ? handleFixMember : handleChange}
-          allowClear
           disabled={!isEditable}
           value={selectedPerson ? selectedPerson.name : undefined}
+          allowClear
+          menuItemSelectedIcon={<CheckOutlined />}
+          showSearch
+          onSearch={onSearch}
+          optionFilterProp="children"
         >
           {dataFilter?.map((option: Person) => (
             <Option key={option.code} value={option.code}>
