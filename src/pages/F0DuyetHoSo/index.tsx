@@ -118,9 +118,9 @@ export default function F0AcceptFile() {
     try {
       // Simulate fetching data from API
       const resDauKhang: { data: ManagementMember[] } =
-        await getManagamentMember({ mode: 2 });
+        await getManagamentMember({ mode: 2, idclub: id });
       const resQuyenThuat: { data: ManagementMember[] } =
-        await getManagamentMember({ mode: 1 });
+        await getManagamentMember({ mode: 1, idoclub: id });
 
       // Define mapping: [value1 (field in data), value2 (Excel column name)]
       const fieldMappingDauKhang: FieldMapping[] = [
@@ -142,8 +142,14 @@ export default function F0AcceptFile() {
       ];
 
       // Map fields to custom column names for both datasets
-      const filteredDauKhang = mapFieldsToColumns(
-        resDauKhang?.data || [],
+      const filteredDauKhang1 = mapFieldsToColumns(
+        resDauKhang?.data?.filter((item) => item.type === "hinh_thuc_1") || [],
+        fieldMappingDauKhang
+      );
+      console.log("filteredDauKhang1", filteredDauKhang1);
+
+      const filteredDauKhang2 = mapFieldsToColumns(
+        resDauKhang?.data?.filter((item) => item.type === "hinh_thuc_2") || [],
         fieldMappingDauKhang
       );
       const filteredQuyenThuat = mapFieldsToColumns(
@@ -183,17 +189,35 @@ export default function F0AcceptFile() {
       };
 
       // Convert filtered `resDauKhang` data to a worksheet
-      const wsDauKhang = XLSX.utils.json_to_sheet(filteredDauKhang);
+      const wsDauKhang1 = XLSX.utils.json_to_sheet(filteredDauKhang1);
       // Set column width for Sheet1
-      wsDauKhang["!cols"] = Array(
-        Object.keys(filteredDauKhang[0] || {}).length
+      wsDauKhang1["!cols"] = Array(
+        Object.keys(filteredDauKhang1[0] || {}).length
       ).fill({ wpx: 170 });
       // Merge cells in the 'name' column (first column)
-      addMergeToWorksheet(wsDauKhang, filteredDauKhang, "Hạng cân");
+      addMergeToWorksheet(wsDauKhang1, filteredDauKhang1, "Hạng cân");
 
       // Append the worksheet to the workbook
-      XLSX.utils.book_append_sheet(workbook, wsDauKhang, "Sheet1_DauKhang");
+      XLSX.utils.book_append_sheet(
+        workbook,
+        wsDauKhang1,
+        "Hinh_Thuc_Dau_Khang1"
+      );
+      // --------------------------------------------------------------------------------doi_khang_2
+      const wsDauKhang2 = XLSX.utils.json_to_sheet(filteredDauKhang2);
+      // Set column width for Sheet1
+      wsDauKhang2["!cols"] = Array(
+        Object.keys(filteredDauKhang2[0] || {}).length
+      ).fill({ wpx: 170 });
+      // Merge cells in the 'name' column (first column)
+      addMergeToWorksheet(wsDauKhang1, filteredDauKhang2, "Hạng cân");
 
+      // Append the worksheet to the workbook
+      XLSX.utils.book_append_sheet(
+        workbook,
+        wsDauKhang2,
+        "Hinh_thuc__Dau_Khang2"
+      );
       // Convert filtered `resQuyenThuat` data to a worksheet
       const wsQuyenThuat = XLSX.utils.json_to_sheet(filteredQuyenThuat);
       // Set column width for Sheet2
@@ -204,10 +228,10 @@ export default function F0AcceptFile() {
       addMergeToWorksheet(wsQuyenThuat, filteredQuyenThuat, "Nội dung");
 
       // Append the worksheet to the workbook
-      XLSX.utils.book_append_sheet(workbook, wsQuyenThuat, "Sheet2_QuyenThuat");
+      XLSX.utils.book_append_sheet(workbook, wsQuyenThuat, "Quyen_Thuat");
 
       // Generate and download the Excel file
-      XLSX.writeFile(workbook, "ManagementMembers.xlsx");
+      XLSX.writeFile(workbook, "DanhSachThiDau.xlsx");
 
       console.log("Export successful!");
     } catch (error) {

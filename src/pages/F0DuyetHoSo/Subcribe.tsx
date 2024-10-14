@@ -225,30 +225,30 @@ export default function Subcribe() {
           </Popconfirm>
         )}
       </div>
-      {groupByName !== undefined && Object.keys(groupByName).length > 0 ? (
-        <div>
-          <p className={styles.title}>NỘI DUNG QUYỀN QUY ĐỊNH</p>
-          <Subcribe1
-            idclub={id}
-            listMemberSubscribe={groupByName}
-            onSelectMember={onSelectMember}
-          />
-          <p className={styles.title}>NỘI DUNG QUYỀN TỰ CHỌN</p>
-          <Subcribe2
-            idclub={id}
-            listMemberSubscribe={groupByName}
-            onSelectMember={onSelectMember}
-          />
-          <p className={styles.title}>NỘI DUNG ĐỐI LUYỆN</p>
-          <Subcribe3
-            idclub={id}
-            listMemberSubscribe={groupByName}
-            onSelectMember={onSelectMember}
-          />
-        </div>
-      ) : (
+      {/* {groupByName !== undefined && Object.keys(groupByName).length > 0 ? ( */}
+      <div>
+        <p className={styles.title}>NỘI DUNG QUYỀN QUY ĐỊNH</p>
+        <Subcribe1
+          idclub={id}
+          listMemberSubscribe={groupByName}
+          onSelectMember={onSelectMember}
+        />
+        <p className={styles.title}>NỘI DUNG QUYỀN TỰ CHỌN</p>
+        <Subcribe2
+          idclub={id}
+          listMemberSubscribe={groupByName}
+          onSelectMember={onSelectMember}
+        />
+        <p className={styles.title}>NỘI DUNG ĐỐI LUYỆN</p>
+        <Subcribe3
+          idclub={id}
+          listMemberSubscribe={groupByName}
+          onSelectMember={onSelectMember}
+        />
+      </div>
+      {/* ) : (
         <div className={styles.noti}>Chưa có dữ liệu</div>
-      )}
+      )} */}
     </div>
   );
 }
