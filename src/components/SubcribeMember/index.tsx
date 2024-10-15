@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./styles.module.scss";
 import { Select } from "antd";
 import { CheckOutlined } from "@ant-design/icons";
@@ -6,6 +6,7 @@ import { getListMemberClubF2 } from "../../api/f2";
 import { useQuery } from "react-query";
 import moment from "moment";
 import { getListMemberClub } from "../../api/f0";
+import { isAdmin } from "../../api/ApiUser";
 interface IProps {
   idclub?: any;
   memberInfo?: any;
@@ -78,7 +79,15 @@ export default function SubscribeMember({
   const onSearch = (value: string) => {
     // console.log('search:', value);
   };
-
+  useEffect(() => {
+    if (isAdmin() === "2") {
+      setDisabled(false);
+    } else {
+      if (!memberInfo) {
+        setDisabled(true);
+      }
+    }
+  }, []);
   return (
     <div
       className={`${styles.memberItemWrap} ${isLastItem && styles.lastItem}`}
@@ -95,7 +104,7 @@ export default function SubscribeMember({
           filterOption={filterOption}
           className={styles.select}
           value={userSelected?.name || memberInfo?.hoTen}
-          disabled={!memberInfo || isDisabled}
+          disabled={isDisabled}
         >
           {!idclub && Array.isArray(memberClubs?.data) && (
             <>

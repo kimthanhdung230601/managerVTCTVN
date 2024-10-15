@@ -72,6 +72,7 @@ const Component = () => {
           path="/duyet-ho-so-dang-ky"
           element={<AcceptSubscribe />}
         ></Route>
+
         {/* F0 sua ho so chi tiet*/}
         <Route path="/dang-ky-thi-dau/:id" element={<F0AcceptFile />}></Route>
 

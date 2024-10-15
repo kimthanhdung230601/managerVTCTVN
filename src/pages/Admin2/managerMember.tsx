@@ -192,7 +192,7 @@ const ManagerMemberTwo = () => {
       dataIndex: "STT",
       width: 30,
       render: (value, record, index) => {
-        return index + 1 + (currentPage - 1) * 10;
+        return index + 1 + (currentPage - 1) * 30;
       },
     },
     {
