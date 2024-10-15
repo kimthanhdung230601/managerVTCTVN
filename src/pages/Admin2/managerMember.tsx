@@ -10,6 +10,8 @@ import {
   message,
   Pagination,
 } from "antd";
+import * as XLSX from "xlsx";
+
 import { levelFilters } from "../../until/until";
 import styles from "./styles.module.scss";
 import type { ColumnsType } from "antd/es/table";
@@ -18,7 +20,12 @@ import Search from "antd/es/input/Search";
 import ModalUpdateNote from "../../components/Modal/ModalUpdateNote";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useQuery } from "react-query";
-import { deleteMemberF3, getListMemberF3, searchInTable } from "../../api/f2";
+import {
+  deleteMemberF3,
+  getListMemberF3,
+  getListMemberF3All,
+  searchInTable,
+} from "../../api/f2";
 import moment from "moment";
 import CryptoJS from "crypto-js";
 import Cookies from "js-cookie";
@@ -425,6 +432,56 @@ const ManagerMemberTwo = () => {
     const updatedPayload = initialPayload + param;
     setPayload(updatedPayload);
   };
+  const handleExportExcel = async () => {
+    const res = await getListMemberF3All();
+    // Dữ liệu cần xuất
+    const dataToExport = res?.data || [];
+    console.log("res", res);
+
+    // Tạo một mảng dữ liệu chứa thông tin cần xuất
+    let exportData: any[] = [{ "": "DANH SÁCH HỘI VIÊN" }];
+    exportData = dataToExport.map((item: any, index: number) => ({
+      STT: index + 1 + (Number(currentPage) - 1) * 10,
+      "Họ tên": item.name,
+      "Ngày sinh": moment(item.birthday).format("DD/MM/YYYY"),
+      "Số điện thoại": item.phone,
+      CCCD: item.idcard,
+      "Đẳng cấp": item.level,
+      "Địa chỉ": item.address,
+      CLB: item.NameClb,
+      "Mã định danh": item.code,
+      "Ghi chú": item.note,
+      "Tình trạng": item.status,
+      "Thành tích": item.achievements,
+    }));
+
+    // Tạo một workbook mới
+    const wb = XLSX.utils.book_new();
+    // Tạo một worksheet từ dữ liệu
+    const ws = XLSX.utils.json_to_sheet(exportData);
+
+    // Thiết lập độ rộng cho mỗi cột
+    ws["!cols"] = [
+      { wpx: 50 }, // STT
+      { wpx: 200 }, // Họ tên
+      { wpx: 150 }, // Ngày sinh
+      { wpx: 150 }, // Số điện thoại
+      { wpx: 150 }, // CCCD
+      { wpx: 100 }, // Đẳng cấp
+      { wpx: 150 }, // Địa chỉ
+      { wpx: 350 }, // CLB
+      { wpx: 150 }, // Mã định danh
+      { wpx: 150 }, // Ghi chú
+      { wpx: 150 }, // Tình trạng
+      { wpx: 150 }, // Thành tích
+    ];
+
+    // Thêm worksheet vào workbook với tên "Danh sách hội viên"
+    XLSX.utils.book_append_sheet(wb, ws, "DanhSachHoiVien");
+    // Tạo một file Excel từ workbook
+    XLSX.writeFile(wb, "DanhSachHoiVien.xlsx");
+  };
+
   return (
     <div className={styles.wrap}>
       {" "}
@@ -449,6 +506,9 @@ const ManagerMemberTwo = () => {
           >
             <PlusOutlined className={styles.icon} />
             Thêm hội viên
+          </Button>
+          <Button className={styles.btn} onClick={handleExportExcel}>
+            Xuất file excel
           </Button>
         </div>
       </div>
