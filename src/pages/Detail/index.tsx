@@ -84,7 +84,7 @@ export default function Detail() {
             name: data?.data?.[0]?.name,
             nationality: data?.data?.[0]?.nationality,
             code: data?.data?.[0]?.code,
-            birthday: moment(data?.data?.[0]?.birthday).format("DD/MM/YYYY"),
+            birthday: data?.data?.[0]?.birthday,
             sex: data?.data?.[0]?.sex,
             NameClb: data?.data?.[0]?.NameClb,
             hometown: data?.data?.[0]?.hometown,
@@ -109,7 +109,7 @@ export default function Detail() {
 
   const dobFormat = (date: any) => {
     if (paramKey?.includes("VCT")) return moment(date).format("YYYY");
-    else return date.split(" ")[0];
+    else return moment(date).format("DD/MM/YYYY");
   };
 
   return (
