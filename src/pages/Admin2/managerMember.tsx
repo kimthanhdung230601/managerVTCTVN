@@ -447,12 +447,13 @@ const ManagerMemberTwo = () => {
       "Số điện thoại": item.phone,
       CCCD: item.idcard,
       "Đẳng cấp": item.level,
-      "Địa chỉ": item.address,
-      CLB: item.NameClb,
+      "": "",
       "Mã định danh": item.code,
+      CLB: item.NameClb,
       "Ghi chú": item.note,
       "Tình trạng": item.status,
       "Thành tích": item.achievements,
+      "Địa chỉ": item.address,
     }));
 
     // Tạo một workbook mới

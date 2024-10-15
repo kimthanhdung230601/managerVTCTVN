@@ -73,7 +73,7 @@ const CustomTableWeightOne: React.FC = () => {
     if (response.status === "success") {
       message.success("Thêm thông tin thành công");
     } else {
-      message.error("Thêm thông tin thất bại");
+      message.error("Không thể thêm mới thông tin");
     }
   };
 

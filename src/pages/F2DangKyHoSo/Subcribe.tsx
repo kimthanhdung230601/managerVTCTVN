@@ -156,10 +156,10 @@ export default function Subcribe() {
     {
       onSuccess: (data) => {
         if (data?.status === "success") message.success("Cập nhật thành công.");
-        else message.error("Có lỗi xảy ra, vui lòng thử lại sau!");
+        else message.error("Không thể thêm mới thông tin");
       },
       onError: (data) => {
-        message.error("Có lỗi xảy ra, vui lòng thử lại sau!");
+        message.error("Không thể thêm mới thông tin");
       },
     }
   );
@@ -168,10 +168,10 @@ export default function Subcribe() {
     {
       onSuccess: (data) => {
         if (data?.status === "success") message.success("Cập nhật thành công.");
-        else message.error("Có lỗi xảy ra, vui lòng thử lại sau!");
+        else message.error("Không thể thêm mới thông tin");
       },
       onError: (data) => {
-        message.error("Có lỗi xảy ra, vui lòng thử lại sau!");
+        message.error("Không thể thêm mới thông tin");
       },
     }
   );
