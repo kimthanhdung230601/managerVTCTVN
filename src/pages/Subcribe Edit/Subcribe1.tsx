@@ -53,21 +53,23 @@ export default function Subcribe1({
                   (từ 17 đến 40 tuổi)
                 </div>
                 <div className={styles.memberInfo}>
-                  {listMembers?.[sex]?.[item]?.["Nhóm tuổi 1"].map(
-                    (member: any, index: number) => (
-                      <SubscribeMemberEdit
-                        sex={sex}
-                        memberInfo={member}
-                        name={item}
-                        ageGroup="Nhóm tuổi 1"
-                        onSelectMember={onSelectMember}
-                        isLastItem={
-                          index ===
-                          listMembers?.[sex]?.[item]?.["Nhóm tuổi 1"].length - 1
-                        }
-                      />
-                    )
-                  )}
+                  {listMembers?.[sex]?.[item]?.["Nhóm tuổi 1"] &&
+                    listMembers?.[sex]?.[item]?.["Nhóm tuổi 1"].map(
+                      (member: any, index: number) => (
+                        <SubscribeMemberEdit
+                          sex={sex}
+                          memberInfo={member}
+                          name={item}
+                          ageGroup="Nhóm tuổi 1"
+                          onSelectMember={onSelectMember}
+                          isLastItem={
+                            index ===
+                            listMembers?.[sex]?.[item]?.["Nhóm tuổi 1"].length -
+                              1
+                          }
+                        />
+                      )
+                    )}
                 </div>
               </div>
               <div className={styles.bodyInfo}>
@@ -77,21 +79,23 @@ export default function Subcribe1({
                   (từ 41 đến 50 tuổi)
                 </div>
                 <div className={styles.memberInfo}>
-                  {listMembers?.[sex]?.[item]?.["Nhóm tuổi 2"].map(
-                    (member: any, index: number) => (
-                      <SubscribeMemberEdit
-                        sex={sex}
-                        memberInfo={member}
-                        name={item}
-                        ageGroup="Nhóm tuổi 2"
-                        onSelectMember={onSelectMember}
-                        isLastItem={
-                          index ===
-                          listMembers?.[sex]?.[item]?.["Nhóm tuổi 2"].length - 1
-                        }
-                      />
-                    )
-                  )}
+                  {listMembers?.[sex]?.[item]?.["Nhóm tuổi 2"] &&
+                    listMembers?.[sex]?.[item]?.["Nhóm tuổi 2"].map(
+                      (member: any, index: number) => (
+                        <SubscribeMemberEdit
+                          sex={sex}
+                          memberInfo={member}
+                          name={item}
+                          ageGroup="Nhóm tuổi 2"
+                          onSelectMember={onSelectMember}
+                          isLastItem={
+                            index ===
+                            listMembers?.[sex]?.[item]?.["Nhóm tuổi 2"].length -
+                              1
+                          }
+                        />
+                      )
+                    )}
                 </div>
               </div>
               <div className={`${styles.bodyInfo} ${styles.lastItem}`}>
@@ -101,21 +105,23 @@ export default function Subcribe1({
                   (từ 51 đến 60 tuổi)
                 </div>
                 <div className={styles.memberInfo}>
-                  {listMembers?.[sex]?.[item]?.["Nhóm tuổi 3"].map(
-                    (member: any, index: number) => (
-                      <SubscribeMemberEdit
-                        sex={sex}
-                        memberInfo={member}
-                        name={item}
-                        ageGroup="Nhóm tuổi 3"
-                        onSelectMember={onSelectMember}
-                        isLastItem={
-                          index ===
-                          listMembers?.[sex]?.[item]?.["Nhóm tuổi 3"].length - 1
-                        }
-                      />
-                    )
-                  )}
+                  {listMembers?.[sex]?.[item]?.["Nhóm tuổi 3"] &&
+                    listMembers?.[sex]?.[item]?.["Nhóm tuổi 3"].map(
+                      (member: any, index: number) => (
+                        <SubscribeMemberEdit
+                          sex={sex}
+                          memberInfo={member}
+                          name={item}
+                          ageGroup="Nhóm tuổi 3"
+                          onSelectMember={onSelectMember}
+                          isLastItem={
+                            index ===
+                            listMembers?.[sex]?.[item]?.["Nhóm tuổi 3"].length -
+                              1
+                          }
+                        />
+                      )
+                    )}
                 </div>
               </div>
             </div>

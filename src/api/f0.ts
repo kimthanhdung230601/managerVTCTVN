@@ -2,6 +2,8 @@ import { sendDelete, sendGet, sendPost, sendPut } from "./api";
 
 export const getListMember = (payload: any) =>
   sendGet(`/AdminGetMembers?${payload}`);
+//lấy tất cả thông tin
+export const getListMemberAll = () => sendGet(`/AdminGetMembers`);
 export const deleteMemberF3 = (payload: any) =>
   sendPost(`/AdminDeleteMember`, payload);
 //acount member

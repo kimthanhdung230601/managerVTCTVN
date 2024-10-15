@@ -26,6 +26,7 @@ import {
   deleteMemberF3,
   findMember,
   getListMember,
+  getListMemberAll,
   updateMemberF3,
 } from "../../api/f0";
 import moment from "moment";
@@ -743,9 +744,11 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
       ),
     },
   ];
-  const exportToExcel = () => {
+  const exportToExcel = async () => {
+    const res = await getListMemberAll();
     // Dữ liệu cần xuất
-    const dataToExport = allMember?.data || [];
+    const dataToExport = res?.data || [];
+    console.log("res", res);
 
     // Tạo một mảng dữ liệu chứa thông tin cần xuất
     let exportData: any[] = [{ "": "DANH SÁCH HỘI VIÊN" }];
@@ -758,6 +761,7 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
       "Đẳng cấp": item.level,
       "Địa chỉ": item.address,
       CLB: item.NameClb,
+      "Mã định danh": item.code,
       "Ghi chú": item.note,
       "Tình trạng": item.status,
       "Thành tích": item.achievements,
@@ -767,10 +771,26 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
     const wb = XLSX.utils.book_new();
     // Tạo một worksheet từ dữ liệu
     const ws = XLSX.utils.json_to_sheet(exportData);
+
+    // Thiết lập độ rộng cho mỗi cột
+    ws["!cols"] = [
+      { wpx: 50 }, // STT
+      { wpx: 200 }, // Họ tên
+      { wpx: 150 }, // Ngày sinh
+      { wpx: 150 }, // Số điện thoại
+      { wpx: 150 }, // CCCD
+      { wpx: 100 }, // Đẳng cấp
+      { wpx: 150 }, // Địa chỉ
+      { wpx: 350 }, // CLB
+      { wpx: 150 }, // Mã định danh
+      { wpx: 150 }, // Ghi chú
+      { wpx: 150 }, // Tình trạng
+      { wpx: 150 }, // Thành tích
+    ];
     // Thêm worksheet vào workbook với tên "Danh sách hội viên"
-    XLSX.utils.book_append_sheet(wb, ws, "Danh sách hội viên");
+    XLSX.utils.book_append_sheet(wb, ws, "DanhSachHoiVien");
     // Tạo một file Excel từ workbook
-    XLSX.writeFile(wb, "Danh sách hội viên.xlsx");
+    XLSX.writeFile(wb, "DanhSachHoiVien.xlsx");
   };
 
   return (

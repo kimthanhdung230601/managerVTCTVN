@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./styles.module.scss";
 import { Select } from "antd";
 import { CheckOutlined } from "@ant-design/icons";
@@ -6,6 +6,7 @@ import { getListMemberClubF2 } from "../../api/f2";
 import { useQuery } from "react-query";
 import moment from "moment";
 import { getListMemberClub } from "../../api/f0";
+import { isAdmin } from "../../api/ApiUser";
 interface IProps {
   idclub?: any;
   memberInfo?: any;
@@ -45,25 +46,50 @@ export default function SubscribeMember({
     }
   );
   const [userSelected, setUserSelected] = useState<any>({});
+  const [isDisabled, setDisabled] = useState<boolean>(false);
   const filterOption = (
     input: string,
     option?: { children: React.ReactNode }
   ) => (option?.children as string).toLowerCase().includes(input.toLowerCase());
   const onChange = (value: string) => {
-    const userInfo = JSON.parse(value);
-    setUserSelected(userInfo);
-    onSelectMember(
-      name,
-      `${userInfo?.sex}_${userInfo?.id}`,
-      ageGroup,
-      userInfo,
-      memberInfo?.id
-    );
+    if (value) {
+      const userInfo = JSON.parse(value);
+      setUserSelected(userInfo);
+      onSelectMember(
+        name,
+        `${userInfo?.sex}_${userInfo?.id}`,
+        ageGroup,
+        userInfo,
+        memberInfo?.id
+      );
+    } else {
+      const userInfo = { id: 0, sex: 0 };
+      setUserSelected(userInfo);
+      onSelectMember(
+        name,
+        `${userInfo?.sex}_${userInfo?.id}`,
+        ageGroup,
+        { ...userInfo, id: 0 },
+        memberInfo?.id
+      );
+      if (isAdmin() !== "2") {
+        setDisabled(true);
+      }
+    }
   };
 
   const onSearch = (value: string) => {
     // console.log('search:', value);
   };
+  useEffect(() => {
+    if (isAdmin() === "2") {
+      setDisabled(false);
+    } else {
+      if (!memberInfo) {
+        setDisabled(true);
+      }
+    }
+  }, []);
   return (
     <div
       className={`${styles.memberItemWrap} ${isLastItem && styles.lastItem}`}
@@ -71,6 +97,7 @@ export default function SubscribeMember({
       <div className={styles.memberItem}>
         <Select
           menuItemSelectedIcon={<CheckOutlined />}
+          allowClear
           showSearch
           placeholder={"Chọn hồ sơ thành viên"}
           optionFilterProp="children"
@@ -79,6 +106,7 @@ export default function SubscribeMember({
           filterOption={filterOption}
           className={styles.select}
           value={userSelected?.name || memberInfo?.hoTen}
+          disabled={isDisabled}
         >
           {!idclub && Array.isArray(memberClubs?.data) && (
             <>

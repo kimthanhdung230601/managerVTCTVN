@@ -3,6 +3,8 @@ import { isAdmin } from "./ApiUser";
 import CryptoJS from "crypto-js";
 const secretKey = process.env.REACT_APP_SECRET_KEY || "";
 export const getListMemberF3 = (payload: any) => sendGet(`/Members?${payload}`);
+//lấy tất cả data
+export const getListMemberF3All = () => sendGet(`/Members`);
 export const editNote = (payload: any) =>
   sendPost("/EditNoteMemberID", payload);
 export const deleteMemberF3 = (payload: any) =>
