@@ -93,8 +93,6 @@ const TableRow = ({
   };
 
   const handleFixMember = async (value: string) => {
-    console.log("value", value);
-
     const person =
       dataManagement1?.data.find((option: any) => option.code === value) ||
       null;

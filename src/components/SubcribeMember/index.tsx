@@ -72,7 +72,9 @@ export default function SubscribeMember({
         { ...userInfo, id: 0 },
         memberInfo?.id
       );
-      setDisabled(true);
+      if (isAdmin() !== "2") {
+        setDisabled(true);
+      }
     }
   };
 
