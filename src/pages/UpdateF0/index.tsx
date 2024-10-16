@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styles from "./style.module.scss";
-import { PlusOutlined, MinusCircleOutlined } from "@ant-design/icons";
+import { PlusOutlined } from "@ant-design/icons";
 import {
   Button,
   DatePicker,
@@ -10,40 +10,29 @@ import {
   Upload,
   Row,
   Col,
-  Tooltip,
-  Space,
   message,
   Spin,
 } from "antd";
-import type { DatePickerProps } from "antd";
-import type { UploadFile, UploadProps } from "antd";
+import type { UploadFile } from "antd";
 import dayjs from "dayjs";
 
-import useImageCompression from "../../hook/imageCompression";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
-import axios from "axios";
-import Cookies from "js-cookie";
+
 import CryptoJS from "crypto-js";
-import { OnlyProvince, level, province } from "../../until/until";
+import { OnlyProvince, level } from "../../until/until";
 import moment from "moment";
 import { useMutation, useQuery } from "react-query";
-import { addMember } from "../../api/ApiUser";
-import { addNewF3 } from "../../api/f2";
+
 import { getDetailF3, getListClub, updateF3 } from "../../api/f0";
 import { useParams } from "react-router";
 import customParseFormat from "dayjs/plugin/customParseFormat";
-import ListClub from "../../hook/listClub";
 
-const { RangePicker } = DatePicker;
-const { TextArea } = Input;
 const { Option } = Select;
-const secretKey = process.env.REACT_APP_SECRET_KEY as string;
 interface Club {
   id: any;
   name_club: string;
 }
-interface UpdateProfilesProps {}
 const UpdateProfiles = () => {
   dayjs.extend(customParseFormat);
   document.title = "Chỉnh sửa thành viên";
@@ -57,9 +46,7 @@ const UpdateProfiles = () => {
   }));
   const {
     data: dataDetailF3,
-    refetch,
-    isLoading,
-    isFetched,
+
     isFetching,
   } = useQuery("dataDetail", () => getDetailF3(param.id), {
     onSettled: (data) => {
@@ -86,7 +73,10 @@ const UpdateProfiles = () => {
       const formattedBirthday = moment(data.data[0].birthday).format(
         "DD/MM/YYYY"
       );
-      form.setFieldValue("birthday", formattedBirthday);
+      form.setFieldValue(
+        "birthday",
+        dayjs(data.data[0].birthday, "YYYY-MM-DD HH:mm:ss")
+      );
     },
   });
 
@@ -130,17 +120,8 @@ const UpdateProfiles = () => {
         } else {
           message.error("Có lỗi xảy ra, vui lòng thử lại sau!");
           setLoading(false);
-          // setTimeout(() => {
-          //   window.location.reload();
-          // }, 2000);
         }
       },
-      // onError(error, variables, context) {
-      //   message.error("Có lỗi xảy ra , vui lòng thử lại sau!");
-      //   setTimeout(() => {
-      //     window.location.reload();
-      //   }, 2000);
-      // },
     }
   );
   //image avatar
@@ -190,19 +171,19 @@ const UpdateProfiles = () => {
   ) => (option?.children as string).toLowerCase().includes(input.toLowerCase());
   //image CN đẳng cấp
 
-  const normFileLevel = (e: any) => {
-    if (Array.isArray(e)) {
-      return e;
-    }
-    return e && e.fileListLevel;
-  };
-  const getSrcFromFileLevel = (file: any) => {
-    return new Promise((resolve) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file.originFileObj);
-      reader.onload = () => resolve(reader.result);
-    });
-  };
+  // const normFileLevel = (e: any) => {
+  //   if (Array.isArray(e)) {
+  //     return e;
+  //   }
+  //   return e && e.fileListLevel;
+  // };
+  // const getSrcFromFileLevel = (file: any) => {
+  //   return new Promise((resolve) => {
+  //     const reader = new FileReader();
+  //     reader.readAsDataURL(file.originFileObj);
+  //     reader.onload = () => resolve(reader.result);
+  //   });
+  // };
 
   const onChangeImgLevel = ({
     fileList: newFileList,
@@ -231,20 +212,9 @@ const UpdateProfiles = () => {
   };
 
   //button
-  const [selectedButton, setSelectedButton] = useState("show");
-
-  const handleButtonClick = (buttonName: any) => {
-    setSelectedButton(buttonName);
-  };
 
   // giải mã cookieJS
-  const permission = CryptoJS.AES.decrypt(
-    Cookies.get("permission") as string,
-    secretKey
-  );
-  const decryptedPermission = permission.toString(CryptoJS.enc.Utf8);
-  const club = CryptoJS.AES.decrypt(Cookies.get("club") as string, secretKey);
-  const decryptedClub = club.toString(CryptoJS.enc.Utf8);
+
   const [loading, setLoading] = useState(false);
 
   const onFinish = (values: any) => {
@@ -381,30 +351,7 @@ const UpdateProfiles = () => {
                           </Form.Item>
                         </Col>
                       </Row>{" "}
-                      <div className={styles.buttonGroup}>
-                        {/* <span
-                          className={`${styles.showBtn} ${
-                            selectedButton === "show"
-                              ? styles.selectedBtn
-                              : styles.noneSelectedBtn
-                          }`}
-                          onClick={() => handleButtonClick("show")}
-                        >
-                          Hiển thị
-                        </span>
-                        <span
-                          className={`${styles.showBtn} ${
-                            selectedButton === "hide"
-                              ? styles.selectedBtn
-                              : styles.noneSelectedBtn
-                          }`}
-                          onClick={() => {
-                            handleButtonClick("hide");
-                          }}
-                        >
-                          Ẩn
-                        </span> */}
-                      </div>
+                      <div className={styles.buttonGroup}></div>
                     </Col>
                     <Col span={8} xs={24} sm={24} md={8}>
                       <Form.Item
@@ -460,10 +407,9 @@ const UpdateProfiles = () => {
                               },
                             ]}
                           >
-                            <Input
-                              type="day"
-                              // addonAfter={<DatePicker format="DD/MM/YYYY" />}
-                              placeholder="DD/MM/YYYY"
+                            <DatePicker
+                              format="DD/MM/YYYY"
+                              style={{ width: "100%" }}
                             />
                           </Form.Item>
                         </Col>
