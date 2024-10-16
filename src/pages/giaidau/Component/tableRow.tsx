@@ -70,6 +70,8 @@ const TableRow = ({
   }, [data]);
 
   const handleChange = (value: string) => {
+    console.log("value", value);
+
     if (setWeight) {
       const person =
         dataFight?.data.find((option: any) => option.code === value) || null;
@@ -86,7 +88,10 @@ const TableRow = ({
             nữ: person.id,
           }));
         }
-
+      }
+      if (value === undefined) {
+        setSelectedPerson(null);
+      } else {
         setSelectedPerson(person);
       }
     }
