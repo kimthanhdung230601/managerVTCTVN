@@ -90,6 +90,7 @@ const ModalAccount = ({
             email: data.data[0].email,
             idcard: data.data[0].idcard,
             level: data.data[0].level,
+            nameclb: data.data[0].NameClb,
           });
         }
       },
@@ -215,6 +216,7 @@ const ModalAccount = ({
     formdata.append("idcard", value.idcard);
     formdata.append("password", value.password);
     formdata.append("level", value.level);
+    formdata.append("nameclub", value.nameclb);
     //
     formdata.append("club", dataDetailF2?.data[0].club);
     formdata.append("id", id);
@@ -223,6 +225,7 @@ const ModalAccount = ({
     formdata.append("birthday", dataDetailF2?.data[0].birthday);
     formdata.append("permission", dataDetailF2?.data[0].permission);
     formdata.append("pending", dataDetailF2?.data[0].pending);
+
     let certificateFile = null;
     let refFile = null;
     let cmndFile = null;
@@ -378,14 +381,8 @@ const ModalAccount = ({
                     <Option value="Sở VHTT">Sở VHTT</Option>
                   </Select>
                 </Form.Item>
-                <Form.Item label="Câu lạc bộ" name="NameClb">
-                  <Select>
-                    {listClub?.map((club: any) => (
-                      <Select.Option key={club.value} value={club.value}>
-                        {club.text}
-                      </Select.Option>
-                    ))}
-                  </Select>
+                <Form.Item label="Câu lạc bộ" name="nameclb">
+                  <Input />
                 </Form.Item>
                 <Form.Item
                   label="Số điện thoại"
