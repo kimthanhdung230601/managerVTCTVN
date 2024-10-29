@@ -153,7 +153,11 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
     navigate(`${location.pathname}?${searchParam.toString()}`);
     setParam(param);
     const updatedPayload = initialPayload + param;
+
     setPayload(updatedPayload);
+    if (param) {
+      setCurrentPage(1);
+    }
   };
 
   const filtersListNote = Array.from(
@@ -180,7 +184,7 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
     searchParam.set("pageAll", value.toString());
     navigate(`${location.pathname}?${searchParam.toString()}`);
     setCurrentPage(value);
-    const updatedPayload = `page=${value}` + param;
+    const updatedPayload = `page=${value}` + param + params;
     setPayload(updatedPayload);
   };
   //btn xóa

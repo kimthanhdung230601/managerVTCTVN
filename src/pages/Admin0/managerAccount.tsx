@@ -105,7 +105,8 @@ const ManagerAccount = () => {
 
   const onChangePageAccount = (value: any) => {
     setCurrentPageAccount(value);
-    const updatedPayload = `page=${value}&pending=1&permission=2` + param;
+    const updatedPayload =
+      `page=${value}&pending=1&permission=2` + param + params;
     setPayload(updatedPayload);
   };
   //tài khoản đã duyệt
