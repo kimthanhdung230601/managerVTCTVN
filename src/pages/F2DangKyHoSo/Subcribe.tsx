@@ -156,10 +156,10 @@ export default function Subcribe() {
     {
       onSuccess: (data) => {
         if (data?.status === "success") message.success("Cập nhật thành công.");
-        else message.error("Không thể thêm mới thông tin");
+        else message.error("Hồ sơ đã được nộp, không thể tiếp tục nộp hồ sơ");
       },
       onError: (data) => {
-        message.error("Không thể thêm mới thông tin");
+        message.error("Hồ sơ đã được nộp, không thể tiếp tục nộp hồ sơ");
       },
     }
   );
@@ -168,10 +168,10 @@ export default function Subcribe() {
     {
       onSuccess: (data) => {
         if (data?.status === "success") message.success("Cập nhật thành công.");
-        else message.error("Không thể thêm mới thông tin");
+        else message.error("Hồ sơ đã được nộp, không thể tiếp tục nộp hồ sơ");
       },
       onError: (data) => {
-        message.error("Không thể thêm mới thông tin");
+        message.error("Hồ sơ đã được nộp, không thể tiếp tục nộp hồ sơ");
       },
     }
   );
