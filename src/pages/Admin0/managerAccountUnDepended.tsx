@@ -133,7 +133,8 @@ const ManagerAccountUnDepended = ({ refetch }: ManagerAccountProps) => {
 
   const onChangePageAccept = (value: any) => {
     setCurrentPage(value);
-    const updatedPayload = `page=${value}&pending=0&permission=2` + param;
+    const updatedPayload =
+      `page=${value}&pending=0&permission=2` + param + params;
     setPayload(updatedPayload);
   };
   const isMobile = useMediaQuery({ maxWidth: 768 });

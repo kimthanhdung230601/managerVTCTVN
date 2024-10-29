@@ -73,7 +73,7 @@ const CustomTableWeightOne: React.FC = () => {
     if (response.status === "success") {
       message.success("Thêm thông tin thành công");
     } else {
-      message.error("Không thể thêm mới thông tin");
+      message.error("Hồ sơ đã được nộp, không thể tiếp tục nộp hồ sơ");
     }
   };
 
@@ -102,7 +102,7 @@ const CustomTableWeightOne: React.FC = () => {
           >
             <Popconfirm
               title="Cảnh báo"
-              description="Lưu ý: khi hồ sơ đã gửi thì sẽ ko sửa được nữa, bạn chắc chắn muốn gửi? "
+              description="Lưu ý: khi hồ sơ đã gửi thì sẽ không sửa được nữa, bạn chắc chắn muốn gửi? "
               open={open}
               onConfirm={handleOk}
               okButtonProps={{ loading: confirmLoading }}

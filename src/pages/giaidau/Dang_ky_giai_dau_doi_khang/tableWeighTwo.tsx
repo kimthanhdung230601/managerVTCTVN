@@ -122,7 +122,7 @@ const CustomTableWeightTwo: React.FC = () => {
     if (response.status === "success") {
       message.success("Thêm thông tin thành công");
     } else {
-      message.error("Thêm thông tin thất bại");
+      message.error("Hồ sơ đã được nộp, không thể tiếp tục nộp hồ sơ");
     }
   };
 
@@ -151,7 +151,7 @@ const CustomTableWeightTwo: React.FC = () => {
           {isAdmin() === "2" && (
             <Popconfirm
               title="Cảnh báo"
-              description="Lưu ý: khi hồ sơ đã gửi thì sẽ ko sửa được nữa, bạn chắc chắn muốn gửi? "
+              description="Lưu ý: khi hồ sơ đã gửi thì sẽ không sửa được nữa, bạn chắc chắn muốn gửi? "
               open={open}
               onConfirm={handleOk}
               okButtonProps={{ loading: confirmLoading }}

@@ -90,6 +90,7 @@ const ManagerMemberDeleted = ({ setFetching }: fetchingProp) => {
     refetch,
     isFetching,
   } = useQuery(["allMember", payload], () => getListMember(payload));
+
   const onChange: TableProps<DataType>["onChange"] = (pagination, filters) => {
     const param: any =
       (filters?.DonViQuanLy ? "&DonViQuanLy=" + filters?.DonViQuanLy[0] : "") +
@@ -145,8 +146,11 @@ const ManagerMemberDeleted = ({ setFetching }: fetchingProp) => {
     else searchParam.delete("achievements3");
     navigate(`${location.pathname}?${searchParam.toString()}`);
     setParam(param);
-    const updatedPayload = initialPayload + param;
+    const updatedPayload = initialPayload + param + params;
     setPayload(updatedPayload);
+    if (param) {
+      setCurrentPage(1);
+    }
   };
   const filtersListNote = allMember?.list_note?.map(
     (item: any, index: any) => ({
@@ -166,7 +170,10 @@ const ManagerMemberDeleted = ({ setFetching }: fetchingProp) => {
     searchParam.set("pageAll3", value.toString());
     setCurrentPage(value);
     const updatedPayload =
-      `page=${value}&status=` + encodeURIComponent(status.toString()) + param;
+      `page=${value}&status=` +
+      encodeURIComponent(status.toString()) +
+      param +
+      params;
     setPayload(updatedPayload);
   };
   //btn xóa
