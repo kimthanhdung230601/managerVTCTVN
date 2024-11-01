@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Row, Col, Image, Popconfirm, message } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import styles from "./styles.module.scss";
@@ -33,7 +33,7 @@ const extractContent = (html: string) => {
   };
 };
 export default function NewCard(props: any) {
-  const { id, title, content, time } = props;
+  const { id, title, content, time, index } = props;
   const navigate = useNavigate();
   const result = extractContent(content);
   const deleteNewMutaion = useMutation(
@@ -55,6 +55,13 @@ export default function NewCard(props: any) {
   const confirm = (id: string) => {
     deleteNewMutaion.mutate({ id: id });
   };
+  useEffect(() => {
+    const previews = document.querySelectorAll(".preview-content");
+    if (previews[index] && result?.paragraphs) {
+      previews[index].innerHTML = result.paragraphs.join("<br>");
+    }
+  }, []);
+
   return (
     <>
       <Row gutter={40} className={styles.post} justify="center">
@@ -81,7 +88,7 @@ export default function NewCard(props: any) {
           <Link to={`/bai-viet/${id}`}>
             <div className={styles.postTitle}>{title}</div>
           </Link>
-          <div className={styles.postContent}>{result.paragraphs}</div>
+          <div className={`preview-content ${styles.postContent}`}></div>
           <div className={styles.time}>Đăng ngày {time}</div>
         </Col>
         {/* {isAdmin() === "0" && (
