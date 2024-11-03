@@ -8,8 +8,8 @@ export const getListInforAdmin = (payload: any) =>
 export const addNewMember = (payload: any) =>
   sendPost("Fight2024?type=Submit&mode=2", payload);
 
-export const getManagamentMember = (payload: any) =>
-  sendPost("Fight2024?type=Detail", payload);
+export const getManagamentMember = (payload?: any) =>
+  sendPost("Fight2024?type=Detail", payload ? payload : {});
 
 export const postFixF0 = (payload: any) =>
   sendPost("Fight2024?type=Fix", payload);

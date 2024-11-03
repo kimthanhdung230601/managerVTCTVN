@@ -5,7 +5,7 @@ import styles from "./styles.module.scss";
 import { Link, useNavigate } from "react-router-dom";
 import { isAdmin } from "../../api/ApiUser";
 import { useMutation } from "react-query";
-import { deleteNew } from "../../api/f0";
+import { deleteNews } from "../../api/f0";
 
 const extractContent = (html: string) => {
   const pTags = html.match(/<p>(.*?)<\/p>/g);
@@ -32,17 +32,24 @@ const extractContent = (html: string) => {
     images: images,
   };
 };
-export default function NewCard(props: any) {
-  const { id, title, content, time, index } = props;
+interface INewCard {
+  id: string;
+  title: string;
+  content: string;
+  time: string;
+  index: number;
+  refetch: () => void;
+}
+export default function NewCard(props: INewCard) {
+  const { id, title, content, time, index, refetch } = props;
   const navigate = useNavigate();
   const result = extractContent(content);
   const deleteNewMutaion = useMutation(
-    async (payload: any) => await deleteNew(payload),
+    async (payload: any) => await deleteNews(payload),
     {
       onSuccess: (data) => {
         if (data?.status === "success") {
           message.success("Xoá bài viết thành công");
-          props.refetch();
         } else {
           message.error("Có lỗi xảy ra, vui lòng thử lại sau");
         }
@@ -54,6 +61,7 @@ export default function NewCard(props: any) {
   );
   const confirm = (id: string) => {
     deleteNewMutaion.mutate({ id: id });
+    refetch();
   };
   useEffect(() => {
     const previews = document.querySelectorAll(".preview-content");
@@ -91,7 +99,7 @@ export default function NewCard(props: any) {
           <div className={`preview-content ${styles.postContent}`}></div>
           <div className={styles.time}>Đăng ngày {time}</div>
         </Col>
-        {/* {isAdmin() === "0" && (
+        {isAdmin() === "0" && (
           <div className={styles.btnWrap}>
             <div
               className={styles.btn}
@@ -111,7 +119,7 @@ export default function NewCard(props: any) {
               </div>
             </Popconfirm>
           </div>
-        )} */}
+        )}
       </Row>
     </>
   );

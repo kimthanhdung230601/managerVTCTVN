@@ -1,20 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TableRow from "../Component/tableRow";
-import { Button, message, Popconfirm } from "antd";
-import { addNewMember } from "../../../api/thiDau";
 import { data_weight_1, tableThead, thongTin, weight } from "../Data";
-import { isAdmin } from "../../../api/ApiUser";
 
 // Define thongTin interface
-
-const CustomTableWeightOne: React.FC = () => {
+interface Props {
+  setData: any;
+}
+const CustomTableWeightOne = ({ setData }: Props) => {
   const [weight51to54, setWeight51to54] = useState<weight>({ nam: "", nữ: "" });
   const [weight54to57, setWeight54to57] = useState<weight>({ nam: "", nữ: "" });
   const [weight57to60, setWeight57to60] = useState<weight>({ nam: "", nữ: "" });
   const [weight60to64, setWeight60to64] = useState<weight>({ nam: "" });
   const [weight64to68, setWeight64to68] = useState<weight>({ nam: "" });
-  const [open, setOpen] = useState(false);
-  const [confirmLoading, setConfirmLoading] = useState(false);
 
   const setWeightFunctionsNam = [
     setWeight51to54,
@@ -29,23 +26,8 @@ const CustomTableWeightOne: React.FC = () => {
     setWeight54to57,
     setWeight57to60,
   ];
-  const showPopconfirm = () => {
-    setOpen(true);
-  };
 
-  const handleOk = () => {
-    setConfirmLoading(true);
-    handleSubmit();
-    setTimeout(() => {
-      setOpen(false);
-      setConfirmLoading(false);
-    }, 2000);
-  };
-
-  const handleCancel = () => {
-    setOpen(false);
-  };
-  const handleSubmit = async () => {
+  useEffect(() => {
     const buildPayload = (genderData: thongTin[], weights: weight[]) => {
       return genderData.reduce((acc: any, curr, index) => {
         acc[curr.hangCan] = weights[index];
@@ -69,13 +51,15 @@ const CustomTableWeightOne: React.FC = () => {
         ]),
       },
     };
-    const response = await addNewMember(payload);
-    if (response.status === "success") {
-      message.success("Thêm thông tin thành công");
-    } else {
-      message.error("Hồ sơ đã được nộp, không thể tiếp tục nộp hồ sơ");
-    }
-  };
+    setData(payload);
+  }, [
+    weight51to54,
+    weight54to57,
+    weight57to60,
+    weight60to64,
+    weight64to68,
+    setData,
+  ]);
 
   return (
     <>
@@ -87,33 +71,8 @@ const CustomTableWeightOne: React.FC = () => {
             marginBottom: "36px",
           }}
         >
-          {" "}
           THI ĐẤU ĐỐI KHÁNG HÌNH THỨC 1
         </h1>
-        {isAdmin() === "2" && (
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "flex-end",
-              marginRight: "12px",
-              marginTop: "12px",
-              marginBottom: "12px",
-            }}
-          >
-            <Popconfirm
-              title="Cảnh báo"
-              description="Lưu ý: khi hồ sơ đã gửi thì sẽ không sửa được nữa, bạn chắc chắn muốn gửi? "
-              open={open}
-              onConfirm={handleOk}
-              okButtonProps={{ loading: confirmLoading }}
-              onCancel={handleCancel}
-            >
-              <Button type="primary" onClick={showPopconfirm}>
-                Gửi hồ sơ
-              </Button>
-            </Popconfirm>
-          </div>
-        )}
 
         {/* Render header */}
         <div

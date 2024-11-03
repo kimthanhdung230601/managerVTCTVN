@@ -254,13 +254,12 @@ export default function Post() {
     setPreviewOpen(false);
   };
   const onFinish = (values: any) => {
-    addNewsMutation.mutate(values);
-    // if (hasId === 0)
-    //   addNewsMutation.mutate({
-    //     ...values,
-    //     image_title: values.image_title ? values.image_title : "",
-    //   });
-    // else updateNewsMutation.mutate({ ...values, id: id?.id });
+    if (hasId === 0)
+      addNewsMutation.mutate({
+        ...values,
+        image_title: values.image_title ? values.image_title : "",
+      });
+    else updateNewsMutation.mutate({ ...values, id: id?.id });
   };
 
   return (

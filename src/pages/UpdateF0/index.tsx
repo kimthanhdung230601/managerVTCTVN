@@ -631,9 +631,6 @@ const UpdateProfiles = () => {
                   <Form.Item
                     name="note"
                     label="Ghi chú hiển thị với người dùng"
-                    rules={[
-                      { required: true, message: "Vui lòng điền thông tin" },
-                    ]}
                     style={{ width: "100%" }}
                   >
                     <Input.TextArea showCount maxLength={1000} />

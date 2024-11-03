@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./styles.module.scss";
 import type { PopconfirmProps } from "antd";
 import { Button, message, Popconfirm } from "antd";
@@ -11,6 +11,9 @@ import { useParams } from "react-router";
 import { updateListSubcribe } from "../../api/f0";
 import useMemberSubscribe from "../../hook/useMemberSubscribe";
 import { isAdmin } from "../../api/ApiUser";
+import { getManagamentMember } from "../../api/thiDau";
+import { IResponseFight2024 } from "../../type";
+import SubcribePageEdit from "../Subcribe Edit";
 
 interface User {
   sex: string;
@@ -94,6 +97,7 @@ const listContents = [
 
 export default function Subcribe() {
   const { id } = useParams();
+  const [data, setData] = useState<IResponseFight2024>();
   const [userSelected, setUserSelected] = useState<{
     "Nhóm tuổi 1": AgeGroup;
     "Nhóm tuổi 2": AgeGroup;
@@ -211,40 +215,76 @@ export default function Subcribe() {
   };
   // console.log("groupByName", groupByName);
 
+  useEffect(() => {
+    const fetchManagementMember = async () => {
+      const res = await getManagamentMember({ mode: 2 });
+      setData(res);
+    };
+    fetchManagementMember();
+  }, []);
   return (
-    <div className={styles.tableWrap}>
-      <div className={styles.btnWrap}>
-        {isAdmin() === "2" && (
-          <Popconfirm
-            title="Lưu ý"
-            description="Khi hồ sơ đã gửi sẽ không sửa được nữa, bạn chắc chắn muốn gửi?"
-            onConfirm={confirm}
-            okText="Có"
-            cancelText="Huỷ"
-          >
-            <Button>Gửi hồ sơ</Button>
-          </Popconfirm>
+    <>
+      {isAdmin() === "2" && data?.pending && Array.isArray(data.pending) ? (
+        data.pending[0].pending === "1" ? (
+          <img
+            alt="Đã duyệt"
+            src={require("../../assets/image/accept.png")}
+            width="170px"
+            style={{ position: "absolute", right: "18px" }}
+          />
+        ) : (
+          <img
+            alt="Chưa duyệt"
+            src={require("../../assets/image/notAccept.png")}
+            width="170px"
+            style={{ position: "absolute", right: "18px" }}
+          />
+        )
+      ) : (
+        <span></span>
+      )}
+
+      <div className={styles.tableWrap}>
+        <div className={styles.btnWrap}>
+          {isAdmin() === "2" && (
+            <Popconfirm
+              title="Lưu ý"
+              description="Khi hồ sơ đã gửi sẽ không sửa được nữa, bạn chắc chắn muốn gửi?"
+              onConfirm={confirm}
+              okText="Có"
+              cancelText="Huỷ"
+            >
+              <Button disabled={data?.pending !== false}>Gửi hồ sơ</Button>
+            </Popconfirm>
+          )}
+        </div>
+        {data?.pending === false ? (
+          <>
+            <p className={styles.title}>NỘI DUNG QUYỀN QUY ĐỊNH</p>
+            <Subcribe1
+              idclub={id}
+              listMemberSubscribe={groupByName}
+              onSelectMember={onSelectMember}
+            />
+            <p className={styles.title}>NỘI DUNG QUYỀN TỰ CHỌN</p>
+            <Subcribe2
+              idclub={id}
+              listMemberSubscribe={groupByName}
+              onSelectMember={onSelectMember}
+            />
+            <p className={styles.title}>NỘI DUNG ĐỐI LUYỆN</p>
+            <Subcribe3
+              idclub={id}
+              listMemberSubscribe={groupByName}
+              onSelectMember={onSelectMember}
+            />
+          </>
+        ) : (
+          <>
+            <SubcribePageEdit />
+          </>
         )}
       </div>
-
-      <p className={styles.title}>NỘI DUNG QUYỀN QUY ĐỊNH</p>
-      <Subcribe1
-        idclub={id}
-        listMemberSubscribe={groupByName}
-        onSelectMember={onSelectMember}
-      />
-      <p className={styles.title}>NỘI DUNG QUYỀN TỰ CHỌN</p>
-      <Subcribe2
-        idclub={id}
-        listMemberSubscribe={groupByName}
-        onSelectMember={onSelectMember}
-      />
-      <p className={styles.title}>NỘI DUNG ĐỐI LUYỆN</p>
-      <Subcribe3
-        idclub={id}
-        listMemberSubscribe={groupByName}
-        onSelectMember={onSelectMember}
-      />
-    </div>
+    </>
   );
 }

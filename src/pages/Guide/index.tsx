@@ -7,8 +7,6 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import Footer from "../../components/Footer";
 import { useQuery } from "react-query";
 import { getListNews } from "../../api/f0";
-import Cookies from "js-cookie";
-import CryptoJS from "crypto-js";
 import NewCard from "../../components/NewCard";
 import { isAdmin } from "../../api/ApiUser";
 
@@ -17,9 +15,11 @@ export default function Guide() {
   const navigate = useNavigate();
   const param = new URLSearchParams(useLocation().search);
   const [currentPage, setCurrentPage] = useState(param.get("page") || "1");
-  const { data, isFetching } = useQuery(["news", currentPage], () =>
-    getListNews(currentPage, "1")
-  );
+  const {
+    data,
+    isFetching,
+    refetch: refetchNews,
+  } = useQuery(["news", currentPage], () => getListNews(currentPage, "1"));
   const onChange = (page: number) => {
     navigate(`/huong-dan?page=${page}`);
     setCurrentPage(page.toString());
@@ -73,6 +73,7 @@ export default function Guide() {
                           content={item?.content}
                           title={item?.title}
                           time={item?.time}
+                          refetch={refetchNews}
                         />
                       );
                     })}

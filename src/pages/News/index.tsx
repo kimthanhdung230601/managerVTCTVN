@@ -17,7 +17,7 @@ export default function News() {
   const navigate = useNavigate();
   const param = new URLSearchParams(useLocation().search);
   const [currentPage, setCurrentPage] = useState(param.get("page") || "1");
-  const { data, isFetching } = useQuery(["news", currentPage], () =>
+  const { data, isFetching, refetch } = useQuery(["news", currentPage], () =>
     getListNews(currentPage, "0")
   );
   const onChange = (page: number) => {
@@ -76,6 +76,7 @@ export default function News() {
                           content={item?.content}
                           title={item?.title}
                           time={item?.time}
+                          refetch={refetch}
                         />
                       );
                     })}

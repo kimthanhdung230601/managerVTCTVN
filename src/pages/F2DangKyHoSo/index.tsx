@@ -7,7 +7,7 @@ import Subcribe from "./Subcribe";
 import { Tabs, Input, Button, message } from "antd";
 import TabPane from "antd/es/tabs/TabPane";
 import TournamentRegistration from "../giaidau/Dang_ky_giai_dau_doi_khang";
-import { updateFile } from "../../api/thiDau";
+import { getManagamentMember, updateFile } from "../../api/thiDau";
 import { useQuery } from "react-query";
 import { getInfoF2 } from "../../api/f2";
 import { useParams } from "react-router";
@@ -88,7 +88,7 @@ export default function F2Subcribe() {
   };
 
   const onChange = (key: string) => {
-    console.log(key);
+    // console.log(key);
   };
 
   return (
@@ -117,7 +117,7 @@ export default function F2Subcribe() {
       >
         <Input
           type="file"
-          accept=".pdf, .png, .jpg, .jpeg" // Updated to accept multiple file types
+          accept=".pdf, .png, .jpg, .jpeg"
           onChange={handleFileChange}
           style={{ marginBottom: 16 }}
         />
