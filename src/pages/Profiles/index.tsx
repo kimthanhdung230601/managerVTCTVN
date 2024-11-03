@@ -212,9 +212,13 @@ const Profiles = () => {
     formdata.append("sex", values.sex);
     formdata.append("phone", values.phone);
     formdata.append("email", values.email);
-    formdata.append("idcard", values.idcard);
+    if (values.idcard) {
+      formdata.append("idcard", values.idcard);
+    }
     formdata.append("level", values.level);
-    formdata.append("note", values.note);
+    if (values.note) {
+      formdata.append("note", values.note);
+    }
     formdata.append("detail", values.detail);
     formdata.append("achievements", values.achievements);
     if (decryptedPermission == "0") formdata.append("club", values.club);
@@ -242,11 +246,11 @@ const Profiles = () => {
       values.avatar[0].originFileObj as File,
       CryptoJS.AES.encrypt(values.avatar[0].name, randomKey).toString()
     );
-    // formdata.forEach((value, key) => {
-    //   console.log(key, value);
-    // });
-    // setLoading(false);
-    addMemberMutation.mutate(formdata);
+    formdata.forEach((value, key) => {
+      console.log(key, value);
+    });
+    setLoading(false);
+    // addMemberMutation.mutate(formdata);
   };
   const previousPageUrl = document.referrer;
 

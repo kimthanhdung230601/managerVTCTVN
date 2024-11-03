@@ -98,7 +98,10 @@ export default function Detail() {
                 ? data?.data?.[0]?.achievements
                 : "Không có giải",
 
-            note: data?.data?.[0]?.note,
+            note:
+              data?.data?.[0]?.note !== "undefined"
+                ? data?.data?.[0]?.note
+                : "",
           });
         } else {
           message.error("Có lỗi xảy ra, vui lòng thử lại sau!");

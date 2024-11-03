@@ -55,9 +55,17 @@ const UpdateProfiles = () => {
       //  form.setFieldValue("birthday",data.data[0].birthday);
       form.setFieldValue("sex", data.data[0].sex);
       form.setFieldValue("phone", data.data[0].phone);
-      form.setFieldValue("idcard", data.data[0].idcard);
+
+      form.setFieldValue(
+        "idcard",
+        data?.data?.[0]?.idcard !== "undefined" ? data?.data?.[0]?.idcard : ""
+      );
+
       form.setFieldValue("level", data.data[0].level);
-      form.setFieldValue("note", data.data[0].note);
+      form.setFieldValue(
+        "note",
+        data?.data?.[0]?.note !== "undefined" ? data?.data?.[0]?.note : ""
+      );
       form.setFieldValue("detail", data.data[0].detail);
       form.setFieldValue("status", data.data[0].status);
       form.setFieldValue("achievements", data.data[0].achievements);
@@ -229,9 +237,13 @@ const UpdateProfiles = () => {
     formdata.append("sex", values.sex);
     formdata.append("phone", values.phone);
     formdata.append("email", values.email);
-    formdata.append("idcard", values.idcard);
+    if (values.idcard) {
+      formdata.append("idcard", values.idcard);
+    }
     formdata.append("level", values.level);
-    formdata.append("note", values.note);
+    if (values.note) {
+      formdata.append("note", values.note);
+    }
     formdata.append("detail", dataDetailF3?.data[0].detail);
     formdata.append("achievements", dataDetailF3?.data[0].achievements);
     formdata.append("club", values.club);
@@ -514,15 +526,6 @@ const UpdateProfiles = () => {
                       </Form.Item>
                     </Col>
                     <Col span={8} xs={24} sm={24} md={8}>
-                      {/* <Form.Item
-                        label="Quận/Huyện"
-                        name="district"
-                        rules={[
-                          { required: true, message: "Vui lòng điền quê quán" },
-                        ]}
-                      >
-                        <Input />
-                      </Form.Item> */}{" "}
                       <Form.Item
                         label="Quê quán"
                         name="hometown"
@@ -534,14 +537,8 @@ const UpdateProfiles = () => {
                       </Form.Item>
                     </Col>
                     <Col span={8} xs={24} sm={24} md={8}>
-                      <Form.Item
-                        label="Số CCCD "
-                        name="idcard"
-                        rules={[
-                          { required: true, message: "Vui lòng điền CCCD" },
-                        ]}
-                      >
-                        <Input disabled />
+                      <Form.Item label="Số CCCD " name="idcard">
+                        <Input />
                       </Form.Item>
                     </Col>
                   </Row>
@@ -550,84 +547,6 @@ const UpdateProfiles = () => {
                       {" "}
                     </Col>
                   </Row>
-                  {/* {decryptedPermission == "0" ? (
-                    <Form.List name="users">
-                      {(fields, { add, remove }) => (
-                        <>
-                          {" "}
-                          <Form.Item>
-                            <Button
-                              type="dashed"
-                              onClick={() => add()}
-                              style={{ float: "left" }}
-                              icon={<PlusOutlined />}
-                            >
-                              Thành tích cá nhân
-                            </Button>
-                          </Form.Item>
-                          {fields.map(({ key, name, ...restField }) => (
-                            <div
-                              style={{
-                                display: "flex",
-                                justifyContent: "space-between",
-                              }}
-                            >
-                              <Space
-                                key={key}
-                                style={{ display: "flex", width: "97%" }}
-                                // align="baseline"
-                              >
-                                <Form.Item
-                                  {...restField}
-                                  label={"Thành tích"}
-                                  name={[name, "achievements"]}
-                                  rules={[
-                                    {
-                                      required: true,
-                                      message: "Vui lòng điền thành tích",
-                                    },
-                                  ]}
-                                >
-                                  <Input style={{ width: "100%" }} />
-                                </Form.Item>
-                                <Form.Item
-                                  {...restField}
-                                  name={[name, "prize"]}
-                                  label={"Giải"}
-                                  rules={[
-                                    {
-                                      required: true,
-                                      message: "Vui lòng điền giải",
-                                    },
-                                  ]}
-                                >
-                                  <Input placeholder="Giải" />
-                                </Form.Item>
-                                <Form.Item
-                                  {...restField}
-                                  name={[name, "last"]}
-                                  label={"Thời gian"}
-                                  rules={[
-                                    {
-                                      required: true,
-                                      message: "Vui lòng thời gian",
-                                    },
-                                  ]}
-                                >
-                                  <DatePicker style={{ width: "100%" }} />
-                                </Form.Item>
-                              </Space>{" "}
-                              <MinusCircleOutlined
-                                onClick={() => remove(name)}
-                              />
-                            </div>
-                          ))}
-                        </>
-                      )}
-                    </Form.List>
-                  ) : (
-                    <Space></Space>
-                  )} */}
                   <Form.Item
                     name="note"
                     label="Ghi chú hiển thị với người dùng"
