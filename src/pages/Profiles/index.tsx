@@ -246,11 +246,11 @@ const Profiles = () => {
       values.avatar[0].originFileObj as File,
       CryptoJS.AES.encrypt(values.avatar[0].name, randomKey).toString()
     );
-    formdata.forEach((value, key) => {
-      console.log(key, value);
-    });
+    // formdata.forEach((value, key) => {
+    //   console.log(key, value);
+    // });
     setLoading(false);
-    // addMemberMutation.mutate(formdata);
+    addMemberMutation.mutate(formdata);
   };
   const previousPageUrl = document.referrer;
 
