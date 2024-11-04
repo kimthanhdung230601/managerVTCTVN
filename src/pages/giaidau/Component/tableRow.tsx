@@ -72,7 +72,7 @@ const TableRow = ({
   const handleChange = (value: string) => {
     if (setWeight) {
       const person =
-        dataFight?.data.find((option: any) => option.code === value) || null;
+        dataFight?.data.find((option: any) => option.id === value) || null;
 
       if (person) {
         if (person.sex === "Nam" || person.sex === "nam") {
@@ -142,7 +142,7 @@ const TableRow = ({
           optionFilterProp="children"
         >
           {dataFilter?.map((option: Person) => (
-            <Option key={option.code} value={option.code}>
+            <Option key={option.id} value={option.id}>
               {option.name}
             </Option>
           ))}
