@@ -5,7 +5,7 @@ import CustomTableWeightTwo from "./tableWeighTwo";
 import { addNewMember, getManagamentMember } from "../../../api/thiDau";
 import { useEffect, useState } from "react";
 import { isAdmin } from "../../../api/ApiUser";
-import { Button, message, Popconfirm } from "antd";
+import { Button, message, Modal, Popconfirm } from "antd";
 import { IResponseFight2024 } from "../../../type";
 import CustomTableAdminOne from "../Thu_thap_du_lieu_doi_khang/tableWeightOne";
 
@@ -15,10 +15,11 @@ const TournamentRegistration = () => {
   const [data, setData] = useState<IResponseFight2024>();
   const [open, setOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
+  const check =
+    data?.pending &&
+    Array.isArray(data.pending) &&
+    (data.pending[0]?.mode === "2" || data.pending[1]?.mode === "2");
 
-  // const { data: inforMemberClub } = useQuery(["info"], () =>
-  //   getManagamentMember({ mode: 2 })
-  // );
   const showPopconfirm = () => {
     setOpen(true);
   };
@@ -57,8 +58,11 @@ const TournamentRegistration = () => {
     <>
       <div>
         {" "}
-        {isAdmin() === "2" && data?.pending && Array.isArray(data.pending) ? (
-          data.pending[0].pending === "1" ? (
+        {isAdmin() === "2" && check ? (
+          data?.pending &&
+          Array.isArray(data.pending) &&
+          (data.pending[0]?.pending === "1" ||
+            data.pending[1]?.pending === "1") ? (
             <img
               alt="Đã duyệt"
               src={require("../../../assets/image/accept.png")}
@@ -86,25 +90,21 @@ const TournamentRegistration = () => {
               marginBottom: "12px",
             }}
           >
-            <Popconfirm
+            {/* <Popconfirm
               title="Cảnh báo"
-              description="Lưu ý: khi hồ sơ đã gửi thì sẽ không sửa được nữa, bạn chắc chắn muốn gửi? "
+              description="Lưu ý: THÔNG TIN DƯ, bạn chắc chắn muốn gửi? "
               open={open}
               onConfirm={handleOk}
               okButtonProps={{ loading: confirmLoading }}
               onCancel={handleCancel}
-            >
-              <Button
-                type="primary"
-                onClick={showPopconfirm}
-                disabled={data?.pending !== false}
-              >
-                Gửi hồ sơ
-              </Button>
-            </Popconfirm>
+            > */}
+            <Button type="primary" onClick={showPopconfirm} disabled={check}>
+              Gửi hồ sơ
+            </Button>
+            {/* </Popconfirm> */}
           </div>
         )}
-        {!data?.pending ? (
+        {!check ? (
           <>
             <CustomTableWeightOne setData={setDataType1} />
             <CustomTableWeightTwo setData={setDataType2} />
@@ -126,6 +126,28 @@ const TournamentRegistration = () => {
           </>
         )}
       </div>
+      <Modal
+        title="GỬI THÔNG TIN DỮ LIỆU ĐỐI KHÁNG"
+        open={open}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
+        <h3>Lưu ý:</h3>
+        Khi ấn nộp hồ sơ, chỉ có dữ liệu
+        <span
+          style={{
+            color: "red",
+            fontWeight: "bold",
+            marginLeft: "3px",
+            marginRight: "3px",
+          }}
+        >
+          THI ĐẤU ĐỐI KHÁNG HÌNH THỨC
+        </span>
+        được gửi lên.
+        <br></br>Dữ liệu gửi lên không thể sửa được nữa, vui lòng kiểm tra kỹ
+        thông tin trước khi nộp hồ sơ
+      </Modal>
     </>
   );
 };

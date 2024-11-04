@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "./styles.module.scss";
 import type { PopconfirmProps } from "antd";
-import { Button, message, Popconfirm } from "antd";
+import { Button, message, Modal, Popconfirm } from "antd";
 import Subcribe1 from "./Subcribe1";
 import Subcribe2 from "./Subcribe2";
 import Subcribe3 from "./Subcribe3";
@@ -98,6 +98,13 @@ const listContents = [
 export default function Subcribe() {
   const { id } = useParams();
   const [data, setData] = useState<IResponseFight2024>();
+  const [open, setIsOpen] = useState<boolean>(false);
+  const check =
+    data?.pending &&
+    Array.isArray(data.pending) &&
+    (data.pending[0]?.mode === "1" || data.pending[1]?.mode === "1");
+  console.log("check", check);
+
   const [userSelected, setUserSelected] = useState<{
     "Nhóm tuổi 1": AgeGroup;
     "Nhóm tuổi 2": AgeGroup;
@@ -161,6 +168,7 @@ export default function Subcribe() {
       onSuccess: (data) => {
         if (data?.status === "success") message.success("Cập nhật thành công.");
         else message.error("Hồ sơ đã được nộp, không thể tiếp tục nộp hồ sơ");
+        window.location.reload();
       },
       onError: (data) => {
         message.error("Hồ sơ đã được nộp, không thể tiếp tục nộp hồ sơ");
@@ -182,10 +190,15 @@ export default function Subcribe() {
 
   const { groupByName } = useMemberSubscribe({ id: id });
 
-  const confirm: PopconfirmProps["onConfirm"] = (e) => {
-    submitMutation.mutate(userSelected);
-  };
+  const confirm: PopconfirmProps["onConfirm"] = (e) => {};
 
+  const handleOk = () => {
+    submitMutation.mutate(userSelected);
+    setIsOpen(false);
+  };
+  const handleCancel = () => {
+    setIsOpen(false);
+  };
   const onSelectMember = (
     name: string,
     sex: string,
@@ -224,8 +237,11 @@ export default function Subcribe() {
   }, []);
   return (
     <>
-      {isAdmin() === "2" && data?.pending && Array.isArray(data.pending) ? (
-        data.pending[0].pending === "1" ? (
+      {isAdmin() === "2" && check ? (
+        data?.pending &&
+        Array.isArray(data.pending) &&
+        (data.pending[0]?.pending === "1" ||
+          data.pending[1]?.pending === "1") ? (
           <img
             alt="Đã duyệt"
             src={require("../../assets/image/accept.png")}
@@ -247,18 +263,12 @@ export default function Subcribe() {
       <div className={styles.tableWrap}>
         <div className={styles.btnWrap}>
           {isAdmin() === "2" && (
-            <Popconfirm
-              title="Lưu ý"
-              description="Khi hồ sơ đã gửi sẽ không sửa được nữa, bạn chắc chắn muốn gửi?"
-              onConfirm={confirm}
-              okText="Có"
-              cancelText="Huỷ"
-            >
-              <Button disabled={data?.pending !== false}>Gửi hồ sơ</Button>
-            </Popconfirm>
+            <Button onClick={() => setIsOpen(true)} disabled={check}>
+              Gửi hồ sơ
+            </Button>
           )}
         </div>
-        {data?.pending === false ? (
+        {!check ? (
           <>
             <p className={styles.title}>NỘI DUNG QUYỀN QUY ĐỊNH</p>
             <Subcribe1
@@ -285,6 +295,28 @@ export default function Subcribe() {
           </>
         )}
       </div>
+      <Modal
+        title="GỬI THÔNG TIN DỮ LIỆU QUYỀN THUẬT"
+        open={open}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
+        <h3>Lưu ý:</h3>
+        Khi ấn nộp hồ sơ, chỉ có dữ liệu
+        <span
+          style={{
+            color: "red",
+            fontWeight: "bold",
+            marginLeft: "3px",
+            marginRight: "3px",
+          }}
+        >
+          THI ĐẤU QUYỀN THUẬT
+        </span>
+        được gửi lên.
+        <br></br>Dữ liệu gửi lên không thể sửa được nữa, vui lòng kiểm tra kỹ
+        thông tin trước khi nộp hồ sơ
+      </Modal>
     </>
   );
 }
