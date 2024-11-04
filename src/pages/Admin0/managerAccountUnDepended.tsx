@@ -526,7 +526,7 @@ const ManagerAccountUnDepended = ({ refetch }: ManagerAccountProps) => {
               defaultCurrent={1}
               onChange={onChangePageAccept}
               total={data?.total_products}
-              pageSize={37}
+              pageSize={50}
               style={{ margin: "1vh 0", float: "right" }}
             />
           </Spin>

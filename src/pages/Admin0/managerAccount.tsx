@@ -515,7 +515,7 @@ const ManagerAccount = () => {
               defaultCurrent={1}
               onChange={onChangePageAccount}
               total={dataMemberF12Accept?.total_products}
-              pageSize={37}
+              pageSize={50}
               style={{ margin: "1vh 0", float: "right" }}
             />
           </Spin>
