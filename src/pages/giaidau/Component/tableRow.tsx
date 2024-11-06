@@ -150,6 +150,8 @@ const TableRow = ({
         gap: "10px",
         borderBottom: "1px solid #ddd",
         paddingLeft: "12px",
+        height: "100%",
+        // padding: "10px",
       }}
     >
       {isEditable ? (
