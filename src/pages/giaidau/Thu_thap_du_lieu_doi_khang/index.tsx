@@ -45,15 +45,12 @@ const AdminManagement = ({
 
   const updateExampleData = (exampleData: IData[], responseData: IData[]) => {
     return exampleData.map((item) => {
-      // Tìm phần tử trong `responseData` dựa trên điều kiện, ví dụ so khớp `id` và `type`
       const updatedItem = responseData.find(
         (data) =>
           data.name === item.name &&
           data.type === item.type &&
           data.sex === item.sex
       );
-
-      // Nếu tìm thấy phần tử tương ứng, cập nhật các trường còn thiếu
       if (updatedItem) {
         return {
           ...item,
@@ -68,7 +65,6 @@ const AdminManagement = ({
         };
       }
 
-      // Nếu không tìm thấy phần tử tương ứng, giữ nguyên item ban đầu
       return item;
     });
   };
