@@ -6,8 +6,12 @@ interface IProps {
   id?: string;
 }
 export default function useMemberSubscribe({ id }: IProps) {
-  const { data: listMembers, isLoading } = useQuery(["listMembers"], () =>
-    getListSubcribe({ mode: 1 })
+  const { data: listMembers, isLoading } = useQuery(
+    ["listMembers"],
+    () => getListSubcribe({ mode: 1 }),
+    {
+      enabled: id === undefined,
+    }
   );
   const { data: getListMembersOfClubs } = useQuery(
     ["listMembersClub", id],
