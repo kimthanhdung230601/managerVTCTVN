@@ -190,9 +190,11 @@ const TableRow = ({
           alignContent: "center",
         }}
       >
-        {selectedPerson
+        {selectedPerson && selectedPerson.birthday
           ? moment(selectedPerson.birthday).format("DD/MM/YYYY")
-          : data && moment(data.birthday).format("DD/MM/YYYY")}
+          : data && data.birthday
+          ? moment(data.birthday).format("DD/MM/YYYY")
+          : ""}
       </div>
       {isNamCLB && (
         <div
