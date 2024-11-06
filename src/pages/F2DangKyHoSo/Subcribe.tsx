@@ -99,12 +99,12 @@ export default function Subcribe() {
   const { id } = useParams();
   const [data, setData] = useState<IResponseFight2024>();
   const [open, setIsOpen] = useState<boolean>(false);
-  // const check =
-  //   data?.pending &&
-  //   Array.isArray(data.pending) &&
-  //   (data.pending[0]?.mode === "1" || data.pending[1]?.mode === "1");
+  const check =
+    data?.pending &&
+    Array.isArray(data.pending) &&
+    (data.pending[0]?.mode === "1" || data.pending[1]?.mode === "1");
   // console.log("check", check);
-  const check = data?.pending && data?.pending === true;
+  // const check = data?.pending && data?.pending === true;
   const [userSelected, setUserSelected] = useState<{
     "Nhóm tuổi 1": AgeGroup;
     "Nhóm tuổi 2": AgeGroup;

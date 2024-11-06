@@ -17,7 +17,11 @@ const TournamentRegistration = () => {
   const [open, setOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
 
-  const check = data?.pending && data?.pending === true;
+  // const check = data?.pending && data?.pending === true;
+  const check =
+    data?.pending &&
+    Array.isArray(data.pending) &&
+    (data.pending[0]?.mode === "2" || data.pending[1]?.mode === "2");
 
   const showPopconfirm = () => {
     setOpen(true);

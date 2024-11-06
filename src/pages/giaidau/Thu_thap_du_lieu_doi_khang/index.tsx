@@ -20,7 +20,11 @@ const AdminManagement = ({
   isEdiTable = true,
   isShowFullTable = false,
 }: Props) => {
-  const [data, setData] = useState<IResponseFight2024>();
+  const [data, setData] = useState<IResponseFight2024>({
+    status: "success",
+    pending: false,
+    data: exampleData,
+  });
 
   const payload = { mode: 2, ...(idClub && { idclub: idClub as number }) };
 

@@ -49,7 +49,7 @@ const TableRow = ({
   //select cua admin chon CLB
   const { data: dataManagement1 } = useQuery(
     ["dataManagement"],
-    () => getListInforAdmin(data?.idclub),
+    () => getListInforAdmin(param.id),
     { enabled: !!data }
   );
 
