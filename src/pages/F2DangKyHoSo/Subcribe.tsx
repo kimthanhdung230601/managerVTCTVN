@@ -166,11 +166,10 @@ export default function Subcribe() {
     (payload: any) => submitListmember(payload),
     {
       onSuccess: (data) => {
-        if (data?.status === "success") message.success("Cập nhật thành công.");
-        else message.error("Hồ sơ đã được nộp, không thể tiếp tục nộp hồ sơ");
-        setTimeout(() => {
+        if (data?.status === "success") {
+          message.success("Cập nhật thành công.");
           window.location.reload();
-        }, 3500);
+        } else message.error("Hồ sơ đã được nộp, không thể tiếp tục nộp hồ sơ");
       },
       onError: (data) => {
         message.error("Hồ sơ đã được nộp, không thể tiếp tục nộp hồ sơ");
@@ -181,8 +180,10 @@ export default function Subcribe() {
     (payload: any) => updateListSubcribe(payload),
     {
       onSuccess: (data) => {
-        if (data?.status === "success") message.success("Cập nhật thành công.");
-        else message.error("Hồ sơ đã được nộp, không thể tiếp tục nộp hồ sơ");
+        if (data?.status === "success") {
+          message.success("Cập nhật thành công.");
+          window.location.reload();
+        } else message.error("Hồ sơ đã được nộp, không thể tiếp tục nộp hồ sơ");
       },
       onError: (data) => {
         message.error("Hồ sơ đã được nộp, không thể tiếp tục nộp hồ sơ");
