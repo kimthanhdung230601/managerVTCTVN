@@ -61,3 +61,5 @@ export const acceptClubSubscribe = (param: any) =>
 
 export const getListAcceptSubscribe = () =>
   sendPost(`/Fight2024?type=List`, {});
+export const submitListmember = (idclub: any, param: any) =>
+  sendPost(`/Fight2024?type=AdminSubmit&mode=1&idclub=${idclub}`, param);
