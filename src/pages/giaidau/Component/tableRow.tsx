@@ -97,8 +97,7 @@ const TableRow = ({
 
   const handleFixMember = async (value: string) => {
     const person =
-      dataManagement1?.data.find((option: any) => option.code === value) ||
-      null;
+      dataManagement1?.data.find((option: any) => option.id === value) || null;
 
     const payload = {
       iduser: value ? person.id : 0,
