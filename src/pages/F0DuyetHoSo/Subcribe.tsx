@@ -6,7 +6,7 @@ import Subcribe1 from "./Subcribe1";
 import Subcribe2 from "./Subcribe2";
 import Subcribe3 from "./Subcribe3";
 import { useMutation, useQuery } from "react-query";
-import { submitListmember } from "../../api/f2";
+import { submitListmember } from "../../api/f0";
 import { useLocation, useParams } from "react-router";
 import { getListSubcribe, updateListSubcribe } from "../../api/f0";
 import useMemberSubscribe from "../../hook/useMemberSubscribe";
@@ -152,11 +152,11 @@ export default function Subcribe() {
     },
   });
   const submitMutation = useMutation(
-    (payload: any) => submitListmember(payload),
+    (payload: any) => submitListmember(id, payload),
     {
       onSuccess: (data) => {
         if (data?.status === "success") message.success("Cập nhật thành công.");
-        else message.error("Có lỗi xảy ra, vui lòng thử lại sau!");
+        else message.error(data?.data);
       },
       onError: (data) => {
         message.error("Có lỗi xảy ra, vui lòng thử lại sau!");
@@ -189,24 +189,19 @@ export default function Subcribe() {
     memberSelected: any,
     idFight?: string
   ) => {
-    if (!!id) {
+    if (!!id && idFight) {
       updateMutation.mutate({
         id: idFight,
         iduser: memberSelected?.id,
       });
     } else {
-      setUserSelected((prevState) => ({
-        ...prevState,
-        [ageGroup as keyof typeof prevState]: {
-          ...prevState[ageGroup as keyof typeof prevState],
-          [name as keyof AgeGroup]: {
-            ...prevState[ageGroup as keyof typeof prevState][
-              name as keyof AgeGroup
-            ],
+      submitMutation.mutate({
+        [ageGroup]: {
+          [name]: {
             [sex]: memberSelected.id,
           },
         },
-      }));
+      });
     }
   };
 
