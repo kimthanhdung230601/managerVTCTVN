@@ -15,3 +15,15 @@ export const postFixF0 = (payload: any) =>
   sendPost("Fight2024?type=Fix", payload);
 export const updateFile = (payload: any) =>
   sendPost("Fight2024?type=Image&mode=1", payload);
+
+export const F0AddNewMember = (payload: any, idclub: any): Promise<any> => {
+  return new Promise((resolve, reject) => {
+    sendPost(`Fight2024?type=AdminSubmit&mode=2&idclub=${idclub}`, payload)
+      .then((response) => {
+        resolve(response); // Resolve Promise khi API trả về thành công
+      })
+      .catch((error) => {
+        reject(error); // Reject Promise nếu có lỗi
+      });
+  });
+};

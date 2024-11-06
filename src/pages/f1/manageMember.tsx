@@ -143,7 +143,7 @@ export default function ManageMember() {
           message.success("Xoá thành công, hồ sơ đang chờ duyệt xoá!");
           setTimeout(() => {
             window.location.reload();
-          }, 1500);
+          }, 3500);
         } else message.success("Có lỗi xảy ra, vui lòng thử lại sau!");
       },
       onError: (data) => {
