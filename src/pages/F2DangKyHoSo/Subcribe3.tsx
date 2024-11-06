@@ -57,6 +57,7 @@ export default function Subcribe3({
                     name={item}
                     ageGroup="Nhóm tuổi 1"
                     onSelectMember={onSelectMember}
+                    table3="Member1"
                     memberInfo={
                       listMemberSubscribe?.[item]?.["Nhóm tuổi 1"]?.[0] || null
                     }
@@ -65,6 +66,7 @@ export default function Subcribe3({
                     idclub={idclub}
                     name={item}
                     ageGroup="Nhóm tuổi 1"
+                    table3="Member2"
                     onSelectMember={onSelectMember}
                     memberInfo={
                       listMemberSubscribe?.[item]?.["Nhóm tuổi 1"]?.[1] || null
@@ -74,6 +76,7 @@ export default function Subcribe3({
                     idclub={idclub}
                     name={item}
                     ageGroup="Nhóm tuổi 1"
+                    table3="Member3"
                     onSelectMember={onSelectMember}
                     memberInfo={
                       listMemberSubscribe?.[item]?.["Nhóm tuổi 1"]?.[2] || null
@@ -83,6 +86,7 @@ export default function Subcribe3({
                     idclub={idclub}
                     name={item}
                     ageGroup="Nhóm tuổi 1"
+                    table3="Member4"
                     onSelectMember={onSelectMember}
                     memberInfo={
                       listMemberSubscribe?.[item]?.["Nhóm tuổi 1"]?.[3] || null
@@ -92,6 +96,7 @@ export default function Subcribe3({
                     idclub={idclub}
                     name={item}
                     ageGroup="Nhóm tuổi 1"
+                    table3="Member5"
                     onSelectMember={onSelectMember}
                     memberInfo={
                       listMemberSubscribe?.[item]?.["Nhóm tuổi 1"]?.[4] || null
