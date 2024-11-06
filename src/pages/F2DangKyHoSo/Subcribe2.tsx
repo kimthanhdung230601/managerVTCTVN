@@ -59,7 +59,10 @@ export default function Subcribe2({
                     ageGroup="Nhóm tuổi 1"
                     onSelectMember={onSelectMember}
                     memberInfo={
-                      listMemberSubscribe?.[item]?.["Nhóm tuổi 1"]?.[0] || null
+                      listMemberSubscribe?.[item]?.["Nhóm tuổi 1"]?.[0]?.sex ===
+                      "Nam"
+                        ? listMemberSubscribe?.[item]?.["Nhóm tuổi 1"]?.[0]
+                        : null
                     }
                   />
                   <SubscribeMember
@@ -70,7 +73,11 @@ export default function Subcribe2({
                     isLastItem={true}
                     onSelectMember={onSelectMember}
                     memberInfo={
-                      listMemberSubscribe?.[item]?.["Nhóm tuổi 1"]?.[1] || null
+                      listMemberSubscribe?.[item]?.["Nhóm tuổi 1"]?.[0]?.sex ===
+                      "Nữ"
+                        ? listMemberSubscribe?.[item]?.["Nhóm tuổi 1"]?.[0]
+                        : listMemberSubscribe?.[item]?.["Nhóm tuổi 1"]?.[1] ||
+                          null
                     }
                   />
                 </div>
@@ -89,7 +96,10 @@ export default function Subcribe2({
                     ageGroup="Nhóm tuổi 2"
                     onSelectMember={onSelectMember}
                     memberInfo={
-                      listMemberSubscribe?.[item]?.["Nhóm tuổi 2"]?.[0] || null
+                      listMemberSubscribe?.[item]?.["Nhóm tuổi 2"]?.[0]?.sex ===
+                      "Nam"
+                        ? listMemberSubscribe?.[item]?.["Nhóm tuổi 2"]?.[0]
+                        : null
                     }
                   />
                   <SubscribeMember
@@ -100,7 +110,11 @@ export default function Subcribe2({
                     isLastItem={true}
                     onSelectMember={onSelectMember}
                     memberInfo={
-                      listMemberSubscribe?.[item]?.["Nhóm tuổi 2"]?.[1] || null
+                      listMemberSubscribe?.[item]?.["Nhóm tuổi 2"]?.[0]?.sex ===
+                      "Nữ"
+                        ? listMemberSubscribe?.[item]?.["Nhóm tuổi 2"]?.[0]
+                        : listMemberSubscribe?.[item]?.["Nhóm tuổi 2"]?.[1] ||
+                          null
                     }
                   />
                 </div>
@@ -119,7 +133,10 @@ export default function Subcribe2({
                     ageGroup="Nhóm tuổi 3"
                     onSelectMember={onSelectMember}
                     memberInfo={
-                      listMemberSubscribe?.[item]?.["Nhóm tuổi 3"]?.[0] || null
+                      listMemberSubscribe?.[item]?.["Nhóm tuổi 3"]?.[0]?.sex ===
+                      "Nam"
+                        ? listMemberSubscribe?.[item]?.["Nhóm tuổi 3"]?.[0]
+                        : null
                     }
                   />
                   <SubscribeMember
@@ -130,7 +147,11 @@ export default function Subcribe2({
                     isLastItem={true}
                     onSelectMember={onSelectMember}
                     memberInfo={
-                      listMemberSubscribe?.[item]?.["Nhóm tuổi 3"]?.[1] || null
+                      listMemberSubscribe?.[item]?.["Nhóm tuổi 3"]?.[0]?.sex ===
+                      "Nữ"
+                        ? listMemberSubscribe?.[item]?.["Nhóm tuổi 3"]?.[0]
+                        : listMemberSubscribe?.[item]?.["Nhóm tuổi 3"]?.[1] ||
+                          null
                     }
                   />
                 </div>

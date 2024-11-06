@@ -14,6 +14,7 @@ interface IProps {
   ageGroup: string;
   isLastItem?: boolean;
   sex?: string;
+  table3?: string;
   onSelectMember: (
     name: string,
     sex: string,
@@ -29,6 +30,7 @@ export default function SubscribeMember({
   sex,
   ageGroup,
   isLastItem,
+  table3,
   onSelectMember,
 }: IProps) {
   const { data: memberClubs } = useQuery(
@@ -55,32 +57,40 @@ export default function SubscribeMember({
     if (value) {
       const userInfo = JSON.parse(value);
       setUserSelected(userInfo);
-      onSelectMember(
-        name,
-        `${userInfo?.sex}_${userInfo?.id}`,
-        ageGroup,
-        userInfo,
-        memberInfo?.id
-      );
+      if (!table3) {
+        onSelectMember(
+          name,
+          `${userInfo?.sex}`,
+          ageGroup,
+          userInfo,
+          memberInfo?.id
+        );
+      } else {
+        onSelectMember(name, `${table3}`, ageGroup, userInfo, memberInfo?.id);
+      }
     } else {
-      const userInfo = { id: 0, sex: 0 };
-      setUserSelected(userInfo);
-      onSelectMember(
-        name,
-        `${userInfo?.sex}_${userInfo?.id}`,
-        ageGroup,
-        { ...userInfo, id: 0 },
-        memberInfo?.id
-      );
-      if (isAdmin() !== "2") {
-        setDisabled(true);
+      const userInfo = { id: 0, sex: 0, name: null };
+      if (isAdmin() === "0") {
+        setUserSelected(userInfo);
+        onSelectMember(
+          name,
+          `${userInfo?.sex}`,
+          ageGroup,
+          { ...userInfo, id: 0 },
+          memberInfo?.id
+        );
+      } else {
+        setUserSelected(userInfo);
+        if (!table3) {
+          onSelectMember(name, sex || "", ageGroup, undefined, undefined);
+        } else {
+          onSelectMember(name, table3, ageGroup, undefined, undefined);
+        }
       }
     }
   };
 
-  const onSearch = (value: string) => {
-    // console.log('search:', value);
-  };
+  const onSearch = (value: string) => {};
   useEffect(() => {
     if (isAdmin() === "2") {
       setDisabled(false);

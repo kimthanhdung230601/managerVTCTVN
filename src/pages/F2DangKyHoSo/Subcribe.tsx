@@ -223,13 +223,12 @@ export default function Subcribe() {
             ...prevState[ageGroup as keyof typeof prevState][
               name as keyof AgeGroup
             ],
-            [sex]: memberSelected.id,
+            [sex]: memberSelected?.id,
           },
         },
       }));
     }
   };
-  // console.log("groupByName", groupByName);
 
   useEffect(() => {
     const fetchManagementMember = async () => {
