@@ -3,6 +3,7 @@ import TableRow from "../Component/tableRow";
 import { tableTheadAdmin } from "../Data";
 import { useQuery } from "react-query";
 import { getManagamentMember } from "../../../api/thiDau";
+import { isAdmin } from "../../../api/ApiUser";
 
 // Define thongTin interface
 interface Props {
@@ -10,17 +11,23 @@ interface Props {
   title: string;
   typeFilter: string;
   isEditTable?: boolean;
+  dataManagement?: any;
 }
 const CustomTableAdminOne = ({
   idClub,
   title,
   typeFilter,
   isEditTable = true,
+  dataManagement,
 }: Props) => {
-  const payload = { mode: 2, ...(idClub && { idclub: idClub as number }) };
-  const { data: dataManagement } = useQuery(["data1"], () =>
-    getManagamentMember(payload)
-  );
+  // const payload = { mode: 2, ...(idClub && { idclub: idClub as number }) };
+  // const { data: dataManagement1 } = useQuery(
+  //   ["data1"],
+  //   () => getManagamentMember(payload),
+  //   {
+  //     enabled: isAdmin() === "0",
+  //   }
+  // );
 
   //lọc theo hình thức
   const filterNamType = dataManagement?.data
@@ -178,7 +185,7 @@ const CustomTableAdminOne = ({
                           : "none",
                       borderRight: "1px solid #ddd",
                     }}
-                  />
+                  ></div>
                 )}
                 <div
                   style={{

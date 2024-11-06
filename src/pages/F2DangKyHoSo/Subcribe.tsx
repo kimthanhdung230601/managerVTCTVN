@@ -103,8 +103,8 @@ export default function Subcribe() {
     data?.pending &&
     Array.isArray(data.pending) &&
     (data.pending[0]?.mode === "1" || data.pending[1]?.mode === "1");
-  console.log("check", check);
-
+  // console.log("check", check);
+  // const check = data?.pending && data?.pending === true;
   const [userSelected, setUserSelected] = useState<{
     "Nhóm tuổi 1": AgeGroup;
     "Nhóm tuổi 2": AgeGroup;
@@ -168,7 +168,9 @@ export default function Subcribe() {
       onSuccess: (data) => {
         if (data?.status === "success") message.success("Cập nhật thành công.");
         else message.error("Hồ sơ đã được nộp, không thể tiếp tục nộp hồ sơ");
-        window.location.reload();
+        setTimeout(() => {
+          window.location.reload();
+        }, 3500);
       },
       onError: (data) => {
         message.error("Hồ sơ đã được nộp, không thể tiếp tục nộp hồ sơ");
@@ -230,7 +232,7 @@ export default function Subcribe() {
 
   useEffect(() => {
     const fetchManagementMember = async () => {
-      const res = await getManagamentMember({ mode: 2 });
+      const res = await getManagamentMember({ mode: 1 });
       setData(res);
     };
     fetchManagementMember();

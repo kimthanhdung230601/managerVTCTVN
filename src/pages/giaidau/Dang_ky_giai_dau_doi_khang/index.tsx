@@ -6,8 +6,9 @@ import { addNewMember, getManagamentMember } from "../../../api/thiDau";
 import { useEffect, useState } from "react";
 import { isAdmin } from "../../../api/ApiUser";
 import { Button, message, Modal, Popconfirm } from "antd";
-import { IResponseFight2024 } from "../../../type";
+import { IData, IResponseFight2024 } from "../../../type";
 import CustomTableAdminOne from "../Thu_thap_du_lieu_doi_khang/tableWeightOne";
+import { exampleData } from "../Data";
 
 const TournamentRegistration = () => {
   const [dataType1, setDataType1] = useState();
@@ -15,6 +16,8 @@ const TournamentRegistration = () => {
   const [data, setData] = useState<IResponseFight2024>();
   const [open, setOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
+
+  // const check = data?.pending && data?.pending === true;
   const check =
     data?.pending &&
     Array.isArray(data.pending) &&
@@ -34,6 +37,38 @@ const TournamentRegistration = () => {
   const handleCancel = () => {
     setOpen(false);
   };
+  const updateExampleData = (exampleData: IData[], responseData: IData[]) => {
+    return exampleData.map((item) => {
+      // Tìm phần tử trong `responseData` dựa trên điều kiện, ví dụ so khớp `id` và `type`
+      const updatedItem = responseData.find(
+        (data) =>
+          data.name === item.name &&
+          data.type === item.type &&
+          data.sex === item.sex
+      );
+
+      // Nếu tìm thấy phần tử tương ứng, cập nhật các trường còn thiếu
+      if (updatedItem) {
+        return {
+          ...item,
+          id: updatedItem.id || item.id,
+          idclub: updatedItem.idclub || item.idclub,
+          iduser: updatedItem.iduser || item.iduser,
+          hoTen: updatedItem.hoTen || item.hoTen,
+          tenClb: updatedItem.tenClb || item.tenClb,
+          birthday: updatedItem.birthday || item.birthday,
+          code: updatedItem.code || item.code,
+          image: updatedItem.image || item.image,
+        };
+      }
+
+      // Nếu không tìm thấy phần tử tương ứng, giữ nguyên item ban đầu
+      return item;
+    });
+  };
+
+  // Cập nhật dữ liệu
+  // const updatedData = updateExampleData(exampleData, responseData);
 
   const handleSubmit = async () => {
     const payload = { ...(dataType1 ?? {}), ...(dataType2 ?? {}) };
@@ -49,9 +84,14 @@ const TournamentRegistration = () => {
   useEffect(() => {
     const fetchManagementMember = async () => {
       const res = await getManagamentMember({ mode: 2 });
-      setData(res);
+      if (res?.data) {
+        const updatedData: IData[] = updateExampleData(exampleData, res?.data);
+        console.log("updatedData", updatedData);
+
+        setData({ ...res, data: updatedData });
+      }
     };
-    fetchManagementMember();
+    if (isAdmin() === "2") fetchManagementMember();
   }, []);
 
   return (
@@ -112,16 +152,18 @@ const TournamentRegistration = () => {
         ) : (
           <>
             <CustomTableAdminOne
-              idClub={-1}
+              idClub={undefined}
               title="BẢNG DỮ LIỆU ĐỐI KHÁNG HÌNH THỨC 1"
               typeFilter="hinh_thuc_1"
               isEditTable={false}
+              dataManagement={data}
             />
             <CustomTableAdminOne
-              idClub={-1}
+              idClub={undefined}
               title="BẢNG DỮ LIỆU ĐỐI KHÁNG HÌNH THỨC 2"
               typeFilter="hinh_thuc_2"
               isEditTable={false}
+              dataManagement={data}
             />
           </>
         )}

@@ -2,13 +2,16 @@ import React, { useState, useEffect } from "react";
 import { message, Select } from "antd";
 import { useQuery } from "react-query";
 import {
+  F0AddNewMember,
   getListInfor,
   getListInforAdmin,
   postFixF0,
 } from "../../../api/thiDau";
 import moment from "moment";
-import { adminManagement, weight } from "../Data";
+import { weight } from "../Data";
 import { CheckOutlined } from "@ant-design/icons";
+import { IData } from "../../../type";
+import { useParams } from "react-router";
 
 interface Person {
   code: string;
@@ -22,7 +25,7 @@ interface Person {
 interface TableRowProps {
   setWeight?: React.Dispatch<React.SetStateAction<weight>>;
   isNamCLB?: boolean;
-  data?: adminManagement;
+  data?: IData;
   sex: string;
   isEditable?: boolean;
 }
@@ -37,6 +40,8 @@ const TableRow = ({
   isEditable = true,
 }: TableRowProps) => {
   const [selectedPerson, setSelectedPerson] = useState<Person | null>(null);
+  const param = useParams();
+
   const { data: dataFight } = useQuery(["data"], () => getListInfor(), {
     enabled: !data,
   }); //select cuar 1 CLB
@@ -44,16 +49,16 @@ const TableRow = ({
   //select cua admin chon CLB
   const { data: dataManagement1 } = useQuery(
     ["dataManagement"],
-    () => getListInforAdmin(data?.idclub),
+    () => getListInforAdmin(param.id),
     { enabled: !!data }
   );
 
   const dataFilter = !data
     ? dataFight?.data
-      ? dataFight.data.filter((item: adminManagement) => item.sex === sex)
+      ? dataFight.data.filter((item: IData) => item.sex === sex)
       : []
     : dataManagement1?.data
-    ? dataManagement1.data.filter((item: adminManagement) => item.sex === sex)
+    ? dataManagement1.data.filter((item: IData) => item.sex === sex)
     : [];
 
   useEffect(() => {
@@ -70,6 +75,8 @@ const TableRow = ({
   }, [data]);
 
   const handleChange = (value: string) => {
+    console.log("change");
+
     if (setWeight) {
       const person =
         dataFight?.data.find((option: any) => option.id === value) || null;
@@ -99,17 +106,38 @@ const TableRow = ({
     const person =
       dataManagement1?.data.find((option: any) => option.id === value) || null;
 
-    const payload = {
-      iduser: value ? person.id : 0,
-      id: data?.id,
-    };
-    const res = await postFixF0(payload);
-    setSelectedPerson(person);
-    if (res?.status === "success") {
-      message.success("Sửa đổi thông tin thành công");
+    if (data?.id) {
+      console.log("sửa API");
+
+      const payload = {
+        iduser: value ? person.id : 0,
+        id: data?.id,
+      };
+      const res = await postFixF0(payload);
+      setSelectedPerson(person);
+      if (res?.status === "success") {
+        message.success("Sửa đổi thông tin thành công");
+      } else {
+        message.error("Lỗi khi sửa đổi thông tin, vui lòng thử lại");
+      }
     } else {
-      message.error("Lỗi khi sửa đổi thông tin, vui lòng thử lại");
+      const transformData = (item: any) => {
+        const result: any = {};
+        result[item.type] = result[item.type] || {};
+        result[item.type][item.name] = result[item.type][item.name] || {};
+        result[item.type][item.name][item.sex] = value;
+        return result;
+      };
+
+      const transformedData = transformData(data);
+      const res = await F0AddNewMember(transformedData, param.id);
+      if (res?.status === "success") {
+        message.success("Sửa đổi thông tin thành công");
+      } else {
+        message.error("Lỗi khi sửa đổi thông tin, vui lòng thử lại");
+      }
     }
+    setSelectedPerson(person);
   };
   const onSearch = (value: string) => {
     // console.log('search:', value);
