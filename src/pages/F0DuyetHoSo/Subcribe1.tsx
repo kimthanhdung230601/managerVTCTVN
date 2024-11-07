@@ -69,7 +69,8 @@ export default function Subcribe1({
                         listMemberSubscribe?.[item]?.["Nhóm tuổi 1"]?.[0]
                           ?.sex === "Nam"
                           ? listMemberSubscribe?.[item]?.["Nhóm tuổi 1"]?.[0]
-                          : null
+                          : listMemberSubscribe?.[item]?.["Nhóm tuổi 1"]?.[1] ||
+                            null
                       }
                     />
                     <SubscribeMember
@@ -106,7 +107,8 @@ export default function Subcribe1({
                         listMemberSubscribe?.[item]?.["Nhóm tuổi 2"]?.[0]
                           ?.sex === "Nam"
                           ? listMemberSubscribe?.[item]?.["Nhóm tuổi 2"]?.[0]
-                          : null
+                          : listMemberSubscribe?.[item]?.["Nhóm tuổi 2"]?.[1] ||
+                            null
                       }
                     />
                     <SubscribeMember
@@ -143,7 +145,8 @@ export default function Subcribe1({
                         listMemberSubscribe?.[item]?.["Nhóm tuổi 3"]?.[0]
                           ?.sex === "Nam"
                           ? listMemberSubscribe?.[item]?.["Nhóm tuổi 3"]?.[0]
-                          : null
+                          : listMemberSubscribe?.[item]?.["Nhóm tuổi 3"]?.[1] ||
+                            null
                       }
                     />
                     <SubscribeMember
