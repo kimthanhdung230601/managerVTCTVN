@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import TableRow from "../Component/tableRow";
 import { tableTheadAdmin } from "../Data";
-import { useQuery } from "react-query";
-import { getManagamentMember } from "../../../api/thiDau";
-import { isAdmin } from "../../../api/ApiUser";
+import _ from "lodash";
 
 // Define thongTin interface
 interface Props {
@@ -81,142 +79,160 @@ const CustomTableAdminOne = ({
         </div>
 
         {dataManagement?.data &&
-          dataManagement?.data
-            .filter((person: any) => person.sex === "Nam")
-            .filter((person: any) => person.type === typeFilter)
-            .map((person: any, index: number) => (
+          _.orderBy(
+            dataManagement?.data
+              .filter((person: any) => person.sex === "Nam")
+              .filter((person: any) => person.type === typeFilter),
+            ["name"], // Sort by name
+            ["asc"] // Ascending order
+          ).map((person: any, index: number, array) => (
+            <div
+              key={index}
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(7, 1fr)",
+                borderLeft: "1px solid #ddd",
+              }}
+            >
+              {index === 0 ? (
+                <div
+                  style={{
+                    padding: "10px",
+                    gridColumn: "span 1",
+                    textAlignLast: "center",
+                    borderBottom:
+                      index === filterNam.length - 1
+                        ? "1px solid #ddd"
+                        : "none",
+                    borderRight: "1px solid #ddd",
+                  }}
+                >
+                  Nam
+                </div>
+              ) : (
+                <div
+                  style={{
+                    padding: "10px",
+                    borderBottom:
+                      index === filterNam.length - 1
+                        ? "1px solid #ddd"
+                        : "none",
+                    borderRight: "1px solid #ddd",
+                  }}
+                />
+              )}
               <div
-                key={index}
                 style={{
-                  display: "grid",
-                  gridTemplateColumns: "repeat(7, 1fr)",
-                  borderLeft: "1px solid #ddd",
+                  borderBottom: "1px solid #ddd",
+                  borderRight: "1px solid #ddd",
+                  textAlignLast: "center",
+                  alignContent: "center",
                 }}
               >
-                {index === 0 ? (
-                  <div
-                    style={{
-                      padding: "10px",
-                      gridColumn: "span 1",
-                      textAlignLast: "center",
-                      borderBottom:
-                        index === filterNam.length - 1
-                          ? "1px solid #ddd"
-                          : "none",
-                      borderRight: "1px solid #ddd",
-                    }}
-                  >
-                    Nam
-                  </div>
-                ) : (
-                  <div
-                    style={{
-                      padding: "10px",
-                      borderBottom:
-                        index === filterNam.length - 1
-                          ? "1px solid #ddd"
-                          : "none",
-                      borderRight: "1px solid #ddd",
-                    }}
-                  />
-                )}
-                <div
-                  style={{
-                    borderBottom: "1px solid #ddd",
-                    borderRight: "1px solid #ddd",
-                    textAlignLast: "center",
-                    alignContent: "center",
-                  }}
-                >
-                  {index + 1}
-                </div>
-                <div
-                  style={{
-                    borderRight: "1px solid #ddd",
-                    borderBottom: "1px solid #ddd",
-                    padding: "12px 18px",
-                  }}
-                >
-                  {person.name}
-                </div>
-                <div style={{ gridColumn: "span 4" }}>
-                  <TableRow
-                    isNamCLB
-                    data={person}
-                    sex="Nam"
-                    isEditable={isEditTable}
-                  />
-                </div>
+                {index + 1}
               </div>
-            ))}
+              <div
+                style={{
+                  borderRight: "1px solid #ddd",
+                  // borderBottom: "1px solid #ddd",
+                  padding: "12px 18px",
+                  borderTop:
+                    index > 0 && person.name === array[index - 1].name
+                      ? "none"
+                      : "1px solid #ddd",
+                }}
+              >
+                {index > 0 && person.name === array[index - 1].name
+                  ? ""
+                  : person.name}
+              </div>
+              <div style={{ gridColumn: "span 4" }}>
+                <TableRow
+                  isNamCLB
+                  data={person}
+                  sex="Nam"
+                  isEditable={isEditTable}
+                />
+              </div>
+            </div>
+          ))}
+
         {dataManagement?.data &&
-          dataManagement?.data
-            .filter((person: any) => person.sex === "Nữ")
-            .filter((person: any) => person.type === typeFilter)
-            .map((person: any, index: number) => (
+          _.orderBy(
+            dataManagement?.data
+              .filter((person: any) => person.sex === "Nữ")
+              .filter((person: any) => person.type === typeFilter),
+            ["name"], // Sort by name
+            ["asc"] // Ascending order
+          ).map((person: any, index: number, array) => (
+            <div
+              key={index}
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(7, 1fr)",
+              }}
+            >
+              {index === 0 ? (
+                <div
+                  style={{
+                    padding: "10px",
+                    gridColumn: "span 1",
+                    textAlignLast: "center",
+                    borderLeft: "1px solid #ddd",
+                    borderBottom:
+                      index === filterNu.length - 1 ? "1px solid #ddd" : "none",
+                    borderRight: "1px solid #ddd",
+                  }}
+                >
+                  Nữ
+                </div>
+              ) : (
+                <div
+                  style={{
+                    padding: "10px",
+                    borderLeft: "1px solid #ddd",
+                    borderBottom:
+                      index === filterNu.length - 1 ? "1px solid #ddd" : "none",
+                    borderRight: "1px solid #ddd",
+                  }}
+                />
+              )}
               <div
-                key={index}
                 style={{
-                  display: "grid",
-                  gridTemplateColumns: "repeat(7, 1fr)",
+                  borderBottom: "1px solid #ddd",
+                  borderRight: "1px solid #ddd",
+                  textAlignLast: "center",
+                  alignContent: "center",
                 }}
               >
-                {index === 0 ? (
-                  <div
-                    style={{
-                      padding: "10px",
-                      gridColumn: "span 1",
-                      textAlignLast: "center",
-                      borderBottom:
-                        index === filterNam.length - 1
-                          ? "1px solid #ddd"
-                          : "none",
-                      borderRight: "1px solid #ddd",
-                    }}
-                  >
-                    Nữ
-                  </div>
-                ) : (
-                  <div
-                    style={{
-                      padding: "10px",
-                      borderBottom:
-                        index === filterNu.length - 1
-                          ? "1px solid #ddd"
-                          : "none",
-                      borderRight: "1px solid #ddd",
-                    }}
-                  ></div>
-                )}
-                <div
-                  style={{
-                    borderBottom: "1px solid #ddd",
-                    borderRight: "1px solid #ddd",
-                    textAlignLast: "center",
-                    alignContent: "center",
-                  }}
-                >
-                  {index + 1}
-                </div>
-                <div
-                  style={{
-                    borderRight: "1px solid #ddd",
-                    borderBottom: "1px solid #ddd",
-                    padding: "12px 18px",
-                  }}
-                >
-                  {person.name}
-                </div>
-                <div style={{ gridColumn: "span 4" }}>
-                  <TableRow
-                    isNamCLB
-                    data={person}
-                    sex="Nữ"
-                    isEditable={isEditTable}
-                  />
-                </div>
+                {index + 1}
               </div>
-            ))}
+              <div
+                style={{
+                  borderRight: "1px solid #ddd",
+                  borderBottom:
+                    index === array.length - 1 ? "1px solid #ddd" : "none",
+                  padding: "12px 18px",
+                  borderTop:
+                    index > 0 && person.name === array[index - 1].name
+                      ? "none"
+                      : "1px solid #ddd",
+                }}
+              >
+                {index > 0 && person.name === array[index - 1].name
+                  ? ""
+                  : person.name}
+              </div>
+              <div style={{ gridColumn: "span 4" }}>
+                <TableRow
+                  isNamCLB
+                  data={person}
+                  sex="Nữ"
+                  isEditable={isEditTable}
+                />
+              </div>
+            </div>
+          ))}
       </div>
     </>
   );
