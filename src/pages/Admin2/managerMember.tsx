@@ -9,6 +9,7 @@ import {
   Popconfirm,
   message,
   Pagination,
+  Popover,
 } from "antd";
 import * as XLSX from "xlsx";
 
@@ -258,6 +259,15 @@ const ManagerMemberTwo = () => {
         : null,
       filterMultiple: false,
       onFilter: (value: any, rec) => rec.note.indexOf(value) === 0,
+      render: (value, record, index) => {
+        const displayText =
+          value && value.length > 15 ? `${value.slice(0, 15)}...` : value;
+        return (
+          <Popover content={value} trigger="hover">
+            {displayText}
+          </Popover>
+        );
+      },
     },
 
     {

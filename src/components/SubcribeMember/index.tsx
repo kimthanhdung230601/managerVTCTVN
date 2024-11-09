@@ -47,7 +47,7 @@ export default function SubscribeMember({
       enabled: !!idclub,
     }
   );
-  const [userSelected, setUserSelected] = useState<any>({});
+  const [userSelected, setUserSelected] = useState<any>(memberInfo);
   const [isDisabled, setDisabled] = useState<boolean>(false);
   const filterOption = (
     input: string,
@@ -71,7 +71,7 @@ export default function SubscribeMember({
     } else {
       const userInfo = { id: 0, sex: 0, name: null };
       if (isAdmin() === "0") {
-        setUserSelected(userInfo);
+        setUserSelected(undefined);
         onSelectMember(
           name,
           `${userInfo?.sex}`,
@@ -80,7 +80,7 @@ export default function SubscribeMember({
           memberInfo?.id
         );
       } else {
-        setUserSelected(userInfo);
+        setUserSelected(undefined);
         if (!table3) {
           onSelectMember(name, sex || "", ageGroup, undefined, undefined);
         } else {
@@ -115,8 +115,7 @@ export default function SubscribeMember({
           onSearch={onSearch}
           filterOption={filterOption}
           className={styles.select}
-          value={userSelected?.name || memberInfo?.hoTen}
-          // disabled={isDisabled}
+          value={userSelected ? userSelected?.hoTen : undefined}
         >
           {!idclub && Array.isArray(memberClubs?.data) && (
             <>

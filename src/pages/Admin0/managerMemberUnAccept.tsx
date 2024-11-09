@@ -16,6 +16,7 @@ import {
   Pagination,
   Popconfirm,
   message,
+  Popover,
 } from "antd";
 import styles from "./styles.module.scss";
 import {
@@ -393,6 +394,15 @@ const ManagerMemberUnAccept = ({ setFetching }: fetchingProp) => {
       filterSearch: true,
       filterMultiple: false,
       onFilter: (value: any, record) => record.note.indexOf(value) === 0,
+      render: (value, record, index) => {
+        const displayText =
+          value && value.length > 15 ? `${value.slice(0, 15)}...` : value;
+        return (
+          <Popover content={value} trigger="hover">
+            {displayText}
+          </Popover>
+        );
+      },
     },
     {
       title: "Tình trạng",
@@ -636,9 +646,17 @@ const ManagerMemberUnAccept = ({ setFetching }: fetchingProp) => {
       dataIndex: "note",
       width: 130,
       filters: filtersListNote,
-
       filterMultiple: false,
       onFilter: (value: any, record) => record.note.indexOf(value) === 0,
+      render: (value, record, index) => {
+        const displayText =
+          value && value.length > 15 ? `${value.slice(0, 15)}...` : value;
+        return (
+          <Popover content={value} trigger="hover">
+            {displayText}
+          </Popover>
+        );
+      },
     },
     {
       title: "Tình trạng",
