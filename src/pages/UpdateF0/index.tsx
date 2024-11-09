@@ -527,10 +527,13 @@ const UpdateProfiles = () => {
                     </Col>
                     <Col span={8} xs={24} sm={24} md={8}>
                       <Form.Item
-                        label="Quê quán"
+                        label="Địa chỉ thường chú"
                         name="hometown"
                         rules={[
-                          { required: true, message: "Vui lòng điền quê quán" },
+                          {
+                            required: true,
+                            message: "Vui lòng điền địa chỉ thường chú",
+                          },
                         ]}
                       >
                         <Input />

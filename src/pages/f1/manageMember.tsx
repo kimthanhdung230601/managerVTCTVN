@@ -10,6 +10,7 @@ import {
   Button,
   Modal,
   Pagination,
+  Popover,
 } from "antd";
 import { ColumnsType, TableProps } from "antd/es/table";
 import { useLocation, useNavigate } from "react-router";
@@ -255,6 +256,15 @@ export default function ManageMember() {
     {
       title: "Ghi chú",
       dataIndex: "note",
+      render: (value, record, index) => {
+        const displayText =
+          value && value.length > 15 ? `${value.slice(0, 15)}...` : value;
+        return (
+          <Popover content={value} trigger="hover">
+            {displayText}
+          </Popover>
+        );
+      },
     },
     {
       title: "Tình trạng",
