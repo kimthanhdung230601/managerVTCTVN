@@ -175,7 +175,7 @@ export default function Detail() {
                               </div>
                             ) : null}
                           </Col>
-                          {!paramKey?.includes("VCT") && (
+                          {!/^[a-zA-Z]/.test(paramKey) && (
                             <Col
                               xxl={24}
                               md={24}
@@ -213,26 +213,28 @@ export default function Detail() {
                             xs={8}
                             style={isMobile ? {} : { marginTop: "20px" }}
                           >
-                            <div style={{ textAlign: "center" }}>
-                              <QRCode
-                                value={`https://vocotruyen.id.vn/thong-tin-ho-so?keyword=${userInfor?.data[0]?.code}`}
-                                icon={require("../../assets/image/logo.png")}
-                                className={styles.detailImg}
-                                bgColor="#fff"
-                                style={{ margin: "0 auto" }}
-                              />
-                              <div
-                                style={{
-                                  fontWeight: "500",
-                                  color: "#000",
-                                  textAlign: "center",
-                                  marginTop: "8px",
-                                  fontStyle: "italic",
-                                }}
-                              >
-                                Mã QR
+                            {!/^[a-zA-Z]/.test(paramKey) && (
+                              <div style={{ textAlign: "center" }}>
+                                <QRCode
+                                  value={`https://vocotruyen.id.vn/thong-tin-ho-so?keyword=${userInfor?.data[0]?.code}`}
+                                  icon={require("../../assets/image/logo.png")}
+                                  className={styles.detailImg}
+                                  bgColor="#fff"
+                                  style={{ margin: "0 auto" }}
+                                />
+                                <div
+                                  style={{
+                                    fontWeight: "500",
+                                    color: "#000",
+                                    textAlign: "center",
+                                    marginTop: "8px",
+                                    fontStyle: "italic",
+                                  }}
+                                >
+                                  Mã QR
+                                </div>
                               </div>
-                            </div>
+                            )}
                           </Col>
                         </Row>
                       </Col>
