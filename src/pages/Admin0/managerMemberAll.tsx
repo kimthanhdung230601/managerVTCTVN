@@ -33,6 +33,7 @@ import {
 import moment from "moment";
 import ListClub from "../../hook/listClub";
 import CryptoJS from "crypto-js";
+import ModalAccept from "../../components/Modal/ModalAccept";
 const secretKey = process.env.REACT_APP_SECRET_KEY as string;
 interface ManagerMemberProps {}
 interface DataType {
@@ -90,6 +91,10 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
   );
   const initialPayload = `page=${currentPage}`;
   const [param, setParam] = useState("");
+  const [accountInfo, setAccountInfo] = useState({
+    id: "",
+    name: "",
+  });
   const [payload, setPayload] = useState<any>(`page=${currentPage}` + params);
   const {
     data: allMember,
@@ -197,15 +202,30 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
     refetch();
     message.success("Xóa thành công");
   };
-  const confirmUpdate = async (value: any) => {
+
+  const handleUpdateMember = (id: string, name: string) => {
+    setAccountInfo({
+      id: id,
+      name: name,
+    });
+  };
+  const confirmUpdate = async () => {
     const payload = {
-      id: value,
+      id: accountInfo.id,
     };
     const res = await updateMemberF3(payload);
     res.status === "success"
       ? message.success("Cập nhật thông tin thành công")
       : message.error(res?.data);
     refetch();
+    handleCancelUpdate();
+  };
+
+  const handleCancelUpdate = () => {
+    setAccountInfo({
+      id: "",
+      name: "",
+    });
   };
   const cancel = (value: any) => {
     // message.error("");
@@ -494,17 +514,12 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
               Sửa
             </button>
             {record.status === "Chờ duyệt" ? (
-              <Popconfirm
-                title="Duyệt"
-                description={`Bạn có muốn cập nhật ${record.name} không`}
-                onConfirm={() => confirmUpdate(record.id)}
-                onCancel={cancel}
-                okText="Có"
-                cancelText="Không"
+              <button
+                className={styles.btnView}
+                onClick={() => handleUpdateMember(record.id, record.name)}
               >
-                {" "}
-                <button className={styles.btnView}>Duyệt</button>
-              </Popconfirm>
+                Duyệt
+              </button>
             ) : (
               <></>
             )}
@@ -929,6 +944,13 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
           />
         </Spin>
       </div>
+      <ModalAccept
+        selectedRowKeys={accountInfo.name}
+        handleOk={confirmUpdate}
+        handleCancel={handleCancelUpdate}
+        id=""
+        isModalOpen={!!accountInfo.id}
+      />
     </div>
   );
 };
