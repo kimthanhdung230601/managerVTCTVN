@@ -7,12 +7,14 @@ interface ModalAcceptProp {
   handleOk: () => void;
   handleCancel: () => void;
   id: string;
+  type: string;
 }
 const ModalAccept = ({
   selectedRowKeys,
   isModalOpen,
   handleCancel,
   handleOk,
+  type = "Xét duyệt",
   id,
 }: ModalAcceptProp) => {
   const [open, setOpen] = useState(false);
@@ -22,7 +24,7 @@ const ModalAccept = ({
   return (
     <>
       <Modal
-        title="Xét duyệt tài khoản"
+        title={`${type} tài khoản`}
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
@@ -33,8 +35,8 @@ const ModalAccept = ({
       >
         <>
           {selectedRowKeys.length != 0 && !(typeof selectedRowKeys === "string")
-            ? `Xét duyệt ${selectedRowKeys.length} tài khoản `
-            : `Bạn có muốn duyệt tài khoản ${
+            ? `${type} ${selectedRowKeys.length} tài khoản `
+            : `Bạn có muốn ${type} tài khoản ${
                 !(typeof selectedRowKeys === "string") ? "" : selectedRowKeys
               } này không?`}
         </>

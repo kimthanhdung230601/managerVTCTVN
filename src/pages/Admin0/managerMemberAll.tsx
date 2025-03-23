@@ -94,6 +94,7 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
   const [accountInfo, setAccountInfo] = useState({
     id: "",
     name: "",
+    type: "",
   });
   const [payload, setPayload] = useState<any>(`page=${currentPage}` + params);
   const {
@@ -194,19 +195,21 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
     setPayload(updatedPayload);
   };
   //btn xóa
-  const confirm = async (value: any) => {
+  const confirm = async () => {
     const payload = {
-      id: value,
+      id: accountInfo.id,
     };
     const res = await deleteMemberF3(payload);
     refetch();
+    handleCancelUpdate();
     message.success("Xóa thành công");
   };
 
-  const handleUpdateMember = (id: string, name: string) => {
+  const handleUpdateMember = (id: string, name: string, type: string) => {
     setAccountInfo({
       id: id,
       name: name,
+      type: type,
     });
   };
   const confirmUpdate = async () => {
@@ -225,6 +228,7 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
     setAccountInfo({
       id: "",
       name: "",
+      type: "",
     });
   };
   const cancel = (value: any) => {
@@ -516,7 +520,9 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
             {record.status === "Chờ duyệt" ? (
               <button
                 className={styles.btnView}
-                onClick={() => handleUpdateMember(record.id, record.name)}
+                onClick={() =>
+                  handleUpdateMember(record.id, record.name, "Xét duyệt")
+                }
               >
                 Duyệt
               </button>
@@ -524,17 +530,12 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
               <></>
             )}
 
-            <Popconfirm
-              title="Xóa"
-              description={`Bạn có muốn xóa ${record.name} không`}
-              onConfirm={() => confirm(record.id)}
-              onCancel={cancel}
-              okText="Có"
-              cancelText="Không"
+            <button
+              className={styles.btnTbDanger}
+              onClick={() => handleUpdateMember(record.id, record.name, "Xoá")}
             >
-              {" "}
-              <button className={styles.btnTbDanger}>Xóa</button>
-            </Popconfirm>
+              Xóa
+            </button>
           </span>
         );
       },
@@ -746,44 +747,46 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
       // title: 'Action',
       key: "action",
       width: 200,
-      render: (_, record) => (
-        <span>
-          <Button
-            className={styles.btnView}
-            onClick={() => {
-              const idEncode = CryptoJS.AES.encrypt(
-                record.id,
-                secretKey
-              ).toString();
-              const id = encodeURIComponent(idEncode);
-              return navigate(`/thong-tin-ho-so/${id}`);
-            }}
-          >
-            Xem
-          </Button>
-          <Button
-            className={styles.btnTb}
-            onClick={() => navigate("/UpdateMember")}
-          >
-            Sửa
-          </Button>
-          {record.status === "Chờ duyệt xoá" ? (
-            <Popconfirm
-              title="Xóa"
-              description={`Bạn có muốn xóa ${record.name} không`}
-              onConfirm={() => confirm(record.id)}
-              onCancel={cancel}
-              okText="Có"
-              cancelText="Không"
+      render: (_, record) => {
+        const idEncode = CryptoJS.AES.encrypt(record.id, secretKey).toString();
+        const id = encodeURIComponent(idEncode);
+        return (
+          <span>
+            <button
+              className={styles.btnView}
+              onClick={() => navigate(`/thong-tin-ho-so/${id}`)}
             >
-              {" "}
-              <Button className={styles.btnTbDanger}>Xóa</Button>
-            </Popconfirm>
-          ) : (
-            <></>
-          )}
-        </span>
-      ),
+              Xem
+            </button>
+
+            <button
+              className={styles.btnTb}
+              onClick={() => navigate(`/chinh-sua-ho-so/${record.id}`)}
+            >
+              Sửa
+            </button>
+            {record.status === "Chờ duyệt" ? (
+              <button
+                className={styles.btnView}
+                onClick={() =>
+                  handleUpdateMember(record.id, record.name, "Xét duyệt")
+                }
+              >
+                Duyệt
+              </button>
+            ) : (
+              <></>
+            )}
+
+            <button
+              className={styles.btnTbDanger}
+              onClick={() => handleUpdateMember(record.id, record.name, "Xoá")}
+            >
+              Xóa
+            </button>
+          </span>
+        );
+      },
     },
   ];
   const exportToExcel = async () => {
@@ -946,10 +949,11 @@ const ManagerMemberAll = ({ fetching, setFetching }: fetchingProp) => {
       </div>
       <ModalAccept
         selectedRowKeys={accountInfo.name}
-        handleOk={confirmUpdate}
+        handleOk={accountInfo.type === "Xét duyệt" ? confirmUpdate : confirm}
         handleCancel={handleCancelUpdate}
         id=""
         isModalOpen={!!accountInfo.id}
+        type={accountInfo.type}
       />
     </div>
   );

@@ -23,6 +23,7 @@ import { deleteMemberF3, getListMember, updateMemberF3 } from "../../api/f0";
 import moment from "moment";
 import ListClub from "../../hook/listClub";
 import CryptoJS from "crypto-js";
+import ModalAccept from "../../components/Modal/ModalAccept";
 const secretKey = process.env.REACT_APP_SECRET_KEY as string;
 interface DataType {
   stt: any;
@@ -74,6 +75,11 @@ const ManagerMemberDeleted = ({ setFetching }: fetchingProp) => {
   const [currentPage, setCurrentPage] = useState<any>(
     searchParam.get("pageAll3") || "1"
   );
+  const [accountInfo, setAccountInfo] = useState({
+    id: "",
+    name: "",
+    type: "",
+  });
   const status = "Chờ duyệt xóa";
   const initialPayload =
     `page=${currentPage}&status=` + encodeURIComponent(status.toString());
@@ -177,25 +183,41 @@ const ManagerMemberDeleted = ({ setFetching }: fetchingProp) => {
       params;
     setPayload(updatedPayload);
   };
+  const handleUpdateMember = (id: string, name: string, type: string) => {
+    setAccountInfo({
+      id: id,
+      name: name,
+      type: type,
+    });
+  };
   //btn xóa
-  const confirm = async (value: any) => {
+  const confirm = async () => {
     const payload = {
-      id: value,
+      id: accountInfo.id,
     };
     const res = await deleteMemberF3(payload);
     refetch();
+    handleCancelUpdate();
     message.success("Xóa thành công");
-    setFetching(false);
   };
-  const confirmUpdate = async (value: any) => {
+
+  const confirmUpdate = async () => {
     const payload = {
-      id: value,
+      id: accountInfo.id,
     };
     const res = await updateMemberF3(payload);
     res.status === "success"
       ? message.success("Cập nhật thông tin thành công")
       : message.error(res?.data);
     refetch();
+    handleCancelUpdate();
+  };
+  const handleCancelUpdate = () => {
+    setAccountInfo({
+      id: "",
+      name: "",
+      type: "",
+    });
   };
   const cancel = (value: any) => {
     // message.error("");
@@ -461,32 +483,24 @@ const ManagerMemberDeleted = ({ setFetching }: fetchingProp) => {
               Sửa
             </button>
             {record.status === "Chờ duyệt" ? (
-              <Popconfirm
-                title="Duyệt"
-                description={`Bạn có muốn cập nhật ${record.name} không`}
-                onConfirm={() => confirmUpdate(record.id)}
-                onCancel={cancel}
-                okText="Có"
-                cancelText="Không"
+              <button
+                className={styles.btnView}
+                onClick={() =>
+                  handleUpdateMember(record.id, record.name, "Xét duyệt")
+                }
               >
-                {" "}
-                <button className={styles.btnView}>Duyệt</button>
-              </Popconfirm>
+                Duyệt
+              </button>
             ) : (
               <></>
             )}
 
-            <Popconfirm
-              title="Xóa"
-              description={`Bạn có muốn xóa ${record.name} không`}
-              onConfirm={() => confirm(record.id)}
-              onCancel={cancel}
-              okText="Có"
-              cancelText="Không"
+            <button
+              className={styles.btnTbDanger}
+              onClick={() => handleUpdateMember(record.id, record.name, "Xoá")}
             >
-              {" "}
-              <button className={styles.btnTbDanger}>Xóa</button>
-            </Popconfirm>
+              Xóa
+            </button>
           </span>
         );
       },
@@ -718,17 +732,12 @@ const ManagerMemberDeleted = ({ setFetching }: fetchingProp) => {
             Sửa
           </Button>
           {record.status === "Chờ duyệt xoá" ? (
-            <Popconfirm
-              title="Xóa"
-              description={`Bạn có muốn xóa ${record.name} không`}
-              onConfirm={() => confirm(record.id)}
-              onCancel={cancel}
-              okText="Có"
-              cancelText="Không"
+            <button
+              className={styles.btnTbDanger}
+              onClick={() => handleUpdateMember(record.id, record.name, "Xoá")}
             >
-              {" "}
-              <Button className={styles.btnTbDanger}>Xóa</Button>
-            </Popconfirm>
+              Xóa
+            </button>
           ) : (
             <></>
           )}
@@ -821,6 +830,14 @@ const ManagerMemberDeleted = ({ setFetching }: fetchingProp) => {
           />
         </Spin>
       </div>
+      <ModalAccept
+        selectedRowKeys={accountInfo.name}
+        handleOk={accountInfo.type === "Xét duyệt" ? confirmUpdate : confirm}
+        handleCancel={handleCancelUpdate}
+        id=""
+        isModalOpen={!!accountInfo.id}
+        type={accountInfo.type}
+      />
     </div>
   );
 };
