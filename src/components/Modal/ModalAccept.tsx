@@ -36,9 +36,9 @@ const ModalAccept = ({
         <>
           {selectedRowKeys.length != 0 && !(typeof selectedRowKeys === "string")
             ? `${type} ${selectedRowKeys.length} tài khoản `
-            : `Bạn có muốn ${type} tài khoản ${
+            : `Bạn có muốn ${type}  ${
                 !(typeof selectedRowKeys === "string") ? "" : selectedRowKeys
-              } này không?`}
+              }  không?`}
         </>
       </Modal>
     </>
