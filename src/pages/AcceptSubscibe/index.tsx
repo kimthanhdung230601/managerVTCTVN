@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Header from "../../components/Header";
 import styles from "./styles.module.scss";
 import { Table, Button } from "antd";
@@ -6,6 +6,7 @@ import { TableProps, Popconfirm, message } from "antd";
 import { useMutation, useQuery } from "react-query";
 import { acceptClubSubscribe, getListAcceptSubscribe } from "../../api/f0";
 import { useNavigate } from "react-router";
+import ModalAccept from "../../components/Modal/ModalAccept";
 
 interface DataType {
   idclub: string;
@@ -17,6 +18,11 @@ interface DataType {
 
 export default function AcceptSubscribe() {
   const navigate = useNavigate();
+  const [clubInfo, setClubInfo] = useState({
+    id: "",
+    name: "",
+    type: "",
+  });
   const { data: getListAccept, refetch } = useQuery(["listAccept"], () =>
     getListAcceptSubscribe()
   );
@@ -34,8 +40,23 @@ export default function AcceptSubscribe() {
       },
     }
   );
-  const confirm = (idclub: string) => {
-    acceptMutation.mutate({ idclub: idclub });
+  const handleUpdateMember = (id: string, name: string, type: string) => {
+    setClubInfo({
+      id: id,
+      name: name,
+      type: type,
+    });
+  };
+  const handleCancelUpdate = () => {
+    setClubInfo({
+      id: "",
+      name: "",
+      type: "",
+    });
+  };
+  const confirm = () => {
+    acceptMutation.mutate({ idclub: clubInfo?.id });
+    handleCancelUpdate();
   };
 
   const columns: TableProps<DataType>["columns"] = [
@@ -83,20 +104,15 @@ export default function AcceptSubscribe() {
             Xem/Sửa
           </Button>
 
-          <Popconfirm
-            title="Xác nhận"
-            description="Bạn có chắc chắn muốn duyệt hồ sơ này không?"
-            onConfirm={() => confirm(record?.idclub)}
-            okText="Có"
-            cancelText="Không"
+          <Button
+            disabled={record?.pending === "1"}
+            className={styles.accept}
+            onClick={() =>
+              handleUpdateMember(record?.idclub, record.nameClb, "Xét duyệt")
+            }
           >
-            <Button
-              disabled={record?.pending === "1"}
-              className={styles.accept}
-            >
-              Duyệt
-            </Button>
-          </Popconfirm>
+            Duyệt
+          </Button>
         </div>
       ),
     },
@@ -128,6 +144,14 @@ export default function AcceptSubscribe() {
           </div>
         </div>
       </div>
+      <ModalAccept
+        selectedRowKeys={clubInfo.name}
+        handleOk={confirm}
+        handleCancel={handleCancelUpdate}
+        id=""
+        isModalOpen={!!clubInfo.id}
+        type={clubInfo.type}
+      />
     </>
   );
 }
