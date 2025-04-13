@@ -153,7 +153,7 @@ const ManagerF1 = () => {
       fixed: "left",
       width: 20,
       render: (value, record, index) => {
-        return index + 1 + (currentPageAccount - 1) * 37;
+        return index + 1 + (currentPageAccount - 1) * 50;
       },
     },
     {
@@ -274,7 +274,7 @@ const ManagerF1 = () => {
 
       width: 20,
       render: (value, record, index) => {
-        return index + 1 + (currentPageAccount - 1) * 37;
+        return index + 1 + (currentPageAccount - 1) * 50;
       },
     },
     {

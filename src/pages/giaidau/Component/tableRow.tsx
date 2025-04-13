@@ -107,8 +107,6 @@ const TableRow = ({
       dataManagement1?.data.find((option: any) => option.id === value) || null;
 
     if (data?.id) {
-      console.log("sửa API");
-
       const payload = {
         iduser: value ? person.id : 0,
         id: data?.id,
