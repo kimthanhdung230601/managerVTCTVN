@@ -88,6 +88,13 @@ export default function Header() {
                 </Link>
               </Col>
             )}
+            {isAdmin() === "2" && (
+              <Col className={styles.headerItem}>
+                <Link to={"/dang-ky-giai-tre"} className={styles.itemLink}>
+                  Đăng ký thi đấu giải trẻ
+                </Link>
+              </Col>
+            )}
             {isAdmin() === "0" && (
               <Col className={styles.headerItem}>
                 <Link to={"/duyet-ho-so-dang-ky"} className={styles.itemLink}>
@@ -99,6 +106,16 @@ export default function Header() {
               <Col className={styles.headerItem}>
                 <Link to={"/danh-sach-thi-dau"} className={styles.itemLink}>
                   Danh sách thi đấu
+                </Link>
+              </Col>
+            )}
+            {isAdmin() === "0" && (
+              <Col className={styles.headerItem}>
+                <Link
+                  to={"/danh-sach-thi-dau-giai-tre"}
+                  className={styles.itemLink}
+                >
+                  Danh sách thi đấu giải trẻ
                 </Link>
               </Col>
             )}

@@ -26,6 +26,8 @@ import AcceptSubscribe from "../pages/AcceptSubscibe";
 import F0AcceptFile from "../pages/F0DuyetHoSo";
 import F2Subcribe from "../pages/F2DangKyHoSo";
 import F0ViewList from "../pages/F0ViewList";
+import F2SubcribeYoungPrize from "../pages/F2DangKyGiaiTre";
+import F0ViewListYoungPrize from "../pages/F0ViewListYoungPrize";
 const Component = () => {
   return (
     <>
@@ -66,7 +68,7 @@ const Component = () => {
           element={<TournamentRegistration />}
           ></Route> */}
         <Route path="/quan-ly-giai-dau" element={<AdminManagement />}></Route>
-        <Route path="/duyet-giai-dau" element={<AcceptListMember />}></Route>
+        <Route path="/duyet-giai-tre" element={<AcceptListMember />}></Route>
         {/* f0 duyệt hồ sơ đăng ký */}
         <Route
           path="/duyet-ho-so-dang-ky"
@@ -78,9 +80,17 @@ const Component = () => {
 
         {/* f0 xem danh sach nhieu CLB */}
         <Route path="/danh-sach-thi-dau" element={<F0ViewList />}></Route>
+        <Route
+          path="/danh-sach-thi-dau-giai-tre"
+          element={<F0ViewListYoungPrize />}
+        ></Route>
 
         {/* f2 dang ky thi dau  */}
         <Route path="/dang-ky-thi-dau" element={<F2Subcribe />}></Route>
+        <Route
+          path="/dang-ky-giai-tre"
+          element={<F2SubcribeYoungPrize />}
+        ></Route>
 
         <Route
           path="/duyet-giai-dau/:id"
