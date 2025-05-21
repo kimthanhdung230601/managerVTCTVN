@@ -27,6 +27,7 @@ import F0AcceptFile from "../pages/F0DuyetHoSo";
 import F2Subcribe from "../pages/F2DangKyHoSo";
 import F0ViewList from "../pages/F0ViewList";
 import F2SubcribeYoungPrize from "../pages/F2DangKyGiaiTre";
+import F0ViewListYoungPrize from "../pages/F0ViewListYoungPrize";
 const Component = () => {
   return (
     <>
@@ -79,6 +80,10 @@ const Component = () => {
 
         {/* f0 xem danh sach nhieu CLB */}
         <Route path="/danh-sach-thi-dau" element={<F0ViewList />}></Route>
+        <Route
+          path="/danh-sach-thi-dau-giai-tre"
+          element={<F0ViewListYoungPrize />}
+        ></Route>
 
         {/* f2 dang ky thi dau  */}
         <Route path="/dang-ky-thi-dau" element={<F2Subcribe />}></Route>

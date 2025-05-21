@@ -118,8 +118,7 @@ const CustomTableWeightThree = ({ setData }: Props) => {
             marginBottom: "36px",
           }}
         >
-          {" "}
-          NHÓM TUỔI 3 TỪ 16 ĐẾN 17 TUỔI{" "}
+          NHÓM TUỔI 3 TỪ 16 ĐẾN 17 TUỔI
         </h1>
         <div
           style={{

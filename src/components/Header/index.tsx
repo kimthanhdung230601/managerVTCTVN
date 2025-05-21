@@ -109,6 +109,16 @@ export default function Header() {
                 </Link>
               </Col>
             )}
+            {isAdmin() === "0" && (
+              <Col className={styles.headerItem}>
+                <Link
+                  to={"/danh-sach-thi-dau-giai-tre"}
+                  className={styles.itemLink}
+                >
+                  Danh sách thi đấu giải trẻ
+                </Link>
+              </Col>
+            )}
           </Row>
         </Col>
         <Col className={`${styles.headerItem} gutter-row`}>

@@ -6,9 +6,9 @@ import { ReactComponent as Logo } from "../../../assets/svg/logo.svg";
 import SubcribePageEdit from "../../Subcribe Edit";
 import Header from "../../../components/Header";
 import TabAnagonism from "../Xem_chi_tiet_du_lieu_duyet/TabAnagonism";
-import TournamentRegistration from "../Dang_ky_giai_dau_doi_khang";
+import TournamentRegistrationYoungPrize from "../Dang_ky_giai_dau_doi_khang";
 
-const ListClubsRes = () => {
+const ListClubsResYoungPrize = () => {
   const param = useParams();
   const idClub = Number(param.id);
 
@@ -28,7 +28,7 @@ const ListClubsRes = () => {
     {
       key: "2",
       label: "THI ĐẤU ĐỐI KHÁNG HÌNH THỨC",
-      children: <TournamentRegistration />,
+      children: <TournamentRegistrationYoungPrize />,
     },
   ];
   return (
@@ -56,4 +56,4 @@ const ListClubsRes = () => {
   );
 };
 
-export default ListClubsRes;
+export default ListClubsResYoungPrize;

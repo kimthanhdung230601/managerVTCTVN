@@ -14,7 +14,7 @@ interface Props {
   isEdiTable?: boolean;
   isShowFullTable?: boolean;
 }
-const AdminManagement = ({
+const AdminManagementYpungPrize = ({
   isNotShowTitle = false,
   idClub,
   isEdiTable = true,
@@ -73,14 +73,21 @@ const AdminManagement = ({
       <div>
         <CustomTableAdminOne
           idClub={idClub}
-          title="BẢNG DỮ LIỆU ĐỐI KHÁNG HÌNH THỨC 1"
+          title="NHÓM TUỔI 1 TỪ 12 ĐẾN 13 TUỔI"
           typeFilter="hinh_thuc_1"
           isEditTable={isEdiTable}
           dataManagement={data}
         />
         <CustomTableAdminOne
           idClub={idClub}
-          title="BẢNG DỮ LIỆU ĐỐI KHÁNG HÌNH THỨC 2"
+          title="NHÓM TUỔI 2 TỪ 14 ĐẾN 15 TUỔI"
+          typeFilter="hinh_thuc_2"
+          isEditTable={isEdiTable}
+          dataManagement={data}
+        />
+        <CustomTableAdminOne
+          idClub={idClub}
+          title="NHÓM TUỔI 3 TỪ 16 ĐẾN 17 TUỔI"
           typeFilter="hinh_thuc_2"
           isEditTable={isEdiTable}
           dataManagement={data}
@@ -90,4 +97,4 @@ const AdminManagement = ({
   );
 };
 
-export default AdminManagement;
+export default AdminManagementYpungPrize;
