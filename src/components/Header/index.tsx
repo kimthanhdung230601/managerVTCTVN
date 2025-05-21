@@ -88,6 +88,13 @@ export default function Header() {
                 </Link>
               </Col>
             )}
+            {isAdmin() === "2" && (
+              <Col className={styles.headerItem}>
+                <Link to={"/dang-ky-giai-tre"} className={styles.itemLink}>
+                  Đăng ký thi đấu giải trẻ
+                </Link>
+              </Col>
+            )}
             {isAdmin() === "0" && (
               <Col className={styles.headerItem}>
                 <Link to={"/duyet-ho-so-dang-ky"} className={styles.itemLink}>
