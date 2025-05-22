@@ -34,7 +34,8 @@ export default function Subcribe({ sex }: IProps) {
     });
   };
   const { multiAgeGroup, singleAgeGroup, isLoading } = useMemberSubscribe({});
-
+  console.log("multiAgeGroup", multiAgeGroup);
+  console.log("singleAgeGroup", singleAgeGroup);
   return (
     <div className={styles.tableWrap}>
       <div className={styles.btnWrap}></div>
