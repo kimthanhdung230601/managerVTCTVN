@@ -1,17 +1,17 @@
-import React, { useState } from "react";
 import { Tabs, Input, Button, message } from "antd";
-import TabPane from "antd/es/tabs/TabPane";
 import { useParams } from "react-router";
+import React, { useState } from "react";
 import { useQuery } from "react-query";
 import CryptoJS from "crypto-js";
 
 import { ReactComponent as Logo } from "../../assets/svg/logo.svg";
-import { getManagamentMember, updateFile } from "../../api/thiDauGiaiTre";
+import { updateFile } from "../../api/thiDau";
 import Header from "../../components/Header";
+import TabPane from "antd/es/tabs/TabPane";
 import styles from "./styles.module.scss";
 import { getInfoF2 } from "../../api/f2";
-import Subcribe from "./Subcribe";
 import TournamentRegistrationYoungPrize from "../giaidau_giaitre/Dang_ky_giai_dau_doi_khang";
+import SubcribePageEditYoungPrize from "../SubcribeEditYoungPrize";
 
 export const generateRandomKey = (length: number) => {
   return Array(length)
@@ -20,7 +20,7 @@ export const generateRandomKey = (length: number) => {
     .join("");
 };
 
-export default function F2SubcribeYoungPrize() {
+export default function F2SubcribeGiaiTre() {
   const { id } = useParams();
 
   const { data: infoF2 } = useQuery(["info"], () => getInfoF2(id));
@@ -136,7 +136,7 @@ export default function F2SubcribeYoungPrize() {
           <TournamentRegistrationYoungPrize />
         </TabPane>
         <TabPane key={1} tab="Dữ liệu quyền thuật">
-          <Subcribe />
+          <SubcribePageEditYoungPrize />
         </TabPane>
       </Tabs>
     </div>

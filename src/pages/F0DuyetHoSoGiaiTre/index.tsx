@@ -5,13 +5,13 @@ import Header from "../../components/Header";
 import * as XLSX from "xlsx";
 
 import Subcribe from "./Subcribe";
-import { Tabs, Input, Button, message } from "antd";
+import { Tabs, Button, message } from "antd";
 import TabPane from "antd/es/tabs/TabPane";
-import { getManagamentMember, updateFile } from "../../api/thiDau";
+import { getManagamentMember } from "../../api/thiDauGiaiTre";
 import { useQuery } from "react-query";
 import { getInfoF2 } from "../../api/f2";
 import { useParams } from "react-router";
-import AdminManagement from "../giaidau/Thu_thap_du_lieu_doi_khang";
+import AdminManagementYpungPrize from "../giaidau_giaitre/Thu_thap_du_lieu_doi_khang";
 
 const secretKey = process.env.REACT_APP_SECRET_KEY as string;
 interface ManagementMember {
@@ -295,7 +295,7 @@ export default function F0AcceptFile() {
       </div>
       <Tabs defaultActiveKey="0" onChange={onChange} centered>
         <TabPane key={0} tab="Dữ liệu đối kháng hình thức">
-          <AdminManagement idClub={Number(id)} />
+          <AdminManagementYpungPrize idClub={Number(id)} />
         </TabPane>
         <TabPane key={1} tab="Dữ liệu quyền thuật">
           <Subcribe />

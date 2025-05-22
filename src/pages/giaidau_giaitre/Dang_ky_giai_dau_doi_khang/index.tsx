@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Button, message, Modal } from "antd";
 
 import CustomTableAdminOne from "../Thu_thap_du_lieu_doi_khang/tableWeightOne";
-import { addNewMember, getManagamentMember } from "../../../api/thiDau";
+import { addNewMember, getManagamentMember } from "../../../api/thiDauGiaiTre";
 import { IData, IResponseFight2024 } from "../../../type";
 import CustomTableWeightThree from "./tableWeighThree";
 import CustomTableWeightOne from "./tableWeightOne";
@@ -13,6 +13,7 @@ import { exampleData } from "../Data";
 const TournamentRegistrationYoungPrize = () => {
   const [dataType1, setDataType1] = useState();
   const [dataType2, setDataType2] = useState();
+  const [dataType3, setDataType3] = useState();
   const [data, setData] = useState<IResponseFight2024>();
   const [open, setOpen] = useState(false);
   const [_, setConfirmLoading] = useState(false);
@@ -71,14 +72,20 @@ const TournamentRegistrationYoungPrize = () => {
   // const updatedData = updateExampleData(exampleData, responseData);
 
   const handleSubmit = async () => {
-    const payload = { ...(dataType1 ?? {}), ...(dataType2 ?? {}) };
-    const response = await addNewMember(payload);
-    if (response.status === "success") {
-      message.success("Thêm thông tin thành công");
-      window.location.reload();
-    } else {
-      message.error("Hồ sơ đã được nộp, không thể tiếp tục nộp hồ sơ");
-    }
+    const payload = {
+      ...(dataType1 ?? {}),
+      ...(dataType2 ?? {}),
+      ...(dataType3 ?? {}),
+    };
+    console.log("payload", payload);
+
+    // const response = await addNewMember(payload);
+    // if (response.status === "success") {
+    //   message.success("Thêm thông tin thành công");
+    //   window.location.reload();
+    // } else {
+    //   message.error("Hồ sơ đã được nộp, không thể tiếp tục nộp hồ sơ");
+    // }
   };
 
   useEffect(() => {
@@ -139,7 +146,7 @@ const TournamentRegistrationYoungPrize = () => {
           <>
             <CustomTableWeightOne setData={setDataType1} />
             <CustomTableWeightTwo setData={setDataType2} />
-            <CustomTableWeightThree setData={setDataType2} />
+            <CustomTableWeightThree setData={setDataType3} />
           </>
         ) : (
           <>
@@ -160,7 +167,7 @@ const TournamentRegistrationYoungPrize = () => {
             <CustomTableAdminOne
               idClub={undefined}
               title="NHÓM TUỔI 3 TỪ 16 ĐẾN 17 TUỔI"
-              typeFilter="hinh_thuc_2"
+              typeFilter="hinh_thuc_3"
               isEditTable={false}
               dataManagement={data}
             />

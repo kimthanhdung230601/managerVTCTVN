@@ -1,7 +1,7 @@
 import CustomTableAdminOne from "./tableWeightOne";
 import { ReactComponent as Logo } from "../../../assets/svg/logo.svg";
 import { useParams } from "react-router";
-import { getManagamentMember } from "../../../api/thiDau";
+import { getManagamentMember } from "../../../api/thiDauGiaiTre";
 import { isAdmin } from "../../../api/ApiUser";
 import { useQuery } from "react-query";
 import { useEffect, useState } from "react";

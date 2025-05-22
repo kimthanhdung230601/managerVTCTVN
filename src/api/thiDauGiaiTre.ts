@@ -1,0 +1,29 @@
+import { sendGet, sendPost } from "./api";
+
+export const getListInfor = () => sendGet("YoungFight");
+
+export const getListInforAdmin = (payload: any) =>
+  sendGet(`YoungFight?idclub=${payload}`);
+
+export const addNewMember = (payload: any) =>
+  sendPost("YoungFight?type=Submit&mode=2", payload);
+
+export const getManagamentMember = (payload?: any) =>
+  sendPost("YoungFight?type=Detail", payload ? payload : {});
+
+export const postFixF0 = (payload: any) =>
+  sendPost("YoungFight?type=Fix", payload);
+export const updateFile = (payload: any) =>
+  sendPost("YoungFight?type=Image&mode=1", payload);
+
+export const F0AddNewMember = (payload: any, idclub: any): Promise<any> => {
+  return new Promise((resolve, reject) => {
+    sendPost(`YoungFight?type=AdminSubmit&mode=2&idclub=${idclub}`, payload)
+      .then((response) => {
+        resolve(response); // Resolve Promise khi API trả về thành công
+      })
+      .catch((error) => {
+        reject(error); // Reject Promise nếu có lỗi
+      });
+  });
+};
