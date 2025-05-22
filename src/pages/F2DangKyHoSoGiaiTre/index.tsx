@@ -9,7 +9,7 @@ import { updateFile } from "../../api/thiDau";
 import Header from "../../components/Header";
 import TabPane from "antd/es/tabs/TabPane";
 import styles from "./styles.module.scss";
-import { getInfoF2 } from "../../api/f2";
+import { getInfoF2GiaiTre } from "../../api/f2";
 import TournamentRegistrationYoungPrize from "../giaidau_giaitre/Dang_ky_giai_dau_doi_khang";
 import SubcribePageEditYoungPrize from "../SubcribeEditYoungPrize";
 
@@ -23,7 +23,7 @@ export const generateRandomKey = (length: number) => {
 export default function F2SubcribeGiaiTre() {
   const { id } = useParams();
 
-  const { data: infoF2 } = useQuery(["info"], () => getInfoF2(id));
+  const { data: infoF2 } = useQuery(["info"], () => getInfoF2GiaiTre(id));
 
   const [file, setFile] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);

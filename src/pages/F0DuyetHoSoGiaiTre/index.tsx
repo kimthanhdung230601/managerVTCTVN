@@ -9,7 +9,7 @@ import { Tabs, Button, message } from "antd";
 import TabPane from "antd/es/tabs/TabPane";
 import { getManagamentMember } from "../../api/thiDauGiaiTre";
 import { useQuery } from "react-query";
-import { getInfoF2 } from "../../api/f2";
+import { getInfoF2, getInfoF2GiaiTre } from "../../api/f2";
 import { useParams } from "react-router";
 import AdminManagementYpungPrize from "../giaidau_giaitre/Thu_thap_du_lieu_doi_khang";
 
@@ -29,7 +29,7 @@ type FieldMapping = [keyof ManagementMember, string];
 export default function F0AcceptFile() {
   const { id } = useParams();
 
-  const { data: infoF2 } = useQuery(["info"], () => getInfoF2(id));
+  const { data: infoF2 } = useQuery(["info"], () => getInfoF2GiaiTre(id));
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // Handle form submission

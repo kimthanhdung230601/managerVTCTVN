@@ -9,7 +9,7 @@ import { ReactComponent as Logo } from "../../assets/svg/logo.svg";
 import { getManagamentMember, updateFile } from "../../api/thiDauGiaiTre";
 import Header from "../../components/Header";
 import styles from "./styles.module.scss";
-import { getInfoF2 } from "../../api/f2";
+import { getInfoF2GiaiTre } from "../../api/f2";
 import Subcribe from "./Subcribe";
 import TournamentRegistrationYoungPrize from "../giaidau_giaitre/Dang_ky_giai_dau_doi_khang";
 
@@ -23,7 +23,7 @@ export const generateRandomKey = (length: number) => {
 export default function F2SubcribeYoungPrize() {
   const { id } = useParams();
 
-  const { data: infoF2 } = useQuery(["info"], () => getInfoF2(id));
+  const { data: infoF2 } = useQuery(["info"], () => getInfoF2GiaiTre(id));
 
   const [file, setFile] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);

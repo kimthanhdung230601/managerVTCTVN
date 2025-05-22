@@ -21,11 +21,17 @@ export const getInforAdmin = (param: any) => {
 export const getFilterTable = (path: string, param: string) =>
   sendGet(path + param);
 export const searchInTable = (param: any) => sendGet("/FindData?data=" + param);
-export const getListMemberClubF2 = () => sendGet("/YoungFight");
+export const getListMemberClubF2 = () => sendGet("/Fight2024");
 export const submitListmember = (param: any) =>
-  sendPost("/YoungFight?type=Submit&mode=1", param);
+  sendPost("/Fight2024?type=Submit&mode=1", param);
 
 export const getInfoF2 = (param: any) => {
+  if (param != undefined)
+    return sendPost("/Fight2024?type=Info", { id: param });
+  else return sendPost("/Fight2024?type=Info", {});
+};
+
+export const getInfoF2GiaiTre = (param: any) => {
   if (param != undefined)
     return sendPost("/YoungFight?type=Info", { id: param });
   else return sendPost("/YoungFight?type=Info", {});
