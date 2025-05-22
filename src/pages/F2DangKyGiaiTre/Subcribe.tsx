@@ -21,79 +21,17 @@ interface User {
 }
 
 interface AgeGroup {
-  "Lão Hổ Thượng Sơn": {
-    // Nam: User | null;
-    // Nữ: User | null;
+  "Quyền Quy Định": {
+    [key: string]: {};
   };
-  "Hùng Kê Quyền": {
-    // Nam: User | null;
-    // Nữ: User | null;
+  "Quyền Tự Chọn": {
+    [key: string]: {};
   };
-  "Ngọc Trản Quyền": {
-    // Nam: User | null;
-    // Nữ: User | null;
-  };
-  "Lão Mai Quyền": {
-    // Nam: User | null;
-    // Nữ: User | null;
-  };
-  "Phong Hoa Đao": {
-    // Nam: User | null;
-    // Nữ: User | null;
-  };
-  "Thanh Long Độc Kiếm": {
-    // Nam: User | null;
-    // Nữ: User | null;
-  };
-  "Song Tuyết Kiếm": {
-    // Nam: User | null;
-    // Nữ: User | null;
-  };
-  "Thái Côn Sơn": {
-    // Nam: User | null;
-    // Nữ: User | null;
-  };
-  "Siêu Xung Thiên": {
-    // Nam: User | null;
-    // Nữ: User | null;
-  };
-  "Độc Lư Thương": {
-    // Nam: User | null;
-    // Nữ: User | null;
-  };
-  "Quyền Tay Không": {
-    // Nam: User | null;
-    // Nữ: User | null;
-  };
-  "Binh Khí Ngắn, Đôi": {
-    // Nam: User | null;
-    // Nữ: User | null;
-  };
-  "Binh Khí Dài": {
-    // Nam: User | null;
-    // Nữ: User | null;
-  };
-  "Các loại binh khí khác": {
-    // Nam: User | null;
-    // Nữ: User | null;
-  };
-  "Tay không chống tay không"?: {};
-  "Tay không chống binh khí"?: {};
-  "Binh khí chống binh khí"?: {};
+  "Đối luyện tay không tay không": {};
+  "Tay không chống binh khí": {};
+  "Binh khí chống binh khí": {};
+  "Quyền tập thể": {};
 }
-
-const listContents = [
-  "Lão Hổ Thượng Sơn",
-  "Hùng Kê Quyền",
-  "Ngọc Trản Quyền",
-  "Lão Mai Quyền",
-  "Phong Hoa Đao",
-  "Thanh Long Độc Kiếm",
-  "Song Tuyết Kiếm",
-  "Thái Côn Sơn",
-  "Siêu Xung Thiên",
-  "Độc Lư Thương",
-];
 
 export default function Subcribe() {
   const { id } = useParams();
@@ -111,55 +49,61 @@ export default function Subcribe() {
     "Nhóm tuổi 3": AgeGroup;
   }>({
     "Nhóm tuổi 1": {
-      "Lão Hổ Thượng Sơn": {},
-      "Hùng Kê Quyền": {},
-      "Ngọc Trản Quyền": {},
-      "Lão Mai Quyền": {},
-      "Phong Hoa Đao": {},
-      "Thanh Long Độc Kiếm": {},
-      "Song Tuyết Kiếm": {},
-      "Thái Côn Sơn": {},
-      "Siêu Xung Thiên": {},
-      "Độc Lư Thương": {},
-      "Quyền Tay Không": {},
-      "Binh Khí Ngắn, Đôi": {},
-      "Binh Khí Dài": {},
-      "Các loại binh khí khác": {},
-      "Tay không chống tay không": {},
+      "Quyền Quy Định": {
+        "Căn bản công pháp số 1": {},
+        "Thần Đồng quyền": {},
+        "Tứ Linh Đao": {},
+        "Lão Hổ Thượng Sơn": {},
+        "Thái Sơn Côn": {},
+      },
+      "Quyền Tự Chọn": {
+        "Quyền tay không": {},
+        "Binh khi ngắn, đơn đối": {},
+        "Binh khí dài": {},
+        "Binh khí khác": {},
+      },
+      "Đối luyện tay không tay không": {},
       "Tay không chống binh khí": {},
       "Binh khí chống binh khí": {},
+      "Quyền tập thể": {},
     },
     "Nhóm tuổi 2": {
-      "Lão Hổ Thượng Sơn": {},
-      "Hùng Kê Quyền": {},
-      "Ngọc Trản Quyền": {},
-      "Lão Mai Quyền": {},
-      "Phong Hoa Đao": {},
-      "Thanh Long Độc Kiếm": {},
-      "Song Tuyết Kiếm": {},
-      "Thái Côn Sơn": {},
-      "Siêu Xung Thiên": {},
-      "Độc Lư Thương": {},
-      "Quyền Tay Không": {},
-      "Binh Khí Ngắn, Đôi": {},
-      "Binh Khí Dài": {},
-      "Các loại binh khí khác": {},
+      "Quyền Quy Định": {
+        "Căn bản công pháp số 2": {},
+        "Ngọc Trản Quyền": {},
+        "Thanh Long Độc Kiếm": {},
+        "Phong Hoa Đao": {},
+        "Bát Quái Côn": {},
+      },
+      "Quyền Tự Chọn": {
+        "Quyền tay không": {},
+        "Binh khi ngắn, đơn đối": {},
+        "Binh khí dài": {},
+        "Binh khí khác": {},
+      },
+      "Đối luyện tay không tay không": {},
+      "Tay không chống binh khí": {},
+      "Binh khí chống binh khí": {},
+      "Quyền tập thể": {},
     },
     "Nhóm tuổi 3": {
-      "Lão Hổ Thượng Sơn": {},
-      "Hùng Kê Quyền": {},
-      "Ngọc Trản Quyền": {},
-      "Lão Mai Quyền": {},
-      "Phong Hoa Đao": {},
-      "Thanh Long Độc Kiếm": {},
-      "Song Tuyết Kiếm": {},
-      "Thái Côn Sơn": {},
-      "Siêu Xung Thiên": {},
-      "Độc Lư Thương": {},
-      "Quyền Tay Không": {},
-      "Binh Khí Ngắn, Đôi": {},
-      "Binh Khí Dài": {},
-      "Các loại binh khí khác": {},
+      "Quyền Quy Định": {
+        "Căn bản công pháp số 3": {},
+        "Lão Mai Quyền": {},
+        "Siêu Xung Thiên": {},
+        "Độc Lư Thương": {},
+        "Song Tuyết Kiếm": {},
+      },
+      "Quyền Tự Chọn": {
+        "Quyền tay không": {},
+        "Binh khi ngắn, đơn đối": {},
+        "Binh khí dài": {},
+        "Binh khí khác": {},
+      },
+      "Đối luyện tay không tay không": {},
+      "Tay không chống binh khí": {},
+      "Binh khí chống binh khí": {},
+      "Quyền tập thể": {},
     },
   });
   const submitMutation = useMutation(
@@ -207,7 +151,8 @@ export default function Subcribe() {
     sex: string,
     ageGroup: string,
     memberSelected: any,
-    idFight?: string
+    idFight?: string,
+    type?: string
   ) => {
     if (!!id) {
       updateMutation.mutate({
@@ -220,16 +165,27 @@ export default function Subcribe() {
         [ageGroup as keyof typeof prevState]: {
           ...prevState[ageGroup as keyof typeof prevState],
           [name as keyof AgeGroup]: {
-            ...prevState[ageGroup as keyof typeof prevState][
+            ...(prevState[ageGroup as keyof typeof prevState][
               name as keyof AgeGroup
-            ],
-            [sex]: memberSelected?.id,
+            ] || {}),
+            ...(name === "Quyền Quy Định" || name === "Quyền Tự Chọn"
+              ? {
+                  [type as string]: {
+                    ...(prevState[ageGroup as keyof typeof prevState][
+                      name as keyof AgeGroup
+                    ]?.[type as string] || {}),
+                    [sex]: memberSelected?.id,
+                  },
+                }
+              : {
+                  [sex]: memberSelected?.id,
+                }),
           },
         },
       }));
     }
   };
-
+  console.log("userSelected", userSelected);
   useEffect(() => {
     const fetchManagementMember = async () => {
       const res = await getManagamentMember({ mode: 1 });
