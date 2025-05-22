@@ -5,7 +5,7 @@ import _ from "lodash";
 interface IProps {
   id?: string;
 }
-export default function useMemberYoungPrize({ id }: IProps) {
+export default function useMemberSubscribe({ id }: IProps) {
   const { data: listMembers, isLoading } = useQuery(
     ["listMembers"],
     () => getListSubcribe({ mode: 1 }),
@@ -32,25 +32,52 @@ export default function useMemberYoungPrize({ id }: IProps) {
     if (listMembers) {
       const multiAgeGroup = _.mapValues(
         _.groupBy(listMembers?.data, "sex"),
-        (items) => {
-          return _.mapValues(_.groupBy(items, "type"), (type) =>
-            _.groupBy(_.groupBy(type, "name"), "lesson")
-          );
+        (sexItems) => {
+          return _.mapValues(_.groupBy(sexItems, "type"), (typeItems) => {
+            return _.mapValues(_.groupBy(typeItems, "name"), (nameItems) => {
+              const hasLesson = nameItems.some((item) => item.lesson);
+              if (hasLesson) {
+                return _.groupBy(nameItems, "lesson");
+              } else {
+                return nameItems;
+              }
+            });
+          });
         }
       );
       setMultiAgeGroupState(multiAgeGroup);
     }
     if (listMembers) {
       const singleAgeGroup = _.mapValues(
-        _.groupBy(listMembers?.data, "name"),
-        (items) => _.groupBy(items, "type")
+        _.groupBy(listMembers?.data, "type"),
+        (typeItems) => {
+          return _.mapValues(_.groupBy(typeItems, "name"), (nameItems) => {
+            const hasLesson = nameItems.some((item) => item.lesson);
+            if (hasLesson) {
+              // Nhóm theo lesson nếu tồn tại
+              return _.groupBy(nameItems, "lesson");
+            } else {
+              // Trả về danh sách nếu không có lesson
+              return nameItems;
+            }
+          });
+        }
       );
       setSingleAgeGroupState(singleAgeGroup);
     }
     if (getListMembersOfClubs) {
       const groupByName = _.mapValues(
-        _.groupBy(getListMembersOfClubs?.data, "name"),
-        (items) => _.groupBy(items, "type")
+        _.groupBy(getListMembersOfClubs?.data, "type"),
+        (typeItems) => {
+          return _.mapValues(_.groupBy(typeItems, "name"), (nameItems) => {
+            const hasLesson = nameItems.some((item) => item.lesson);
+            if (hasLesson) {
+              return _.groupBy(nameItems, "lesson");
+            } else {
+              return nameItems;
+            }
+          });
+        }
       );
       setGroupByName(groupByName);
     }
