@@ -90,10 +90,7 @@ export default function Header() {
             )}
             {isAdmin() === "2" && (
               <Col className={styles.headerItem}>
-                <Link
-                  to={"/dang-ky-thi-dau-giai-tre"}
-                  className={styles.itemLink}
-                >
+                <Link to={"/dang-ky-giai-tre"} className={styles.itemLink}>
                   Đăng ký thi đấu giải trẻ
                 </Link>
               </Col>
