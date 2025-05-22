@@ -23,7 +23,7 @@ export default function TableCup() {
     name: "",
     type: "",
   });
-  const { data: getListAccept, refetch } = useQuery(["listAccept"], () =>
+  const { data: listCup, refetch } = useQuery(["list_cup"], () =>
     getListAcceptSubscribe()
   );
   const acceptMutation = useMutation(
@@ -122,7 +122,7 @@ export default function TableCup() {
       <div className={styles.tableWrap}>
         <Table
           pagination={false}
-          dataSource={getListAccept?.data || []}
+          dataSource={listCup?.data || []}
           columns={columns}
         />
       </div>
@@ -130,11 +130,11 @@ export default function TableCup() {
         <div className={styles.total1}>Tổng số</div>
         <div className={styles.total2}>
           Vận động viên quyền thuật:{" "}
-          <b>{getListAccept && getListAccept?.total[0].total_mode_1}</b>
+          <b>{listCup && listCup?.total?.[0].total_mode_1}</b>
         </div>
         <div className={styles.total2}>
           Vận động viên đối kháng hình thức:{" "}
-          <b>{getListAccept && getListAccept?.total[0].total_mode_2}</b>
+          <b>{listCup && listCup?.total?.[0].total_mode_2}</b>
         </div>
       </div>
       <ModalAccept

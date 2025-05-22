@@ -33,8 +33,8 @@ export default function useMemberYoungPrize({ id }: IProps) {
       const multiAgeGroup = _.mapValues(
         _.groupBy(listMembers?.data, "sex"),
         (items) => {
-          return _.mapValues(_.groupBy(items, "name"), (type) =>
-            _.groupBy(type, "type")
+          return _.mapValues(_.groupBy(items, "type"), (type) =>
+            _.groupBy(_.groupBy(type, "name"), "lesson")
           );
         }
       );

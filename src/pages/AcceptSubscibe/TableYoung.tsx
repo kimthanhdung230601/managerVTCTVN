@@ -26,7 +26,7 @@ export default function TableYoung() {
     name: "",
     type: "",
   });
-  const { data: getListAccept, refetch } = useQuery(["listAccept"], () =>
+  const { data: listYoungPrize, refetch } = useQuery(["list_young_prize"], () =>
     getListAcceptSubscribe()
   );
   const acceptMutation = useMutation(
@@ -125,7 +125,7 @@ export default function TableYoung() {
       <div className={styles.tableWrap}>
         <Table
           pagination={false}
-          dataSource={getListAccept?.data || []}
+          dataSource={listYoungPrize?.data || []}
           columns={columns}
         />
       </div>
@@ -133,11 +133,11 @@ export default function TableYoung() {
         <div className={styles.total1}>Tổng số</div>
         <div className={styles.total2}>
           Vận động viên quyền thuật:{" "}
-          <b>{getListAccept && getListAccept?.total[0].total_mode_1}</b>
+          <b>{listYoungPrize?.total?.[0]?.total_mode_1 || 0}</b>
         </div>
         <div className={styles.total2}>
           Vận động viên đối kháng hình thức:{" "}
-          <b>{getListAccept && getListAccept?.total[0].total_mode_2}</b>
+          <b>{listYoungPrize?.total?.[0]?.total_mode_2 || 0}</b>
         </div>
       </div>
       <ModalAccept
