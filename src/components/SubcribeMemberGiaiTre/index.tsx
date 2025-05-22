@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import styles from "./styles.module.scss";
 import { Select } from "antd";
 import { CheckOutlined } from "@ant-design/icons";
-import { getListMemberClubF2 } from "../../api/f2";
+import { getListMemberClubF2 } from "../../api/youngPrize";
 import { useQuery } from "react-query";
 import moment from "moment";
-import { getListMemberClub } from "../../api/f0";
+import { getListMemberClub } from "../../api/youngPrize";
 import { isAdmin } from "../../api/ApiUser";
 
 interface IProps {

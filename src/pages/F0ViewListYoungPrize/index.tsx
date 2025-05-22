@@ -10,7 +10,7 @@ import { getInfoF2 } from "../../api/f2";
 import { useParams } from "react-router";
 import SubcribePageEditYoungPrize from "../SubcribeEditYoungPrize";
 import AdminManagement from "../giaidau/Thu_thap_du_lieu_doi_khang";
-import { getManagamentMember } from "../../api/thiDau";
+import { getManagamentMember } from "../../api/youngPrize";
 import * as XLSX from "xlsx";
 import AdminManagementYpungPrize from "../giaidau_giaitre/Thu_thap_du_lieu_doi_khang";
 

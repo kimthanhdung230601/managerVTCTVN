@@ -6,8 +6,8 @@ import Subcribe1 from "./Subcribe1";
 import Subcribe2 from "./Subcribe2";
 import Subcribe3 from "./Subcribe3";
 import { useMutation, useQuery } from "react-query";
-import { submitListmember } from "../../api/f2";
-import { getListSubcribe, updateListSubcribe } from "../../api/f0";
+import { submitListmemberF2 } from "../../api/youngPrize";
+import { getListSubcribe, updateListSubcribe } from "../../api/youngPrize";
 import useMemberSubscribe from "../../hook/useMemberSubscribe";
 import useMemberYoungPrize from "../../hook/useMemberYoungPrize";
 
@@ -60,7 +60,7 @@ export default function Subcribe({ sex }: IProps) {
           <p className={styles.title}>NHÓM 3 TỪ 15 ĐẾN 17 TUỔI</p>
           <Subcribe3
             sex={sex}
-            listMembers={singleAgeGroup}
+            listMembers={multiAgeGroup}
             onSelectMember={onSelectMember}
           />
         </>

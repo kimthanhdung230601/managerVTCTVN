@@ -6,10 +6,10 @@ import { useQuery } from "react-query";
 import CryptoJS from "crypto-js";
 
 import { ReactComponent as Logo } from "../../assets/svg/logo.svg";
-import { getManagamentMember, updateFile } from "../../api/thiDau";
+import { getManagamentMember, updateFile } from "../../api/youngPrize";
 import Header from "../../components/Header";
 import styles from "./styles.module.scss";
-import { getInfoF2 } from "../../api/f2";
+import { getInfoF2 } from "../../api/youngPrize";
 import Subcribe from "./Subcribe";
 import TournamentRegistrationYoungPrize from "../giaidau_giaitre/Dang_ky_giai_dau_doi_khang";
 

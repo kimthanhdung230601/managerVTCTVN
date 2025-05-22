@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styles from "./styles.module.scss";
 import { Select } from "antd";
 import { CheckOutlined } from "@ant-design/icons";
-import { getListMemberClub } from "../../api/f0";
+import { getListMemberClub } from "../../api/youngPrize";
 import { useQuery } from "react-query";
 import moment from "moment";
 

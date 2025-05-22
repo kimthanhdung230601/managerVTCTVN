@@ -7,9 +7,9 @@ import * as XLSX from "xlsx";
 import Subcribe from "./Subcribe";
 import { Tabs, Input, Button, message } from "antd";
 import TabPane from "antd/es/tabs/TabPane";
-import { getManagamentMember, updateFile } from "../../api/thiDau";
+import { getManagamentMember, updateFile } from "../../api/youngPrize";
 import { useQuery } from "react-query";
-import { getInfoF2 } from "../../api/f2";
+import { getInfoF2 } from "../../api/youngPrize";
 import { useParams } from "react-router";
 import AdminManagement from "../giaidau/Thu_thap_du_lieu_doi_khang";
 
@@ -26,7 +26,7 @@ interface ManagementMember {
 }
 
 type FieldMapping = [keyof ManagementMember, string];
-export default function F0AcceptFile() {
+export default function F0AcceptFileGiaiTre() {
   const { id } = useParams();
 
   const { data: infoF2 } = useQuery(["info"], () => getInfoF2(id));

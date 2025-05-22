@@ -44,3 +44,12 @@ export const getListAcceptSubscribe = () =>
   sendPost(`/YoungFight?type=List`, {});
 export const submitListmember = (idclub: any, param: any) =>
   sendPost(`/YoungFight?type=AdminSubmit&mode=1&idclub=${idclub}`, param);
+export const getListMemberClubF2 = () => sendGet("/YoungFight");
+export const submitListmemberF2 = (param: any) =>
+  sendPost("/YoungFight?type=Submit&mode=1", param);
+
+export const getInfoF2 = (param: any) => {
+  if (param != undefined)
+    return sendPost("/YoungFight?type=Info", { id: param });
+  else return sendPost("/YoungFight?type=Info", {});
+};

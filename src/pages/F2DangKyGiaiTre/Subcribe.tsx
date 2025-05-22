@@ -6,12 +6,12 @@ import Subcribe1 from "./Subcribe1";
 import Subcribe2 from "./Subcribe2";
 import Subcribe3 from "./Subcribe3";
 import { useMutation } from "react-query";
-import { submitListmember } from "../../api/f2";
+import { submitListmemberF2 } from "../../api/youngPrize";
 import { useParams } from "react-router";
-import { updateListSubcribe } from "../../api/f0";
+import { updateListSubcribe } from "../../api/youngPrize";
 import useMemberSubscribe from "../../hook/useMemberSubscribe";
 import { isAdmin } from "../../api/ApiUser";
-import { getManagamentMember } from "../../api/thiDau";
+import { getManagamentMember } from "../../api/youngPrize";
 import { IResponseFight2024 } from "../../type";
 import SubcribePageEdit from "../Subcribe Edit";
 import { ageGroups } from "../../constant/ContentYoungPrize";
@@ -57,7 +57,7 @@ export default function Subcribe() {
   // const check = data?.pending && data?.pending === true;
   const [userSelected, setUserSelected] = useState(ageGroups);
   const submitMutation = useMutation(
-    (payload: any) => submitListmember(payload),
+    (payload: any) => submitListmemberF2(payload),
     {
       onSuccess: (data) => {
         if (data?.status === "success") {
