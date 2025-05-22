@@ -14,87 +14,37 @@ import { isAdmin } from "../../api/ApiUser";
 import { getManagamentMember } from "../../api/thiDau";
 import { IResponseFight2024 } from "../../type";
 import SubcribePageEdit from "../Subcribe Edit";
+import { ageGroups } from "../../constant/ContentYoungPrize";
+import SubcribePageEditYoungPrize from "../SubcribeEditYoungPrize";
+import useMemberYoungPrize from "../../hook/useMemberYoungPrize";
 
 interface User {
   sex: string;
   id: string;
 }
 
-interface AgeGroup {
-  "Lão Hổ Thượng Sơn": {
-    // Nam: User | null;
-    // Nữ: User | null;
+interface TechniqueGroup {
+  [techniqueName: string]: {
+    [sex: string]: string | undefined;
   };
-  "Hùng Kê Quyền": {
-    // Nam: User | null;
-    // Nữ: User | null;
-  };
-  "Ngọc Trản Quyền": {
-    // Nam: User | null;
-    // Nữ: User | null;
-  };
-  "Lão Mai Quyền": {
-    // Nam: User | null;
-    // Nữ: User | null;
-  };
-  "Phong Hoa Đao": {
-    // Nam: User | null;
-    // Nữ: User | null;
-  };
-  "Thanh Long Độc Kiếm": {
-    // Nam: User | null;
-    // Nữ: User | null;
-  };
-  "Song Tuyết Kiếm": {
-    // Nam: User | null;
-    // Nữ: User | null;
-  };
-  "Thái Côn Sơn": {
-    // Nam: User | null;
-    // Nữ: User | null;
-  };
-  "Siêu Xung Thiên": {
-    // Nam: User | null;
-    // Nữ: User | null;
-  };
-  "Độc Lư Thương": {
-    // Nam: User | null;
-    // Nữ: User | null;
-  };
-  "Quyền Tay Không": {
-    // Nam: User | null;
-    // Nữ: User | null;
-  };
-  "Binh Khí Ngắn, Đôi": {
-    // Nam: User | null;
-    // Nữ: User | null;
-  };
-  "Binh Khí Dài": {
-    // Nam: User | null;
-    // Nữ: User | null;
-  };
-  "Các loại binh khí khác": {
-    // Nam: User | null;
-    // Nữ: User | null;
-  };
-  "Tay không chống tay không"?: {};
-  "Tay không chống binh khí"?: {};
-  "Binh khí chống binh khí"?: {};
 }
 
-const listContents = [
-  "Lão Hổ Thượng Sơn",
-  "Hùng Kê Quyền",
-  "Ngọc Trản Quyền",
-  "Lão Mai Quyền",
-  "Phong Hoa Đao",
-  "Thanh Long Độc Kiếm",
-  "Song Tuyết Kiếm",
-  "Thái Côn Sơn",
-  "Siêu Xung Thiên",
-  "Độc Lư Thương",
-];
-
+interface AgeGroup {
+  "Quyền Quy Định": TechniqueGroup;
+  "Quyền Tự Chọn": TechniqueGroup;
+  "Đối luyện tay không tay không": {
+    [sex: string]: string | undefined;
+  };
+  "Tay không chống binh khí": {
+    [sex: string]: string | undefined;
+  };
+  "Binh khí chống binh khí": {
+    [sex: string]: string | undefined;
+  };
+  "Quyền tập thể": {
+    [sex: string]: string | undefined;
+  };
+}
 export default function Subcribe() {
   const { id } = useParams();
   const [data, setData] = useState<IResponseFight2024>();
@@ -105,63 +55,7 @@ export default function Subcribe() {
     (data.pending[0]?.mode === "1" || data.pending[1]?.mode === "1");
   // console.log("check", check);
   // const check = data?.pending && data?.pending === true;
-  const [userSelected, setUserSelected] = useState<{
-    "Nhóm tuổi 1": AgeGroup;
-    "Nhóm tuổi 2": AgeGroup;
-    "Nhóm tuổi 3": AgeGroup;
-  }>({
-    "Nhóm tuổi 1": {
-      "Lão Hổ Thượng Sơn": {},
-      "Hùng Kê Quyền": {},
-      "Ngọc Trản Quyền": {},
-      "Lão Mai Quyền": {},
-      "Phong Hoa Đao": {},
-      "Thanh Long Độc Kiếm": {},
-      "Song Tuyết Kiếm": {},
-      "Thái Côn Sơn": {},
-      "Siêu Xung Thiên": {},
-      "Độc Lư Thương": {},
-      "Quyền Tay Không": {},
-      "Binh Khí Ngắn, Đôi": {},
-      "Binh Khí Dài": {},
-      "Các loại binh khí khác": {},
-      "Tay không chống tay không": {},
-      "Tay không chống binh khí": {},
-      "Binh khí chống binh khí": {},
-    },
-    "Nhóm tuổi 2": {
-      "Lão Hổ Thượng Sơn": {},
-      "Hùng Kê Quyền": {},
-      "Ngọc Trản Quyền": {},
-      "Lão Mai Quyền": {},
-      "Phong Hoa Đao": {},
-      "Thanh Long Độc Kiếm": {},
-      "Song Tuyết Kiếm": {},
-      "Thái Côn Sơn": {},
-      "Siêu Xung Thiên": {},
-      "Độc Lư Thương": {},
-      "Quyền Tay Không": {},
-      "Binh Khí Ngắn, Đôi": {},
-      "Binh Khí Dài": {},
-      "Các loại binh khí khác": {},
-    },
-    "Nhóm tuổi 3": {
-      "Lão Hổ Thượng Sơn": {},
-      "Hùng Kê Quyền": {},
-      "Ngọc Trản Quyền": {},
-      "Lão Mai Quyền": {},
-      "Phong Hoa Đao": {},
-      "Thanh Long Độc Kiếm": {},
-      "Song Tuyết Kiếm": {},
-      "Thái Côn Sơn": {},
-      "Siêu Xung Thiên": {},
-      "Độc Lư Thương": {},
-      "Quyền Tay Không": {},
-      "Binh Khí Ngắn, Đôi": {},
-      "Binh Khí Dài": {},
-      "Các loại binh khí khác": {},
-    },
-  });
+  const [userSelected, setUserSelected] = useState(ageGroups);
   const submitMutation = useMutation(
     (payload: any) => submitListmember(payload),
     {
@@ -191,7 +85,7 @@ export default function Subcribe() {
     }
   );
 
-  const { groupByName } = useMemberSubscribe({ id: id });
+  const { groupByName } = useMemberYoungPrize({ id: id });
 
   const confirm: PopconfirmProps["onConfirm"] = (e) => {};
 
@@ -207,7 +101,8 @@ export default function Subcribe() {
     sex: string,
     ageGroup: string,
     memberSelected: any,
-    idFight?: string
+    idFight?: string,
+    type?: string
   ) => {
     if (!!id) {
       updateMutation.mutate({
@@ -215,21 +110,42 @@ export default function Subcribe() {
         iduser: memberSelected?.id,
       });
     } else {
-      setUserSelected((prevState) => ({
-        ...prevState,
-        [ageGroup as keyof typeof prevState]: {
-          ...prevState[ageGroup as keyof typeof prevState],
-          [name as keyof AgeGroup]: {
-            ...prevState[ageGroup as keyof typeof prevState][
-              name as keyof AgeGroup
-            ],
-            [sex]: memberSelected?.id,
+      setUserSelected((prevState) => {
+        const prevAgeGroup = prevState[ageGroup as keyof typeof prevState];
+
+        const isNestedGroup =
+          name === "Quyền Quy Định" || name === "Quyền Tự Chọn";
+
+        const prevNameGroup = prevAgeGroup[name as keyof AgeGroup];
+
+        const updatedGroup = isNestedGroup
+          ? {
+              [name]: {
+                ...(prevNameGroup as Record<string, Record<string, string>>),
+                [type as string]: {
+                  ...((prevNameGroup as any)?.[type as string] || {}),
+                  [sex]: memberSelected?.id,
+                },
+              },
+            }
+          : {
+              [name]: {
+                ...(prevNameGroup || {}),
+                [sex]: memberSelected?.id,
+              },
+            };
+
+        return {
+          ...prevState,
+          [ageGroup]: {
+            ...prevAgeGroup,
+            ...updatedGroup,
           },
-        },
-      }));
+        };
+      });
     }
   };
-
+  console.log("userSelected", userSelected);
   useEffect(() => {
     const fetchManagementMember = async () => {
       const res = await getManagamentMember({ mode: 1 });
@@ -272,19 +188,19 @@ export default function Subcribe() {
         </div>
         {!check ? (
           <>
-            <p className={styles.title}>NỘI DUNG QUYỀN QUY ĐỊNH</p>
+            <p className={styles.title}>NHÓM 1 TỪ 6 ĐẾN 10 TUỔI</p>
             <Subcribe1
               idclub={id}
               listMemberSubscribe={groupByName}
               onSelectMember={onSelectMember}
             />
-            <p className={styles.title}>NỘI DUNG QUYỀN TỰ CHỌN</p>
+            <p className={styles.title}>NHÓM 2 TỪ 11 ĐẾN 14 TUỔI</p>
             <Subcribe2
               idclub={id}
               listMemberSubscribe={groupByName}
               onSelectMember={onSelectMember}
             />
-            <p className={styles.title}>NỘI DUNG ĐỐI LUYỆN</p>
+            <p className={styles.title}>NHÓM 3 TỪ 15 ĐẾN 17 TUỔI</p>
             <Subcribe3
               idclub={id}
               listMemberSubscribe={groupByName}
@@ -293,7 +209,7 @@ export default function Subcribe() {
           </>
         ) : (
           <>
-            <SubcribePageEdit />
+            <SubcribePageEditYoungPrize />
           </>
         )}
       </div>

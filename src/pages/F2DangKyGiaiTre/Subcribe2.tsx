@@ -1,13 +1,7 @@
 import React, { useState } from "react";
 import styles from "./styles.module.scss";
-import SubscribeMember from "../../components/SubcribeMember";
-
-const listContents = [
-  "Quyền Tay Không",
-  "Binh Khí Ngắn, Đôi",
-  "Binh Khí Dài",
-  "Các loại binh khí khác",
-];
+import SubscribeMember from "../../components/SubcribeMemberGiaiTre";
+import { listContents2 } from "../../constant/ContentYoungPrize";
 
 interface IProps {
   idclub?: string;
@@ -31,8 +25,8 @@ export default function Subcribe2({
       <div className={styles.table}>
         <div className={styles.header}>
           <div className={styles.colIndex}>STT</div>
-          <div className={styles.colItem}>Nội dung</div>
-          <div className={styles.colItem}>Nhóm tuổi</div>
+          <div className={styles.colItem}>Loại (nội dung thi)</div>
+          <div className={styles.colItem}>Bài thi</div>
           <div className={styles.colContent}>Họ tên</div>
           <div className={styles.colSex}>Giới tính</div>
           <div className={styles.colRight}>Ngày sinh</div>
@@ -40,125 +34,111 @@ export default function Subcribe2({
             Mã định danh
           </div>
         </div>
-        {listContents.map((item, index) => (
+        {listContents2.map((item, index) => (
           <div className={styles.tableRow} key={`${item}_${index}`}>
             <div className={styles.bodyIndex}>{++index}</div>
-            <div className={styles.bodyItem}>{item}</div>
+            <div className={styles.bodyItem}>{`${item.name} ${
+              item?.count ? item?.count : ""
+            }`}</div>
             <div className={styles.group}>
-              <div className={styles.bodyInfo}>
-                <div className={styles.ageGroup}>
-                  Nhóm tuổi 1
-                  <br />
-                  (từ 17 đến 40 tuổi)
-                </div>
-                <div className={styles.memberInfo}>
-                  <SubscribeMember
-                    idclub={idclub}
-                    sex={"Nam"}
-                    name={item}
-                    ageGroup="Nhóm tuổi 1"
-                    onSelectMember={onSelectMember}
-                    memberInfo={
-                      listMemberSubscribe?.[item]?.["Nhóm tuổi 1"]?.[0]?.sex ===
-                      "Nam"
-                        ? listMemberSubscribe?.[item]?.["Nhóm tuổi 1"]?.[0]
-                        : listMemberSubscribe?.[item]?.["Nhóm tuổi 1"]?.[1] ||
-                          null
-                    }
-                  />
-                  <SubscribeMember
-                    idclub={idclub}
-                    sex={"Nữ"}
-                    name={item}
-                    ageGroup="Nhóm tuổi 1"
-                    isLastItem={true}
-                    onSelectMember={onSelectMember}
-                    memberInfo={
-                      listMemberSubscribe?.[item]?.["Nhóm tuổi 1"]?.[0]?.sex ===
-                      "Nữ"
-                        ? listMemberSubscribe?.[item]?.["Nhóm tuổi 1"]?.[0]
-                        : listMemberSubscribe?.[item]?.["Nhóm tuổi 1"]?.[1] ||
-                          null
-                    }
-                  />
-                </div>
-              </div>
-              <div className={styles.bodyInfo}>
-                <div className={styles.ageGroup}>
-                  Nhóm tuổi 2
-                  <br />
-                  (từ 41 đến 50 tuổi)
-                </div>
-                <div className={styles.memberInfo}>
-                  <SubscribeMember
-                    idclub={idclub}
-                    sex={"Nam"}
-                    name={item}
-                    ageGroup="Nhóm tuổi 2"
-                    onSelectMember={onSelectMember}
-                    memberInfo={
-                      listMemberSubscribe?.[item]?.["Nhóm tuổi 2"]?.[0]?.sex ===
-                      "Nam"
-                        ? listMemberSubscribe?.[item]?.["Nhóm tuổi 2"]?.[0]
-                        : listMemberSubscribe?.[item]?.["Nhóm tuổi 2"]?.[1] ||
-                          null
-                    }
-                  />
-                  <SubscribeMember
-                    idclub={idclub}
-                    sex={"Nữ"}
-                    name={item}
-                    ageGroup="Nhóm tuổi 2"
-                    isLastItem={true}
-                    onSelectMember={onSelectMember}
-                    memberInfo={
-                      listMemberSubscribe?.[item]?.["Nhóm tuổi 2"]?.[0]?.sex ===
-                      "Nữ"
-                        ? listMemberSubscribe?.[item]?.["Nhóm tuổi 2"]?.[0]
-                        : listMemberSubscribe?.[item]?.["Nhóm tuổi 2"]?.[1] ||
-                          null
-                    }
-                  />
-                </div>
-              </div>
-              <div className={`${styles.bodyInfo} ${styles.lastItem}`}>
-                <div className={styles.ageGroup}>
-                  Nhóm tuổi 3
-                  <br />
-                  (từ 51 đến 60 tuổi)
-                </div>
-                <div className={styles.memberInfo}>
-                  <SubscribeMember
-                    idclub={idclub}
-                    sex={"Nam"}
-                    name={item}
-                    ageGroup="Nhóm tuổi 3"
-                    onSelectMember={onSelectMember}
-                    memberInfo={
-                      listMemberSubscribe?.[item]?.["Nhóm tuổi 3"]?.[0]?.sex ===
-                      "Nam"
-                        ? listMemberSubscribe?.[item]?.["Nhóm tuổi 3"]?.[0]
-                        : listMemberSubscribe?.[item]?.["Nhóm tuổi 3"]?.[1] ||
-                          null
-                    }
-                  />
-                  <SubscribeMember
-                    idclub={idclub}
-                    sex={"Nữ"}
-                    name={item}
-                    ageGroup="Nhóm tuổi 3"
-                    isLastItem={true}
-                    onSelectMember={onSelectMember}
-                    memberInfo={
-                      listMemberSubscribe?.[item]?.["Nhóm tuổi 3"]?.[0]?.sex ===
-                      "Nữ"
-                        ? listMemberSubscribe?.[item]?.["Nhóm tuổi 3"]?.[0]
-                        : listMemberSubscribe?.[item]?.["Nhóm tuổi 3"]?.[1] ||
-                          null
-                    }
-                  />
-                </div>
-              </div>
+              {!item.name.includes("Quyền tập thể") ? (
+                item.types.length > 0 ? (
+                  item.types.map((type, index) => (
+                    <div className={styles.bodyInfo} key={`${item}_${index}`}>
+                      <div className={styles.ageGroup}>{type}</div>
+                      <div className={styles.memberInfo}>
+                        <SubscribeMember
+                          idclub={idclub}
+                          sex={"Nam"}
+                          type={type}
+                          name={item.name}
+                          ageGroup="Nhóm tuổi 2"
+                          onSelectMember={onSelectMember}
+                          memberInfo={
+                            listMemberSubscribe?.[item.name]?.[type]?.[
+                              "Nhóm tuổi 2"
+                            ]?.[0]?.sex === "Nam"
+                              ? listMemberSubscribe?.[item.name]?.[type]?.[
+                                  "Nhóm tuổi 2"
+                                ]?.[0]
+                              : listMemberSubscribe?.[item.name]?.[type]?.[
+                                  "Nhóm tuổi 2"
+                                ]?.[1] || null
+                          }
+                        />
+                        <SubscribeMember
+                          idclub={idclub}
+                          sex={"Nữ"}
+                          name={item.name}
+                          type={type}
+                          ageGroup="Nhóm tuổi 2"
+                          isLastItem={true}
+                          onSelectMember={onSelectMember}
+                          memberInfo={
+                            listMemberSubscribe?.[item.name]?.[type]?.[
+                              "Nhóm tuổi 2"
+                            ]?.[0]?.sex === "Nữ"
+                              ? listMemberSubscribe?.[item.name]?.[type]?.[
+                                  "Nhóm tuổi 2"
+                                ]?.[0]
+                              : listMemberSubscribe?.[item.name]?.[type]?.[
+                                  "Nhóm tuổi 2"
+                                ]?.[1] || null
+                          }
+                        />
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div className={styles.bodyInfo} key={`${item}_${index}`}>
+                    <div className={styles.ageGroup}> </div>
+
+                    <div className={styles.memberInfo}>
+                      {Array.from({ length: 5 }).map((_, index) => (
+                        <SubscribeMember
+                          key={`member-${index}`}
+                          idclub={idclub}
+                          name={item.name}
+                          ageGroup="Nhóm tuổi 2"
+                          table3={`Member${index + 1}`}
+                          onSelectMember={onSelectMember}
+                          memberInfo={
+                            listMemberSubscribe?.[item.name]?.["Nhóm tuổi 2"]?.[
+                              index
+                            ] || null
+                          }
+                          isLastItem={index === 4} // Đánh dấu item cuối cùng
+                        />
+                      ))}
+                    </div>
+                  </div>
+                )
+              ) : (
+                item.name.includes("Quyền tập thể") && (
+                  <div className={styles.bodyInfo}>
+                    <div className={styles.ageGroup}> </div>
+
+                    <div className={styles.memberInfo}>
+                      {Array.from({ length: 10 }).map((_, index) => (
+                        <SubscribeMember
+                          key={`member-${index}`}
+                          idclub={idclub}
+                          name={item.name}
+                          ageGroup="Nhóm tuổi 2"
+                          table3={`Member${index + 1}`}
+                          onSelectMember={onSelectMember}
+                          memberInfo={
+                            listMemberSubscribe?.[item.name]?.["Nhóm tuổi 2"]?.[
+                              index
+                            ] || null
+                          }
+                          isLastItem={index === 9} // Đánh dấu item cuối cùng
+                        />
+                      ))}
+                    </div>
+                  </div>
+                )
+              )}
             </div>
           </div>
         ))}

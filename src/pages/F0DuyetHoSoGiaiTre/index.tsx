@@ -2,18 +2,18 @@ import React, { useState } from "react";
 import styles from "./styles.module.scss";
 import { ReactComponent as Logo } from "../../assets/svg/logo.svg";
 import Header from "../../components/Header";
-import { Button, Tabs } from "antd";
+import * as XLSX from "xlsx";
+
+import Subcribe from "./Subcribe";
+import { Tabs, Input, Button, message } from "antd";
 import TabPane from "antd/es/tabs/TabPane";
-import TournamentRegistration from "../giaidau/Dang_ky_giai_dau_doi_khang";
+import { getManagamentMember, updateFile } from "../../api/thiDau";
 import { useQuery } from "react-query";
 import { getInfoF2 } from "../../api/f2";
 import { useParams } from "react-router";
-import SubcribePageEditYoungPrize from "../SubcribeEditYoungPrize";
 import AdminManagement from "../giaidau/Thu_thap_du_lieu_doi_khang";
-import { getManagamentMember } from "../../api/thiDau";
-import * as XLSX from "xlsx";
-import AdminManagementYpungPrize from "../giaidau_giaitre/Thu_thap_du_lieu_doi_khang";
 
+const secretKey = process.env.REACT_APP_SECRET_KEY as string;
 interface ManagementMember {
   name?: string;
   sex?: string;
@@ -24,9 +24,66 @@ interface ManagementMember {
   type?: string;
   // Add any other fields here if needed
 }
-type FieldMapping = [keyof ManagementMember, string];
 
-export default function F0ViewListYoungPrize() {
+type FieldMapping = [keyof ManagementMember, string];
+export default function F0AcceptFile() {
+  const { id } = useParams();
+
+  const { data: infoF2 } = useQuery(["info"], () => getInfoF2(id));
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  // Handle form submission
+  const handleSubmit = async () => {
+    setIsLoading(true);
+    const fileUrl = infoF2?.image[1].image;
+
+    if (!fileUrl) {
+      message.error("Không tìm thấy file.");
+      setIsLoading(false);
+
+      return;
+    }
+
+    const fileName = fileUrl.split("/").pop();
+    if (!fileName) {
+      console.error("Không tìm thấy file.");
+      setIsLoading(false);
+
+      return;
+    }
+
+    try {
+      // Fetch the file data
+      const response = await fetch(
+        `https://vocotruyen.id.vn/PHP_IMG/${fileName}`
+      );
+      const blob = await response.blob();
+
+      // Create an object URL for the blob
+      const downloadUrl = window.URL.createObjectURL(blob);
+
+      // Create a temporary <a> element for downloading
+      const link = document.createElement("a");
+      link.href = downloadUrl;
+
+      // Set the new file name
+      link.setAttribute(
+        "download",
+        `Giáy giới thiệu CLB ${infoF2?.data[0].nameClb}`
+      );
+
+      document.body.appendChild(link);
+      link.click();
+
+      // Clean up the object URL and the <a> element
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(downloadUrl);
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Error fetching the PDF:", error);
+      setIsLoading(false);
+    }
+  };
   //xuất file excel
   const formatDate = (dateStr: string): string => {
     const date = new Date(dateStr);
@@ -61,9 +118,9 @@ export default function F0ViewListYoungPrize() {
     try {
       // Simulate fetching data from API
       const resDauKhang: { data: ManagementMember[] } =
-        await getManagamentMember({ mode: 2 });
+        await getManagamentMember({ mode: 2, idclub: id });
       const resQuyenThuat: { data: ManagementMember[] } =
-        await getManagamentMember({ mode: 1 });
+        await getManagamentMember({ mode: 1, idoclub: id });
 
       // Define mapping: [value1 (field in data), value2 (Excel column name)]
       const fieldMappingDauKhang: FieldMapping[] = [
@@ -196,10 +253,28 @@ export default function F0ViewListYoungPrize() {
           </div>
           <div className={styles.titleContent}>
             <div className={styles.titleText}>
-              DANH SÁCH ĐĂNG KÝ CUP GIẢI TRẺ CÂU LẠC BỘ
+              {infoF2?.data && <> Đơn vị: {infoF2?.data[0].nameClb}</>}
             </div>
           </div>
         </div>
+      </div>
+      {/* f0 sửa hồ sơ */}
+      <div
+        style={{
+          marginLeft: "30%",
+          marginRight: "30%",
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
+        <Button
+          type="primary"
+          onClick={handleSubmit}
+          style={{ marginBottom: "36px" }}
+          disabled={isLoading}
+        >
+          Tải giấy giới thiệu
+        </Button>
       </div>
       <div
         style={{
@@ -218,16 +293,12 @@ export default function F0ViewListYoungPrize() {
           Xuất file excel
         </Button>
       </div>
-
       <Tabs defaultActiveKey="0" onChange={onChange} centered>
         <TabPane key={0} tab="Dữ liệu đối kháng hình thức">
-          <AdminManagementYpungPrize
-            isEdiTable={false}
-            isShowFullTable={true}
-          />
+          <AdminManagement idClub={Number(id)} />
         </TabPane>
         <TabPane key={1} tab="Dữ liệu quyền thuật">
-          <SubcribePageEditYoungPrize />
+          <Subcribe />
         </TabPane>
       </Tabs>
     </div>
