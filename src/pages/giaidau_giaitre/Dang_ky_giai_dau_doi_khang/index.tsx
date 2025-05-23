@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Button, message, Modal } from "antd";
 
 import CustomTableAdminOne from "../Thu_thap_du_lieu_doi_khang/tableWeightOne";
-import { addNewMember, getManagamentMember } from "../../../api/thiDau";
+import { addNewMember, getManagamentMember } from "../../../api/youngPrize";
 import { IData, IResponseFight2024 } from "../../../type";
 import CustomTableWeightThree from "./tableWeighThree";
 import CustomTableWeightOne from "./tableWeightOne";

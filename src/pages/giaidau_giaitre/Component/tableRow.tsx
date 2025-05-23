@@ -6,7 +6,7 @@ import {
   getListInfor,
   getListInforAdmin,
   postFixF0,
-} from "../../../api/thiDau";
+} from "../../../api/youngPrize";
 import moment from "moment";
 import { weight } from "../Data";
 import { CheckOutlined } from "@ant-design/icons";

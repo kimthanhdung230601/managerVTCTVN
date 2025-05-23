@@ -145,7 +145,7 @@ export default function Subcribe() {
       });
     }
   };
-  console.log("userSelected", userSelected);
+  console.log("userSelected", check);
   useEffect(() => {
     const fetchManagementMember = async () => {
       const res = await getManagamentMember({ mode: 1 });
