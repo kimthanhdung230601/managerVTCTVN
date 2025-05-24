@@ -34,9 +34,8 @@ export default function Subcribe({ sex }: IProps) {
       iduser: idUser,
     });
   };
-  const { multiAgeGroup, groupByName, isLoading } = useMemberYoungPrize({});
-  console.log("multiAgeGroup", multiAgeGroup);
-  console.log("groupByName", groupByName);
+  const { multiAgeGroup, isLoading } = useMemberYoungPrize({});
+
   return (
     <div className={styles.tableWrap}>
       <div className={styles.btnWrap}></div>

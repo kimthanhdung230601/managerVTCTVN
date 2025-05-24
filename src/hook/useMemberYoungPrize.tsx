@@ -92,38 +92,34 @@ export default function useMemberSubscribe({ id }: IProps) {
   const groupDataTableByName = (data: any) => {
     const result: any = {};
 
-    _.forEach(data, (records, sex) => {
-      // Nhóm theo type (Nhóm tuổi)
-      const groupedByType = _.groupBy(records, "type");
+    const groupedByType = _.groupBy(data, "type");
 
-      _.forEach(groupedByType, (typeRecords, type) => {
-        result[type] = {};
+    _.forEach(groupedByType, (typeRecords, type) => {
+      result[type] = {};
 
-        // Phân loại theo category từ name
-        _.forEach(typeRecords, (record) => {
-          const { category, subcategory } = extractCategoryFromName(
-            record.name
-          );
+      // Phân loại theo category từ name
+      _.forEach(typeRecords, (record) => {
+        const { category, subcategory } = extractCategoryFromName(record.name);
 
-          // Xử lý các môn đấu đơn lẻ (không có subcategory)
-          if (!subcategory) {
-            if (!result[type][category]) {
-              result[type][category] = [];
-            }
-            result[type][category].push(record);
-          } else {
-            // Xử lý các môn có phân loại phụ (Quyền Quy Định, Quyền Tự Chọn)
-            if (!result[type][category]) {
-              result[type][category] = {};
-            }
-            if (!result[type][category][subcategory]) {
-              result[type][category][subcategory] = [];
-            }
-            result[type][category][subcategory].push(record);
+        // Xử lý các môn đấu đơn lẻ (không có subcategory)
+        if (!subcategory) {
+          if (!result[type][category]) {
+            result[type][category] = [];
           }
-        });
+          result[type][category].push(record);
+        } else {
+          // Xử lý các môn có phân loại phụ (Quyền Quy Định, Quyền Tự Chọn)
+          if (!result[type][category]) {
+            result[type][category] = {};
+          }
+          if (!result[type][category][subcategory]) {
+            result[type][category][subcategory] = [];
+          }
+          result[type][category][subcategory].push(record);
+        }
       });
     });
+
     return result;
   };
   useEffect(() => {
@@ -161,6 +157,6 @@ export default function useMemberSubscribe({ id }: IProps) {
     isLoading: isLoading,
     multiAgeGroup: multiAgeGroupState,
     // singleAgeGroup: singleAgeGroupState,
-    groupByName: getListMembersOfClubs?.data,
+    groupByName: groupByName,
   };
 }

@@ -65,23 +65,21 @@ export default function Subcribe2({
                   <div className={styles.ageGroup}> </div>
 
                   <div className={styles.memberInfo}>
-                    <div className={styles.memberInfo}>
-                      {listMembers?.[item.name] &&
-                        listMembers?.[item.name].map(
-                          (member: any, index: number) => (
-                            <SubscribeMemberEditYoungPrize
-                              sex={sex}
-                              memberInfo={member}
-                              name={item.name}
-                              ageGroup="Nhóm tuổi 2"
-                              onSelectMember={onSelectMember}
-                              isLastItem={
-                                index === listMembers?.[item.name].length - 1
-                              }
-                            />
-                          )
-                        )}
-                    </div>
+                    {listMembers?.[item.name] &&
+                      listMembers?.[item.name].map(
+                        (member: any, index: number) => (
+                          <SubscribeMemberEditYoungPrize
+                            sex={sex}
+                            memberInfo={member}
+                            name={item.name}
+                            ageGroup="Nhóm tuổi 2"
+                            onSelectMember={onSelectMember}
+                            isLastItem={
+                              index === listMembers?.[item.name].length - 1
+                            }
+                          />
+                        )
+                      )}
                   </div>
                 </div>
               )}

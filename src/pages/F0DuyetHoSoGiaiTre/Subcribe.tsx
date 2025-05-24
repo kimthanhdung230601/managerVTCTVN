@@ -114,19 +114,19 @@ export default function Subcribe() {
         <p className={styles.title}>NHÓM 1 TỪ 6 ĐẾN 10 TUỔI</p>
         <Subcribe1
           idclub={id}
-          listMemberSubscribe={groupByName}
+          listMemberSubscribe={groupByName?.["Nhóm tuổi 1"]}
           onSelectMember={onSelectMember}
         />
         <p className={styles.title}>NHÓM 2 TỪ 11 ĐẾN 14 TUỔI</p>
         <Subcribe2
           idclub={id}
-          listMemberSubscribe={groupByName}
+          listMemberSubscribe={groupByName?.["Nhóm tuổi 2"]}
           onSelectMember={onSelectMember}
         />
         <p className={styles.title}>NHÓM 3 TỪ 15 ĐẾN 17 TUỔI</p>
         <Subcribe3
           idclub={id}
-          listMemberSubscribe={groupByName}
+          listMemberSubscribe={groupByName?.["Nhóm tuổi 3"]}
           onSelectMember={onSelectMember}
         />
       </div>
