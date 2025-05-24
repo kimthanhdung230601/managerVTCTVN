@@ -101,7 +101,7 @@ export default function TableYoung() {
       render: (_, record) => (
         <div className={styles.buttonWrap}>
           <Button
-            onClick={() => navigate(`/dang-ky-thi-dau/${record?.idclub}`)}
+            onClick={() => navigate(`/dang-ky-thi-dau-giai-tre/${record?.idclub}`)}
             className={styles.view}
           >
             Xem/Sửa
