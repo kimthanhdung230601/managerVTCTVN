@@ -60,6 +60,7 @@ export default function SubscribeMember({
   const onChange = (value: string) => {
     if (value) {
       const userInfo = JSON.parse(value);
+
       setUserSelected(userInfo);
       if (!table3) {
         onSelectMember(
@@ -105,6 +106,7 @@ export default function SubscribeMember({
       }
     }
   }, []);
+
   return (
     <div
       className={`${styles.memberItemWrap} ${isLastItem && styles.lastItem}`}
@@ -120,7 +122,13 @@ export default function SubscribeMember({
           onSearch={onSearch}
           filterOption={filterOption}
           className={styles.select}
-          value={userSelected ? userSelected?.hoTen : undefined}
+          value={
+            userSelected
+              ? userSelected?.hoTen
+                ? userSelected?.hoTen
+                : userSelected?.name
+              : undefined
+          }
         >
           {!idclub && Array.isArray(memberClubs?.data) && (
             <>
