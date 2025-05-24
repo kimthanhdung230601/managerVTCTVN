@@ -34,33 +34,34 @@ export default function Subcribe({ sex }: IProps) {
       iduser: idUser,
     });
   };
-  const { multiAgeGroup, singleAgeGroup, isLoading } = useMemberYoungPrize({});
-
+  const { multiAgeGroup, groupByName, isLoading } = useMemberYoungPrize({});
+  console.log("multiAgeGroup", multiAgeGroup);
+  console.log("groupByName", groupByName);
   return (
     <div className={styles.tableWrap}>
       <div className={styles.btnWrap}></div>
 
       {multiAgeGroup !== undefined &&
       Object.keys(multiAgeGroup).length > 0 &&
-      singleAgeGroup !== undefined &&
-      Object.keys(singleAgeGroup).length > 0 ? (
+      multiAgeGroup !== undefined &&
+      Object.keys(multiAgeGroup).length > 0 ? (
         <>
           <p className={styles.title}>NHÓM 1 TỪ 6 ĐẾN 10 TUỔI</p>
           <Subcribe1
             sex={sex}
-            listMembers={multiAgeGroup}
+            listMembers={multiAgeGroup?.[sex]?.["Nhóm tuổi 1"]}
             onSelectMember={onSelectMember}
           />
           <p className={styles.title}>NHÓM 2 TỪ 11 ĐẾN 14 TUỔI</p>
           <Subcribe2
             sex={sex}
-            listMembers={multiAgeGroup}
+            listMembers={multiAgeGroup?.[sex]?.["Nhóm tuổi 2"]}
             onSelectMember={onSelectMember}
           />
           <p className={styles.title}>NHÓM 3 TỪ 15 ĐẾN 17 TUỔI</p>
           <Subcribe3
             sex={sex}
-            listMembers={multiAgeGroup}
+            listMembers={multiAgeGroup?.[sex]?.["Nhóm tuổi 2"]}
             onSelectMember={onSelectMember}
           />
         </>

@@ -85,7 +85,7 @@ export default function Subcribe() {
     }
   );
 
-  const { groupByName } = useMemberYoungPrize({ id: id });
+  // const { groupByName } = useMemberYoungPrize({ id: id });
 
   const confirm: PopconfirmProps["onConfirm"] = (e) => {};
 
@@ -189,23 +189,11 @@ export default function Subcribe() {
         {!check ? (
           <>
             <p className={styles.title}>NHÓM 1 TỪ 6 ĐẾN 10 TUỔI</p>
-            <Subcribe1
-              idclub={id}
-              listMemberSubscribe={groupByName}
-              onSelectMember={onSelectMember}
-            />
+            <Subcribe1 idclub={id} onSelectMember={onSelectMember} />
             <p className={styles.title}>NHÓM 2 TỪ 11 ĐẾN 14 TUỔI</p>
-            <Subcribe2
-              idclub={id}
-              listMemberSubscribe={groupByName}
-              onSelectMember={onSelectMember}
-            />
+            <Subcribe2 idclub={id} onSelectMember={onSelectMember} />
             <p className={styles.title}>NHÓM 3 TỪ 15 ĐẾN 17 TUỔI</p>
-            <Subcribe3
-              idclub={id}
-              listMemberSubscribe={groupByName}
-              onSelectMember={onSelectMember}
-            />
+            <Subcribe3 idclub={id} onSelectMember={onSelectMember} />
           </>
         ) : (
           <>
