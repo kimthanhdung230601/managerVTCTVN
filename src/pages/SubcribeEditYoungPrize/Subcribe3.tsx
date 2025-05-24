@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styles from "./styles.module.scss";
 import SubscribeMember from "../../components/SubcribeMemberGiaiTre";
-import { listContents1 } from "../../constant/ContentYoungPrize";
+import { listContents3 } from "../../constant/ContentYoungPrize";
 import SubscribeMemberEditYoungPrize from "../../components/SubscribeMemberEditGiaiTre";
 
 interface IProps {
@@ -23,13 +23,13 @@ export default function Subcribe3({
           <div className={styles.colItem}>Loại (nội dung thi)</div>
           <div className={styles.colItem}>Bài thi</div>
           <div className={styles.colContent}>Họ tên</div>
-          <div className={styles.colSex}>Giới tính</div>
-          <div className={styles.colRight}>Ngày sinh</div>
+          <div className={styles.colSex}>Ngày sinh</div>
+          <div className={styles.colRight}>Clb</div>
           <div className={`${styles.colRight} ${styles.lastItem}`}>
             Mã định danh
           </div>
         </div>
-        {listContents1.map((item, index) => (
+        {listContents3.map((item, index) => (
           <div className={styles.tableRow} key={`${item}_${index}`}>
             <div className={styles.bodyIndex}>{++index}</div>
             <div className={styles.bodyItem}>{`${item.name} ${
@@ -41,10 +41,8 @@ export default function Subcribe3({
                   <div className={styles.bodyInfo} key={`${item}_${index}`}>
                     <div className={styles.ageGroup}>{type}</div>
                     <div className={styles.memberInfo}>
-                      {listMembers?.[sex]?.[item.name]?.[type]?.[
-                        "Nhóm tuổi 3"
-                      ] &&
-                        listMembers?.[sex]?.[item.name]?.["Nhóm tuổi 3"].map(
+                      {listMembers?.[item.name]?.[type] &&
+                        listMembers?.[item.name]?.[type].map(
                           (member: any, index: number) => (
                             <SubscribeMemberEditYoungPrize
                               sex={sex}
@@ -54,9 +52,7 @@ export default function Subcribe3({
                               onSelectMember={onSelectMember}
                               isLastItem={
                                 index ===
-                                listMembers?.[sex]?.[item.name]?.["Nhóm tuổi 3"]
-                                  .length -
-                                  1
+                                listMembers?.[item.name]?.[type].length - 1
                               }
                             />
                           )
@@ -70,8 +66,8 @@ export default function Subcribe3({
 
                   <div className={styles.memberInfo}>
                     <div className={styles.memberInfo}>
-                      {listMembers?.[sex]?.[item.name]?.["Nhóm tuổi 3"] &&
-                        listMembers?.[sex]?.[item.name]?.["Nhóm tuổi 3"].map(
+                      {listMembers?.[item.name] &&
+                        listMembers?.[item.name].map(
                           (member: any, index: number) => (
                             <SubscribeMemberEditYoungPrize
                               sex={sex}
@@ -80,10 +76,7 @@ export default function Subcribe3({
                               ageGroup="Nhóm tuổi 3"
                               onSelectMember={onSelectMember}
                               isLastItem={
-                                index ===
-                                listMembers?.[sex]?.[item.name]?.["Nhóm tuổi 3"]
-                                  .length -
-                                  1
+                                index === listMembers?.[item.name].length - 1
                               }
                             />
                           )
