@@ -18,7 +18,7 @@ const CustomTableWeightOne = ({ setData }: Props) => {
   const [weightTo54, setWeighTo54] = useState<weight>({ nữ: "" });
   const [weight54to57, setWeight54to57] = useState<weight>({ nam: "" });
   const [weight57to60, setWeight57to60] = useState<weight>({ nam: "" });
-  const [weightTo60, setWeightTo60] = useState<weight>({ nam: "", nữ: "" });
+  const [weightTo60, setWeightTo60] = useState<weight>({ nam: "" });
 
   const setWeightFunctionsNam = [
     setWeight36to38,
@@ -31,7 +31,6 @@ const CustomTableWeightOne = ({ setData }: Props) => {
     setWeight54to57,
     setWeight57to60,
     setWeightTo60,
-    setWeighTo54,
   ];
 
   const setWeightFunctionsNu = [
