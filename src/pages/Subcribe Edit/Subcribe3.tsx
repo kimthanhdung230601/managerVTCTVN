@@ -46,7 +46,7 @@ export default function Subcribe3({
                   (từ 17 đến 40 tuổi)
                 </div>
                 <div className={styles.memberInfo}>
-                  {listMembers?.[item]?.["Nhóm tuổi 1"].map(
+                  {listMembers?.[item]?.["Nhóm tuổi 1"]?.map(
                     (member: any, index: number) => (
                       <SubscribeMemberEdit
                         sex={sex}

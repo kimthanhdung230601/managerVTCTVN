@@ -54,10 +54,10 @@ const TableRow = ({
   );
 
   const dataFilter = !data
-    ? dataFight?.data
+    ? Array.isArray(dataFight?.data)
       ? dataFight.data.filter((item: IData) => item.sex === sex)
       : []
-    : dataManagement1?.data
+    : Array.isArray(dataManagement1?.data)
     ? dataManagement1.data.filter((item: IData) => item.sex === sex)
     : [];
 
