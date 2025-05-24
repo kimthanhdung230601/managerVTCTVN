@@ -60,7 +60,7 @@ const CustomTableWeightThree = ({ setData }: Props) => {
     };
 
     const payload = {
-      hinh_thuc_2: {
+      hinh_thuc_3: {
         ...buildPayload(data_weight_3.nam, [
           weight45to48,
           weight48to51,
@@ -72,7 +72,7 @@ const CustomTableWeightThree = ({ setData }: Props) => {
           weight68to72,
           weight72to76,
           weight76to80,
-          weightTo68,
+          weightTo80,
         ]),
         ...buildPayload(data_weight_3.nu, [
           weight42to45,
@@ -105,6 +105,7 @@ const CustomTableWeightThree = ({ setData }: Props) => {
     weight72to76,
     weight76to80,
     weightTo68,
+    weightTo80,
     setData,
   ]);
 
