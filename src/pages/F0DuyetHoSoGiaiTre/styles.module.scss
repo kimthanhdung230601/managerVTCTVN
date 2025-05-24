@@ -1,7 +1,10 @@
-.wrap {
-  overflow: hidden;
-  padding: 0 40px 30px 40px;
-  background-color: #fff;
+.wrapper {
+  padding-bottom: 30px;
+  :global {
+    .ant-tabs-nav-wrap {
+      justify-content: center !important;
+    }
+  }
 }
 
 .noti {
@@ -9,6 +12,12 @@
   text-align: center;
   font-size: 16px;
   font-weight: 600;
+}
+
+.wrap {
+  overflow: hidden;
+  padding: 0 40px;
+  background-color: #fff;
 }
 
 .tableWrap {
@@ -104,7 +113,7 @@
     padding: 10px;
   }
   .colSex {
-    width: 10%;
+    width: 12%;
     padding: 10px;
   }
   .colItem {
@@ -112,11 +121,12 @@
     padding: 10px;
   }
   .colContent {
-    width: 30%;
+    width: 24%;
   }
 
   .colRight {
     width: 14%;
+    padding-left: 18px;
   }
 
   .tableRow {
@@ -133,6 +143,9 @@
       border-right: 1px solid rgba(0, 0, 0, 0.1);
     }
     .bodyItem {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
       width: 15%;
       padding: 10px;
       border-right: 1px solid rgba(0, 0, 0, 0.1);
@@ -145,12 +158,18 @@
       display: flex;
       border-bottom: 1px solid rgba(0, 0, 0, 0.1);
       .ageGroup {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
         width: 20%;
         padding: 10px;
         border-right: 1px solid rgba(0, 0, 0, 0.1);
       }
       .memberInfo {
         width: 80%;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
       }
     }
     .lastItem {

@@ -143,6 +143,9 @@
       border-right: 1px solid rgba(0, 0, 0, 0.1);
     }
     .bodyItem {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
       width: 15%;
       padding: 10px;
       border-right: 1px solid rgba(0, 0, 0, 0.1);
@@ -155,6 +158,9 @@
       display: flex;
       border-bottom: 1px solid rgba(0, 0, 0, 0.1);
       .ageGroup {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
         width: 20%;
         padding: 10px;
         border-right: 1px solid rgba(0, 0, 0, 0.1);

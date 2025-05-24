@@ -34,7 +34,7 @@ export default function SubcribePageEditYoungPrize() {
     });
   };
   const { multiAgeGroup, isLoading } = useMemberYoungPrize({ id: id });
-
+  console.log("multiAgeGroup", multiAgeGroup);
   return (
     <div className={styles.tableWrap}>
       <div className={styles.btnWrap}></div>

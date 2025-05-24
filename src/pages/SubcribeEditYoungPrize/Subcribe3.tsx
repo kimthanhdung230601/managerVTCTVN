@@ -57,7 +57,7 @@ export default function Subcribe3({ listMembers, onSelectMember }: IProps) {
                 ))
               ) : (
                 <div className={styles.bodyInfo} key={`${item}_${index}`}>
-                  <div className={styles.ageGroup}> </div>
+                  <div className={styles.ageGroup}> Nhóm tuổi 3</div>
 
                   <div className={styles.memberInfo}>
                     {listMembers?.[item.name] &&
