@@ -7,14 +7,14 @@ interface IProps {
 }
 export default function useMemberSubscribe({ id }: IProps) {
   const { data: listMembers, isLoading } = useQuery(
-    ["listMembers"],
+    ["listMembersGetByF2"],
     () => getListSubcribe({ mode: 1 }),
     {
       enabled: id === undefined,
     }
   );
   const { data: getListMembersOfClubs } = useQuery(
-    ["listMembersClub", id],
+    ["listMembersClubGetByF0", id],
     () =>
       getListSubcribe({
         mode: 1,
@@ -50,6 +50,7 @@ export default function useMemberSubscribe({ id }: IProps) {
   };
 
   const groupDataTableByName = (data: any) => {
+    console.log("data", data);
     const result: any = {};
 
     const groupedByType = _.groupBy(data, "type");
@@ -57,25 +58,29 @@ export default function useMemberSubscribe({ id }: IProps) {
     _.forEach(groupedByType, (typeRecords, type) => {
       result[type] = {};
 
-      // Phân loại theo category từ name
       _.forEach(typeRecords, (record) => {
         const { category, subcategory } = extractCategoryFromName(record.name);
+        console.log("Processing:", record.name, "->", category, subcategory);
 
-        // Xử lý các môn đấu đơn lẻ (không có subcategory)
-        if (!subcategory) {
-          if (!result[type][category]) {
-            result[type][category] = [];
-          }
-          result[type][category].push(record);
-        } else {
-          // Xử lý các môn có phân loại phụ (Quyền Quy Định, Quyền Tự Chọn)
-          if (!result[type][category]) {
-            result[type][category] = {};
-          }
-          if (!result[type][category][subcategory]) {
+        // Khởi tạo category nếu chưa có
+        if (!result[type][category]) {
+          result[type][category] = {};
+        }
+
+        // Luôn tạo subcategory, ngay cả khi là undefined
+        // Điều này đảm bảo cấu trúc nhất quán
+        if (subcategory) {
+          if (!Array.isArray(result[type][category][subcategory])) {
             result[type][category][subcategory] = [];
           }
           result[type][category][subcategory].push(record);
+        } else {
+          // Nếu không có subcategory, có thể tạo một key mặc định
+          // hoặc kiểm tra lại hàm extractCategoryFromName
+          if (!Array.isArray(result[type][category])) {
+            result[type][category] = [];
+          }
+          result[type][category].push(record);
         }
       });
     });

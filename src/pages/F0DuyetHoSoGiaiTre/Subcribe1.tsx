@@ -99,7 +99,7 @@ export default function Subcribe1({
                     ))
                   ) : (
                     <div className={styles.bodyInfo} key={`${item}_${index}`}>
-                      <div className={styles.ageGroup}> </div>
+                      <div className={styles.ageGroup}> Nhóm tuổi 1</div>
 
                       <div className={styles.memberInfo}>
                         {Array.from({ length: 5 }).map((_, index) => (
@@ -122,7 +122,7 @@ export default function Subcribe1({
                 ) : (
                   item.name.includes("Quyền tập thể") && (
                     <div className={styles.bodyInfo}>
-                      <div className={styles.ageGroup}> </div>
+                      <div className={styles.ageGroup}> Nhóm tuổi 1</div>
 
                       <div className={styles.memberInfo}>
                         {Array.from({ length: 10 }).map((_, index) => (

@@ -20,22 +20,22 @@ export const listContents1 = [
   },
   {
     name: "Đối luyện tay không tay không",
-    count: "(3 đến 5 vđv)",
+    count: "",
     types: [],
   },
   {
     name: "Tay không chống binh khí",
-    count: "(3 đến 5 vđv)",
+    count: "",
     types: [],
   },
   {
     name: "Binh khí chống binh khí",
-    count: "(3 đến 5 vđv)",
+    count: "",
     types: [],
   },
   {
     name: "Quyền tập thể",
-    count: "(5 đến 10 vđv)",
+    count: "",
     types: [],
   },
 ];
@@ -62,22 +62,22 @@ export const listContents2 = [
   },
   {
     name: "Đối luyện tay không tay không",
-    count: "(3 đến 5 vđv)",
+    count: "",
     types: [],
   },
   {
     name: "Tay không chống binh khí",
-    count: "(3 đến 5 vđv)",
+    count: "",
     types: [],
   },
   {
     name: "Binh khí chống binh khí",
-    count: "(3 đến 5 vđv)",
+    count: "",
     types: [],
   },
   {
     name: "Quyền tập thể",
-    count: "(5 đến 10 vđv)",
+    count: "",
     types: [],
   },
 ];
@@ -104,22 +104,22 @@ export const listContents3 = [
   },
   {
     name: "Đối luyện tay không tay không",
-    count: "(3 đến 5 vđv)",
+    count: "",
     types: [],
   },
   {
     name: "Tay không chống binh khí",
-    count: "(3 đến 5 vđv)",
+    count: "",
     types: [],
   },
   {
     name: "Binh khí chống binh khí",
-    count: "(3 đến 5 vđv)",
+    count: "",
     types: [],
   },
   {
     name: "Quyền tập thể",
-    count: "(5 đến 10 vđv)",
+    count: "",
     types: [],
   },
 ];
