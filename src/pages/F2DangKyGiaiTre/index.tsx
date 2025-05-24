@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Tabs, Input, Button, message } from "antd";
+import { CloseCircleOutlined } from "@ant-design/icons";
 import TabPane from "antd/es/tabs/TabPane";
 import { useParams } from "react-router";
 import { useQuery } from "react-query";
@@ -29,6 +30,7 @@ export default function F2SubcribeYoungPrize() {
   const [isLoading, setIsLoading] = useState(false);
 
   const encryptionKey = generateRandomKey(16);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Handle file change
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -116,12 +118,85 @@ export default function F2SubcribeYoungPrize() {
           flexDirection: "column",
         }}
       >
-        <Input
-          type="file"
-          accept=".pdf, .png, .jpg, .jpeg"
-          onChange={handleFileChange}
-          style={{ marginBottom: 16 }}
-        />
+        {/* Custom file input */}
+        <div
+          style={{ display: "flex", flexDirection: "column", marginBottom: 16 }}
+        >
+          <input
+            id="custom-file-input"
+            type="file"
+            accept=".pdf, .png, .jpg, .jpeg"
+            onChange={handleFileChange}
+            style={{ display: "none" }}
+            ref={fileInputRef}
+          />
+          <div
+            className="custom-file-upload-wrapper"
+            style={{
+              display: "flex",
+              gap: "1rem",
+              cursor: "pointer",
+              border: "1px solid #ccc",
+              borderRadius: "4px",
+              alignItems: "center",
+            }}
+          >
+            <Button
+              style={{ flex: 1, width: "100%" }}
+              type="dashed"
+              onClick={() =>
+                fileInputRef.current && fileInputRef.current.click()
+              }
+            >
+              Chọn tệp
+            </Button>
+            <div
+              style={{
+                flex: 2,
+                width: "100%",
+                display: "flex",
+                alignItems: "center",
+                position: "relative",
+              }}
+            >
+              {file ? (
+                <>
+                  <span>{file.name}</span>
+                  <CloseCircleOutlined
+                    onClick={() => setFile(null)}
+                    style={{
+                      position: "absolute",
+                      right: 12,
+                      color: "#757884",
+                    }}
+                  />
+                  {/* <Button
+                    type="text"
+                    style={{ position: "absolute", right: 0 }}
+                    icon={
+                      <span className="anticon anticon-close">
+                        <svg
+                          viewBox="64 64 896 896"
+                          focusable="false"
+                          data-icon="close"
+                          width="1em"
+                          height="1em"
+                          fill="currentColor"
+                          aria-hidden="true"
+                        >
+                          <path d="M563.8 512l262.1-262.1c6.5-6.5 6.5-17 0-23.5l-28.3-28.3c-6.5-6.5-17-6.5-23.5 0L512 460.2 249.9 198.1c-6.5-6.5-17-6.5-23.5 0l-28.3 28.3c-6.5 6.5-6.5 17 0 23.5L460.2 512 198.1 774.1c-6.5 6.5-6.5 17 0 23.5l28.3 28.3c6.5 6.5 17 6.5 23.5 0L512 563.8l262.1 262.1c6.5 6.5 17 6.5 23.5 0l28.3-28.3c6.5-6.5 6.5-17 0-23.5L563.8 512z"></path>
+                        </svg>
+                      </span>
+                    }
+                    onClick={() => setFile(null)}
+                  /> */}
+                </>
+              ) : (
+                <span style={{ color: "#ccc" }}>Giấy giới thiệu</span>
+              )}
+            </div>
+          </div>
+        </div>
         <Button
           type="primary"
           onClick={handleSubmit}
