@@ -25,7 +25,7 @@ export default function useMemberSubscribe({ id }: IProps) {
     }
   );
   const [multiAgeGroupState, setMultiAgeGroupState] = useState<any>();
-  const [singleAgeGroupState, setSingleAgeGroupState] = useState<any>();
+
   const [groupByName, setGroupByName] = useState<any>();
   const extractCategoryFromName = (name: string) => {
     if (name?.includes("_Quyền Quy Định")) {
@@ -49,46 +49,6 @@ export default function useMemberSubscribe({ id }: IProps) {
     }
   };
 
-  const groupDataTable = (data: any) => {
-    const result: any = {};
-
-    // Xử lý từng giới tính
-    _.forEach(data, (records, sex) => {
-      result[sex] = {};
-
-      // Nhóm theo type (Nhóm tuổi)
-      const groupedByType = _.groupBy(records, "type");
-
-      _.forEach(groupedByType, (typeRecords, type) => {
-        result[sex][type] = {};
-
-        // Phân loại theo category từ name
-        _.forEach(typeRecords, (record) => {
-          const { category, subcategory } = extractCategoryFromName(
-            record.name
-          );
-
-          // Xử lý các môn đấu đơn lẻ (không có subcategory)
-          if (!subcategory) {
-            if (!result[sex][type][category]) {
-              result[sex][type][category] = [];
-            }
-            result[sex][type][category].push(record);
-          } else {
-            // Xử lý các môn có phân loại phụ (Quyền Quy Định, Quyền Tự Chọn)
-            if (!result[sex][type][category]) {
-              result[sex][type][category] = {};
-            }
-            if (!result[sex][type][category][subcategory]) {
-              result[sex][type][category][subcategory] = [];
-            }
-            result[sex][type][category][subcategory].push(record);
-          }
-        });
-      });
-    });
-    return result;
-  };
   const groupDataTableByName = (data: any) => {
     const result: any = {};
 
@@ -124,29 +84,11 @@ export default function useMemberSubscribe({ id }: IProps) {
   };
   useEffect(() => {
     if (listMembers) {
-      const groupedBySex = _.groupBy(listMembers?.data, "sex");
-      const result = groupDataTable(groupedBySex);
+      const result = groupDataTableByName(listMembers?.data);
 
       setMultiAgeGroupState(result);
     }
-    if (listMembers) {
-      const singleAgeGroup = _.mapValues(
-        _.groupBy(listMembers?.data, "type"),
-        (typeItems) => {
-          return _.mapValues(_.groupBy(typeItems, "name"), (nameItems) => {
-            const hasLesson = nameItems.some((item) => item.lesson);
-            if (hasLesson) {
-              // Nhóm theo lesson nếu tồn tại
-              return _.groupBy(nameItems, "lesson");
-            } else {
-              // Trả về danh sách nếu không có lesson
-              return nameItems;
-            }
-          });
-        }
-      );
-      setSingleAgeGroupState(singleAgeGroup);
-    }
+
     if (getListMembersOfClubs) {
       const result = groupDataTableByName(getListMembersOfClubs?.data);
       setGroupByName(result);
@@ -156,7 +98,6 @@ export default function useMemberSubscribe({ id }: IProps) {
   return {
     isLoading: isLoading,
     multiAgeGroup: multiAgeGroupState,
-    // singleAgeGroup: singleAgeGroupState,
     groupByName: groupByName,
   };
 }
