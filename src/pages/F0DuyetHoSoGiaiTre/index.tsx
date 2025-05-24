@@ -12,6 +12,7 @@ import { useQuery } from "react-query";
 import { getInfoF2 } from "../../api/youngPrize";
 import { useParams } from "react-router";
 import AdminManagement from "../giaidau/Thu_thap_du_lieu_doi_khang";
+import AdminManagementYpungPrize from "../giaidau_giaitre/Thu_thap_du_lieu_doi_khang";
 
 const secretKey = process.env.REACT_APP_SECRET_KEY as string;
 interface ManagementMember {
@@ -295,7 +296,7 @@ export default function F0AcceptFileGiaiTre() {
       </div>
       <Tabs defaultActiveKey="0" onChange={onChange} centered>
         <TabPane key={0} tab="Dữ liệu đối kháng hình thức">
-          <AdminManagement idClub={Number(id)} />
+          <AdminManagementYpungPrize idClub={Number(id)} />
         </TabPane>
         <TabPane key={1} tab="Dữ liệu quyền thuật">
           <Subcribe />
