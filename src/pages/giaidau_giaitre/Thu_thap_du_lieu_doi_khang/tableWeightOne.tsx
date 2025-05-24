@@ -33,6 +33,8 @@ const CustomTableAdminOne = ({
     ? dataManagement.data.filter((person: any) => person.type === typeFilter)
     : [];
 
+  console.log("dataManagement", dataManagement);
+
   //lọc theo giới tính bảng 1
   const filterNam = filterNamType?.filter(
     (person: any) => person.sex === "Nam"

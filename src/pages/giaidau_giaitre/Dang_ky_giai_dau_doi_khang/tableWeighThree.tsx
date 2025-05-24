@@ -7,7 +7,7 @@ interface Props {
   setData: any;
 }
 const CustomTableWeightThree = ({ setData }: Props) => {
-  const [weight42to45, setWeight42to45] = useState<weight>({ nữ: "" });
+  const [weight42to45, setWeight42to45] = useState<weight>({ nam: "", nữ: "" });
   const [weight45to48, setWeight45to48] = useState<weight>({ nam: "", nữ: "" });
   const [weight48to51, setWeight48to51] = useState<weight>({ nam: "", nữ: "" });
   const [weight51to54, setWeight51to54] = useState<weight>({ nam: "", nữ: "" });
@@ -26,6 +26,7 @@ const CustomTableWeightThree = ({ setData }: Props) => {
   });
 
   const setWeightFunctionsNam = [
+    setWeight42to45,
     setWeight45to48,
     setWeight48to51,
     setWeight51to54,
@@ -62,6 +63,7 @@ const CustomTableWeightThree = ({ setData }: Props) => {
     const payload = {
       hinh_thuc_3: {
         ...buildPayload(data_weight_3.nam, [
+          weight42to45,
           weight45to48,
           weight48to51,
           weight51to54,
@@ -83,9 +85,6 @@ const CustomTableWeightThree = ({ setData }: Props) => {
           weight57to60,
           weight60to64,
           weight64to68,
-          weight68to72,
-          weight72to76,
-          weight76to80,
           weightTo68,
         ]),
       },
