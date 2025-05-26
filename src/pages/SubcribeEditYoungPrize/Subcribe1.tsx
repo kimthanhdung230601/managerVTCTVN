@@ -6,11 +6,15 @@ import SubscribeMemberEditYoungPrize from "../../components/SubscribeMemberEditG
 
 interface IProps {
   listMembers: any;
-
+  sex: string;
   onSelectMember: (idFight: number, idUser: number) => void;
 }
 
-export default function Subcribe1({ listMembers, onSelectMember }: IProps) {
+export default function Subcribe1({
+  listMembers,
+  onSelectMember,
+  sex,
+}: IProps) {
   return (
     <div>
       <div className={styles.table}>
@@ -41,6 +45,7 @@ export default function Subcribe1({ listMembers, onSelectMember }: IProps) {
                         listMembers?.[item.name]?.[type].map(
                           (member: any, index: number) => (
                             <SubscribeMemberEditYoungPrize
+                              sex={sex}
                               memberInfo={member}
                               name={item.name}
                               ageGroup="Nhóm tuổi 1"
@@ -57,13 +62,14 @@ export default function Subcribe1({ listMembers, onSelectMember }: IProps) {
                 ))
               ) : (
                 <div className={styles.bodyInfo} key={`${item}_${index}`}>
-                  <div className={styles.ageGroup}> Nhóm tuổi 1</div>
+                  <div className={styles.ageGroup}> </div>
 
                   <div className={styles.memberInfo}>
                     {listMembers?.[item.name] &&
                       listMembers?.[item.name]?.map(
                         (member: any, index: number) => (
                           <SubscribeMemberEditYoungPrize
+                            sex={sex}
                             memberInfo={member}
                             name={item.name}
                             ageGroup="Nhóm tuổi 1"

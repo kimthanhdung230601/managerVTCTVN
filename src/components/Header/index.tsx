@@ -84,7 +84,7 @@ export default function Header() {
             {isAdmin() === "2" && (
               <Col className={styles.headerItem}>
                 <Link to={"/dang-ky-thi-dau"} className={styles.itemLink}>
-                  Đăng ký thi đấu
+                  Đăng ký thi đấu giải Cup
                 </Link>
               </Col>
             )}
@@ -105,7 +105,7 @@ export default function Header() {
             {isAdmin() === "0" && (
               <Col className={styles.headerItem}>
                 <Link to={"/danh-sach-thi-dau"} className={styles.itemLink}>
-                  Danh sách thi đấu
+                  Danh sách thi đấu giải Cup
                 </Link>
               </Col>
             )}
@@ -260,7 +260,7 @@ export default function Header() {
                 className={styles.menuResponsiveLink}
                 onClick={handleCloseMenu}
               >
-                Đăng ký thi đấu
+                Đăng ký thi đấu giải Cup
               </Link>
             </li>
           )}

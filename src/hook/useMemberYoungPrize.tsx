@@ -50,7 +50,6 @@ export default function useMemberSubscribe({ id }: IProps) {
   };
 
   const groupDataTableByName = (data: any) => {
-    console.log("data", data);
     const result: any = {};
 
     const groupedByType = _.groupBy(data, "type");
@@ -60,7 +59,6 @@ export default function useMemberSubscribe({ id }: IProps) {
 
       _.forEach(typeRecords, (record) => {
         const { category, subcategory } = extractCategoryFromName(record.name);
-        console.log("Processing:", record.name, "->", category, subcategory);
 
         // Khởi tạo category nếu chưa có
         if (!result[type][category]) {
@@ -87,10 +85,52 @@ export default function useMemberSubscribe({ id }: IProps) {
 
     return result;
   };
+
+  const groupDataTable = (data: any) => {
+    const result: any = {};
+
+    // Xử lý từng giới tính
+    _.forEach(data, (records, sex) => {
+      result[sex] = {};
+
+      // Nhóm theo type (Nhóm tuổi)
+      const groupedByType = _.groupBy(records, "type");
+
+      _.forEach(groupedByType, (typeRecords, type) => {
+        result[sex][type] = {};
+
+        // Phân loại theo category từ name
+        _.forEach(typeRecords, (record) => {
+          const { category, subcategory } = extractCategoryFromName(
+            record.name
+          );
+
+          // Xử lý các môn đấu đơn lẻ (không có subcategory)
+          if (!subcategory) {
+            if (!result[sex][type][category]) {
+              result[sex][type][category] = [];
+            }
+            result[sex][type][category].push(record);
+          } else {
+            // Xử lý các môn có phân loại phụ (Quyền Quy Định, Quyền Tự Chọn)
+            if (!result[sex][type][category]) {
+              result[sex][type][category] = {};
+            }
+            if (!result[sex][type][category][subcategory]) {
+              result[sex][type][category][subcategory] = [];
+            }
+            result[sex][type][category][subcategory].push(record);
+          }
+        });
+      });
+    });
+    return result;
+  };
   useEffect(() => {
     if (listMembers) {
-      const result = groupDataTableByName(listMembers?.data);
+      const groupedBySex = _.groupBy(listMembers?.data, "sex");
 
+      const result = groupDataTable(groupedBySex);
       setMultiAgeGroupState(result);
     }
 
