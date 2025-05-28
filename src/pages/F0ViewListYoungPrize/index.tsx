@@ -196,7 +196,7 @@ export default function F0ViewListYoungPrize() {
           </div>
           <div className={styles.titleContent}>
             <div className={styles.titleText}>
-              DANH SÁCH ĐĂNG KÝ CUP GIẢI TRẺ CÂU LẠC BỘ
+              DANH SÁCH ĐĂNG KÝ GIẢI VÔ ĐỊCH TRẺ QUỐC GIA
             </div>
           </div>
         </div>

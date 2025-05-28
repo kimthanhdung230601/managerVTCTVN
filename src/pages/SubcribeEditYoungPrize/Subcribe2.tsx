@@ -62,7 +62,7 @@ export default function Subcribe2({
                 ))
               ) : (
                 <div className={styles.bodyInfo} key={`${item}_${index}`}>
-                  <div className={styles.ageGroup}> </div>
+                  <div className={styles.ageGroup}>Nhóm tuổi 2 </div>
 
                   <div className={styles.memberInfo}>
                     {listMembers?.[item.name] &&

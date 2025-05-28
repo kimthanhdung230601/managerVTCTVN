@@ -10,6 +10,7 @@ import { submitListmemberF2 } from "../../api/youngPrize";
 import { getListSubcribe, updateListSubcribe } from "../../api/youngPrize";
 import useMemberSubscribe from "../../hook/useMemberSubscribe";
 import useMemberYoungPrize from "../../hook/useMemberYoungPrize";
+import SubcribeOther from "./SubcribeOther";
 
 interface IProps {
   sex: string;
@@ -45,6 +46,12 @@ export default function Subcribe({ sex }: IProps) {
       multiAgeGroup !== undefined &&
       Object.keys(multiAgeGroup).length > 0 ? (
         <>
+          <p className={styles.title}>NỘI DUNG KHÔNG GIỚI HẠN NHÓM TUỔI</p>
+          <SubcribeOther
+            sex={sex}
+            listMembers={multiAgeGroup?.[sex]?.["Khác"]}
+            onSelectMember={onSelectMember}
+          />
           <p className={styles.title}>NHÓM 1 TỪ 6 ĐẾN 10 TUỔI</p>
           <Subcribe1
             sex={sex}

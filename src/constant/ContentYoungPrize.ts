@@ -9,20 +9,7 @@ export const listContents1 = [
       "Thái Sơn Côn",
     ],
   },
-  {
-    name: "Quyền Tự Chọn",
-    types: [
-      "Quyền tay không",
-      "Binh khí ngắn, đơn đối",
-      "Binh khí dài",
-      "Binh khí khác",
-    ],
-  },
-  {
-    name: "Đối luyện tay không tay không",
-    count: "",
-    types: [],
-  },
+
   {
     name: "Tay không chống binh khí",
     count: "",
@@ -51,20 +38,7 @@ export const listContents2 = [
       "Bát Quái Côn",
     ],
   },
-  {
-    name: "Quyền Tự Chọn",
-    types: [
-      "Quyền tay không",
-      "Binh khí ngắn, đơn đối",
-      "Binh khí dài",
-      "Binh khí khác",
-    ],
-  },
-  {
-    name: "Đối luyện tay không tay không",
-    count: "",
-    types: [],
-  },
+
   {
     name: "Tay không chống binh khí",
     count: "",
@@ -93,20 +67,7 @@ export const listContents3 = [
       "Song Tuyết Kiếm",
     ],
   },
-  {
-    name: "Quyền Tự Chọn",
-    types: [
-      "Quyền tay không",
-      "Binh khí ngắn, đơn đối",
-      "Binh khí dài",
-      "Binh khí khác",
-    ],
-  },
-  {
-    name: "Đối luyện tay không tay không",
-    count: "",
-    types: [],
-  },
+
   {
     name: "Tay không chống binh khí",
     count: "",
@@ -124,6 +85,23 @@ export const listContents3 = [
   },
 ];
 
+export const listContentsOther = [
+  {
+    name: "Quyền Tự Chọn",
+    types: [
+      "Quyền tay không",
+      "Binh khí ngắn, đơn đối",
+      "Binh khí dài",
+      "Binh khí khác",
+    ],
+  },
+  {
+    name: "Đối luyện tay không tay không",
+    count: "",
+    types: [],
+  },
+];
+
 export const ageGroups = {
   "Nhóm tuổi 1": {
     "Quyền Quy Định": {
@@ -133,13 +111,7 @@ export const ageGroups = {
       "Lão Hổ Thượng Sơn": {},
       "Thái Sơn Côn": {},
     },
-    "Quyền Tự Chọn": {
-      "Quyền tay không": {},
-      "Binh khí ngắn, đơn đối": {},
-      "Binh khí dài": {},
-      "Binh khí khác": {},
-    },
-    "Đối luyện tay không tay không": {},
+
     "Tay không chống binh khí": {},
     "Binh khí chống binh khí": {},
     "Quyền tập thể": {},
@@ -152,13 +124,7 @@ export const ageGroups = {
       "Phong Hoa Đao": {},
       "Bát Quái Côn": {},
     },
-    "Quyền Tự Chọn": {
-      "Quyền tay không": {},
-      "Binh khí ngắn, đơn đối": {},
-      "Binh khí dài": {},
-      "Binh khí khác": {},
-    },
-    "Đối luyện tay không tay không": {},
+
     "Tay không chống binh khí": {},
     "Binh khí chống binh khí": {},
     "Quyền tập thể": {},
@@ -171,6 +137,12 @@ export const ageGroups = {
       "Độc Lư Thương": {},
       "Song Tuyết Kiếm": {},
     },
+
+    "Tay không chống binh khí": {},
+    "Binh khí chống binh khí": {},
+    "Quyền tập thể": {},
+  },
+  Khác: {
     "Quyền Tự Chọn": {
       "Quyền tay không": {},
       "Binh khí ngắn, đơn đối": {},
@@ -178,8 +150,5 @@ export const ageGroups = {
       "Binh khí khác": {},
     },
     "Đối luyện tay không tay không": {},
-    "Tay không chống binh khí": {},
-    "Binh khí chống binh khí": {},
-    "Quyền tập thể": {},
   },
 };

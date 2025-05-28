@@ -17,6 +17,7 @@ import SubcribePageEdit from "../Subcribe Edit";
 import { ageGroups } from "../../constant/ContentYoungPrize";
 import SubcribePageEditYoungPrize from "../SubcribeEditYoungPrize";
 import useMemberYoungPrize from "../../hook/useMemberYoungPrize";
+import SubcribeOther from "./SubscribeOther";
 
 interface User {
   sex: string;
@@ -29,22 +30,6 @@ interface TechniqueGroup {
   };
 }
 
-interface AgeGroup {
-  "Quyền Quy Định": TechniqueGroup;
-  "Quyền Tự Chọn": TechniqueGroup;
-  "Đối luyện tay không tay không": {
-    [sex: string]: string | undefined;
-  };
-  "Tay không chống binh khí": {
-    [sex: string]: string | undefined;
-  };
-  "Binh khí chống binh khí": {
-    [sex: string]: string | undefined;
-  };
-  "Quyền tập thể": {
-    [sex: string]: string | undefined;
-  };
-}
 export default function Subcribe() {
   const { id } = useParams();
   const [data, setData] = useState<IResponseFight2024>();
@@ -116,7 +101,7 @@ export default function Subcribe() {
         const isNestedGroup =
           name === "Quyền Quy Định" || name === "Quyền Tự Chọn";
 
-        const prevNameGroup = prevAgeGroup[name as keyof AgeGroup];
+        const prevNameGroup = prevAgeGroup[name as keyof typeof prevAgeGroup];
 
         const updatedGroup = isNestedGroup
           ? {
@@ -130,7 +115,7 @@ export default function Subcribe() {
             }
           : {
               [name]: {
-                ...(prevNameGroup || {}),
+                ...(prevNameGroup as Record<string, string>),
                 [sex]: memberSelected?.id,
               },
             };
@@ -145,7 +130,7 @@ export default function Subcribe() {
       });
     }
   };
-  console.log("userSelected", check);
+  console.log("userSelected", userSelected);
   useEffect(() => {
     const fetchManagementMember = async () => {
       const res = await getManagamentMember({ mode: 1 });
@@ -188,6 +173,8 @@ export default function Subcribe() {
         </div>
         {!check ? (
           <>
+            <p className={styles.title}>NỘI DUNG KHÔNG GIỚI HẠN NHÓM TUỔI</p>
+            <SubcribeOther idclub={id} onSelectMember={onSelectMember} />
             <p className={styles.title}>NHÓM 1 TỪ 6 ĐẾN 10 TUỔI</p>
             <Subcribe1 idclub={id} onSelectMember={onSelectMember} />
             <p className={styles.title}>NHÓM 2 TỪ 11 ĐẾN 14 TUỔI</p>
