@@ -1,68 +1,45 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styles from "./styles.module.scss";
+import { ReactComponent as Logo } from "../../assets/svg/logo.svg";
+import Header from "../../components/Header";
+import Cookies from "js-cookie";
+import CryptoJS from "crypto-js";
 import type { PopconfirmProps } from "antd";
 import { Button, message, Popconfirm } from "antd";
-import Subcribe1 from "./Subcribe1";
-import Subcribe2 from "./Subcribe2";
-import Subcribe3 from "./Subcribe3";
-import { useMutation, useQuery } from "react-query";
-import { submitListmemberF2 } from "../../api/youngPrize";
-import { getListSubcribe, updateListSubcribe } from "../../api/youngPrize";
-import useMemberSubscribe from "../../hook/useMemberSubscribe";
-import useMemberYoungPrize from "../../hook/useMemberYoungPrize";
-import { useParams } from "react-router";
+import Subcribe from "./Subcribe";
+import { Tabs } from "antd";
+import type { TabsProps } from "antd";
+import { useLocation, useNavigate } from "react-router";
 
 export default function SubcribePageEditYoungPrize() {
-  const { id } = useParams();
-  const updateMutation = useMutation(
-    (payload: any) => updateListSubcribe(payload),
-    {
-      onSuccess: (data) => {
-        if (data?.status === "success") message.success("Cập nhật thành công.");
-        else message.error("Có lỗi xảy ra, vui lòng thử lại sau!");
-      },
-      onError: (data) => {
-        message.error("Có lỗi xảy ra, vui lòng thử lại sau!");
-      },
-    }
-  );
-
-  const onSelectMember = (idFight: number, idUser: number) => {
-    updateMutation.mutate({
-      id: idFight,
-      iduser: idUser,
-    });
+  const navigate = useNavigate();
+  const paramURL = new URLSearchParams(useLocation().search);
+  const location = useLocation();
+  const onChange = (key: string) => {
+    paramURL.set("tab", key);
+    navigate(`${location.pathname}?${paramURL.toString()}`);
   };
-  const { multiAgeGroup, isLoading } = useMemberYoungPrize({ id: id });
-  console.log("multiAgeGroup", multiAgeGroup);
-  return (
-    <div className={styles.tableWrap}>
-      <div className={styles.btnWrap}></div>
 
-      {multiAgeGroup !== undefined &&
-      Object.keys(multiAgeGroup).length > 0 &&
-      multiAgeGroup !== undefined &&
-      Object.keys(multiAgeGroup).length > 0 ? (
-        <>
-          <p className={styles.title}>NHÓM 1 TỪ 6 ĐẾN 10 TUỔI</p>
-          <Subcribe1
-            listMembers={multiAgeGroup?.["Nhóm tuổi 1"]}
-            onSelectMember={onSelectMember}
-          />
-          <p className={styles.title}>NHÓM 2 TỪ 11 ĐẾN 14 TUỔI</p>
-          <Subcribe2
-            listMembers={multiAgeGroup?.["Nhóm tuổi 2"]}
-            onSelectMember={onSelectMember}
-          />
-          <p className={styles.title}>NHÓM 3 TỪ 15 ĐẾN 17 TUỔI</p>
-          <Subcribe3
-            listMembers={multiAgeGroup?.["Nhóm tuổi 3"]}
-            onSelectMember={onSelectMember}
-          />
-        </>
-      ) : (
-        <div className={styles.noti}>Chưa có dữ liệu</div>
-      )}
+  const items: TabsProps["items"] = [
+    {
+      key: "Male",
+      label: "Bảng Nam",
+      children: <Subcribe sex="Nam" />,
+    },
+    {
+      key: "Female",
+      label: "Bảng Nữ",
+      children: <Subcribe sex="Nữ" />,
+    },
+  ];
+
+  return (
+    <div className={styles.wrapper}>
+      <Tabs
+        defaultActiveKey={paramURL.get("tab") || "Male"}
+        items={items}
+        onChange={onChange}
+      />
     </div>
   );
 }
