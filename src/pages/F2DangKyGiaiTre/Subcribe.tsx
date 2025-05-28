@@ -18,6 +18,7 @@ import { ageGroups } from "../../constant/ContentYoungPrize";
 import SubcribePageEditYoungPrize from "../SubcribeEditYoungPrize";
 import useMemberYoungPrize from "../../hook/useMemberYoungPrize";
 import SubcribeOther from "./SubscribeOther";
+import SubcribeDL from "./SubscribeDL";
 
 interface User {
   sex: string;
@@ -172,16 +173,18 @@ export default function Subcribe() {
           )}
         </div>
         {!check ? (
-          <>
-            <p className={styles.title}>NỘI DUNG KHÔNG GIỚI HẠN NHÓM TUỔI</p>
-            <SubcribeOther idclub={id} onSelectMember={onSelectMember} />
+          <div style={{ marginBottom: "20px" }}>
             <p className={styles.title}>NHÓM 1 TỪ 6 ĐẾN 10 TUỔI</p>
             <Subcribe1 idclub={id} onSelectMember={onSelectMember} />
             <p className={styles.title}>NHÓM 2 TỪ 11 ĐẾN 14 TUỔI</p>
             <Subcribe2 idclub={id} onSelectMember={onSelectMember} />
             <p className={styles.title}>NHÓM 3 TỪ 15 ĐẾN 17 TUỔI</p>
             <Subcribe3 idclub={id} onSelectMember={onSelectMember} />
-          </>
+            <p className={styles.title}>QUYỀN TỰ CHỌN (từ 6 đến 17 tuổi)</p>
+            <SubcribeOther idclub={id} onSelectMember={onSelectMember} />
+            <p className={styles.title}>ĐỐI LUYỆN (từ 6 đến 17 tuổi)</p>
+            <SubcribeDL idclub={id} onSelectMember={onSelectMember} />
+          </div>
         ) : (
           <>
             <SubcribePageEditYoungPrize />

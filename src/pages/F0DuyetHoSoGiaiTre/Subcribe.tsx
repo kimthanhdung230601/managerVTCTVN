@@ -14,6 +14,7 @@ import { isAdmin } from "../../api/ApiUser";
 import useMemberYoungPrize from "../../hook/useMemberYoungPrize";
 import { ageGroups } from "../../constant/ContentYoungPrize";
 import SubcribeOther from "./SubcribeOther";
+import SubcribeDL from "./SubcribeDL";
 interface User {
   sex: string;
   id: string;
@@ -111,13 +112,7 @@ export default function Subcribe() {
         )}
       </div>
       {groupByName !== undefined && Object.keys(groupByName).length > 0 ? (
-        <div>
-          <p className={styles.title}>NỘI DUNG KHÔNG GIỚI HẠN NHÓM TUỔI</p>
-          <SubcribeOther
-            idclub={id}
-            listMemberSubscribe={groupByName?.["Khác"]}
-            onSelectMember={onSelectMember}
-          />
+        <div style={{ marginBottom: "20px" }}>
           <p className={styles.title}>NHÓM 1 TỪ 6 ĐẾN 10 TUỔI</p>
           <Subcribe1
             idclub={id}
@@ -134,6 +129,18 @@ export default function Subcribe() {
           <Subcribe3
             idclub={id}
             listMemberSubscribe={groupByName?.["Nhóm tuổi 3"]}
+            onSelectMember={onSelectMember}
+          />
+          <p className={styles.title}>QUYỀN TỰ CHỌN (từ 6 đến 17 tuổi)</p>
+          <SubcribeOther
+            idclub={id}
+            listMemberSubscribe={groupByName?.["Khác"]}
+            onSelectMember={onSelectMember}
+          />
+          <p className={styles.title}>ĐỐI LUYỆN (từ 6 đến 17 tuổi)</p>
+          <SubcribeDL
+            idclub={id}
+            listMemberSubscribe={groupByName?.["Đối luyện"]}
             onSelectMember={onSelectMember}
           />
         </div>
