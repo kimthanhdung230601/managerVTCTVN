@@ -36,7 +36,7 @@ export default function F0AcceptFileGiaiTre() {
   // Handle form submission
   const handleSubmit = async () => {
     setIsLoading(true);
-    const fileUrl = infoF2?.image[1].image;
+    const fileUrl = infoF2?.image[0].image;
 
     if (!fileUrl) {
       message.error("Không tìm thấy file.");
