@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styles from "./styles.module.scss";
 import SubscribeMember from "../../components/SubcribeMemberGiaiTre";
-import { listContents1 } from "../../constant/ContentYoungPrize";
+import { doiLuyen } from "../../constant/ContentYoungPrize";
 import SubscribeMemberEditYoungPrize from "../../components/SubscribeMemberEditGiaiTre";
 
 interface IProps {
@@ -10,7 +10,7 @@ interface IProps {
   onSelectMember: (idFight: number, idUser: number) => void;
 }
 
-export default function Subcribe1({
+export default function SubcribeDL({
   listMembers,
   onSelectMember,
   sex,
@@ -29,7 +29,7 @@ export default function Subcribe1({
             Mã định danh
           </div>
         </div>
-        {listContents1.map((item, index) => (
+        {doiLuyen.map((item, index) => (
           <div className={styles.tableRow} key={`${item}_${index}`}>
             <div className={styles.bodyIndex}>{++index}</div>
             <div className={styles.bodyItem}>{`${item.name} `}</div>
@@ -46,7 +46,7 @@ export default function Subcribe1({
                               sex={sex}
                               memberInfo={member}
                               name={item.name}
-                              ageGroup="Nhóm tuổi 1"
+                              ageGroup="Đối luyện"
                               onSelectMember={onSelectMember}
                               isLastItem={
                                 index ===
@@ -60,7 +60,7 @@ export default function Subcribe1({
                 ))
               ) : (
                 <div className={styles.bodyInfo} key={`${item}_${index}`}>
-                  <div className={styles.ageGroup}> Nhóm tuổi 1</div>
+                  <div className={styles.ageGroup}> Đối luyện </div>
 
                   <div className={styles.memberInfo}>
                     {listMembers?.[item.name] &&
@@ -70,7 +70,7 @@ export default function Subcribe1({
                             sex={sex}
                             memberInfo={member}
                             name={item.name}
-                            ageGroup="Nhóm tuổi 1"
+                            ageGroup="Đối luyện"
                             onSelectMember={onSelectMember}
                             isLastItem={
                               index === listMembers?.[item.name].length - 1

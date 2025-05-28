@@ -32,9 +32,7 @@ export default function Subcribe3({
         {listContents3.map((item, index) => (
           <div className={styles.tableRow} key={`${item}_${index}`}>
             <div className={styles.bodyIndex}>{++index}</div>
-            <div className={styles.bodyItem}>{`${item.name} ${
-              item?.count ? item?.count : ""
-            }`}</div>
+            <div className={styles.bodyItem}>{`${item.name} `}</div>
             <div className={styles.group}>
               {item.types.length > 0 ? (
                 item.types.map((type, index) => (

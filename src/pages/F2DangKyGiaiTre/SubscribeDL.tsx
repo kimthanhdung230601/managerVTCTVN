@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styles from "./styles.module.scss";
 import SubscribeMember from "../../components/SubcribeMemberGiaiTre";
-import { listContentsOther } from "../../constant/ContentYoungPrize";
+import { doiLuyen } from "../../constant/ContentYoungPrize";
 
 interface IProps {
   idclub?: string;
@@ -15,7 +15,7 @@ interface IProps {
   ) => void;
 }
 
-export default function SubcribeOther({
+export default function SubcribeDL({
   idclub,
   listMemberSubscribe,
   onSelectMember,
@@ -34,7 +34,7 @@ export default function SubcribeOther({
             Mã định danh
           </div>
         </div>
-        {listContentsOther.map((item, index) => (
+        {doiLuyen.map((item, index) => (
           <div className={styles.tableRow} key={`${item}_${index}`}>
             <div className={styles.bodyIndex}>{++index}</div>
             <div className={styles.bodyItem}>{`${item.name} `}</div>
@@ -50,17 +50,17 @@ export default function SubcribeOther({
                           sex={"Nam"}
                           type={type}
                           name={item.name}
-                          ageGroup="Khác"
+                          ageGroup="Đối luyện"
                           onSelectMember={onSelectMember}
                           memberInfo={
                             listMemberSubscribe?.[item.name]?.[type]?.[
-                              "Khác"
+                              "Đối luyện"
                             ]?.[0]?.sex === "Nam"
                               ? listMemberSubscribe?.[item.name]?.[type]?.[
-                                  "Khác"
+                                  "Đối luyện"
                                 ]?.[0]
                               : listMemberSubscribe?.[item.name]?.[type]?.[
-                                  "Khác"
+                                  "Đối luyện"
                                 ]?.[1] || null
                           }
                         />
@@ -69,18 +69,18 @@ export default function SubcribeOther({
                           sex={"Nữ"}
                           name={item.name}
                           type={type}
-                          ageGroup="Khác"
+                          ageGroup="Đối luyện"
                           isLastItem={true}
                           onSelectMember={onSelectMember}
                           memberInfo={
                             listMemberSubscribe?.[item.name]?.[type]?.[
-                              "Khác"
+                              "Đối luyện"
                             ]?.[0]?.sex === "Nữ"
                               ? listMemberSubscribe?.[item.name]?.[type]?.[
-                                  "Khác"
+                                  "Đối luyện"
                                 ]?.[0]
                               : listMemberSubscribe?.[item.name]?.[type]?.[
-                                  "Khác"
+                                  "Đối luyện"
                                 ]?.[1] || null
                           }
                         />
@@ -89,7 +89,7 @@ export default function SubcribeOther({
                   ))
                 ) : (
                   <div className={styles.bodyInfo} key={`${item}_${index}`}>
-                    <div className={styles.ageGroup}>Khác </div>
+                    <div className={styles.ageGroup}>Đối luyện </div>
 
                     <div className={styles.memberInfo}>
                       {Array.from({ length: 5 }).map((_, index) => (
@@ -97,11 +97,11 @@ export default function SubcribeOther({
                           key={`member-${index}`}
                           idclub={idclub}
                           name={item.name}
-                          ageGroup="Khác"
+                          ageGroup="Đối luyện"
                           table3={`Member${index + 1}`}
                           onSelectMember={onSelectMember}
                           memberInfo={
-                            listMemberSubscribe?.[item.name]?.["Khác"]?.[
+                            listMemberSubscribe?.[item.name]?.["Đối luyện"]?.[
                               index
                             ] || null
                           }
@@ -114,7 +114,7 @@ export default function SubcribeOther({
               ) : (
                 item.name.includes("Quyền tập thể") && (
                   <div className={styles.bodyInfo}>
-                    <div className={styles.ageGroup}> Khác</div>
+                    <div className={styles.ageGroup}> Đối luyện</div>
 
                     <div className={styles.memberInfo}>
                       {Array.from({ length: 10 }).map((_, index) => (
@@ -122,11 +122,11 @@ export default function SubcribeOther({
                           key={`member-${index}`}
                           idclub={idclub}
                           name={item.name}
-                          ageGroup="Khác"
+                          ageGroup="Đối luyện"
                           table3={`Member${index + 1}`}
                           onSelectMember={onSelectMember}
                           memberInfo={
-                            listMemberSubscribe?.[item.name]?.["Khác"]?.[
+                            listMemberSubscribe?.[item.name]?.["Đối luyện"]?.[
                               index
                             ] || null
                           }

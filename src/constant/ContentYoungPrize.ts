@@ -11,16 +11,6 @@ export const listContents1 = [
   },
 
   {
-    name: "Tay không chống binh khí",
-    count: "",
-    types: [],
-  },
-  {
-    name: "Binh khí chống binh khí",
-    count: "",
-    types: [],
-  },
-  {
     name: "Quyền tập thể",
     count: "",
     types: [],
@@ -39,16 +29,6 @@ export const listContents2 = [
     ],
   },
 
-  {
-    name: "Tay không chống binh khí",
-    count: "",
-    types: [],
-  },
-  {
-    name: "Binh khí chống binh khí",
-    count: "",
-    types: [],
-  },
   {
     name: "Quyền tập thể",
     count: "",
@@ -69,16 +49,6 @@ export const listContents3 = [
   },
 
   {
-    name: "Tay không chống binh khí",
-    count: "",
-    types: [],
-  },
-  {
-    name: "Binh khí chống binh khí",
-    count: "",
-    types: [],
-  },
-  {
     name: "Quyền tập thể",
     count: "",
     types: [],
@@ -95,8 +65,21 @@ export const listContentsOther = [
       "Binh khí khác",
     ],
   },
+];
+
+export const doiLuyen = [
   {
     name: "Đối luyện tay không tay không",
+    count: "",
+    types: [],
+  },
+  {
+    name: "Tay không chống binh khí",
+    count: "",
+    types: [],
+  },
+  {
+    name: "Binh khí chống binh khí",
     count: "",
     types: [],
   },
@@ -112,8 +95,6 @@ export const ageGroups = {
       "Thái Sơn Côn": {},
     },
 
-    "Tay không chống binh khí": {},
-    "Binh khí chống binh khí": {},
     "Quyền tập thể": {},
   },
   "Nhóm tuổi 2": {
@@ -125,8 +106,6 @@ export const ageGroups = {
       "Bát Quái Côn": {},
     },
 
-    "Tay không chống binh khí": {},
-    "Binh khí chống binh khí": {},
     "Quyền tập thể": {},
   },
   "Nhóm tuổi 3": {
@@ -138,8 +117,6 @@ export const ageGroups = {
       "Song Tuyết Kiếm": {},
     },
 
-    "Tay không chống binh khí": {},
-    "Binh khí chống binh khí": {},
     "Quyền tập thể": {},
   },
   Khác: {
@@ -149,6 +126,10 @@ export const ageGroups = {
       "Binh khí dài": {},
       "Binh khí khác": {},
     },
+  },
+  "Đối luyện": {
     "Đối luyện tay không tay không": {},
+    "Tay không chống binh khí": {},
+    "Binh khí chống binh khí": {},
   },
 };
