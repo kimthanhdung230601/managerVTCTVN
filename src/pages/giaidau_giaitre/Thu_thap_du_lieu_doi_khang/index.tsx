@@ -88,7 +88,7 @@ const AdminManagementYpungPrize = ({
         <CustomTableAdminOne
           idClub={idClub}
           title="NHÓM TUỔI 3 TỪ 16 ĐẾN 17 TUỔI"
-          typeFilter="hinh_thuc_2"
+          typeFilter="hinh_thuc_3"
           isEditTable={isEdiTable}
           dataManagement={data}
         />

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { message, Select } from "antd";
 import { useQuery } from "react-query";
 import {
@@ -74,14 +74,19 @@ const TableRow = ({
     }
   }, [data]);
 
+  const previousValueRef = useRef<any>(null); // Nếu chưa khai báo
+
   const handleChange = (value: string) => {
-    console.log("change");
+    // In ra giá trị trước khi đổi
 
     if (setWeight) {
       const person =
         dataFight?.data.find((option: any) => option.id === value) || null;
 
       if (person) {
+        // Lưu giá trị hiện tại vào ref trước khi thay đổi
+        previousValueRef.current = person;
+
         if (person.sex === "Nam" || person.sex === "nam") {
           setWeight((prevWeight) => ({
             ...prevWeight,
@@ -93,12 +98,35 @@ const TableRow = ({
             nữ: person.id,
           }));
         }
-      }
-      if (value === undefined) {
-        setSelectedPerson(null);
       } else {
-        setSelectedPerson(person);
+        // Nếu không tìm thấy person, reset theo giới tính của person trước đó
+        setWeight((prevWeight) => {
+          if (
+            previousValueRef.current?.sex === "Nam" ||
+            previousValueRef.current?.sex === "nam"
+          ) {
+            return {
+              ...prevWeight,
+              nam: "",
+            };
+          } else if (
+            previousValueRef.current?.sex === "Nữ" ||
+            previousValueRef.current?.sex === "nữ"
+          ) {
+            return {
+              ...prevWeight,
+              nữ: "",
+            };
+          } else {
+            return prevWeight;
+          }
+        });
+
+        // Cũng reset previous value nếu muốn
+        previousValueRef.current = null;
       }
+
+      setSelectedPerson(person);
     }
   };
 
