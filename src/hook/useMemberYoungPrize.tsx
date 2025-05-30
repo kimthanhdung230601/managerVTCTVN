@@ -21,7 +21,7 @@ export default function useMemberSubscribe({ id }: IProps) {
         idclub: id,
       }),
     {
-      enabled: id !== undefined,
+      // enabled: id !== undefined,
     }
   );
   const [multiAgeGroupState, setMultiAgeGroupState] = useState<any>();
