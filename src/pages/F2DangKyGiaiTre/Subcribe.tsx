@@ -19,6 +19,7 @@ import SubcribePageEditYoungPrize from "../SubcribeEditYoungPrize";
 import useMemberYoungPrize from "../../hook/useMemberYoungPrize";
 import SubcribeOther from "./SubscribeOther";
 import SubcribeDL from "./SubscribeDL";
+import F2ViewListYoungPrize from "../F2ViewListYoungPrize/Subcribe";
 
 interface User {
   sex: string;
@@ -187,7 +188,7 @@ export default function Subcribe() {
           </div>
         ) : (
           <>
-            <SubcribePageEditYoungPrize />
+            <F2ViewListYoungPrize />
           </>
         )}
       </div>
