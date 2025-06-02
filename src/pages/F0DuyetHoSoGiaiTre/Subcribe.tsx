@@ -74,7 +74,7 @@ export default function Subcribe() {
         iduser: memberSelected?.id,
       });
     } else {
-      if (type === "Quyền Quy Định" || type === "Quyền Tự Chọn") {
+      if (type && (name === "Quyền Quy Định" || name === "Quyền Tự Chọn")) {
         submitMutation.mutate({
           [ageGroup]: {
             [name]: {
