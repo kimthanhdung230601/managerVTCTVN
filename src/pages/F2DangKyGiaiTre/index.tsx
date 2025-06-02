@@ -80,6 +80,7 @@ export default function F2SubcribeYoungPrize() {
 
       if (response.status === "success") {
         message.success("Tải file lên thành công");
+        window.location.reload(); // Tải lại trang để cập nhật thông tin
       } else {
         message.error("Tải file thất bại");
       }
@@ -93,7 +94,57 @@ export default function F2SubcribeYoungPrize() {
   const onChange = (key: string) => {
     // console.log(key);
   };
+  const handleDownload = async () => {
+    setIsLoading(true);
+    const fileUrl = infoF2?.image[0].image;
 
+    if (!fileUrl) {
+      message.error("Không tìm thấy file.");
+      setIsLoading(false);
+
+      return;
+    }
+
+    const fileName = fileUrl.split("/").pop();
+    if (!fileName) {
+      console.error("Không tìm thấy file.");
+      setIsLoading(false);
+
+      return;
+    }
+
+    try {
+      // Fetch the file data
+      const response = await fetch(
+        `https://vocotruyen.id.vn/PHP_IMG/${fileName}`
+      );
+      const blob = await response.blob();
+
+      // Create an object URL for the blob
+      const downloadUrl = window.URL.createObjectURL(blob);
+
+      // Create a temporary <a> element for downloading
+      const link = document.createElement("a");
+      link.href = downloadUrl;
+
+      // Set the new file name
+      link.setAttribute(
+        "download",
+        `Giáy giới thiệu CLB ${infoF2?.data[0].nameClb}`
+      );
+
+      document.body.appendChild(link);
+      link.click();
+
+      // Clean up the object URL and the <a> element
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(downloadUrl);
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Error fetching the PDF:", error);
+      setIsLoading(false);
+    }
+  };
   return (
     <div>
       <Header />
@@ -118,92 +169,91 @@ export default function F2SubcribeYoungPrize() {
           flexDirection: "column",
         }}
       >
-        {/* Custom file input */}
-        <div
-          style={{ display: "flex", flexDirection: "column", marginBottom: 16 }}
-        >
-          <input
-            id="custom-file-input"
-            type="file"
-            accept=".pdf, .png, .jpg, .jpeg"
-            onChange={handleFileChange}
-            style={{ display: "none" }}
-            ref={fileInputRef}
-          />
-          <div
-            className="custom-file-upload-wrapper"
-            style={{
-              display: "flex",
-              gap: "1rem",
-              cursor: "pointer",
-              border: "1px solid #ccc",
-              borderRadius: "4px",
-              alignItems: "center",
-            }}
-          >
+        {infoF2?.image[0] && infoF2?.image[0]?.image !== "" ? (
+          <>
             <Button
               style={{ flex: 1, width: "100%" }}
               type="dashed"
-              onClick={() =>
-                fileInputRef.current && fileInputRef.current.click()
-              }
+              onClick={handleDownload}
             >
-              Chọn tệp
+              Đã gửi giấy giới thiệu (Tải giấy giới thiệu tại đây)
             </Button>
+          </>
+        ) : (
+          <>
+            {" "}
             <div
               style={{
-                flex: 2,
-                width: "100%",
                 display: "flex",
-                alignItems: "center",
-                position: "relative",
+                flexDirection: "column",
+                marginBottom: 16,
               }}
             >
-              {file ? (
-                <>
-                  <span>{file.name}</span>
-                  <CloseCircleOutlined
-                    onClick={() => setFile(null)}
-                    style={{
-                      position: "absolute",
-                      right: 12,
-                      color: "#757884",
-                    }}
-                  />
-                  {/* <Button
-                    type="text"
-                    style={{ position: "absolute", right: 0 }}
-                    icon={
-                      <span className="anticon anticon-close">
-                        <svg
-                          viewBox="64 64 896 896"
-                          focusable="false"
-                          data-icon="close"
-                          width="1em"
-                          height="1em"
-                          fill="currentColor"
-                          aria-hidden="true"
-                        >
-                          <path d="M563.8 512l262.1-262.1c6.5-6.5 6.5-17 0-23.5l-28.3-28.3c-6.5-6.5-17-6.5-23.5 0L512 460.2 249.9 198.1c-6.5-6.5-17-6.5-23.5 0l-28.3 28.3c-6.5 6.5-6.5 17 0 23.5L460.2 512 198.1 774.1c-6.5 6.5-6.5 17 0 23.5l28.3 28.3c6.5 6.5 17 6.5 23.5 0L512 563.8l262.1 262.1c6.5 6.5 17 6.5 23.5 0l28.3-28.3c6.5-6.5 6.5-17 0-23.5L563.8 512z"></path>
-                        </svg>
-                      </span>
-                    }
-                    onClick={() => setFile(null)}
-                  /> */}
-                </>
-              ) : (
-                <span style={{ color: "#ccc" }}>Giấy giới thiệu</span>
-              )}
+              <input
+                id="custom-file-input"
+                type="file"
+                accept=".pdf, .png, .jpg, .jpeg"
+                onChange={handleFileChange}
+                style={{ display: "none" }}
+                ref={fileInputRef}
+              />
+              <div
+                className="custom-file-upload-wrapper"
+                style={{
+                  display: "flex",
+                  gap: "1rem",
+                  cursor: "pointer",
+                  border: "1px solid #ccc",
+                  borderRadius: "4px",
+                  alignItems: "center",
+                }}
+              >
+                <Button
+                  style={{ flex: 1, width: "100%" }}
+                  type="dashed"
+                  onClick={() =>
+                    fileInputRef.current && fileInputRef.current.click()
+                  }
+                >
+                  Chọn tệp
+                </Button>
+                <div
+                  style={{
+                    flex: 2,
+                    width: "100%",
+                    display: "flex",
+                    alignItems: "center",
+                    position: "relative",
+                  }}
+                >
+                  {file ? (
+                    <>
+                      <span>{file.name}</span>
+                      <CloseCircleOutlined
+                        onClick={() => setFile(null)}
+                        style={{
+                          position: "absolute",
+                          right: 12,
+                          color: "#757884",
+                        }}
+                      />
+                    </>
+                  ) : (
+                    <span style={{ color: "#ccc" }}>Giấy giới thiệu</span>
+                  )}
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-        <Button
-          type="primary"
-          onClick={handleSubmit}
-          disabled={!file || isLoading}
-        >
-          Tải giấy giới thiệu (định dạng PDF, PNG, JPG, JPEG)
-        </Button>
+            <Button
+              type="primary"
+              onClick={handleSubmit}
+              disabled={!file || isLoading}
+            >
+              Tải giấy giới thiệu (định dạng PDF, PNG, JPG, JPEG)
+            </Button>
+          </>
+        )}
+        {/* Custom file input */}
       </div>
 
       <Tabs defaultActiveKey="0" onChange={onChange} centered>
