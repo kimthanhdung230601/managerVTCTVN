@@ -34,9 +34,9 @@ export default function F0AcceptFileGiaiTre() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // Handle form submission
-  const handleSubmit = async () => {
+  const handleSubmit = async (value: number) => {
     setIsLoading(true);
-    const fileUrl = infoF2?.image[0].image;
+    const fileUrl = infoF2?.image[value].image;
 
     if (!fileUrl) {
       message.error("Không tìm thấy file.");
@@ -268,14 +268,32 @@ export default function F0AcceptFileGiaiTre() {
           flexDirection: "column",
         }}
       >
-        <Button
-          type="primary"
-          onClick={handleSubmit}
-          style={{ marginBottom: "36px" }}
-          disabled={isLoading}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            gap: "1rem",
+          }}
         >
-          Tải giấy giới thiệu
-        </Button>
+          {" "}
+          <Button
+            type="primary"
+            onClick={() => handleSubmit(0)}
+            style={{ marginBottom: "36px" }}
+            disabled={isLoading}
+          >
+            Tải giấy giới thiệu đối kháng
+          </Button>
+          <Button
+            type="primary"
+            onClick={() => handleSubmit(1)}
+            style={{ marginBottom: "36px" }}
+            disabled={isLoading}
+          >
+            Tải giấy giới thiệu giải trẻ
+          </Button>
+        </div>
       </div>
       <div
         style={{

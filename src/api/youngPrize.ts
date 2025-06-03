@@ -13,8 +13,8 @@ export const getManagamentMember = (payload?: any) =>
 
 export const postFixF0 = (payload: any) =>
   sendPost("YoungFight?type=Fix", payload);
-export const updateFile = (payload: any) =>
-  sendPost("YoungFight?type=Image&mode=1", payload);
+export const updateFile = (payload: any, value: number) =>
+  sendPost(`YoungFight?type=Image&mode=${value}`, payload);
 
 export const F0AddNewMember = (payload: any, idclub: any): Promise<any> => {
   return new Promise((resolve, reject) => {

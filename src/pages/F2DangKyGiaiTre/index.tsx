@@ -7,7 +7,7 @@ import { useQuery } from "react-query";
 import CryptoJS from "crypto-js";
 
 import { ReactComponent as Logo } from "../../assets/svg/logo.svg";
-import { getManagamentMember, updateFile } from "../../api/youngPrize";
+import { updateFile } from "../../api/youngPrize";
 import Header from "../../components/Header";
 import styles from "./styles.module.scss";
 import { getInfoF2 } from "../../api/youngPrize";
@@ -26,14 +26,16 @@ export default function F2SubcribeYoungPrize() {
 
   const { data: infoF2 } = useQuery(["info"], () => getInfoF2(id));
 
-  const [file, setFile] = useState<File | null>(null);
+  const [fileDoikhang, setFileDoiKhang] = useState<File | null>(null);
+  const [fileQuyenThuat, setFileQuyenThuat] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const encryptionKey = generateRandomKey(16);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const fileInputRefDoiKhang = useRef<HTMLInputElement>(null);
+  const fileInputRefQuyenThuat = useRef<HTMLInputElement>(null);
 
   // Handle file change
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChangeDoiKhang = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files && e.target.files[0];
     // Allow PDF, PNG, JPG, and JPEG files
     const validFileTypes = [
@@ -44,31 +46,53 @@ export default function F2SubcribeYoungPrize() {
     ];
 
     if (selectedFile && validFileTypes.includes(selectedFile.type)) {
-      setFile(selectedFile);
+      setFileDoiKhang(selectedFile);
       message.success(`Đã chọn file ${selectedFile.name}`);
     } else {
       message.error("Vui lòng chọn file PDF, PNG, JPG hoặc JPEG.");
-      setFile(null);
+      setFileDoiKhang(null);
+    }
+  };
+  const handleFileChangeQuyenThuat = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const selectedFile = e.target.files && e.target.files[0];
+    // Allow PDF, PNG, JPG, and JPEG files
+    const validFileTypes = [
+      "application/pdf",
+      "image/png",
+      "image/jpeg",
+      "image/jpg",
+    ];
+
+    if (selectedFile && validFileTypes.includes(selectedFile.type)) {
+      setFileQuyenThuat(selectedFile);
+      message.success(`Đã chọn file ${selectedFile.name}`);
+    } else {
+      message.error("Vui lòng chọn file PDF, PNG, JPG hoặc JPEG.");
+      setFileQuyenThuat(null);
     }
   };
 
   // Handle form submission
-  const handleSubmit = async () => {
-    if (!file) {
+  const handleSubmitDoiKhang = async (value: number) => {
+    if (!fileDoikhang) {
       message.error("Vui lòng chọn file.");
       return;
     }
 
-    const originalFileName = file.name;
-    const fileExtension = originalFileName.split(".").pop(); // Lấy phần mở rộng file
+    const originalFileName = fileDoikhang.name;
+    const fileExtension = originalFileName.split(".").pop(); // Lấy phần mở rộng fileDoikhang
     const encryptedFileName = CryptoJS.HmacSHA256(
       originalFileName,
       encryptionKey
     ).toString();
 
-    // Tạo một file mới với tên mã hóa
-    const newFileName = `${encryptedFileName}.${fileExtension}`; // Giữ nguyên phần mở rộng file
-    const renamedFile = new File([file], newFileName, { type: file.type });
+    // Tạo một fileDoikhang mới với tên mã hóa
+    const newFileName = `${encryptedFileName}.${fileExtension}`; // Giữ nguyên phần mở rộng fileDoikhang
+    const renamedFile = new File([fileDoikhang], newFileName, {
+      type: fileDoikhang.type,
+    });
 
     const formData = new FormData();
     formData.append("imageClb", renamedFile);
@@ -76,11 +100,49 @@ export default function F2SubcribeYoungPrize() {
     setIsLoading(true);
 
     try {
-      const response = await updateFile(formData);
+      const response = await updateFile(formData, value);
 
       if (response.status === "success") {
         message.success("Tải file lên thành công");
-        window.location.reload(); // Tải lại trang để cập nhật thông tin
+      } else {
+        message.error("Tải file thất bại");
+      }
+    } catch (error) {
+      message.error("Tải file thất bại");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  const handleSubmitQuyenThuat = async (value: number) => {
+    if (!fileDoikhang) {
+      message.error("Vui lòng chọn file.");
+      return;
+    }
+
+    const originalFileName = fileDoikhang.name;
+    const fileExtension = originalFileName.split(".").pop(); // Lấy phần mở rộng fileDoikhang
+    const encryptedFileName = CryptoJS.HmacSHA256(
+      originalFileName,
+      encryptionKey
+    ).toString();
+
+    // Tạo một fileDoikhang mới với tên mã hóa
+    const newFileName = `${encryptedFileName}.${fileExtension}`; // Giữ nguyên phần mở rộng fileDoikhang
+    const renamedFile = new File([fileDoikhang], newFileName, {
+      type: fileDoikhang.type,
+    });
+
+    const formData = new FormData();
+    formData.append("imageClb", renamedFile);
+
+    setIsLoading(true);
+
+    try {
+      const response = await updateFile(formData, value);
+
+      if (response.status === "success") {
+        message.success("Tải file lên thành công");
+        // window.location.reload(); // Tải lại trang để cập nhật thông tin
       } else {
         message.error("Tải file thất bại");
       }
@@ -94,9 +156,9 @@ export default function F2SubcribeYoungPrize() {
   const onChange = (key: string) => {
     // console.log(key);
   };
-  const handleDownload = async () => {
+  const handleDownload = async (value: number) => {
     setIsLoading(true);
-    const fileUrl = infoF2?.image[0].image;
+    const fileUrl = infoF2?.image[value].image;
 
     if (!fileUrl) {
       message.error("Không tìm thấy file.");
@@ -161,106 +223,204 @@ export default function F2SubcribeYoungPrize() {
         </div>
       </div>
       {/* F2 dang ky ho so */}
-      <div
-        style={{
-          marginLeft: "30%",
-          marginRight: "30%",
-          display: "flex",
-          flexDirection: "column",
-        }}
-      >
-        {infoF2?.image[0] && infoF2?.image[0]?.image !== "" ? (
-          <>
-            <Button
-              style={{ flex: 1, width: "100%" }}
-              type="dashed"
-              onClick={handleDownload}
-            >
-              Đã gửi giấy giới thiệu (Tải giấy giới thiệu tại đây)
-            </Button>
-          </>
-        ) : (
-          <>
-            {" "}
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                marginBottom: 16,
-              }}
-            >
-              <input
-                id="custom-file-input"
-                type="file"
-                accept=".pdf, .png, .jpg, .jpeg"
-                onChange={handleFileChange}
-                style={{ display: "none" }}
-                ref={fileInputRef}
-              />
-              <div
-                className="custom-file-upload-wrapper"
-                style={{
-                  display: "flex",
-                  gap: "1rem",
-                  cursor: "pointer",
-                  border: "1px solid #ccc",
-                  borderRadius: "4px",
-                  alignItems: "center",
-                }}
-              >
-                <Button
-                  style={{ flex: 1, width: "100%" }}
-                  type="dashed"
-                  onClick={() =>
-                    fileInputRef.current && fileInputRef.current.click()
-                  }
-                >
-                  Chọn tệp
-                </Button>
-                <div
-                  style={{
-                    flex: 2,
-                    width: "100%",
-                    display: "flex",
-                    alignItems: "center",
-                    position: "relative",
-                  }}
-                >
-                  {file ? (
-                    <>
-                      <span>{file.name}</span>
-                      <CloseCircleOutlined
-                        onClick={() => setFile(null)}
-                        style={{
-                          position: "absolute",
-                          right: 12,
-                          color: "#757884",
-                        }}
-                      />
-                    </>
-                  ) : (
-                    <span style={{ color: "#ccc" }}>Giấy giới thiệu</span>
-                  )}
-                </div>
-              </div>
-            </div>
-            <Button
-              type="primary"
-              onClick={handleSubmit}
-              disabled={!file || isLoading}
-            >
-              Tải giấy giới thiệu (định dạng PDF, PNG, JPG, JPEG)
-            </Button>
-          </>
-        )}
-        {/* Custom file input */}
-      </div>
 
       <Tabs defaultActiveKey="0" onChange={onChange} centered>
         <TabPane key={0} tab="Dữ liệu đối kháng hình thức">
+          {" "}
+          <div
+            style={{
+              marginLeft: "30%",
+              marginRight: "30%",
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            {infoF2?.image[0] && infoF2?.image[0]?.image !== "" ? (
+              <>
+                <Button
+                  style={{ flex: 1, width: "100%" }}
+                  type="dashed"
+                  onClick={() => handleDownload(0)}
+                >
+                  Đã gửi giấy giới thiệu đối kháng (Tải giấy giới thiệu tại đây)
+                </Button>
+              </>
+            ) : (
+              <>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    marginBottom: 16,
+                  }}
+                >
+                  <input
+                    id="custom-file-input-doi-khang"
+                    type="file"
+                    accept=".pdf, .png, .jpg, .jpeg"
+                    onChange={handleFileChangeDoiKhang}
+                    style={{ display: "none" }}
+                    ref={fileInputRefDoiKhang}
+                  />
+                  <div
+                    className="custom-file-upload-wrapper"
+                    style={{
+                      display: "flex",
+                      gap: "1rem",
+                      cursor: "pointer",
+                      border: "1px solid #ccc",
+                      borderRadius: "4px",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Button
+                      style={{ flex: 1, width: "100%" }}
+                      type="dashed"
+                      onClick={() =>
+                        fileInputRefDoiKhang.current &&
+                        fileInputRefDoiKhang.current.click()
+                      }
+                    >
+                      Chọn tệp
+                    </Button>
+                    <div
+                      style={{
+                        flex: 2,
+                        width: "100%",
+                        display: "flex",
+                        alignItems: "center",
+                        position: "relative",
+                      }}
+                    >
+                      {fileDoikhang ? (
+                        <>
+                          <span>{fileDoikhang.name}</span>
+                          <CloseCircleOutlined
+                            onClick={() => setFileDoiKhang(null)}
+                            style={{
+                              position: "absolute",
+                              right: 12,
+                              color: "#757884",
+                            }}
+                          />
+                        </>
+                      ) : (
+                        <span style={{ color: "#ccc" }}>Giấy giới thiệu</span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+                <Button
+                  type="primary"
+                  onClick={() => handleSubmitDoiKhang(0)}
+                  disabled={!fileDoikhang || isLoading}
+                >
+                  Tải giấy giới thiệu đối kháng (định dạng PDF, PNG, JPG, JPEG)
+                </Button>
+              </>
+            )}
+            {/* Custom file input */}
+          </div>
           <TournamentRegistrationYoungPrize />
         </TabPane>
         <TabPane key={1} tab="Dữ liệu quyền thuật">
+          {" "}
+          <div
+            style={{
+              marginLeft: "30%",
+              marginRight: "30%",
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            {infoF2?.image[1] && infoF2?.image[1]?.image !== "" ? (
+              <>
+                <Button
+                  style={{ flex: 1, width: "100%" }}
+                  type="dashed"
+                  onClick={() => handleDownload(1)}
+                >
+                  Đã gửi giấy giới thiệu quyền thuật(Tải giấy giới thiệu tại
+                  đây)
+                </Button>
+              </>
+            ) : (
+              <>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    marginBottom: 16,
+                  }}
+                >
+                  <input
+                    id="custom-file-input-quyen-thuat"
+                    type="file"
+                    accept=".pdf, .png, .jpg, .jpeg"
+                    onChange={handleFileChangeQuyenThuat}
+                    style={{ display: "none" }}
+                    ref={fileInputRefQuyenThuat}
+                  />
+                  <div
+                    className="custom-file-upload-wrapper"
+                    style={{
+                      display: "flex",
+                      gap: "1rem",
+                      cursor: "pointer",
+                      border: "1px solid #ccc",
+                      borderRadius: "4px",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Button
+                      style={{ flex: 1, width: "100%" }}
+                      type="dashed"
+                      onClick={() =>
+                        fileInputRefQuyenThuat.current &&
+                        fileInputRefQuyenThuat.current.click()
+                      }
+                    >
+                      Chọn tệp
+                    </Button>
+                    <div
+                      style={{
+                        flex: 2,
+                        width: "100%",
+                        display: "flex",
+                        alignItems: "center",
+                        position: "relative",
+                      }}
+                    >
+                      {fileQuyenThuat ? (
+                        <>
+                          <span>{fileQuyenThuat.name}</span>
+                          <CloseCircleOutlined
+                            onClick={() => setFileQuyenThuat(null)}
+                            style={{
+                              position: "absolute",
+                              right: 12,
+                              color: "#757884",
+                            }}
+                          />
+                        </>
+                      ) : (
+                        <span style={{ color: "#ccc" }}>Giấy giới thiệu</span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+                <Button
+                  type="primary"
+                  onClick={() => handleSubmitQuyenThuat(1)}
+                  disabled={!fileQuyenThuat || isLoading}
+                >
+                  Tải giấy giới thiệu quyền thuật (định dạng PDF, PNG, JPG,
+                  JPEG)
+                </Button>
+              </>
+            )}
+            {/* Custom file input */}
+          </div>
           <Subcribe />
         </TabPane>
       </Tabs>
