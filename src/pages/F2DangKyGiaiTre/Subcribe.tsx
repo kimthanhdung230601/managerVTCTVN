@@ -167,11 +167,11 @@ export default function Subcribe() {
 
       <div className={styles.tableWrap}>
         <div className={styles.btnWrap}>
-          {isAdmin() === "2" && (
+          {/* {isAdmin() === "2" && (
             <Button onClick={() => setIsOpen(true)} disabled={check}>
               Gửi hồ sơ
             </Button>
-          )}
+          )} */}
         </div>
         {!check ? (
           <div style={{ marginBottom: "20px" }}>

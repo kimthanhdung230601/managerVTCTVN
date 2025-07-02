@@ -136,9 +136,9 @@ const TournamentRegistrationYoungPrize = () => {
               marginBottom: "12px",
             }}
           >
-            <Button type="primary" onClick={showPopconfirm} disabled={check}>
+            {/* <Button type="primary" onClick={showPopconfirm} disabled={check}>
               Gửi hồ sơ
-            </Button>
+            </Button> */}
           </div>
         )}
         {!check ? (

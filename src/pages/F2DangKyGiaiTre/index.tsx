@@ -104,6 +104,7 @@ export default function F2SubcribeYoungPrize() {
 
       if (response.status === "success") {
         message.success("Tải file lên thành công");
+        window.location.reload(); // Tải lại trang để cập nhật thông tin
       } else {
         message.error("Tải file thất bại");
       }
@@ -142,7 +143,7 @@ export default function F2SubcribeYoungPrize() {
 
       if (response.status === "success") {
         message.success("Tải file lên thành công");
-        // window.location.reload(); // Tải lại trang để cập nhật thông tin
+        window.location.reload(); // Tải lại trang để cập nhật thông tin
       } else {
         message.error("Tải file thất bại");
       }
@@ -219,6 +220,9 @@ export default function F2SubcribeYoungPrize() {
             <div className={styles.titleText}>
               {infoF2?.data && <> Đơn vị: {infoF2?.data[0].nameClb}</>}
             </div>
+            <div style={{ color: "#036D3C", fontWeight: "bold" }}>
+              Đã hết thời gian đăng ký hồ sơ
+            </div>
           </div>
         </div>
       </div>
@@ -226,8 +230,7 @@ export default function F2SubcribeYoungPrize() {
 
       <Tabs defaultActiveKey="0" onChange={onChange} centered>
         <TabPane key={0} tab="Dữ liệu đối kháng hình thức">
-          {" "}
-          <div
+          {/* <div
             style={{
               marginLeft: "30%",
               marginRight: "30%",
@@ -312,20 +315,18 @@ export default function F2SubcribeYoungPrize() {
                 </div>
                 <Button
                   type="primary"
-                  onClick={() => handleSubmitDoiKhang(0)}
+                  onClick={() => handleSubmitDoiKhang(2)}
                   disabled={!fileDoikhang || isLoading}
                 >
                   Tải giấy giới thiệu đối kháng (định dạng PDF, PNG, JPG, JPEG)
                 </Button>
               </>
             )}
-            {/* Custom file input */}
-          </div>
+          </div> */}
           <TournamentRegistrationYoungPrize />
         </TabPane>
         <TabPane key={1} tab="Dữ liệu quyền thuật">
-          {" "}
-          <div
+          {/* <div
             style={{
               marginLeft: "30%",
               marginRight: "30%",
@@ -419,8 +420,7 @@ export default function F2SubcribeYoungPrize() {
                 </Button>
               </>
             )}
-            {/* Custom file input */}
-          </div>
+          </div> */}
           <Subcribe />
         </TabPane>
       </Tabs>
