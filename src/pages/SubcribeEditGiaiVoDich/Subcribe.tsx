@@ -6,8 +6,8 @@ import Subcribe1 from "./Subcribe1";
 import Subcribe2 from "./Subcribe2";
 import Subcribe3 from "./Subcribe3";
 import { useMutation, useQuery } from "react-query";
-import { submitListmember } from "../../api/giaiVoDich";
-import { getListSubcribe, updateListSubcribe } from "../../api/giaiVoDich";
+
+import { updateListSubcribe } from "../../api/giaiVoDich";
 import useMemberGiaiVoDich from "../../hook/useMemberGiaiVoDich";
 
 interface IProps {

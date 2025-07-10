@@ -6,7 +6,7 @@ import Subcribe1 from "./Subcribe1";
 import Subcribe2 from "./Subcribe2";
 import Subcribe3 from "./Subcribe3";
 import { useMutation } from "react-query";
-import { submitListmember } from "../../api/giaiVoDich";
+import { submitListmemberF2 } from "../../api/giaiVoDich";
 import { useParams } from "react-router";
 import { updateListSubcribe } from "../../api/giaiVoDich";
 import useMemberGiaiVoDich from "../../hook/useMemberGiaiVoDich";
@@ -163,7 +163,7 @@ export default function Subcribe() {
   });
   console.log("userSelected", userSelected);
   const submitMutation = useMutation(
-    (payload: any) => submitListmember(payload, 1),
+    (payload: any) => submitListmemberF2(payload),
     {
       onSuccess: (data) => {
         if (data?.status === "success") {
