@@ -6,31 +6,94 @@ import Subcribe1 from "./Subcribe1";
 import Subcribe2 from "./Subcribe2";
 import Subcribe3 from "./Subcribe3";
 import { useMutation } from "react-query";
-import { submitListmemberF2 } from "../../api/youngPrize";
+import { submitListmember } from "../../api/giaiVoDich";
 import { useParams } from "react-router";
-import { updateListSubcribe } from "../../api/youngPrize";
-import useMemberSubscribe from "../../hook/useMemberSubscribe";
+import { updateListSubcribe } from "../../api/giaiVoDich";
+import useMemberGiaiVoDich from "../../hook/useMemberGiaiVoDich";
 import { isAdmin } from "../../api/ApiUser";
-import { getManagamentMember } from "../../api/youngPrize";
+import { getManagamentMember } from "../../api/giaiVoDich";
 import { IResponseFight2024 } from "../../type";
-import SubcribePageEdit from "../Subcribe Edit";
-import { ageGroups } from "../../constant/ContentYoungPrize";
-import SubcribePageEditYoungPrize from "../SubcribeEditYoungPrize";
-import useMemberYoungPrize from "../../hook/useMemberYoungPrize";
-import SubcribeOther from "./SubscribeOther";
-import SubcribeDL from "./SubscribeDL";
-import F2ViewListYoungPrize from "../F2ViewListYoungPrize/Subcribe";
+import SubcribePageEditGiaiVoDich from "../SubcribeEditGiaiVoDich";
 
 interface User {
   sex: string;
   id: string;
 }
 
-interface TechniqueGroup {
-  [techniqueName: string]: {
-    [sex: string]: string | undefined;
+interface AgeGroup {
+  "Lão Hổ Thượng Sơn": {
+    // Nam: User | null;
+    // Nữ: User | null;
   };
+  "Hùng Kê Quyền": {
+    // Nam: User | null;
+    // Nữ: User | null;
+  };
+  "Ngọc Trản Quyền": {
+    // Nam: User | null;
+    // Nữ: User | null;
+  };
+  "Lão Mai Quyền": {
+    // Nam: User | null;
+    // Nữ: User | null;
+  };
+  "Phong Hoa Đao": {
+    // Nam: User | null;
+    // Nữ: User | null;
+  };
+  "Thanh Long Độc Kiếm": {
+    // Nam: User | null;
+    // Nữ: User | null;
+  };
+  "Song Tuyết Kiếm": {
+    // Nam: User | null;
+    // Nữ: User | null;
+  };
+  "Thái Côn Sơn": {
+    // Nam: User | null;
+    // Nữ: User | null;
+  };
+  "Siêu Xung Thiên": {
+    // Nam: User | null;
+    // Nữ: User | null;
+  };
+  "Độc Lư Thương": {
+    // Nam: User | null;
+    // Nữ: User | null;
+  };
+  "Quyền Tay Không": {
+    // Nam: User | null;
+    // Nữ: User | null;
+  };
+  "Binh Khí Ngắn, Đôi": {
+    // Nam: User | null;
+    // Nữ: User | null;
+  };
+  "Binh Khí Dài": {
+    // Nam: User | null;
+    // Nữ: User | null;
+  };
+  "Các loại binh khí khác": {
+    // Nam: User | null;
+    // Nữ: User | null;
+  };
+  "Tay không chống tay không"?: {};
+  "Tay không chống binh khí"?: {};
+  "Binh khí chống binh khí"?: {};
 }
+
+const listContents = [
+  "Lão Hổ Thượng Sơn",
+  "Hùng Kê Quyền",
+  "Ngọc Trản Quyền",
+  "Lão Mai Quyền",
+  "Phong Hoa Đao",
+  "Thanh Long Độc Kiếm",
+  "Song Tuyết Kiếm",
+  "Thái Côn Sơn",
+  "Siêu Xung Thiên",
+  "Độc Lư Thương",
+];
 
 export default function Subcribe() {
   const { id } = useParams();
@@ -40,11 +103,67 @@ export default function Subcribe() {
     data?.pending &&
     Array.isArray(data.pending) &&
     (data.pending[0]?.mode === "1" || data.pending[1]?.mode === "1");
-  // console.log("check", check);
-  // const check = data?.pending && data?.pending === true;
-  const [userSelected, setUserSelected] = useState(ageGroups);
+
+  const [userSelected, setUserSelected] = useState<{
+    "Nhóm tuổi 1": AgeGroup;
+    "Nhóm tuổi 2": AgeGroup;
+    "Nhóm tuổi 3": AgeGroup;
+  }>({
+    "Nhóm tuổi 1": {
+      "Lão Hổ Thượng Sơn": {},
+      "Hùng Kê Quyền": {},
+      "Ngọc Trản Quyền": {},
+      "Lão Mai Quyền": {},
+      "Phong Hoa Đao": {},
+      "Thanh Long Độc Kiếm": {},
+      "Song Tuyết Kiếm": {},
+      "Thái Côn Sơn": {},
+      "Siêu Xung Thiên": {},
+      "Độc Lư Thương": {},
+      "Quyền Tay Không": {},
+      "Binh Khí Ngắn, Đôi": {},
+      "Binh Khí Dài": {},
+      "Các loại binh khí khác": {},
+      "Tay không chống tay không": {},
+      "Tay không chống binh khí": {},
+      "Binh khí chống binh khí": {},
+    },
+    "Nhóm tuổi 2": {
+      "Lão Hổ Thượng Sơn": {},
+      "Hùng Kê Quyền": {},
+      "Ngọc Trản Quyền": {},
+      "Lão Mai Quyền": {},
+      "Phong Hoa Đao": {},
+      "Thanh Long Độc Kiếm": {},
+      "Song Tuyết Kiếm": {},
+      "Thái Côn Sơn": {},
+      "Siêu Xung Thiên": {},
+      "Độc Lư Thương": {},
+      "Quyền Tay Không": {},
+      "Binh Khí Ngắn, Đôi": {},
+      "Binh Khí Dài": {},
+      "Các loại binh khí khác": {},
+    },
+    "Nhóm tuổi 3": {
+      "Lão Hổ Thượng Sơn": {},
+      "Hùng Kê Quyền": {},
+      "Ngọc Trản Quyền": {},
+      "Lão Mai Quyền": {},
+      "Phong Hoa Đao": {},
+      "Thanh Long Độc Kiếm": {},
+      "Song Tuyết Kiếm": {},
+      "Thái Côn Sơn": {},
+      "Siêu Xung Thiên": {},
+      "Độc Lư Thương": {},
+      "Quyền Tay Không": {},
+      "Binh Khí Ngắn, Đôi": {},
+      "Binh Khí Dài": {},
+      "Các loại binh khí khác": {},
+    },
+  });
+  console.log("userSelected", userSelected);
   const submitMutation = useMutation(
-    (payload: any) => submitListmemberF2(payload),
+    (payload: any) => submitListmember(payload, 1),
     {
       onSuccess: (data) => {
         if (data?.status === "success") {
@@ -72,7 +191,7 @@ export default function Subcribe() {
     }
   );
 
-  // const { groupByName } = useMemberYoungPrize({ id: id });
+  const { groupByName } = useMemberGiaiVoDich({ id: id });
 
   const confirm: PopconfirmProps["onConfirm"] = (e) => {};
 
@@ -88,8 +207,7 @@ export default function Subcribe() {
     sex: string,
     ageGroup: string,
     memberSelected: any,
-    idFight?: string,
-    type?: string
+    idFight?: string
   ) => {
     if (!!id) {
       updateMutation.mutate({
@@ -97,42 +215,21 @@ export default function Subcribe() {
         iduser: memberSelected?.id,
       });
     } else {
-      setUserSelected((prevState) => {
-        const prevAgeGroup = prevState[ageGroup as keyof typeof prevState];
-
-        const isNestedGroup =
-          name === "Quyền Quy Định" || name === "Quyền Tự Chọn";
-
-        const prevNameGroup = prevAgeGroup[name as keyof typeof prevAgeGroup];
-
-        const updatedGroup = isNestedGroup
-          ? {
-              [name]: {
-                ...(prevNameGroup as Record<string, Record<string, string>>),
-                [type as string]: {
-                  ...((prevNameGroup as any)?.[type as string] || {}),
-                  [sex]: memberSelected?.id,
-                },
-              },
-            }
-          : {
-              [name]: {
-                ...(prevNameGroup as Record<string, string>),
-                [sex]: memberSelected?.id,
-              },
-            };
-
-        return {
-          ...prevState,
-          [ageGroup]: {
-            ...prevAgeGroup,
-            ...updatedGroup,
+      setUserSelected((prevState) => ({
+        ...prevState,
+        [ageGroup as keyof typeof prevState]: {
+          ...prevState[ageGroup as keyof typeof prevState],
+          [name as keyof AgeGroup]: {
+            ...prevState[ageGroup as keyof typeof prevState][
+              name as keyof AgeGroup
+            ],
+            [sex]: memberSelected?.id,
           },
-        };
-      });
+        },
+      }));
     }
   };
-  console.log("userSelected", userSelected);
+
   useEffect(() => {
     const fetchManagementMember = async () => {
       const res = await getManagamentMember({ mode: 1 });
@@ -174,21 +271,29 @@ export default function Subcribe() {
           )}
         </div>
         {!check ? (
-          <div style={{ marginBottom: "20px" }}>
-            <p className={styles.title}>NHÓM 1 TỪ 6 ĐẾN 10 TUỔI</p>
-            <Subcribe1 idclub={id} onSelectMember={onSelectMember} />
-            <p className={styles.title}>NHÓM 2 TỪ 11 ĐẾN 14 TUỔI</p>
-            <Subcribe2 idclub={id} onSelectMember={onSelectMember} />
-            <p className={styles.title}>NHÓM 3 TỪ 15 ĐẾN 17 TUỔI</p>
-            <Subcribe3 idclub={id} onSelectMember={onSelectMember} />
-            <p className={styles.title}>QUYỀN TỰ CHỌN (từ 6 đến 17 tuổi)</p>
-            <SubcribeOther idclub={id} onSelectMember={onSelectMember} />
-            <p className={styles.title}>ĐỐI LUYỆN (từ 6 đến 17 tuổi)</p>
-            <SubcribeDL idclub={id} onSelectMember={onSelectMember} />
-          </div>
+          <>
+            <p className={styles.title}>NỘI DUNG QUYỀN QUY ĐỊNH</p>
+            <Subcribe1
+              idclub={id}
+              listMemberSubscribe={groupByName}
+              onSelectMember={onSelectMember}
+            />
+            <p className={styles.title}>NỘI DUNG QUYỀN TỰ CHỌN</p>
+            <Subcribe2
+              idclub={id}
+              listMemberSubscribe={groupByName}
+              onSelectMember={onSelectMember}
+            />
+            <p className={styles.title}>NỘI DUNG ĐỐI LUYỆN</p>
+            <Subcribe3
+              idclub={id}
+              listMemberSubscribe={groupByName}
+              onSelectMember={onSelectMember}
+            />
+          </>
         ) : (
           <>
-            <F2ViewListYoungPrize />
+            <SubcribePageEditGiaiVoDich />
           </>
         )}
       </div>

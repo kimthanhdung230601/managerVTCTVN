@@ -3,7 +3,7 @@ import TabPane from "antd/es/tabs/TabPane";
 import { useLocation, useNavigate, useParams } from "react-router";
 // import TabAnagonism from "./TabAnagonism";
 import { ReactComponent as Logo } from "../../../assets/svg/logo.svg";
-import SubcribePageEdit from "../../Subcribe Edit";
+import SubcribePageEdit from "../../SubcribeEdit";
 import Header from "../../../components/Header";
 import TabAnagonism from "../Xem_chi_tiet_du_lieu_duyet/TabAnagonism";
 import TournamentRegistration from "../Dang_ky_giai_dau_doi_khang";

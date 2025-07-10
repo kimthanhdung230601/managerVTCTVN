@@ -4,6 +4,7 @@ import styles from "./styles.module.scss";
 import { Tabs } from "antd";
 import TableCup from "./TableCup";
 import TableYoung from "./TableYoung";
+import TableCupGiaiVoDich from "./TableCupGiaiVoDich";
 
 export default function AcceptSubscribe() {
   return (
@@ -19,6 +20,9 @@ export default function AcceptSubscribe() {
               </Tabs.TabPane>
               <Tabs.TabPane tab="Giải trẻ" key="2">
                 <TableYoung />
+              </Tabs.TabPane>
+              <Tabs.TabPane tab="Giải vô địch 2025" key="3">
+                <TableCupGiaiVoDich />
               </Tabs.TabPane>
             </Tabs>
           </div>

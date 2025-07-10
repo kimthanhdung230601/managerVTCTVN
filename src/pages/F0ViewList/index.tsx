@@ -8,7 +8,7 @@ import TournamentRegistration from "../giaidau/Dang_ky_giai_dau_doi_khang";
 import { useQuery } from "react-query";
 import { getInfoF2 } from "../../api/f2";
 import { useParams } from "react-router";
-import SubcribePageEdit from "../Subcribe Edit";
+import SubcribePageEdit from "../SubcribeEdit";
 import AdminManagement from "../giaidau/Thu_thap_du_lieu_doi_khang";
 import { getManagamentMember } from "../../api/thiDau";
 import * as XLSX from "xlsx";

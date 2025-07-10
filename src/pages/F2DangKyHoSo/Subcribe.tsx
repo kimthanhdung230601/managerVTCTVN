@@ -13,7 +13,7 @@ import useMemberSubscribe from "../../hook/useMemberSubscribe";
 import { isAdmin } from "../../api/ApiUser";
 import { getManagamentMember } from "../../api/thiDau";
 import { IResponseFight2024 } from "../../type";
-import SubcribePageEdit from "../Subcribe Edit";
+import SubcribePageEdit from "../SubcribeEdit";
 
 interface User {
   sex: string;
