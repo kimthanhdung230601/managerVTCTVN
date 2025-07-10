@@ -7,8 +7,8 @@ import TabPane from "antd/es/tabs/TabPane";
 
 import * as XLSX from "xlsx";
 import { getManagamentMember } from "../../api/giaiVoDich";
-import SubcribePageEditYoungPrize from "../SubcribeEditYoungPrize";
 import AdminManagementCubPrize from "../giaidau_giaivodich/Thu_thap_du_lieu_doi_khang";
+import SubcribePageEditGiaiVoDich from "../SubcribeEditGiaiVoDich";
 
 interface ManagementMember {
   name?: string;
@@ -220,7 +220,7 @@ export default function F0ViewListCubPrize() {
           <AdminManagementCubPrize isEdiTable={false} isShowFullTable={true} />
         </TabPane>
         <TabPane key={1} tab="Dữ liệu quyền thuật">
-          <SubcribePageEditYoungPrize />
+          <SubcribePageEditGiaiVoDich />
         </TabPane>
       </Tabs>
     </div>
