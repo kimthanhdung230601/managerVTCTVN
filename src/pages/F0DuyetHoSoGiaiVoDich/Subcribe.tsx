@@ -6,29 +6,151 @@ import Subcribe1 from "./Subcribe1";
 import Subcribe2 from "./Subcribe2";
 import Subcribe3 from "./Subcribe3";
 import { useMutation, useQuery } from "react-query";
-import { submitListmember } from "../../api/youngPrize";
+import { submitListmember } from "../../api/giaiVoDich";
 import { useLocation, useParams } from "react-router";
-import { getListSubcribe, updateListSubcribe } from "../../api/youngPrize";
-import useMemberSubscribe from "../../hook/useMemberSubscribe";
+import { getListSubcribe, updateListSubcribe } from "../../api/giaiVoDich";
+import useMemberGiaiVoDich from "../../hook/useMemberGiaiVoDich";
 import { isAdmin } from "../../api/ApiUser";
-import useMemberYoungPrize from "../../hook/useMemberYoungPrize";
-import { ageGroups } from "../../constant/ContentYoungPrize";
-import SubcribeOther from "./SubcribeOther";
-import SubcribeDL from "./SubcribeDL";
+
 interface User {
   sex: string;
   id: string;
 }
 
-interface TechniqueGroup {
-  [techniqueName: string]: {
-    [sex: string]: string | undefined;
+interface AgeGroup {
+  "Lão Hổ Thượng Sơn": {
+    // Nam: User | null;
+    // Nữ: User | null;
   };
+  "Hùng Kê Quyền": {
+    // Nam: User | null;
+    // Nữ: User | null;
+  };
+  "Ngọc Trản Quyền": {
+    // Nam: User | null;
+    // Nữ: User | null;
+  };
+  "Lão Mai Quyền": {
+    // Nam: User | null;
+    // Nữ: User | null;
+  };
+  "Phong Hoa Đao": {
+    // Nam: User | null;
+    // Nữ: User | null;
+  };
+  "Thanh Long Độc Kiếm": {
+    // Nam: User | null;
+    // Nữ: User | null;
+  };
+  "Song Tuyết Kiếm": {
+    // Nam: User | null;
+    // Nữ: User | null;
+  };
+  "Thái Côn Sơn": {
+    // Nam: User | null;
+    // Nữ: User | null;
+  };
+  "Siêu Xung Thiên": {
+    // Nam: User | null;
+    // Nữ: User | null;
+  };
+  "Độc Lư Thương": {
+    // Nam: User | null;
+    // Nữ: User | null;
+  };
+  "Quyền Tay Không": {
+    // Nam: User | null;
+    // Nữ: User | null;
+  };
+  "Binh Khí Ngắn, Đôi": {
+    // Nam: User | null;
+    // Nữ: User | null;
+  };
+  "Binh Khí Dài": {
+    // Nam: User | null;
+    // Nữ: User | null;
+  };
+  "Các loại binh khí khác": {
+    // Nam: User | null;
+    // Nữ: User | null;
+  };
+  "Tay không chống tay không"?: {};
+  "Tay không chống binh khí"?: {};
+  "Binh khí chống binh khí"?: {};
 }
+
+const listContents = [
+  "Lão Hổ Thượng Sơn",
+  "Hùng Kê Quyền",
+  "Ngọc Trản Quyền",
+  "Lão Mai Quyền",
+  "Phong Hoa Đao",
+  "Thanh Long Độc Kiếm",
+  "Song Tuyết Kiếm",
+  "Thái Côn Sơn",
+  "Siêu Xung Thiên",
+  "Độc Lư Thương",
+];
 
 export default function Subcribe() {
   const { id } = useParams();
-  const [userSelected, setUserSelected] = useState(ageGroups);
+  const [userSelected, setUserSelected] = useState<{
+    "Nhóm tuổi 1": AgeGroup;
+    "Nhóm tuổi 2": AgeGroup;
+    "Nhóm tuổi 3": AgeGroup;
+  }>({
+    "Nhóm tuổi 1": {
+      "Lão Hổ Thượng Sơn": {},
+      "Hùng Kê Quyền": {},
+      "Ngọc Trản Quyền": {},
+      "Lão Mai Quyền": {},
+      "Phong Hoa Đao": {},
+      "Thanh Long Độc Kiếm": {},
+      "Song Tuyết Kiếm": {},
+      "Thái Côn Sơn": {},
+      "Siêu Xung Thiên": {},
+      "Độc Lư Thương": {},
+      "Quyền Tay Không": {},
+      "Binh Khí Ngắn, Đôi": {},
+      "Binh Khí Dài": {},
+      "Các loại binh khí khác": {},
+      "Tay không chống tay không": {},
+      "Tay không chống binh khí": {},
+      "Binh khí chống binh khí": {},
+    },
+    "Nhóm tuổi 2": {
+      "Lão Hổ Thượng Sơn": {},
+      "Hùng Kê Quyền": {},
+      "Ngọc Trản Quyền": {},
+      "Lão Mai Quyền": {},
+      "Phong Hoa Đao": {},
+      "Thanh Long Độc Kiếm": {},
+      "Song Tuyết Kiếm": {},
+      "Thái Côn Sơn": {},
+      "Siêu Xung Thiên": {},
+      "Độc Lư Thương": {},
+      "Quyền Tay Không": {},
+      "Binh Khí Ngắn, Đôi": {},
+      "Binh Khí Dài": {},
+      "Các loại binh khí khác": {},
+    },
+    "Nhóm tuổi 3": {
+      "Lão Hổ Thượng Sơn": {},
+      "Hùng Kê Quyền": {},
+      "Ngọc Trản Quyền": {},
+      "Lão Mai Quyền": {},
+      "Phong Hoa Đao": {},
+      "Thanh Long Độc Kiếm": {},
+      "Song Tuyết Kiếm": {},
+      "Thái Côn Sơn": {},
+      "Siêu Xung Thiên": {},
+      "Độc Lư Thương": {},
+      "Quyền Tay Không": {},
+      "Binh Khí Ngắn, Đôi": {},
+      "Binh Khí Dài": {},
+      "Các loại binh khí khác": {},
+    },
+  });
   const submitMutation = useMutation(
     (payload: any) => submitListmember(id, payload),
     {
@@ -54,7 +176,7 @@ export default function Subcribe() {
     }
   );
 
-  const { groupByName } = useMemberYoungPrize({ id: id });
+  const { groupByName } = useMemberGiaiVoDich({ id: id });
 
   const confirm: PopconfirmProps["onConfirm"] = (e) => {
     submitMutation.mutate(userSelected);
@@ -65,8 +187,7 @@ export default function Subcribe() {
     sex: string,
     ageGroup: string,
     memberSelected: any,
-    idFight?: string,
-    type?: string
+    idFight?: string
   ) => {
     if (!!id && idFight) {
       updateMutation.mutate({
@@ -74,25 +195,13 @@ export default function Subcribe() {
         iduser: memberSelected?.id,
       });
     } else {
-      if (type && (name === "Quyền Quy Định" || name === "Quyền Tự Chọn")) {
-        submitMutation.mutate({
-          [ageGroup]: {
-            [name]: {
-              [type]: {
-                [sex]: memberSelected.id,
-              },
-            },
+      submitMutation.mutate({
+        [ageGroup]: {
+          [name]: {
+            [sex]: memberSelected.id,
           },
-        });
-      } else {
-        submitMutation.mutate({
-          [ageGroup]: {
-            [name]: {
-              [sex]: memberSelected.id,
-            },
-          },
-        });
-      }
+        },
+      });
     }
   };
 
@@ -111,42 +220,30 @@ export default function Subcribe() {
           </Popconfirm>
         )}
       </div>
-      {groupByName !== undefined && Object.keys(groupByName).length > 0 ? (
-        <div style={{ marginBottom: "20px" }}>
-          <p className={styles.title}>NHÓM 1 TỪ 6 ĐẾN 10 TUỔI</p>
-          <Subcribe1
-            idclub={id}
-            listMemberSubscribe={groupByName?.["Nhóm tuổi 1"]}
-            onSelectMember={onSelectMember}
-          />
-          <p className={styles.title}>NHÓM 2 TỪ 11 ĐẾN 14 TUỔI</p>
-          <Subcribe2
-            idclub={id}
-            listMemberSubscribe={groupByName?.["Nhóm tuổi 2"]}
-            onSelectMember={onSelectMember}
-          />
-          <p className={styles.title}>NHÓM 3 TỪ 15 ĐẾN 17 TUỔI</p>
-          <Subcribe3
-            idclub={id}
-            listMemberSubscribe={groupByName?.["Nhóm tuổi 3"]}
-            onSelectMember={onSelectMember}
-          />
-          <p className={styles.title}>QUYỀN TỰ CHỌN (từ 6 đến 17 tuổi)</p>
-          <SubcribeOther
-            idclub={id}
-            listMemberSubscribe={groupByName?.["Khác"]}
-            onSelectMember={onSelectMember}
-          />
-          <p className={styles.title}>ĐỐI LUYỆN (từ 6 đến 17 tuổi)</p>
-          <SubcribeDL
-            idclub={id}
-            listMemberSubscribe={groupByName?.["Đối luyện"]}
-            onSelectMember={onSelectMember}
-          />
-        </div>
-      ) : (
+      {/* {groupByName !== undefined && Object.keys(groupByName).length > 0 ? ( */}
+      <div>
+        <p className={styles.title}>NỘI DUNG QUYỀN QUY ĐỊNH</p>
+        <Subcribe1
+          idclub={id}
+          listMemberSubscribe={groupByName}
+          onSelectMember={onSelectMember}
+        />
+        <p className={styles.title}>NỘI DUNG QUYỀN TỰ CHỌN</p>
+        <Subcribe2
+          idclub={id}
+          listMemberSubscribe={groupByName}
+          onSelectMember={onSelectMember}
+        />
+        <p className={styles.title}>NỘI DUNG ĐỐI LUYỆN</p>
+        <Subcribe3
+          idclub={id}
+          listMemberSubscribe={groupByName}
+          onSelectMember={onSelectMember}
+        />
+      </div>
+      {/* ) : (
         <div className={styles.noti}>Chưa có dữ liệu</div>
-      )}
+      )} */}
     </div>
   );
 }
