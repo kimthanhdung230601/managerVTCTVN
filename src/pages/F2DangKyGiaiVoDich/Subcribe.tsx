@@ -9,10 +9,14 @@ import { useMutation } from "react-query";
 import { submitListmemberF2 } from "../../api/youngPrize";
 import { useParams } from "react-router";
 import { updateListSubcribe } from "../../api/youngPrize";
+import useMemberSubscribe from "../../hook/useMemberSubscribe";
 import { isAdmin } from "../../api/ApiUser";
 import { getManagamentMember } from "../../api/youngPrize";
 import { IResponseFight2024 } from "../../type";
+import SubcribePageEdit from "../Subcribe Edit";
 import { ageGroups } from "../../constant/ContentYoungPrize";
+import SubcribePageEditYoungPrize from "../SubcribeEditYoungPrize";
+import useMemberYoungPrize from "../../hook/useMemberYoungPrize";
 import SubcribeOther from "./SubscribeOther";
 import SubcribeDL from "./SubscribeDL";
 import F2ViewListYoungPrize from "../F2ViewListYoungPrize/Subcribe";
@@ -163,11 +167,11 @@ export default function Subcribe() {
 
       <div className={styles.tableWrap}>
         <div className={styles.btnWrap}>
-          {/* {isAdmin() === "2" && (
+          {isAdmin() === "2" && (
             <Button onClick={() => setIsOpen(true)} disabled={check}>
               Gửi hồ sơ
             </Button>
-          )} */}
+          )}
         </div>
         {!check ? (
           <div style={{ marginBottom: "20px" }}>

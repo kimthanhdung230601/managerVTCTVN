@@ -1,9 +1,14 @@
-import { Col, Image, Row } from "antd";
+import { Col, Image, Row, Dropdown, Menu } from "antd";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "./Style.module.scss";
 import "animate.css";
-import { MenuOutlined, CloseOutlined, UserOutlined } from "@ant-design/icons";
+import {
+  MenuOutlined,
+  CloseOutlined,
+  UserOutlined,
+  DownOutlined,
+} from "@ant-design/icons";
 import Cookies from "js-cookie";
 import { logout } from "../../api/api";
 import { isAdmin } from "../../api/ApiUser";
@@ -95,6 +100,13 @@ export default function Header() {
                 </Link>
               </Col>
             )}
+            {isAdmin() === "2" && (
+              <Col className={styles.headerItem}>
+                <Link to={"/dang-ky-giai-vo-dich"} className={styles.itemLink}>
+                  Đăng ký thi đấu giải vô địch
+                </Link>
+              </Col>
+            )}
             {isAdmin() === "0" && (
               <Col className={styles.headerItem}>
                 <Link to={"/duyet-ho-so-dang-ky"} className={styles.itemLink}>
@@ -104,19 +116,34 @@ export default function Header() {
             )}
             {isAdmin() === "0" && (
               <Col className={styles.headerItem}>
-                <Link to={"/danh-sach-thi-dau"} className={styles.itemLink}>
-                  Danh sách thi đấu giải Cup
-                </Link>
-              </Col>
-            )}
-            {isAdmin() === "0" && (
-              <Col className={styles.headerItem}>
-                <Link
-                  to={"/danh-sach-thi-dau-giai-tre"}
-                  className={styles.itemLink}
+                <Dropdown
+                  overlay={
+                    <Menu>
+                      <Menu.Item key="cup">
+                        <Link to="/danh-sach-thi-dau">
+                          Danh sách thi đấu giải Cup
+                        </Link>
+                      </Menu.Item>
+                      <Menu.Item key="tre">
+                        <Link to="/danh-sach-thi-dau-giai-tre">
+                          Danh sách thi đấu giải trẻ
+                        </Link>
+                      </Menu.Item>
+                      <Menu.Item key="vodich">
+                        <Link to="/danh-sach-thi-dau-giai-vo-dich">
+                          Danh sách thi đấu giải vô địch
+                        </Link>
+                      </Menu.Item>
+                    </Menu>
+                  }
                 >
-                  Danh sách thi đấu giải trẻ
-                </Link>
+                  <span
+                    className={styles.itemLink}
+                    style={{ cursor: "pointer" }}
+                  >
+                    Danh sách giải <DownOutlined />
+                  </span>
+                </Dropdown>
               </Col>
             )}
           </Row>
