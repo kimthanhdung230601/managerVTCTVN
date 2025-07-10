@@ -31,6 +31,7 @@ import F0ViewListYoungPrize from "../pages/F0ViewListYoungPrize";
 import F0AcceptFileGiaiTre from "../pages/F0DuyetHoSoGiaiTre";
 import F2SubcribeClubPrize from "../pages/F2DangKyGiaiVoDich";
 import F0ViewListCubPrize from "../pages/F0ViewListCubPrize";
+import F0AcceptFileGiaiVoDich from "../pages/F0DuyetHoSoGiaiVoDich";
 const Component = () => {
   return (
     <>
@@ -83,6 +84,10 @@ const Component = () => {
         <Route
           path="/dang-ky-thi-dau-giai-tre/:id"
           element={<F0AcceptFileGiaiTre />}
+        ></Route>
+        <Route
+          path="/dang-ky-thi-dau-giai-vo-dich/:id"
+          element={<F0AcceptFileGiaiVoDich />}
         ></Route>
 
         {/* f0 xem danh sach nhieu CLB */}
