@@ -115,36 +115,72 @@ export default function Header() {
               </Col>
             )}
             {isAdmin() === "0" && (
-              <Col className={styles.headerItem}>
-                <Dropdown
-                  overlay={
-                    <Menu>
-                      <Menu.Item key="cup">
-                        <Link to="/danh-sach-thi-dau">
-                          Danh sách thi đấu giải Cup
-                        </Link>
-                      </Menu.Item>
-                      <Menu.Item key="tre">
-                        <Link to="/danh-sach-thi-dau-giai-tre">
-                          Danh sách thi đấu giải trẻ
-                        </Link>
-                      </Menu.Item>
-                      <Menu.Item key="vodich">
-                        <Link to="/danh-sach-thi-dau-giai-vo-dich">
-                          Danh sách thi đấu giải vô địch
-                        </Link>
-                      </Menu.Item>
-                    </Menu>
-                  }
-                >
-                  <span
-                    className={styles.itemLink}
-                    style={{ cursor: "pointer" }}
-                  >
+              <Col className={`${styles.headerItem}`}>
+                <div className={styles.userText}>
+                  <div className={styles.itemLink}>
                     Danh sách giải <DownOutlined />
-                  </span>
-                </Dropdown>
+                  </div>
+                  <div className={`animate__zoomIn ${styles.userMenu}`}>
+                    <li className={styles.menuItem}>
+                      <Link
+                        to={"/danh-sach-thi-dau"}
+                        className={`${styles.menuItemLink}`}
+                      >
+                        Danh sách thi đấu giải Cup
+                      </Link>
+                    </li>
+                    <li className={styles.menuItem}>
+                      <Link
+                        to={"/danh-sach-thi-dau-giai-tre"}
+                        className={styles.menuItemLink}
+                      >
+                        Danh sách thi đấu giải trẻ
+                      </Link>
+                    </li>
+                    <li className={styles.menuItem}>
+                      <Link
+                        to={"/danh-sach-thi-dau-giai-vo-dich"}
+                        className={styles.menuItemLink}
+                      >
+                        Danh sách thi đấu giải vô địch
+                      </Link>
+                    </li>
+                  </div>
+                </div>
+                {/* <Link to={"/dang-nhap"} className={styles.itemLink}>
+                        Đăng nhập
+                </Link> */}
               </Col>
+              // <Col className={styles.headerItem}>
+              //   <Dropdown
+              //     overlay={
+              //       <Menu>
+              //         <Menu.Item key="cup">
+              //           <Link to="/danh-sach-thi-dau">
+              //             Danh sách thi đấu giải Cup
+              //           </Link>
+              //         </Menu.Item>
+              //         <Menu.Item key="tre">
+              //           <Link to="/danh-sach-thi-dau-giai-tre">
+              //             Danh sách thi đấu giải trẻ
+              //           </Link>
+              //         </Menu.Item>
+              //         <Menu.Item key="vodich">
+              //           <Link to="/danh-sach-thi-dau-giai-vo-dich">
+              //             Danh sách thi đấu giải vô địch
+              //           </Link>
+              //         </Menu.Item>
+              //       </Menu>
+              //     }
+              //   >
+              //     <span
+              //       className={styles.itemLink}
+              //       style={{ cursor: "pointer" }}
+              //     >
+              //       Danh sách giải <DownOutlined />
+              //     </span>
+              //   </Dropdown>
+              // </Col>
             )}
           </Row>
         </Col>

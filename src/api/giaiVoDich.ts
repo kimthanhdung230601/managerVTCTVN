@@ -1,6 +1,6 @@
 import { sendGet, sendPost } from "./api";
 
-export const getListInfor = () => sendGet("CubFight");
+export const getListInfor = () => sendGet("YoungFight");
 
 export const getListInforAdmin = (payload: any) =>
   sendGet(`CubFight?idclub=${payload}`);
