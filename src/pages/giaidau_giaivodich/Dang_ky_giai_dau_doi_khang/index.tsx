@@ -72,15 +72,14 @@ const TournamentRegistrationYoungPrize = () => {
     const payload = {
       ...(dataType1 ?? {}),
     };
-    console.log("payload", payload);
 
-    // const response = await addNewMember(payload);
-    // if (response.status === "success") {
-    //   message.success("Thêm thông tin thành công");
-    //   window.location.reload();
-    // } else {
-    //   message.error("Hồ sơ đã được nộp, không thể tiếp tục nộp hồ sơ");
-    // }
+    const response = await addNewMember(payload);
+    if (response.status === "success") {
+      message.success("Thêm thông tin thành công");
+      window.location.reload();
+    } else {
+      message.error("Hồ sơ đã được nộp, không thể tiếp tục nộp hồ sơ");
+    }
   };
 
   useEffect(() => {
