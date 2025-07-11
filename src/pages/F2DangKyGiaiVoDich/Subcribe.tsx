@@ -161,7 +161,7 @@ export default function Subcribe() {
       "Các loại binh khí khác": {},
     },
   });
-  console.log("userSelected", userSelected);
+
   const submitMutation = useMutation(
     (payload: any) => submitListmemberF2(payload),
     {

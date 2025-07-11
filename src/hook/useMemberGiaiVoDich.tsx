@@ -7,14 +7,14 @@ interface IProps {
 }
 export default function useMemberGiaiVoDich({ id }: IProps) {
   const { data: listMembers, isLoading } = useQuery(
-    ["listMembers"],
+    ["listMembers-giai-vo-dich"],
     () => getListSubcribe({ mode: 1 }),
     {
       enabled: id === undefined,
     }
   );
   const { data: getListMembersOfClubs } = useQuery(
-    ["listMembersClub", id],
+    ["listMembersClub-giai-vo-dich", id],
     () =>
       getListSubcribe({
         mode: 1,
