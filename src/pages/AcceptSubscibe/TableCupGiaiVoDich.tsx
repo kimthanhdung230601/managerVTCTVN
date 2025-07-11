@@ -101,7 +101,9 @@ export default function TableCupGiaiVoDich() {
       render: (_, record) => (
         <div className={styles.buttonWrap}>
           <Button
-            onClick={() => navigate(`/dang-ky-thi-dau/${record?.idclub}`)}
+            onClick={() =>
+              navigate(`/dang-ky-thi-dau-giai-vo-dich/${record?.idclub}`)
+            }
             className={styles.view}
           >
             Xem/Sửa
