@@ -49,6 +49,11 @@ export default function SubscribeMember({
   );
   const [userSelected, setUserSelected] = useState<any>(memberInfo);
   const [isDisabled, setDisabled] = useState<boolean>(false);
+
+  useEffect(() => {
+    setUserSelected(memberInfo);
+  }, [memberInfo]);
+
   const filterOption = (
     input: string,
     option?: { children: React.ReactNode }
