@@ -114,22 +114,22 @@ export default function F2SubcribeClubPrize() {
     }
   };
   const handleSubmitQuyenThuat = async (value: number) => {
-    if (!fileDoikhang) {
+    if (!fileQuyenThuat) {
       message.error("Vui lòng chọn file.");
       return;
     }
 
-    const originalFileName = fileDoikhang.name;
-    const fileExtension = originalFileName.split(".").pop(); // Lấy phần mở rộng fileDoikhang
+    const originalFileName = fileQuyenThuat.name;
+    const fileExtension = originalFileName.split(".").pop(); // Lấy phần mở rộng fileQuyenThuat
     const encryptedFileName = CryptoJS.HmacSHA256(
       originalFileName,
       encryptionKey
     ).toString();
 
-    // Tạo một fileDoikhang mới với tên mã hóa
-    const newFileName = `${encryptedFileName}.${fileExtension}`; // Giữ nguyên phần mở rộng fileDoikhang
-    const renamedFile = new File([fileDoikhang], newFileName, {
-      type: fileDoikhang.type,
+    // Tạo một fileQuyenThuat mới với tên mã hóa
+    const newFileName = `${encryptedFileName}.${fileExtension}`; // Giữ nguyên phần mở rộng fileQuyenThuat
+    const renamedFile = new File([fileQuyenThuat], newFileName, {
+      type: fileQuyenThuat.type,
     });
 
     const formData = new FormData();
