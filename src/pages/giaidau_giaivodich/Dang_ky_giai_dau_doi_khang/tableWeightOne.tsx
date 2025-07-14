@@ -19,7 +19,7 @@ const CustomTableWeightOne = ({ setData }: Props) => {
   const [weight68to72, setWeight68to72] = useState<weight>({ nam: "", nữ: "" });
   const [weight72to76, setWeight72to76] = useState<weight>({ nam: "", nữ: "" });
   const [weight76to80, setWeight76to80] = useState<weight>({ nam: "", nữ: "" });
-  const [weight80to85, setWeight80to85] = useState<weight>({ nam: "", nữ: "" });
+  const [weight80to85, setWeight80to85] = useState<weight>({ nam: "" });
   const [weight85to90, setWeight85to90] = useState<weight>({ nam: "" });
   const [weight90to95, setWeight90to95] = useState<weight>({ nam: "" });
   const [weight95to110, setWeight95to110] = useState<weight>({
@@ -28,7 +28,7 @@ const CustomTableWeightOne = ({ setData }: Props) => {
   const [weight110, setWeight110] = useState<weight>({
     nam: "",
   });
-
+  const [weight85, setWeight85] = useState<weight>({ nữ: "" });
   const setWeightFunctionsNam = [
     setWeight45to48,
     setWeight48to51,
@@ -59,7 +59,7 @@ const CustomTableWeightOne = ({ setData }: Props) => {
     setWeight68to72,
     setWeight72to76,
     setWeight76to80,
-    setWeight80to85,
+    setWeight85,
   ];
 
   useEffect(() => {
@@ -101,7 +101,7 @@ const CustomTableWeightOne = ({ setData }: Props) => {
           weight68to72,
           weight72to76,
           weight76to80,
-          weight80to85,
+          weight85,
         ]),
       },
     };
@@ -124,6 +124,7 @@ const CustomTableWeightOne = ({ setData }: Props) => {
     weight90to95,
     weight95to110,
     weight110,
+    weight85,
     setData,
   ]);
 

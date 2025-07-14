@@ -51,7 +51,7 @@ export const data_weight_2: Person = {
     { hangCan: "Trên 68kg đến 72kg" },
     { hangCan: "Trên 72kg đến 76kg" },
     { hangCan: "Trên 76kg đến 80kg" },
-    { hangCan: "Trên 80kg đến 85kg" },
+    { hangCan: "Trên 80kg" },
   ],
 };
 export const tableTheadAdmin: string[] = [
@@ -558,7 +558,7 @@ export const exampleData: IData[] = [
     id: "",
     idclub: "",
     mode: "2",
-    name: "Trên 80kg đến 85kg",
+    name: "Trên 80kg",
     sex: "Nữ",
     type: "hinh_thuc_2",
     iduser: "",
@@ -610,7 +610,7 @@ export const allCategories_hinh_thuc_2_nu = [
   "Trên 68kg đến 72kg",
   "Trên 72kg đến 76kg",
   "Trên 76kg đến 80kg",
-  "Trên 80kg đến 85kg",
+  "Trên 80kg",
 ];
 
 export const addData = (data: any, type: string) => {};

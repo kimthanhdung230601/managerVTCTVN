@@ -81,7 +81,6 @@ const CustomTableAdminOne = ({
             dataManagement?.data
               .filter((person: any) => person.sex === "Nam")
               .filter((person: any) => person.type === typeFilter),
-            ["name"], // Sort by name
             ["asc"] // Ascending order
           ).map((person: any, index: number, array) => (
             <div
