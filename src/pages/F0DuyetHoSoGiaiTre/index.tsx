@@ -291,7 +291,7 @@ export default function F0AcceptFileGiaiTre() {
             style={{ marginBottom: "36px" }}
             disabled={isLoading}
           >
-            Tải giấy giới thiệu giải trẻ
+            Tải giấy giới thiệu giải quyền thuật
           </Button>
         </div>
       </div>
