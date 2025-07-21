@@ -81,7 +81,8 @@ const CustomTableAdminOne = ({
             dataManagement?.data
               .filter((person: any) => person.sex === "Nam")
               .filter((person: any) => person.type === typeFilter),
-            ["asc"] // Ascending order
+            [(person: any) => (person.name === "Trên 110kg" ? 1 : 0), "name"], // Thuộc tính để sắp xếp - "Trên 110kg" xuống cuối
+            ["asc", "asc"] // Thứ tự sắp xếp (tăng dần) nhưng thuộc tính name có giá trị là Trên 110kg thì nhóm ở dưới cùng
           ).map((person: any, index: number, array) => (
             <div
               key={index}

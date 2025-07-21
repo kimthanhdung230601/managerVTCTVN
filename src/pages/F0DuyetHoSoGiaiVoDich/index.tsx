@@ -290,7 +290,7 @@ export default function F0AcceptFileGiaiVoDich() {
             style={{ marginBottom: "36px" }}
             disabled={isLoading}
           >
-            Tải giấy giới thiệu giải trẻ
+            Tải giấy giới thiệu quyền thuật
           </Button>
         </div>
       </div>

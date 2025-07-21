@@ -15,7 +15,6 @@ import {
   Col,
   Row,
   Image,
-  Popconfirm,
   message,
   Pagination,
   Spin,
@@ -159,12 +158,14 @@ const ManagerAccountUnDepended = ({ refetch }: ManagerAccountProps) => {
     refetchUnAccept();
     refetch();
   };
-  const cancel = (value: any) => {
-    // message.error("");
-  };
   //modal quản lý thành viên
   const [isModalOpenMember, setIsModalOpenMember] = useState(false);
   const [id, setId] = useState();
+
+  // Modal states for accept and delete actions
+  const [isModalOpenAccept, setIsModalOpenAccept] = useState(false);
+  const [isModalOpenDelete, setIsModalOpenDelete] = useState(false);
+  const [selectedRecord, setSelectedRecord] = useState<any>(null);
 
   const handleOkMember = () => {
     setIsModalOpenMember(false);
@@ -172,6 +173,44 @@ const ManagerAccountUnDepended = ({ refetch }: ManagerAccountProps) => {
 
   const handleCancelMember = () => {
     setIsModalOpenMember(false);
+  };
+
+  // Handler functions for accept modal
+  const handleOpenAcceptModal = (record: any) => {
+    setSelectedRecord(record);
+    setIsModalOpenAccept(true);
+  };
+
+  const handleOkAccept = async () => {
+    if (selectedRecord) {
+      await confirmAccept(selectedRecord.id);
+      setIsModalOpenAccept(false);
+      setSelectedRecord(null);
+    }
+  };
+
+  const handleCancelAccept = () => {
+    setIsModalOpenAccept(false);
+    setSelectedRecord(null);
+  };
+
+  // Handler functions for delete modal
+  const handleOpenDeleteModal = (record: any) => {
+    setSelectedRecord(record);
+    setIsModalOpenDelete(true);
+  };
+
+  const handleOkDelete = async () => {
+    if (selectedRecord) {
+      await confirm(selectedRecord.id);
+      setIsModalOpenDelete(false);
+      setSelectedRecord(null);
+    }
+  };
+
+  const handleCancelDelete = () => {
+    setIsModalOpenDelete(false);
+    setSelectedRecord(null);
   };
 
   const columnsDesktopAccept: ColumnsType<DataType> = [
@@ -303,29 +342,19 @@ const ManagerAccountUnDepended = ({ refetch }: ManagerAccountProps) => {
       fixed: "right",
       render: (_, record) => (
         <span>
-          <Popconfirm
-            title="Duyệt tài khoản"
-            description={`Bạn có muốn duyệt tài khoản ${record.name} không`}
-            onConfirm={() => confirmAccept(record.id)}
-            onCancel={cancel}
-            okText="Có"
-            cancelText="Không"
+          <button
+            className={styles.btnView}
+            onClick={() => handleOpenAcceptModal(record)}
           >
-            {" "}
-            <button className={styles.btnView}>Duyệt</button>
-          </Popconfirm>
+            Duyệt
+          </button>
 
-          <Popconfirm
-            title="Xóa"
-            description={`Bạn có muốn xóa ${record.name} không`}
-            onConfirm={() => confirm(record.id)}
-            onCancel={cancel}
-            okText="Có"
-            cancelText="Không"
+          <button
+            className={styles.btnTbDanger}
+            onClick={() => handleOpenDeleteModal(record)}
           >
-            {" "}
-            <button className={styles.btnTbDanger}>Xóa</button>
-          </Popconfirm>
+            Xóa
+          </button>
         </span>
       ),
     },
@@ -455,29 +484,19 @@ const ManagerAccountUnDepended = ({ refetch }: ManagerAccountProps) => {
 
       render: (_, record) => (
         <span>
-          <Popconfirm
-            title="Xóa"
-            description={`Bạn có muốn duyệt tài khoản ${record.name} không`}
-            onConfirm={() => confirmAccept(record.id)}
-            onCancel={cancel}
-            okText="Có"
-            cancelText="Không"
+          <button
+            className={styles.btnView}
+            onClick={() => handleOpenAcceptModal(record)}
           >
-            {" "}
-            <button className={styles.btnView}>Duyệt</button>
-          </Popconfirm>
+            Duyệt
+          </button>
 
-          <Popconfirm
-            title="Xóa"
-            description={`Bạn có muốn xóa ${record.name} không`}
-            onConfirm={() => confirm(record.id)}
-            onCancel={cancel}
-            okText="Có"
-            cancelText="Không"
+          <button
+            className={styles.btnTbDanger}
+            onClick={() => handleOpenDeleteModal(record)}
           >
-            {" "}
-            <button className={styles.btnTbDanger}>Xóa</button>
-          </Popconfirm>
+            Xóa
+          </button>
         </span>
       ),
     },
@@ -539,6 +558,24 @@ const ManagerAccountUnDepended = ({ refetch }: ManagerAccountProps) => {
         id={id}
         setId={setId}
         refetchAccountTable={refetchUnAccept}
+      />
+
+      <ModalAccept
+        selectedRowKeys={selectedRecord?.name || ""}
+        isModalOpen={isModalOpenAccept}
+        handleOk={handleOkAccept}
+        handleCancel={handleCancelAccept}
+        id={selectedRecord?.id || ""}
+        type="duyệt"
+      />
+
+      <ModalAccept
+        selectedRowKeys={selectedRecord?.name || ""}
+        isModalOpen={isModalOpenDelete}
+        handleOk={handleOkDelete}
+        handleCancel={handleCancelDelete}
+        id={selectedRecord?.id || ""}
+        type="xóa"
       />
     </div>
   );
